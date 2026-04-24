@@ -49,18 +49,18 @@ a{color:var(--gold2);text-decoration:none}
 <script>
 const DATA = {
   DE: [
-    {t:"Essen / NRW", d:"Ruhrpott-Events, Pop-ups & Drops diese Woche. Bleib locker, bleib ready.", tag:"LOCAL"},
-    {t:"Tech EU", d:"Meta AI & neue Creator-Tools rollen aus – so nutzt du sie zuerst.", tag:"TECH"},
-    {t:"NaturalBornChillaz", d:"Freitags 18:00 – neue Releases. QR scannen = instant access.", tag:"DROP"},
-    {t:"Worldwide Stream", d:"Kuratiere News aus Musik, Streetwear & Culture – ohne Noise.", tag:"WORLD"}
+    {t:"Essen / NRW", d:"Ruhrpott-Events, Pop-ups & Drops diese Woche.", tag:"LOCAL", url:"https://www.essen.de/"},
+    {t:"Tech EU", d:"Meta AI & neue Creator-Tools – so nutzt du sie zuerst.", tag:"TECH", url:"https://about.fb.com/de/"},
+    {t:"NaturalBornChillaz", d:"Freitags 18:00 – neue Releases. QR scannen = instant access.", tag:"DROP", url:"https://instagram.com/"},
+    {t:"Worldwide Stream", d:"Kuratiere News aus Musik, Streetwear & Culture.", tag:"WORLD", url:"https://infotonbc.com"}
   ],
   US: [
-    {t:"US Breaking", d:"Markets, Tech & Culture – kompakt in 60 Sekunden.", tag:"USA"},
-    {t:"Festival Season", d:"Coachella, Rolling Loud & mehr – wer liefert ab?", tag:"MUSIC"}
+    {t:"US Breaking", d:"Markets, Tech & Culture – kompakt.", tag:"USA", url:"https://news.ycombinator.com"},
+    {t:"Festival Season", d:"Coachella, Rolling Loud & mehr.", tag:"MUSIC", url:"https://coachella.com"}
   ],
   WORLD: [
-    {t:"Global Feed", d:"Das Wichtigste aus aller Welt – chillig kuratiert.", tag:"WORLD"},
-    {t:"Join the Tribe", d:"Scanne den QR und werde Teil von NaturalBornChillaz.", tag:"JOIN"}
+    {t:"Global Feed", d:"Das Wichtigste aus aller Welt.", tag:"WORLD", url:"https://bbc.com/news"},
+    {t:"Join the Tribe", d:"Scanne den QR und werde Teil.", tag:"JOIN", url:"https://instagram.com/"}
   ]
 };
 
@@ -78,6 +78,7 @@ const grid = document.getElementById('grid');
   const el = document.createElement('article');
   el.className='card';
   el.innerHTML = `<h3>${i.t}</h3><p>${i.d}</p>${i.tag?`<span class="tag">${i.tag}</span>`:''}`;
+if(i.url){ el.style.cursor='pointer'; el.onclick=()=>window.open(i.url,'_blank'); }
   grid.appendChild(el);
 });
 
