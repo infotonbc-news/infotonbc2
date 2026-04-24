@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>be a Natural Chillaz – WORLDWIDE NEWS</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--gold:#d4af37;--gold-light:#e8c858;--bg:#0b0f0a}
+body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden;position:relative}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle at 1px 1px,rgba(212,175,55,0.07)1px,transparent 0),radial-gradient(circle at 1px 1px,rgba(255,255,255,0.025)1px,transparent 0);background-size:26px 26px;background-position:0 0,13px 13px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;top:-50%;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(212,175,55,0.08)0%,transparent 60%);filter:blur(80px);pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:420px;margin:0 auto;padding:28px 18px 110px;min-height:100vh}
+header{text-align:center;padding-top:12px}
+.logo{width:280px;max-width:78vw;height:auto;display:block;margin:0 auto 18px;filter:drop-shadow(0 8px 24px rgba(212,175,55,0.25));animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+h1{color:var(--gold);font-weight:800;text-transform:uppercase;letter-spacing:.12em;font-size:32px;text-align:center;margin:8px 0 32px;text-shadow:0 2px 20px rgba(212,175,55,.3),0 0 40px rgba(212,175,55,.15)}
+.qr-card{width:340px;max-width:92%;margin:0 auto 44px;background:#fff;border-radius:24px;padding:16px;box-shadow:0 30px 60px -20px rgba(0,0,0,.9),0 0 0 1px rgba(212,175,55,.2),inset 0 1px 0 #fff,0 0 80px rgba(212,175,55,.08);position:relative;transition:transform .4s ease}
+.qr-card:hover{transform:translateY(-4px)}
+.qr-card::before{content:'';position:absolute;inset:-2px;background:linear-gradient(135deg,var(--gold),transparent 40%,transparent 60%,var(--gold-light));border-radius:26px;z-index:-1;opacity:.3;filter:blur(12px)}
+.qr-card img{width:100%;height:auto;display:block;border-radius:14px}
+.section-title{color:var(--gold);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;text-align:center;margin:0 0 18px;opacity:.9;display:flex;align-items:center;justify-content:center;gap:12px}
+.section-title::before,.section-title::after{content:'';height:1px;width:40
