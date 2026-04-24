@@ -1,116 +1,542 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>be a NaturalBornChillaz — WORLDWIDE NEWS</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
-<style>
-:root{--gold:#d4af37;--gold2:#f5e7a1;--bg:#050505;--card:#101010;--muted:#9a9a9a}
-*{box-sizing:border-box}html,body{height:100%}
-body{margin:0;background:radial-gradient(1200px 600px at 50% -10%, #1a1508 0%, var(--bg) 45%, #000 100%);color:#fff;font-family:Outfit,system-ui,Arial,sans-serif;display:flex;flex-direction:column;align-items:center;padding:28px 16px 80px}
-.wrap{width:100%;max-width:880px;display:flex;flex-direction:column;align-items:center}
-.brand{font-size:14px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;opacity:.9}
-h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:.02em;text-align:center;background:linear-gradient(180deg,#fff,#d9d9d9);-webkit-background-clip:text;background-clip:text;color:transparent}
-h2{margin:0 0 22px;font-size:clamp(14px,2.5vw,18px);color:var(--muted);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
-.qr-shell{position:relative;width:min(320px,78vw);aspect-ratio:1/1;background:#fff;border-radius:24px;padding:16px;box-shadow:0 0 0 1px rgba(212,175,55,.25),0 0 60px rgba(212,175,55,.25);margin:10px 0 18px}
-.qr-shell:before{content:"";position:absolute;inset:-2px;border-radius:26px;background:conic-gradient(from 180deg,var(--gold),var(--gold2),var(--gold));filter:blur(18px);opacity:.35;z-index:-1}
-.qr-shell img{width:100%;height:100%;object-fit:contain;border-radius:12px}
-.pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid rgba(212,175,55,.35);border-radius:999px;background:rgba(212,175,55,.08);color:var(--gold2);font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin:6px 0 18px}
-.grid{width:100%;display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:8px}
-.card{grid-column:span 12;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid #1e1e1e;border-radius:18px;padding:16px;transition:.18s;cursor:pointer}
-@media(min-width:720px){.card{grid-column:span 6}}
-.card:hover{transform:translateY(-2px);border-color:rgba(212,175,55,.45);box-shadow:0 8px 30px rgba(0,0,0,.45)}
-.card h3{margin:0 0 6px;font-size:17px;font-weight:700}
-.card p{margin:0;color:#c9c9c9;font-size:14px;line-height:1.5}
-.tag{display:inline-block;margin-top:10px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#111;background:linear-gradient(180deg,var(--gold2),var(--gold));padding:4px 8px;border-radius:8px;font-weight:700}
-.foot{margin:28px 0 8px;color:#7a7a7a;font-size:12px;text-align:center}
+    <!DOCTYPE html>
+    <html lang="de">
+    <head>
+    <!-- Playables SDK -->
+    <script>// Playables SDK v1.0.0
+    // Game lifecycle bridge: rAF-based game-ready detection + event communication
+    (function() {
+      'use strict';
 
-/* TICKER */
-.ticker{position:fixed;bottom:0;left:0;right:0;height:44px;background:#0a0a0a;border-top:1px solid rgba(212,175,55,.3);display:flex;align-items:center;overflow:hidden;z-index:99}
-.ticker-label{background:var(--gold);color:#000;font-weight:800;font-size:12px;padding:0 12px;height:100%;display:flex;align-items:center;letter-spacing:.08em;text-transform:uppercase}
-.ticker-track{white-space:nowrap;will-change:transform;animation:scroll 120s linear infinite;padding-left:20px}
-.ticker-item{display:inline-block;margin-right:48px;font-size:14px;color:#e6e6e6}
-.ticker-item a{color:var(--gold2);text-decoration:none}
-.ticker-item a:hover{text-decoration:underline}
-@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-</style>
-</head>
-<body>
-<div class="wrap">
-<div class="brand">INFOTONBC</div>
-<h1>be a NaturalBornChillaz</h1>
-<h2>WORLDWIDE NEWS</h2>
-<div class="qr-shell"><img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=https://infotonbc.com" alt="QR"></div>
-<div class="pill" id="region">Region wird erkannt…</div>
-<div class="grid" id="grid"></div>
-<div class="foot">© 2026 INFOTONBC — made for the culture</div>
-</div>
+      // Idempotency: skip if already initialized (e.g., server-side injection
+      // followed by client-side inject-javascript via the Bloks webview component).
+      if (window.playablesSDK) return;
 
-<div class="ticker">
-  <div class="ticker-label">Cannabis DE Live</div>
-  <div class="ticker-track" id="ticker">Lade News...</div>
-</div>
+      var HANDLER_NAME = 'playablesGameEventHandler';
+      var ANDROID_BRIDGE_NAME = '_MetaPlayablesBridge';
+      var RAF_FRAME_THRESHOLD = 3;
 
-<script>
-const DATA = {
-  DE: [
-    {t:"Essen / NRW", d:"Ruhrpott-Events, Pop-ups & Drops.", tag:"LOCAL", url:"https://www.essen.de/"},
-    {t:"Tech EU", d:"Meta AI & Creator-Tools.", tag:"TECH", url:"https://about.fb.com/de/"},
-    {t:"NaturalBornChillaz", d:"Freitags 18:00 neue Releases.", tag:"DROP", url:"https://instagram.com/"},
-    {t:"Worldwide Stream", d:"Musik, Streetwear & Culture.", tag:"WORLD", url:"#"}
-  ],
-  US: [{t:"US Breaking", d:"Markets & Culture.", tag:"USA", url:"#"}],
-  WORLD: [{t:"Global Feed", d:"Das Wichtigste weltweit.", tag:"WORLD", url:"#"}]
-};
-function detect(){const l=(navigator.language||'en').toLowerCase();return l.startsWith('de')?'DE':l.includes('us')?'US':'WORLD'}
-const region=detect();document.getElementById('region').textContent='Region: '+region;
-const grid=document.getElementById('grid');(DATA[region]||DATA.WORLD).forEach(i=>{const el=document.createElement('article');el.className='card';el.innerHTML=`<h3>${i.t}</h3><p>${i.d}</p>${i.tag?`<span class="tag">${i.tag}</span>`:''}`;if(i.url)el.onclick=()=>window.open(i.url,'_blank');grid.appendChild(el)});
-document.getElementById('qr').src=`https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(location.href)}`;
+      var gameReadySent = false;
+      var firstInteractionSent = false;
+      var errorSent = false;
+      var frameCount = 0;
+      var originalRAF = window.requestAnimationFrame;
 
-// LIVE CANNABIS FEED - mit Brand-Keywords
-async function loadTicker(){
-  try{
-    const feeds = [
-      'https://hanf-magazin.com/feed/',
-      'https://weed.de/feed/',
-      'https://www.hanfjournal.de/feed/'
-    ];
-    const results = await Promise.all(feeds.map(url =>
-      fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`).then(r=>r.json()).catch(()=>null)
-    ));
+      // --- Transport Layer ---
 
-    let items = [];
-    results.forEach(data => {
-      if(data && data.items) items = items.concat(data.items.slice(0,5));
-    });
+      function hasIOSBridge() {
+        return !!(window.webkit &&
+                  window.webkit.messageHandlers &&
+                  window.webkit.messageHandlers[HANDLER_NAME]);
+      }
 
-    items.sort((a,b)=> new Date(b.pubDate) - new Date(a.pubDate));
-    items = items.slice(0,15);
+      function hasAndroidBridge() {
+        return !!(window[ANDROID_BRIDGE_NAME] &&
+                  typeof window[ANDROID_BRIDGE_NAME].postEvent === 'function');
+      }
 
-    // DEINE KEYWORDS als gepinnte Meldungen
-    const brandItems = [
-  {title:"INFOTONBC — be a NaturalBornChillaz", link:location.href},
-  {title:"Natural Born Chillaz — neuer Drop jeden Freitag 18:00", link:"https://www.instagram.com/infotonbc?igsh=MWljMGI1azZrNHd5Zw=="},
-  {title:"NBC Worldwide News — jetzt live", link:location.href},
-  {title:"Folge NaturalBornChillaz auf Instagram", link:"https://www.instagram.com/infotonbc?igsh=MWljMGI1azZrNHd5Zw=="},
-];
+      function isInIframe() {
+        return !!(window.parent && window.parent !== window);
+      }
 
-    const newsHtml = items.map(it=>{
-      const clean = it.title.replace(/Hanf Magazin|weed\.de|Hanf Journal/gi,'').trim();
-      const date = new Date(it.pubDate).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
-      return `<span class="ticker-item"><a href="${it.link}" target="_blank">${clean} • ${date}</a></span>`;
-    }).join('');
+      function sendEvent(eventName, payload) {
+        var message = {
+          type: eventName,
+          payload: payload || {},
+          timestamp: Date.now()
+        };
 
-    const brandHtml = brandItems.map(b=>`<span class="ticker-item" style="color:#000;background:linear-gradient(180deg,#f5e7a1,#d4af37);padding:2px 8px;border-radius:6px;font-weight:700;margin-right:48px;"><a href="${b.link}" target="_blank" style="color:#000;text-decoration:none;">${b.title}</a></span>`).join('');
+        if (hasIOSBridge()) {
+          try {
+            window.webkit.messageHandlers[HANDLER_NAME].postMessage(message);
+          } catch (e) { /* ignore */ }
+          return;
+        }
 
-    document.getElementById('ticker').innerHTML = brandHtml + newsHtml + brandHtml + newsHtml;
-  }catch(e){
-    document.getElementById('ticker').innerHTML = '<span class="ticker-item">INFOTONBC live • NaturalBornChillaz • NBC</span>';
-  }
-}
-loadTicker();
-setInterval(loadTicker, 1000*60*10); // alle 10 Min
-</script>
-</body>
-</html>
+        if (hasAndroidBridge()) {
+        try {
+          var p = payload || {};
+          p.__secureToken = window.__fbAndroidBridgeAuthToken || '';
+          window[ANDROID_BRIDGE_NAME].postEvent(
+            eventName,
+            JSON.stringify(p)
+          );
+        } catch (e) { /* ignore */ }
+        return;
+      }
+
+        if (isInIframe()) {
+          try {
+            window.parent.postMessage(message, '*');
+          } catch (e) { /* ignore */ }
+          return;
+        }
+      }
+
+      // --- rAF Game-Ready Detection ---
+
+      function onFrame() {
+        if (gameReadySent) return;
+
+        frameCount++;
+        if (frameCount >= RAF_FRAME_THRESHOLD) {
+          gameReadySent = true;
+          sendEvent('game_ready', {
+            frame_count: frameCount,
+            detected_at: Date.now()
+          });
+          return;
+        }
+
+        originalRAF.call(window, onFrame);
+      }
+
+      if (originalRAF) {
+        window.requestAnimationFrame = function(callback) {
+          if (!gameReadySent) {
+            return originalRAF.call(window, function(timestamp) {
+              frameCount++;
+              if (frameCount >= RAF_FRAME_THRESHOLD && !gameReadySent) {
+                gameReadySent = true;
+                sendEvent('game_ready', {
+                  frame_count: frameCount,
+                  detected_at: Date.now()
+                });
+              }
+              callback(timestamp);
+            });
+          }
+          return originalRAF.call(window, callback);
+        };
+      }
+
+      // --- First User Interaction Detection ---
+
+      function setupFirstInteractionDetection() {
+        var events = ['touchstart', 'mousedown', 'keydown'];
+
+        function onFirstInteraction() {
+          if (firstInteractionSent) return;
+          firstInteractionSent = true;
+          sendEvent('user_interaction_start', null);
+
+          for (var i = 0; i < events.length; i++) {
+            document.removeEventListener(events[i], onFirstInteraction, true);
+          }
+        }
+
+        for (var i = 0; i < events.length; i++) {
+          document.addEventListener(events[i], onFirstInteraction, true);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupFirstInteractionDetection);
+      } else {
+        setupFirstInteractionDetection();
+      }
+
+      // --- Auto Error Capture ---
+
+      window.addEventListener('error', function(event) {
+        if (errorSent) return;
+        errorSent = true;
+        sendEvent('error', {
+          message: event.message || 'Unknown error',
+          source: event.filename || '',
+          lineno: event.lineno || 0,
+          colno: event.colno || 0,
+          auto_captured: true
+        });
+      });
+
+      window.addEventListener('unhandledrejection', function(event) {
+        if (errorSent) return;
+        errorSent = true;
+        var reason = event.reason;
+        sendEvent('error', {
+          message: (reason instanceof Error) ? reason.message : String(reason),
+          type: 'unhandled_promise_rejection',
+          auto_captured: true
+        });
+      });
+
+      // --- Public API ---
+
+      window.playablesSDK = {
+        complete: function(score) {
+          sendEvent('game_ended', {
+            score: score,
+            completed: true
+          });
+        },
+
+        error: function(message) {
+          if (errorSent) return;
+          errorSent = true;
+          sendEvent('error', {
+            message: message || 'Unknown error',
+            auto_captured: false
+          });
+        },
+
+        sendEvent: function(eventName, payload) {
+          if (!eventName || typeof eventName !== 'string') return;
+          sendEvent(eventName, payload);
+        }
+      };
+
+      // Kick off rAF detection in case no game code calls rAF immediately
+      if (originalRAF) {
+        originalRAF.call(window, onFrame);
+      }
+    })();</script>
+    <script>window.Intl=window.Intl||{};Intl.t=function(s){return(Intl._locale&&Intl._locale[s])||s;};</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>be a Natural Chillaz – WORLDWIDE NEWS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      :root {
+        --gold: #d4af37;
+        --gold-light: #e8c858;
+        --bg: #0b0f0a;
+        --bg-2: #0a0a0a;
+      }
+      html, body { height: 100%; }
+      body {
+        font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+        background-color: var(--bg);
+        color: #fff;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        position: relative;
+      }
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: 
+          radial-gradient(circle at 1px 1px, rgba(212,175,55,0.07) 1px, transparent 0),
+          radial-gradient(circle at 1px 1px, rgba(255,255,255,0.025) 1px, transparent 0);
+        background-size: 26px 26px;
+        background-position: 0 0, 13px 13px;
+        pointer-events: none;
+        z-index: 0;
+      }
+      body::after {
+        content: '';
+        position: fixed;
+        top: -50%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 800px;
+        height: 800px;
+        background: radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 60%);
+        filter: blur(80px);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .wrap {
+        position: relative;
+        z-index: 1;
+        max-width: 420px;
+        margin: 0 auto;
+        padding: 28px 18px 110px;
+        min-height: 100vh;
+      }
+
+      header {
+        text-align: center;
+        padding-top: 12px;
+      }
+      .logo {
+        width: 280px;
+        max-width: 78vw;
+        height: auto;
+        display: block;
+        margin: 0 auto 18px;
+        filter: drop-shadow(0 8px 24px rgba(212,175,55,0.25));
+        animation: float 6s ease-in-out infinite;
+      }
+      @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-4px); }
+      }
+
+      h1 {
+        color: var(--gold);
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        font-size: 32px;
+        text-align: center;
+        margin: 8px 0 32px;
+        text-shadow: 0 2px 20px rgba(212,175,55,0.3), 0 0 40px rgba(212,175,55,0.15);
+      }
+
+      .qr-card {
+        width: 340px;
+        max-width: 92%;
+        margin: 0 auto 44px;
+        background: #ffffff;
+        border-radius: 24px;
+        padding: 16px;
+        box-shadow: 
+          0 30px 60px -20px rgba(0,0,0,0.9),
+          0 0 0 1px rgba(212,175,55,0.2),
+          inset 0 1px 0 rgba(255,255,255,1),
+          0 0 80px rgba(212,175,55,0.08);
+        position: relative;
+        transform: perspective(1000px) rotateX(0deg);
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+      }
+      .qr-card:hover {
+        transform: perspective(1000px) rotateX(2deg) translateY(-4px);
+        box-shadow: 
+          0 40px 80px -20px rgba(0,0,0,1),
+          0 0 0 1px rgba(212,175,55,0.35),
+          inset 0 1px 0 rgba(255,255,255,1),
+          0 0 100px rgba(212,175,55,0.15);
+      }
+      .qr-card::before {
+        content: '';
+        position: absolute;
+        inset: -2px;
+        background: linear-gradient(135deg, var(--gold), transparent 40%, transparent 60%, var(--gold-light));
+        border-radius: 26px;
+        z-index: -1;
+        opacity: 0.3;
+        filter: blur(12px);
+      }
+      .qr-card img {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 14px;
+      }
+
+      .section-title {
+        color: var(--gold);
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+        text-align: center;
+        margin: 0 0 18px;
+        opacity: 0.9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+      .section-title::before,
+      .section-title::after {
+        content: '';
+        height: 1px;
+        width: 40px;
+        background: linear-gradient(90deg, transparent, var(--gold));
+        opacity: 0.5;
+      }
+      .section-title::after {
+        background: linear-gradient(90deg, var(--gold), transparent);
+      }
+
+      .news-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .news-card {
+        display: block;
+        position: relative;
+        background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+        border: 1px solid rgba(212,175,55,0.18);
+        border-radius: 16px;
+        padding: 14px 16px 14px 18px;
+        text-decoration: none;
+        color: #e8e8e8;
+        transition: all 0.3s cubic-bezier(0.2,0.8,0.2,1);
+        backdrop-filter: blur(10px);
+        overflow: hidden;
+      }
+      .news-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: linear-gradient(180deg, var(--gold), var(--gold-light));
+        opacity: 0.7;
+        transition: width 0.3s ease;
+      }
+      .news-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(212,175,55,0.45);
+        background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(255,255,255,0.03));
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4), 0 0 20px rgba(212,175,55,0.1);
+      }
+      .news-card:hover::before { width: 4px; opacity: 1; }
+      .news-source {
+        font-size: 10.5px;
+        color: var(--gold);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 700;
+        margin-bottom: 6px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .news-source::before {
+        content: '●';
+        font-size: 8px;
+        opacity: 0.8;
+      }
+      .news-title {
+        font-size: 14.5px;
+        line-height: 1.35;
+        font-weight: 500;
+        color: #fff;
+        margin-bottom: 6px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+      .news-meta {
+        font-size: 11px;
+        color: rgba(255,255,255,0.45);
+        font-weight: 400;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 24px;
+        color: rgba(212,175,55,0.7);
+        font-size: 13px;
+      }
+      .loading::after {
+        content: '...';
+        animation: dots 1.4s infinite;
+      }
+      @keyframes dots { 0%,20% { content: '.' } 40% { content: '..' } 60%,100% { content: '...' } }
+
+      /* TICKER */
+      .ticker {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 48px;
+        background: rgba(8,11,8,0.92);
+        backdrop-filter: blur(16px) saturate(1.2);
+        border-top: 1px solid rgba(212,175,55,0.25);
+        display: flex;
+        align-items: center;
+        z-index: 1000;
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.6);
+      }
+      .ticker-label {
+        background: linear-gradient(135deg, var(--gold), var(--gold-light));
+        color: #0b0f0a;
+        font-weight: 800;
+        padding: 0 16px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        white-space: nowrap;
+        box-shadow: 4px 0 20px rgba(212,175,55,0.2);
+        position: relative;
+        z-index: 2;
+      }
+      .ticker-label::after {
+        content: '';
+        position: absolute;
+        right: -8px;
+        top: 0;
+        bottom: 0;
+        width: 16px;
+        background: linear-gradient(135deg, var(--gold), var(--gold-light));
+        clip-path: polygon(0 0, 0% 100%, 100% 50%);
+      }
+      .ticker-label svg { width: 14px; height: 14px; }
+      .ticker-track {
+        flex: 1;
+        overflow: hidden;
+        height: 100%;
+        position: relative;
+        mask-image: linear-gradient(90deg, transparent 0, black 20px, black calc(100% - 20px), transparent);
+      }
+      .ticker-content {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+        height: 100%;
+        white-space: nowrap;
+        will-change: transform;
+        animation: scroll 180s linear infinite;
+        padding-left: 24px;
+      }
+      .ticker-content:hover { animation-play-state: paused; }
+      @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); }
+      }
+      .ticker-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(255,255,255,0.88);
+        font-size: 13px;
+        font-weight: 400;
+        flex-shrink: 0;
+      }
+      .ticker-item a {
+        color: var(--gold);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .ticker-item a:hover { color: var(--gold-light); text-decoration: underline; }
+      .ticker-dot {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--gold);
+        opacity: 0.7;
+        flex-shrink: 0;
+      }
+
+      @media (max-width: 380px) {
+        h1 { font-size: 28px; }
+        .qr-card { width: 300px; }
+        .ticker-label { padding: 0 12px; font-size: 11px; }
+      }
+    </style>
+    </head>
+    <body>
+      <div class="wrap">
+        <header>
+          <img src="data:image/png;base64,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
+
+    Foto-Anhang: qr_card.png
+
+    Foto-Anhang: logo.png
+
+
+
+
+
+    Yahoo Mail: Suchen, organisieren, erobern
