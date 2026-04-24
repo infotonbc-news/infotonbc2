@@ -68,7 +68,7 @@ const region=detect();document.getElementById('region').textContent='Region: '+r
 const grid=document.getElementById('grid');(DATA[region]||DATA.WORLD).forEach(i=>{const el=document.createElement('article');el.className='card';el.innerHTML=`<h3>${i.t}</h3><p>${i.d}</p>${i.tag?`<span class="tag">${i.tag}</span>`:''}`;if(i.url)el.onclick=()=>window.open(i.url,'_blank');grid.appendChild(el)});
 document.getElementById('qr').src=`https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(location.href)}`;
 
-// LIVE CANNABIS FEED - 3 Quellen
+// LIVE CANNABIS FEED - mit Brand-Keywords
 async function loadTicker(){
   try{
     const feeds = [
@@ -82,24 +82,31 @@ async function loadTicker(){
 
     let items = [];
     results.forEach(data => {
-      if(data && data.items){
-        items = items.concat(data.items.slice(0,6));
-      }
+      if(data && data.items) items = items.concat(data.items.slice(0,5));
     });
 
-    // sortieren nach Datum, neueste zuerst
     items.sort((a,b)=> new Date(b.pubDate) - new Date(a.pubDate));
-    items = items.slice(0,18);
+    items = items.slice(0,15);
 
-    const html = items.map(it=>{
-      const cleanTitle = it.title.replace(/Hanf Magazin|weed\.de|Hanf Journal/gi,'').trim();
+    // DEINE KEYWORDS als gepinnte Meldungen
+    const brandItems = [
+      {title:"INFOTONBC — be a NaturalBornChillaz", link:location.href},
+      {title:"Natural Born Chillaz — neuer Drop jeden Freitag 18:00", link:location.href},
+      {title:"NBC Worldwide News — jetzt live", link:location.href},
+      {title:"Folge NaturalBornChillaz auf Instagram", link:"https://instagram.com/"},
+    ];
+
+    const newsHtml = items.map(it=>{
+      const clean = it.title.replace(/Hanf Magazin|weed\.de|Hanf Journal/gi,'').trim();
       const date = new Date(it.pubDate).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
-      return `<span class="ticker-item"><a href="${it.link}" target="_blank">${cleanTitle} • ${date}</a></span>`;
+      return `<span class="ticker-item"><a href="${it.link}" target="_blank">${clean} • ${date}</a></span>`;
     }).join('');
 
-    document.getElementById('ticker').innerHTML = html + html; // doppelt für Loop
+    const brandHtml = brandItems.map(b=>`<span class="ticker-item" style="color:#000;background:linear-gradient(180deg,#f5e7a1,#d4af37);padding:2px 8px;border-radius:6px;font-weight:700;margin-right:48px;"><a href="${b.link}" target="_blank" style="color:#000;text-decoration:none;">${b.title}</a></span>`).join('');
+
+    document.getElementById('ticker').innerHTML = brandHtml + newsHtml + brandHtml + newsHtml;
   }catch(e){
-    document.getElementById('ticker').innerHTML = '<span class="ticker-item">Live-Feed lädt... OVG NRW Urteil • CanG Zwischenbericht • Medizinalcannabis Importe steigen</span>';
+    document.getElementById('ticker').innerHTML = '<span class="ticker-item">INFOTONBC live • NaturalBornChillaz • NBC</span>';
   }
 }
 loadTicker();
