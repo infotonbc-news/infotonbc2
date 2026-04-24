@@ -4,29 +4,36 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>be a NaturalBornChillaz — WORLDWIDE NEWS</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{--gold:#d4af37;--gold2:#f5e7a1;--bg:#050505;--card:#101010;--muted:#9a9a9a}
 *{box-sizing:border-box}html,body{height:100%}
-body{margin:0;background:radial-gradient(1200px 600px at 50% -10%, #1a1508 0%, var(--bg) 45%, #000 100%);color:#fff;font-family:Outfit,system-ui,Arial,sans-serif;display:flex;flex-direction:column;align-items:center;padding:28px 16px}
+body{margin:0;background:radial-gradient(1200px 600px at 50% -10%, #1a1508 0%, var(--bg) 45%, #000 100%);color:#fff;font-family:Outfit,system-ui,Arial,sans-serif;display:flex;flex-direction:column;align-items:center;padding:28px 16px 80px}
 .wrap{width:100%;max-width:880px;display:flex;flex-direction:column;align-items:center}
 .brand{font-size:14px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;opacity:.9}
-h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:.02em;text-align:center;background:linear-gradient(180deg,#fff,#d9d9d9);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 24px rgba(212,175,55,.15)}
+h1{margin:6px 0 2px;font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:.02em;text-align:center;background:linear-gradient(180deg,#fff,#d9d9d9);-webkit-background-clip:text;background-clip:text;color:transparent}
 h2{margin:0 0 22px;font-size:clamp(14px,2.5vw,18px);color:var(--muted);font-weight:600;letter-spacing:.12em;text-transform:uppercase}
-.qr-shell{position:relative;width:min(320px,78vw);aspect-ratio:1/1;background:#fff;border-radius:24px;padding:16px;box-shadow:0 0 0 1px rgba(212,175,55,.25),0 0 60px rgba(212,175,55,.25),inset 0 0 30px rgba(0,0,0,.06);margin:10px 0 18px}
+.qr-shell{position:relative;width:min(320px,78vw);aspect-ratio:1/1;background:#fff;border-radius:24px;padding:16px;box-shadow:0 0 0 1px rgba(212,175,55,.25),0 0 60px rgba(212,175,55,.25);margin:10px 0 18px}
 .qr-shell:before{content:"";position:absolute;inset:-2px;border-radius:26px;background:conic-gradient(from 180deg,var(--gold),var(--gold2),var(--gold));filter:blur(18px);opacity:.35;z-index:-1}
-.qr-shell img{width:100%;height:100%;object-fit:contain;display:block;border-radius:12px}
+.qr-shell img{width:100%;height:100%;object-fit:contain;border-radius:12px}
 .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid rgba(212,175,55,.35);border-radius:999px;background:rgba(212,175,55,.08);color:var(--gold2);font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin:6px 0 18px}
 .grid{width:100%;display:grid;grid-template-columns:repeat(12,1fr);gap:14px;margin-top:8px}
-.card{grid-column:span 12;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid #1e1e1e;border-radius:18px;padding:16px 16px 14px;backdrop-filter:blur(6px);transition:transform.18s ease,border-color.18s ease,box-shadow.18s ease}
+.card{grid-column:span 12;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid #1e1e1e;border-radius:18px;padding:16px;transition:.18s;cursor:pointer}
 @media(min-width:720px){.card{grid-column:span 6}}
-.card:hover{transform:translateY(-2px);border-color:rgba(212,175,55,.45);box-shadow:0 8px 30px rgba(0,0,0,.45),0 0 0 1px rgba(212,175,55,.15) inset}
-.card h3{margin:0 0 6px;font-size:17px;font-weight:700;letter-spacing:.01em}
+.card:hover{transform:translateY(-2px);border-color:rgba(212,175,55,.45);box-shadow:0 8px 30px rgba(0,0,0,.45)}
+.card h3{margin:0 0 6px;font-size:17px;font-weight:700}
 .card p{margin:0;color:#c9c9c9;font-size:14px;line-height:1.5}
 .tag{display:inline-block;margin-top:10px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#111;background:linear-gradient(180deg,var(--gold2),var(--gold));padding:4px 8px;border-radius:8px;font-weight:700}
 .foot{margin:28px 0 8px;color:#7a7a7a;font-size:12px;text-align:center}
-a{color:var(--gold2);text-decoration:none}
+
+/* TICKER */
+.ticker{position:fixed;bottom:0;left:0;right:0;height:44px;background:#0a0a0a;border-top:1px solid rgba(212,175,55,.3);display:flex;align-items:center;overflow:hidden;z-index:99}
+.ticker-label{background:var(--gold);color:#000;font-weight:800;font-size:12px;padding:0 12px;height:100%;display:flex;align-items:center;letter-spacing:.08em;text-transform:uppercase}
+.ticker-track{white-space:nowrap;will-change:transform;animation:scroll 120s linear infinite;padding-left:20px}
+.ticker-item{display:inline-block;margin-right:48px;font-size:14px;color:#e6e6e6}
+.ticker-item a{color:var(--gold2);text-decoration:none}
+.ticker-item a:hover{text-decoration:underline}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 </style>
 </head>
 <body>
@@ -34,57 +41,45 @@ a{color:var(--gold2);text-decoration:none}
 <div class="brand">INFOTONBC</div>
 <h1>be a NaturalBornChillaz</h1>
 <h2>WORLDWIDE NEWS</h2>
-
-<div class="qr-shell">
-<img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=https://infotonbc.com" alt="QR">
+<div class="qr-shell"><img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=https://infotonbc.com" alt="QR"></div>
+<div class="pill" id="region">Region wird erkannt…</div>
+<div class="grid" id="grid"></div>
+<div class="foot">© 2026 INFOTONBC — made for the culture</div>
 </div>
 
-<div class="pill" id="region">Region wird erkannt…</div>
-
-<div class="grid" id="grid"></div>
-
-<div class="foot">© 2026 INFOTONBC — made for the culture</div>
+<div class="ticker">
+  <div class="ticker-label">Cannabis DE Live</div>
+  <div class="ticker-track" id="ticker">Lade News...</div>
 </div>
 
 <script>
 const DATA = {
   DE: [
-    {t:"Essen / NRW", d:"Ruhrpott-Events, Pop-ups & Drops diese Woche.", tag:"LOCAL", url:"https://www.essen.de/"},
-    {t:"Tech EU", d:"Meta AI & neue Creator-Tools – so nutzt du sie zuerst.", tag:"TECH", url:"https://about.fb.com/de/"},
-    {t:"NaturalBornChillaz", d:"Freitags 18:00 – neue Releases. QR scannen = instant access.", tag:"DROP", url:"https://instagram.com/"},
-    {t:"Worldwide Stream", d:"Kuratiere News aus Musik, Streetwear & Culture.", tag:"WORLD", url:"https://infotonbc.com"}
+    {t:"Essen / NRW", d:"Ruhrpott-Events, Pop-ups & Drops.", tag:"LOCAL", url:"https://www.essen.de/"},
+    {t:"Tech EU", d:"Meta AI & Creator-Tools.", tag:"TECH", url:"https://about.fb.com/de/"},
+    {t:"NaturalBornChillaz", d:"Freitags 18:00 neue Releases.", tag:"DROP", url:"https://instagram.com/"},
+    {t:"Worldwide Stream", d:"Musik, Streetwear & Culture.", tag:"WORLD", url:"#"}
   ],
-  US: [
-    {t:"US Breaking", d:"Markets, Tech & Culture – kompakt.", tag:"USA", url:"https://news.ycombinator.com"},
-    {t:"Festival Season", d:"Coachella, Rolling Loud & mehr.", tag:"MUSIC", url:"https://coachella.com"}
-  ],
-  WORLD: [
-    {t:"Global Feed", d:"Das Wichtigste aus aller Welt.", tag:"WORLD", url:"https://bbc.com/news"},
-    {t:"Join the Tribe", d:"Scanne den QR und werde Teil.", tag:"JOIN", url:"https://instagram.com/"}
-  ]
+  US: [{t:"US Breaking", d:"Markets & Culture.", tag:"USA", url:"#"}],
+  WORLD: [{t:"Global Feed", d:"Das Wichtigste weltweit.", tag:"WORLD", url:"#"}]
 };
+function detect(){const l=(navigator.language||'en').toLowerCase();return l.startsWith('de')?'DE':l.includes('us')?'US':'WORLD'}
+const region=detect();document.getElementById('region').textContent='Region: '+region;
+const grid=document.getElementById('grid');(DATA[region]||DATA.WORLD).forEach(i=>{const el=document.createElement('article');el.className='card';el.innerHTML=`<h3>${i.t}</h3><p>${i.d}</p>${i.tag?`<span class="tag">${i.tag}</span>`:''}`;if(i.url)el.onclick=()=>window.open(i.url,'_blank');grid.appendChild(el)});
+document.getElementById('qr').src=`https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(location.href)}`;
 
-function detect(){
-  const l = (navigator.language||'en').toLowerCase();
-  if(l.startsWith('de')) return 'DE';
-  if(l.includes('en-us')||l.includes('en_us')) return 'US';
-  return 'WORLD';
+// LIVE CANNABIS FEED
+async function loadTicker(){
+  try{
+    const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://hanf-magazin.com/feed/');
+    const data = await res.json();
+    const items = data.items.slice(0,12).map(it=>`<span class="ticker-item"><a href="${it.link}" target="_blank">${it.title.replace('Hanf News & aktuelle Nachrichten','').trim()} • ${new Date(it.pubDate).toLocaleDateString('de-DE')}</a></span>`).join('');
+    document.getElementById('ticker').innerHTML = items + items; // doppelt für nahtloses scrollen
+  }catch(e){
+    document.getElementById('ticker').textContent = 'Cannabis-News: OVG NRW entzieht Patienten Fahrerlaubnis • CanG Zwischenbericht April 2026 • 1.300 Sorten Medizinalcannabis •';
+  }
 }
-const region = detect();
-document.getElementById('region').textContent = 'Region: ' + region;
-
-const grid = document.getElementById('grid');
-(DATA[region]||DATA.WORLD).forEach(i=>{
-  const el = document.createElement('article');
-  el.className='card';
-  el.innerHTML = `<h3>${i.t}</h3><p>${i.d}</p>${i.tag?`<span class="tag">${i.tag}</span>`:''}`;
-if(i.url){ el.style.cursor='pointer'; el.onclick=()=>window.open(i.url,'_blank'); }
-  grid.appendChild(el);
-});
-
-// QR mit aktueller URL füttern
-const qr = document.getElementById('qr');
-qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(location.href)}`;
+loadTicker(); setInterval(loadTicker, 1000*60*15);
 </script>
 </body>
 </html>
