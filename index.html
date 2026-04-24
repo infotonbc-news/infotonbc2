@@ -68,18 +68,42 @@ const region=detect();document.getElementById('region').textContent='Region: '+r
 const grid=document.getElementById('grid');(DATA[region]||DATA.WORLD).forEach(i=>{const el=document.createElement('article');el.className='card';el.innerHTML=`<h3>${i.t}</h3><p>${i.d}</p>${i.tag?`<span class="tag">${i.tag}</span>`:''}`;if(i.url)el.onclick=()=>window.open(i.url,'_blank');grid.appendChild(el)});
 document.getElementById('qr').src=`https://api.qrserver.com/v1/create-qr-code/?size=600x600&data=${encodeURIComponent(location.href)}`;
 
-// LIVE CANNABIS FEED
+// LIVE CANNABIS FEED - 3 Quellen
 async function loadTicker(){
   try{
-    const res = await fetch('https://api.rss2json.com/v1/api.json?rss_url=https://hanf-magazin.com/feed/');
-    const data = await res.json();
-    const items = data.items.slice(0,12).map(it=>`<span class="ticker-item"><a href="${it.link}" target="_blank">${it.title.replace('Hanf News & aktuelle Nachrichten','').trim()} • ${new Date(it.pubDate).toLocaleDateString('de-DE')}</a></span>`).join('');
-    document.getElementById('ticker').innerHTML = items + items; // doppelt für nahtloses scrollen
+    const feeds = [
+      'https://hanf-magazin.com/feed/',
+      'https://weed.de/feed/',
+      'https://www.hanfjournal.de/feed/'
+    ];
+    const results = await Promise.all(feeds.map(url =>
+      fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`).then(r=>r.json()).catch(()=>null)
+    ));
+
+    let items = [];
+    results.forEach(data => {
+      if(data && data.items){
+        items = items.concat(data.items.slice(0,6));
+      }
+    });
+
+    // sortieren nach Datum, neueste zuerst
+    items.sort((a,b)=> new Date(b.pubDate) - new Date(a.pubDate));
+    items = items.slice(0,18);
+
+    const html = items.map(it=>{
+      const cleanTitle = it.title.replace(/Hanf Magazin|weed\.de|Hanf Journal/gi,'').trim();
+      const date = new Date(it.pubDate).toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});
+      return `<span class="ticker-item"><a href="${it.link}" target="_blank">${cleanTitle} • ${date}</a></span>`;
+    }).join('');
+
+    document.getElementById('ticker').innerHTML = html + html; // doppelt für Loop
   }catch(e){
-    document.getElementById('ticker').textContent = 'Cannabis-News: OVG NRW entzieht Patienten Fahrerlaubnis • CanG Zwischenbericht April 2026 • 1.300 Sorten Medizinalcannabis •';
+    document.getElementById('ticker').innerHTML = '<span class="ticker-item">Live-Feed lädt... OVG NRW Urteil • CanG Zwischenbericht • Medizinalcannabis Importe steigen</span>';
   }
 }
-loadTicker(); setInterval(loadTicker, 1000*60*15);
+loadTicker();
+setInterval(loadTicker, 1000*60*10); // alle 10 Min
 </script>
 </body>
 </html>
