@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Worldwide News — INFOTONBC</title>
+<style>
+:root{--gold:#d4af37;--bg:#0b0b0b;--card:#141414}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#fff;font-family:system-ui,Arial,sans-serif;display:flex;flex-direction:column;align-items:center;padding:24px;min-height:100vh}
+h1{font-size:28px;margin:8px 0 4px;text-align:center;font-weight:700}
+h2{font-size:18px;margin:0 0 20px;color:#bbb;text-align:center;font-weight:400}
+.qr{width:240px;height:240px;background:#fff;padding:12px;border-radius:16px;box-shadow:0 0 24px rgba(212,175,55,.35);margin-bottom:20px}
+.qr img{width:100%;height:100%;object-fit:contain}
+.region{margin:12px 0;font-size:14px;color:var(--gold);text-transform:uppercase;letter-spacing:.08em}
+.cards{width:100%;max-width:720px;display:grid;gap:12px}
+.card{background:var(--card);border:1px solid #222;border-radius:14px;padding:16px;transition:transform.2s}
+.card:hover{transform:translateY(-2px);border-color:var(--gold)}
+.card h3{margin:0 0 6px;font-size:16px;color:#fff}
+.card p{margin:0;color:#ccc;font-size:14px;line-height:1.5}
+.foot{margin-top:auto;padding:20px 0 8px;font-size:12px;color:#777;text-align:center}
+</style>
+</head>
+<body>
+<h1>be a NaturalBornChillaz</h1>
+<h2>WORLDWIDE NEWS</h2>
+
+<div class="qr">
+<img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https://infotonbc.com" alt="QR Code">
+</div>
+
+<div class="region" id="region">Region wird geladen...</div>
+
+<div class="cards" id="cards"></div>
+
+<div class="foot">INFOTONBC © 2026</div>
+
+<script>
+const newsData = {
+  DE: [
+    {t:"NRW Update", d:"Essen & Ruhrgebiet: Konzerte, Pop-ups und Street-Art diese Woche."},
+    {t:"Tech Deutschland", d:"Meta AI Features jetzt in der EU verfügbar – was du wissen musst."},
+    {t:"NaturalBornChillaz", d:"Neue Drops jeden Freitag. Stay tuned."}
+  ],
+  US: [
+    {t:"US Breaking", d:"Markets & Tech News live."},
+    {t:"Culture", d:"Coachella 2026 Recap & Trends."}
+  ],
+  WORLD: [
+    {t:"Worldwide", d:"Global News Stream aktiv."},
+    {t:"Music", d:"Neue Releases weltweit."}
+  ]
+};
+
+function getRegion(){
+  const lang = navigator.language || 'en';
+  if(lang.startsWith('de')) return 'DE';
+  if(lang.includes('US')) return 'US';
+  return 'WORLD';
+}
+
+const region = getRegion();
+document.getElementById('region').textContent = 'Region: ' + region;
+
+const container = document.getElementById('cards');
+const items = newsData[region] || newsData.WORLD;
+
+items.forEach(item => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `<h3>${item.t}</h3><p>${item.d}</p>`;
+  container.appendChild(card);
+});
+</script>
+</body>
+</html>
