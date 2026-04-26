@@ -2,4 +2,3 @@ User-agent: *
 Allow: /
 
 Sitemap: https://infotonbc-news.github.io/infotonbc2/sitemap.xml
-Sitemap: https://infotonbc-news.github.io/infotonbc2/news-sitemap.xml
