@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<!-- Playables SDK -->
+<script>// Playables SDK v1.0.0
+// Game lifecycle bridge: rAF-based game-ready detection + event communication
+(function() {
+  'use strict';
+
+  // Idempotency: skip if already initialized (e.g., server-side injection
+  // followed by client-side inject-javascript via the Bloks webview component).
+  if (window.playablesSDK) return;
+
+  var HANDLER_NAME = 'playablesGameEventHandler';
+  var ANDROID_BRIDGE_NAME = '_MetaPlayablesBridge';
+  var RAF_FRAME_THRESHOLD = 3;
+
+  var gameReadySent = false;
+  var firstInteractionSent = false;
+  var errorSent = false;
+  var frameCount = 0;
+  var originalRAF = window.requestAnimationFrame;
+
+  // --- Transport Layer ---
+
+  function hasIOSBridge() {
+    return !!(window.webkit &&
+              window.webkit.messageHandlers &&
+              window.webkit.messageHandlers[HANDLER_NAME]);
+  }
+
+  function hasAndroidBridge() {
+    return !!(window[ANDROID_BRIDGE_NAME] &&
+              typeof window[ANDROID_BRIDGE_NAME].postEvent === 'function');
+  }
+
+  function isInIframe() {
+    return !!(window.parent && window.parent !== window);
+  }
+
+  function sendEvent(eventName, payload) {
+    var message = {
+      type: eventName,
+      payload: payload || {},
+      timestamp: Date.now()
+    };
+
+    if (hasIOSBridge()) {
+      try {
+        window.webkit.messageHandlers[HANDLER_NAME].postMessage(message);
+      } catch (e) { /* ignore */ }
+      return;
+    }
+
+    if (hasAndroidBridge()) {
+    try {
+      var p = payload || {};
+      p.__secureToken = window.__fbAndroidBridgeAuthToken || '';
+      p.timestamp = message.timestamp;
+      window[ANDROID_BRIDGE_NAME].postEvent(
+        eventName,
+        JSON.stringify(p)
+      );
+    } catch (e) { /* ignore */ }
+    return;
+  }
+
+    if (isInIframe()) {
+      try {
+        window.parent.postMessage(message, '*');
+      } catch (e) { /* ignore */ }
+      return;
+    }
+  }
+
+  // --- rAF Game-Ready Detection ---
+
+  function onFrame() {
+    if (gameReadySent) return;
+
+    frameCount++;
+    if (frameCount >= RAF_FRAME_THRESHOLD) {
+      gameReadySent = true;
+      sendEvent('game_ready', {
+        frame_count: frameCount,
+        detected_at: Date.now()
+      });
+      return;
+    }
+
+    originalRAF.call(window, onFrame);
+  }
+
+  if (originalRAF) {
+    window.requestAnimationFrame = function(callback) {
+      if (!gameReadySent) {
+        return originalRAF.call(window, function(timestamp) {
+          frameCount++;
+          if (frameCount >= RAF_FRAME_THRESHOLD && !gameReadySent) {
+            gameReadySent = true;
+            sendEvent('game_ready', {
+              frame_count: frameCount,
+              detected_at: Date.now()
+            });
+          }
+          callback(timestamp);
+        });
+      }
+      return originalRAF.call(window, callback);
+    };
+  }
+
+  // --- First User Interaction Detection ---
+
+  function setupFirstInteractionDetection() {
+    var events = ['touchstart', 'mousedown', 'keydown'];
+
+    function onFirstInteraction() {
+      if (firstInteractionSent) return;
+      firstInteractionSent = true;
+      sendEvent('user_interaction_start', null);
+
+      for (var i = 0; i < events.length; i++) {
+        document.removeEventListener(events[i], onFirstInteraction, true);
+      }
+    }
+
+    for (var i = 0; i < events.length; i++) {
+      document.addEventListener(events[i], onFirstInteraction, true);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupFirstInteractionDetection);
+  } else {
+    setupFirstInteractionDetection();
+  }
+
+  // --- Auto Error Capture ---
+
+  window.addEventListener('error', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    sendEvent('error', {
+      message: event.message || 'Unknown error',
+      source: event.filename || '',
+      lineno: event.lineno || 0,
+      colno: event.colno || 0,
+      auto_captured: true
+    });
+  });
+
+  window.addEventListener('unhandledrejection', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    var reason = event.reason;
+    sendEvent('error', {
+      message: (reason instanceof Error) ? reason.message : String(reason),
+      type: 'unhandled_promise_rejection',
+      auto_captured: true
+    });
+  });
+
+  // --- Public API ---
+
+  window.playablesSDK = {
+    complete: function(score) {
+      sendEvent('game_ended', {
+        score: score,
+        completed: true
+      });
+    },
+
+    error: function(message) {
+      if (errorSent) return;
+      errorSent = true;
+      sendEvent('error', {
+        message: message || 'Unknown error',
+        auto_captured: false
+      });
+    },
+
+    sendEvent: function(eventName, payload) {
+      if (!eventName || typeof eventName !== 'string') return;
+      sendEvent(eventName, payload);
+    }
+  };
+
+  // Kick off rAF detection in case no game code calls rAF immediately
+  if (originalRAF) {
+    originalRAF.call(window, onFrame);
+  }
+})();</script>
+<script>window.Intl=window.Intl||{};Intl.t=function(s){return(Intl._locale&&Intl._locale[s])||s;};</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NaturalBornChillaz klärt auf...</title>
+    <meta name="description" content="Rechtlicher Disclaimer und Altersverifikation für Inhalte zu Cannabis - NaturalBornChillaz">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        :root {
+            --primary: #0d9488;
+            --primary-dark: #0f766e;
+            --accent: #10b981;
+            --dark: #0f172a;
+        }
+        
+        * {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1e293b;
+        }
+        
+        h1, h2, h3 {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #0d9488 0%, #059669 50%, #047857 100%);
+        }
+        
+        .glass {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        
+        .section-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .section-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+        
+        .age-gate {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            animation: fadeIn 0.4s ease-out;
+        }
+        
+        .age-gate-content {
+            animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px) scale(0.96);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .blur-content {
+            filter: blur(8px);
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .legal-accent {
+            border-left: 4px solid var(--primary);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #0f766e 0%, #047857 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(13, 148, 136, 0.4);
+        }
+        
+        .btn-secondary {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+    
+    <!-- Age Verification Gate -->
+    <div id="ageGate" class="age-gate fixed inset-0 bg-slate-900/90 z-[100] flex items-center justify-center p-4">
+        <div class="age-gate-content glass rounded-2xl shadow-2xl max-w-md w-full p-8 md:p-10 border border-white/20">
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full gradient-bg mb-4">
+                    <i class="fa-solid fa-shield-halved text-white text-2xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-2">Altersverifikation</h2>
+                <p class="text-slate-600 text-sm">Zugang nur für Erwachsene</p>
+            </div>
+            
+            <div class="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
+                <div class="flex gap-3">
+                    <i class="fa-solid fa-triangle-exclamation text-amber-600 mt-0.5"></i>
+                    <div class="text-sm text-amber-900">
+                        <p class="font-semibold mb-1">Wichtiger Hinweis</p>
+                        <p>Diese Website enthält Inhalte zu Cannabis, die ausschließlich für volljährige Personen bestimmt sind. Der Zugang ist gemäß JuSchG erst ab 18 Jahren gestattet.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="text-center text-slate-700 font-medium mb-6">
+                Bist du mindestens 18 Jahre alt?
+            </p>
+            
+            <div class="flex flex-col gap-3">
+                <button id="confirmAge" class="btn-primary text-white font-semibold py-3.5 px-6 rounded-xl shadow-lg">
+                    <i class="fa-solid fa-check mr-2"></i>Ja, ich bin 18+
+                </button>
+                <button id="denyAge" class="btn-secondary bg-slate-100 text-slate-700 font-semibold py-3.5 px-6 rounded-xl border border-slate-200">
+                    <i class="fa-solid fa-xmark mr-2"></i>Nein, ich bin unter 18
+                </button>
+            </div>
+            
+            <p class="text-xs text-slate-500 text-center mt-6">
+                Durch Klicken auf "Ja" bestätigst du, dass du volljährig bist und die rechtlichen Hinweise gelesen hast.
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="blur-content">
+        <!-- Header -->
+        <header class="gradient-bg text-white shadow-lg">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+                <div class="flex items-center gap-3 mb-4">
+                    <i class="fa-solid fa-cannabis text-3xl md:text-4xl"></i>
+                    <div class="h-8 w-px bg-white/30"></div>
+                    <span class="text-sm font-medium tracking-wider uppercase text-teal-100">Aufklärung & Information</span>
+                </div>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
+                    NaturalBornChillaz klärt auf...
+                </h1>
+                <p class="text-lg md:text-xl text-teal-50 max-w-3xl">
+                    Rechtliche Hinweise, Disclaimer und Informationen zu Cannabis-Inhalten nach deutschem Recht
+                </p>
+            </div>
+        </header>
+
+        <!-- Quick Nav -->
+        <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center gap-6 py-4 overflow-x-auto">
+                    <a href="#disclaimer" class="text-sm font-medium text-slate-600 hover:text-teal-700 transition whitespace-nowrap">
+                        <i class="fa-solid fa-file-contract mr-1.5"></i>Disclaimer
+                    </a>
+                    <a href="#kunstfreiheit" class="text-sm font-medium text-slate-600 hover:text-teal-700 transition whitespace-nowrap">
+                        <i class="fa-solid fa-palette mr-1.5"></i>Kunstfreiheit
+                    </a>
+                    <a href="#jugendschutz" class="text-sm font-medium text-slate-600 hover:text-teal-700 transition whitespace-nowrap">
+                        <i class="fa-solid fa-user-shield mr-1.5"></i>Jugendschutz
+                    </a>
+                    <a href="#impressum" class="text-sm font-medium text-slate-600 hover:text-teal-700 transition whitespace-nowrap">
+                        <i class="fa-solid fa-scale-balanced mr-1.5"></i>Rechtliches
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Sections -->
+        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <div class="space-y-8">
+                
+                <!-- Einleitung -->
+                <section class="section-card bg-white rounded-xl shadow-md p-6 md:p-8 border border-slate-100">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-teal-50 flex items-center justify-center">
+                            <i class="fa-solid fa-circle-info text-teal-600 text-xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h2 class="text-2xl font-bold text-slate-900 mb-3">Vorab zur Information</h2>
+                            <p class="text-slate-600 leading-relaxed">
+                                NaturalBornChillaz stellt auf dieser Plattform Inhalte rund um Cannabis, Hanfkultur und damit verbundene Themen bereit. 
+                                Diese Inhalte dienen ausschließlich der Information, Aufklärung und künstlerischen Auseinandersetzung. 
+                                Wir halten uns strikt an geltendes deutsches Recht und distanzieren uns ausdrücklich von illegalen Aktivitäten.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Legal Disclaimer -->
+                <section id="disclaimer" class="section-card bg-white rounded-xl shadow-md p-6 md:p-8 border border-slate-100">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center">
+                            <i class="fa-solid fa-gavel text-red-600 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Legal Disclaimer für volljährige Inhalte</h2>
+                    </div>
+                    
+                    <div class="space-y-4 text-slate-700">
+                        <div class="legal-accent pl-4 py-2 bg-slate-50 rounded-r-lg">
+                            <h3 class="font-semibold text-slate-900 mb-2">1. Kein Aufruf zum Konsum</h3>
+                            <p class="text-sm leading-relaxed">
+                                Die auf dieser Website dargestellten Inhalte stellen keine Aufforderung, Anleitung oder Werbung zum Konsum von Cannabis dar. 
+                                Alle Informationen dienen ausschließlich der sachlichen Aufklärung über das Cannabis-Gesetz (CanG) in Deutschland, 
+                                die Risiken des Konsums sowie die kulturellen Aspekte der Hanfpflanze.
+                            </p>
+                        </div>
+
+                        <div class="legal-accent pl-4 py-2 bg-slate-50 rounded-r-lg">
+                            <h3 class="font-semibold text-slate-900 mb-2">2. Einhaltung des Cannabis-Gesetzes (CanG)</h3>
+                            <p class="text-sm leading-relaxed">
+                                Wir beachten die Bestimmungen des am 01.04.2024 in Kraft getretenen Cannabis-Gesetzes (CanG). 
+                                Insbesondere wird <span class="font-semibold text-slate-900">§ 6 CanG - Werbeverbot</span> strikt eingehalten: 
+                                Es erfolgt keine Werbung für Cannabis oder Konsumzubehör. Die Darstellung erfolgt ausschließlich im Rahmen 
+                                der erlaubten Berichterstattung und Meinungsäußerung.
+                            </p>
+                        </div>
+
+                        <div class="legal-accent pl-4 py-2 bg-slate-50 rounded-r-lg">
+                            <h3 class="font-semibold text-slate-900 mb-2">3. Altersbeschränkung nach JuSchG</h3>
+                            <p class="text-sm leading-relaxed">
+                                Gemäß <span class="font-semibold text-slate-900">Jugendschutzgesetz (JuSchG)</span> sind unsere Inhalte 
+                                ausschließlich für Personen ab 18 Jahren bestimmt. Minderjährige dürfen keinen Zugang zu cannabisbezogenen 
+                                Inhalten erhalten. Wir setzen technische Maßnahmen zur Altersverifikation ein.
+                            </p>
+                        </div>
+
+                        <div class="legal-accent pl-4 py-2 bg-slate-50 rounded-r-lg">
+                            <h3 class="font-semibold text-slate-900 mb-2">4. Keine medizinische Beratung</h3>
+                            <p class="text-sm leading-relaxed">
+                                Die Inhalte ersetzen keine medizinische, therapeutische oder rechtliche Beratung. Bei gesundheitlichen Fragen 
+                                oder rechtlicher Unsicherheit konsultieren Sie bitte entsprechende Fachpersonen oder Behörden.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Kunstfreiheit -->
+                <section id="kunstfreiheit" class="section-card bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl shadow-md p-6 md:p-8 border border-teal-100">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-white flex items-center justify-center shadow-sm">
+                            <i class="fa-solid fa-palette text-teal-600 text-xl"></i>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Kunstfreiheit nach Art. 5 Abs. 3 GG</h2>
+                    </div>
+                    
+                    <div class="bg-white/60 backdrop-blur rounded-lg p-5 border border-white/80">
+                        <blockquote class="text-slate-700 leading-relaxed mb-4">
+                            <i class="fa-solid fa-quote-left text-teal-600/30 text-2xl mr-2"></i>
+                            Kunst und Wissenschaft, Forschung und Lehre sind frei. Die Freiheit der Lehre entbindet nicht von der Treue zur Verfassung.
+                        </blockquote>
+                        
+                        <div class="text-sm text-slate-600 space-y-3">
+                            <p>
+                                <span class="font-semibold text-slate-900">Artikel 5 Absatz 3 des Grundgesetzes</span> schützt die künstlerische 
+                                Auseinandersetzung mit gesellschaftlichen Themen, einschließlich der Darstellung von Cannabis und damit verbundener Kultur.
+                            </p>
+                            <p>
+                                NaturalBornChillaz nutzt diese verfassungsrechtlich garantierte Freiheit, um künstlerische, 
+                                kulturelle und aufklärende Inhalte zu schaffen. Unsere Darstellungen sind als Kunstform zu verstehen 
+                                und fallen unter den Schutzbereich der Kunstfreiheit.
+                            </p>
+                            <p>
+                                Gleichzeitig respektieren wir die Schranken dieser Freiheit und achten darauf, 
