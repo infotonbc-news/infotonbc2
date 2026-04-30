@@ -1,58 +1,432 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NaturalBornChillaz klärt auf...</title>
-    <meta name="description" content="Rechtlicher Disclaimer und Informationen zu Cannabis - NaturalBornChillaz">
-    <meta name="robots" content="noindex, nofollow">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+<!-- Playables SDK -->
+<script>// Playables SDK v1.0.0
+// Game lifecycle bridge: rAF-based game-ready detection + event communication
+(function() {
+  'use strict';
 
-        :root {
-            --primary: #0d9488;
-            --accent: #10b981;
-        }
+  // Idempotency: skip if already initialized (e.g., server-side injection
+  // followed by client-side inject-javascript via the Bloks webview component).
+  if (window.playablesSDK) return;
 
-        * { scroll-behavior: smooth; }
+  var HANDLER_NAME = 'playablesGameEventHandler';
+  var ANDROID_BRIDGE_NAME = '_MetaPlayablesBridge';
+  var RAF_FRAME_THRESHOLD = 3;
 
-        body {
-            font-family: 'Inter', sans-serif;
-            color: #1e293b;
-        }
+  var gameReadySent = false;
+  var firstInteractionSent = false;
+  var errorSent = false;
+  var frameCount = 0;
+  var originalRAF = window.requestAnimationFrame;
 
-        h1, h2, h3 {
-            font-family: 'Space Grotesk', sans-serif;
-        }
+  // --- Transport Layer ---
 
-       .gradient-bg {
-            background: linear-gradient(135deg, #0d9488 0%, #059669 50%, #047857 100%);
-        }
+  function hasIOSBridge() {
+    return !!(window.webkit &&
+              window.webkit.messageHandlers &&
+              window.webkit.messageHandlers[HANDLER_NAME]);
+  }
 
-       .section-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+  function hasAndroidBridge() {
+    return !!(window[ANDROID_BRIDGE_NAME] &&
+              typeof window[ANDROID_BRIDGE_NAME].postEvent === 'function');
+  }
 
-       .section-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-        }
+  function isInIframe() {
+    return !!(window.parent && window.parent !== window);
+  }
 
-       .legal-accent {
-            border-left: 4px solid var(--primary);
-        }
-    </style>
+  function sendEvent(eventName, payload) {
+    var message = {
+      type: eventName,
+      payload: payload || {},
+      timestamp: Date.now()
+    };
+
+    if (hasIOSBridge()) {
+      try {
+        window.webkit.messageHandlers[HANDLER_NAME].postMessage(message);
+      } catch (e) { /* ignore */ }
+      return;
+    }
+
+    if (hasAndroidBridge()) {
+    try {
+      var p = payload || {};
+      p.__secureToken = window.__fbAndroidBridgeAuthToken || '';
+      p.timestamp = message.timestamp;
+      window[ANDROID_BRIDGE_NAME].postEvent(
+        eventName,
+        JSON.stringify(p)
+      );
+    } catch (e) { /* ignore */ }
+    return;
+  }
+
+    if (isInIframe()) {
+      try {
+        window.parent.postMessage(message, '*');
+      } catch (e) { /* ignore */ }
+      return;
+    }
+  }
+
+  // --- rAF Game-Ready Detection ---
+
+  function onFrame() {
+    if (gameReadySent) return;
+
+    frameCount++;
+    if (frameCount >= RAF_FRAME_THRESHOLD) {
+      gameReadySent = true;
+      sendEvent('game_ready', {
+        frame_count: frameCount,
+        detected_at: Date.now()
+      });
+      return;
+    }
+
+    originalRAF.call(window, onFrame);
+  }
+
+  if (originalRAF) {
+    window.requestAnimationFrame = function(callback) {
+      if (!gameReadySent) {
+        return originalRAF.call(window, function(timestamp) {
+          frameCount++;
+          if (frameCount >= RAF_FRAME_THRESHOLD && !gameReadySent) {
+            gameReadySent = true;
+            sendEvent('game_ready', {
+              frame_count: frameCount,
+              detected_at: Date.now()
+            });
+          }
+          callback(timestamp);
+        });
+      }
+      return originalRAF.call(window, callback);
+    };
+  }
+
+  // --- First User Interaction Detection ---
+
+  function setupFirstInteractionDetection() {
+    var events = ['touchstart', 'mousedown', 'keydown'];
+
+    function onFirstInteraction() {
+      if (firstInteractionSent) return;
+      firstInteractionSent = true;
+      sendEvent('user_interaction_start', null);
+
+      for (var i = 0; i < events.length; i++) {
+        document.removeEventListener(events[i], onFirstInteraction, true);
+      }
+    }
+
+    for (var i = 0; i < events.length; i++) {
+      document.addEventListener(events[i], onFirstInteraction, true);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupFirstInteractionDetection);
+  } else {
+    setupFirstInteractionDetection();
+  }
+
+  // --- Auto Error Capture ---
+
+  window.addEventListener('error', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    sendEvent('error', {
+      message: event.message || 'Unknown error',
+      source: event.filename || '',
+      lineno: event.lineno || 0,
+      colno: event.colno || 0,
+      auto_captured: true
+    });
+  });
+
+  window.addEventListener('unhandledrejection', function(event) {
+    if (errorSent) return;
+    errorSent = true;
+    var reason = event.reason;
+    sendEvent('error', {
+      message: (reason instanceof Error) ? reason.message : String(reason),
+      type: 'unhandled_promise_rejection',
+      auto_captured: true
+    });
+  });
+
+  // --- Public API ---
+
+  window.playablesSDK = {
+    complete: function(score) {
+      sendEvent('game_ended', {
+        score: score,
+        completed: true
+      });
+    },
+
+    error: function(message) {
+      if (errorSent) return;
+      errorSent = true;
+      sendEvent('error', {
+        message: message || 'Unknown error',
+        auto_captured: false
+      });
+    },
+
+    sendEvent: function(eventName, payload) {
+      if (!eventName || typeof eventName !== 'string') return;
+      sendEvent(eventName, payload);
+    }
+  };
+
+  // Kick off rAF detection in case no game code calls rAF immediately
+  if (originalRAF) {
+    originalRAF.call(window, onFrame);
+  }
+})();</script>
+<script>window.Intl=window.Intl||{};Intl.t=function(s){return(Intl._locale&&Intl._locale[s])||s;};</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Disclaimer & Rechtliche Hinweise | Cannabis Content</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f8fafc 0%, #eef2f7 100%);
+}
+        
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+        
+.accordion-content.active {
+    max-height: 2000px;
+    transition: max-height 0.5s ease-in;
+}
+        
+.gradient-text {
+    background: linear-gradient(90deg, #166534 0%, #22c55e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+        
+.card-hover {
+    transition: all 0.3s ease;
+}
+        
+.card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+        
+@media print {
+    .no-print {
+        display: none;
+    }
+    body {
+        background: white;
+    }
+}
+</style>
 </head>
-<body class="bg-slate-50">
-
-    <!-- Header -->
-    <header class="gradient-bg text-white shadow-lg">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-            <div class="flex items-center gap-3 mb-4">
-                <i class="fa-solid fa-leaf text-3xl md:text-4xl"></i>
-                <div class="h-8 w-px bg-white/30"></div>
-                <span class="text-sm font-medium tracking-wider uppercase text-teal-100">Aufklärung & Information</span>
+<body class="text-gray-800 antialiased">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-white border-b border-gray-200 sticky top-0 z-50 backdrop-blur-lg bg-opacity-90">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-green-600 to-emerald-500 flex items-center justify-center">
+                            <i class="fa-solid fa-scale-balanced text-white text-lg"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold text-gray-900">Rechtlicher Disclaimer</h1>
+                            <p class="text-xs text-gray-500">Cannabis Content & Kunstfreiheit</p>
+                        </div>
+                    </div>
+                    <div class="no-print">
+                        <button onclick="window.print()" class="text-sm text-gray-600 hover:text-green-700 flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-100 transition">
+                            <i class="fa-solid fa-print"></i>
+                            <span class="hidden sm:inline">Drucken</span>
+                        </button>
+                    </div>
+                </div>
             </div>
-            <h1 class="text-4xl
+        </header>
+
+        <!-- Main Content -->
+        <main class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+            
+            <!-- Age Gate Warning -->
+            <div class="bg-amber-50 border-l-4 border-amber-500 p-6 rounded-r-xl mb-8 card-hover">
+                <div class="flex gap-4">
+                    <div class="flex-shrink-0">
+                        <i class="fa-solid fa-triangle-exclamation text-2xl text-amber-600"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-amber-900 mb-2">Altersbeschränkung 18+</h2>
+                        <p class="text-amber-800 text-sm leading-relaxed">
+                            Diese Website enthält Inhalte zum Thema Cannabis. Der Zugang ist gemäß §6 Cannabisgesetz (CanG) und Jugendschutzgesetz (JuSchG) ausschließlich volljährigen Personen ab 18 Jahren gestattet. Mit dem Verbleib auf dieser Seite bestätigen Sie, dass Sie mindestens 18 Jahre alt sind.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Introduction -->
+            <section class="bg-white rounded-2xl shadow-sm border-gray-100 p-6 sm:p-8 mb-6 card-hover">
+                <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-green-100 text-green-700 flex items-center justify-center text-sm">1</span>
+                    <span class="gradient-text">Geltungsbereich & Zweck</span>
+                </h2>
+                <div class="space-y-4 text-gray-700 leading-relaxed">
+                    <p>
+                        Diese Website dient der Information, Dokumentation und künstlerischen Auseinandersetzung mit dem Thema Cannabis innerhalb des in Deutschland geltenden Rechtsrahmens. Die hier dargestellten Inhalte stellen keine Aufforderung, Anleitung oder Werbung zum Konsum, Anbau oder Erwerb von Cannabis dar.
+                    </p>
+                    <p>
+                        Betreiber dieser Website distanzieren sich ausdrücklich von jeglicher illegalen Nutzung. Die Inhalte unterliegen der Kunstfreiheit nach Art. 5 Abs. 3 Grundgesetz (GG) sowie der Meinungs- und Informationsfreiheit nach Art. 5 Abs. 1 GG.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Legal Conditions -->
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-6 card-hover">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-green-100 text-green-700 flex items-center justify-center text-sm">2</span>
+                    <span class="gradient-text">Rechtliche Bedingungen</span>
+                </h2>
+                
+                <div class="space-y-6">
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center mt-1">
+                            <i class="fa-solid fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-1">Kein Vertrieb und keine Weitergabe</h3>
+                            <p class="text-gray-600 text-sm">Diese Seite bietet keinen Verkauf, keine Vermittlung und keine Abgabe von Cannabis oder anderen Betäubungsmitteln an. Es werden keine Bezugsquellen genannt oder verlinkt.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center mt-1">
+                            <i class="fa-solid fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-1">Keine Konsumaufforderung</h3>
+                            <p class="text-gray-600 text-sm">Die Inhalte dienen nicht der Verharmlosung, Verherrlichung oder Propagierung des Cannabiskonsums. Gemäß §6 CanG ist Werbung und Sponsoring für Cannabis verboten.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center mt-1">
+                            <i class="fa-solid fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-1">Jugendschutz</h3>
+                            <p class="text-gray-600 text-sm">Der Zugang für Minderjährige ist untersagt. Wir kommen den Vorgaben des Jugendschutzgesetzes (JuSchG) sowie §6 Abs. 2 CanG nach. Technische Schutzmaßnahmen sind implementiert.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-4">
+                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center mt-1">
+                            <i class="fa-solid fa-check text-xs"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 mb-1">Kunstfreiheit, Art. 5 Abs. 3 GG</h3>
+                            <p class="text-gray-600 text-sm">Künstlerische, dokumentarische und journalistische Inhalte sind durch die Kunstfreiheit geschützt. Die Abgrenzung zwischen Kunst und verbotener Werbung erfolgt gemäß geltender Rechtsprechung des Bundesverfassungsgerichts.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Haftungsausschluss -->
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-6 card-hover">
+                <h2 class="text-2xl font-bold mb-4 flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-green-100 text-green-700 flex items-center justify-center text-sm">3</span>
+                    <span class="gradient-text">Haftungsausschluss</span>
+                </h2>
+                <div class="space-y-4 text-gray-700 text-sm leading-relaxed">
+                    <p>
+                        <strong>3.1 Inhalte:</strong> Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß §7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
+                    </p>
+                    <p>
+                        <strong>3.2 Externe Links:</strong> Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich.
+                    </p>
+                    <p>
+                        <strong>3.3 Keine Rechts- oder Gesundheitsberatung:</strong> Die bereitgestellten Informationen stellen keine Rechtsberatung, medizinische Beratung oder Handlungsempfehlung dar. Konsultieren Sie bei Fragen stets qualifiziertes Fachpersonal.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Legal Addendum with Accordion -->
+            <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-6">
+                <h2 class="text-2xl font-bold mb-6 flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-lg bg-green-100 text-green-700 flex items-center justify-center text-sm">4</span>
+                    <span class="gradient-text">Addendum: Relevante Gesetze</span>
+                </h2>
+
+                <div class="space-y-3" id="accordion">
+                    <!-- CanG -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+                        <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 transition flex items-center justify-between" onclick="toggleAccordion(this)">
+                            <span class="font-semibold text-gray-900 flex items-center gap-3">
+                                <i class="fa-solid fa-book text-green-600"></i>
+                                Cannabisgesetz (CanG)
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 text-sm text-gray-700 space-y-3 border-t border-gray-200">
+                                <p><strong>Zweck:</strong> Gesetz zum kontrollierten Umgang mit Cannabis und zur Änderung weiterer Vorschriften. In Kraft seit 01.04.2024.</p>
+                                <p><strong>§6 CanG – Werbe- und Sponsoringverbot:</strong></p>
+                                <ul class="list-disc pl-5 space-y-1">
+                                    <li>(1) Es ist verboten, für Cannabis und Cannabisprodukte zu werben.</li>
+                                    <li>(2) Es ist verboten, Cannabisprodukten dienende Sponsoringaktivitäten durchzuführen.</li>
+                                    <li>(3) Das Verbot gilt auch für audiovisuelle kommerzielle Kommunikation.</li>
+                                </ul>
+                                <p class="text-xs text-gray-500">Hinweis: Dieser Absatz stellt eine Zusammenfassung dar. Maßgeblich ist der vollständige Gesetzestext.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- JuSchG -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+                        <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 transition flex items-center justify-between" onclick="toggleAccordion(this)">
+                            <span class="font-semibold text-gray-900 flex items-center gap-3">
+                                <i class="fa-solid fa-shield-halved text-green-600"></i>
+                                Jugendschutzgesetz (JuSchG)
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 text-sm text-gray-700 space-y-3 border-t border-gray-200">
+                                <p><strong>§28 JuSchG:</strong> Ordnungswidrig handelt, wer als Anbieter Telemedien für Kinder oder Jugendliche zugänglich macht, die geeignet sind, sie sittlich zu gefährden.</p>
+                                <p><strong>Anwendung:</strong> Inhalte zum Thema Cannabis sind als jugendgefährdend einzustufen. Der Zugang ist durch Altersverifikationssysteme zu beschränken.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TMG -->
+                    <div class="border border-gray-200 rounded-xl overflow-hidden">
+                        <button class="accordion-header w-full text-left p-4 bg-gray-50 hover:bg-gray-100 transition flex items-center justify-between" onclick="toggleAccordion(this)">
+                            <span class="font-semibold text-gray-900 flex items-center gap-3">
+                                <i class="fa-solid fa-globe text-green-600"></i>
+                                Telemediengesetz (TMG/DDG)
+                            </span>
+                            <i class="fa-solid fa-chevron-down text-gray-500 transition-transform"></i>
+                        </button>
+                        <div class="accordion-content">
+                            <div class="p-4 text-sm text-gray-700 space-y-3 border-t border-gray-200">
+                                <p><strong>§5 TMG / §5 DDG – Impressumspflicht:</strong> Dienst
