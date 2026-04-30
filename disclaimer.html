@@ -425,21 +425,58 @@ window.onload = function() {
                         <div class="legal-accent pl-4 py-2 bg-slate-50 rounded-r-lg">
                             <h3 class="font-semibold text-slate-900 mb-2">3. Altersbeschränkung nach JuSchG</h3>
                             <p class="text-sm leading-relaxed">
-                                Gemäß <span class="font-semibold text-slate-900">Jugendschutzgesetz (JuSchG)</span> sind unsere Inhalte 
-                                ausschließlich für Personen ab 18 Jahren bestimmt. Minderjährige dürfen keinen Zugang zu cannabisbezogenen 
-                                Inhalten erhalten. Wir setzen technische Maßnahmen zur Altersverifikation ein.
-                            </p>
-                        </div>
+<!-- Age Verification Gate -->
+<div id="ageGate" class="age-gate fixed inset-0 bg-slate-900/90 z-[100] flex items-center justify-center p-4">
+    <div class="age-gate-content glass rounded-2xl shadow-2xl max-w-md w-full p-8 md:p-10 text-center border border-white/20">
+        <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center shadow-lg">
+            <i class="fa-solid fa-shield-halved text-white text-3xl"></i>
+        </div>
+        <h2 class="text-3xl font-bold text-slate-900 mb-3">Altersprüfung</h2>
+        <p class="text-slate-600 mb-2 leading-relaxed">
+            Diese Website enthält Inhalte zu Cannabis und ist ausschließlich für volljährige Personen bestimmt.
+        </p>
+        <p class="text-sm text-slate-500 mb-8">
+            Gemäß Jugendschutzgesetz (JuSchG) ist der Zugang erst ab 18 Jahren gestattet.
+        </p>
+        <div class="space-y-3">
+            <button onclick="confirmAge()" class="btn-primary w-full text-white font-semibold py-4 px-6 rounded-xl shadow-lg">
+                <i class="fa-solid fa-check mr-2"></i>Ich bin 18 Jahre oder älter
+            </button>
+            <button onclick="underage()" class="btn-secondary w-full bg-slate-100 text-slate-700 font-medium py-4 px-6 rounded-xl border border-slate-200">
+                <i class="fa-solid fa-xmark mr-2"></i>Ich bin unter 18
+            </button>
+        </div>
+        <p class="text-xs text-slate-400 mt-6">
+            Mit dem Betreten bestätigst du, dass du volljährig bist und die rechtlichen Hinweise gelesen hast.
+        </p>
+    </div>
+</div>
 
-                        <div class="legal-accent pl-4 py-2 bg-slate-50 rounded-r-lg">
-                            <h3 class="font-semibold text-slate-900 mb-2">4. Keine medizinische Beratung</h3>
-                            <p class="text-sm leading-relaxed">
-                                Die Inhalte ersetzen keine medizinische, therapeutische oder rechtliche Beratung. Bei gesundheitlichen Fragen 
-                                oder rechtlicher Unsicherheit konsultieren Sie bitte entsprechende Fachpersonen oder Behörden.
-                            </p>
-                        </div>
-                    </div>
-                </section>
+<!-- Main Content -->
+<div id="mainContent" class="blur-content">
+    <!-- dein ganzer Content hier... -->
+</div>
+
+<script>
+// WICHTIG: IDs müssen stimmen: ageGate und mainContent
+function confirmAge() {
+  document.getElementById('ageGate').style.display = 'none';
+  document.getElementById('mainContent').classList.remove('blur-content');
+  localStorage.setItem('ageVerified', 'true');
+}
+
+function underage() {
+  window.location.href = 'https://www.google.de';
+}
+
+// Beim Laden prüfen ob schon bestätigt wurde
+document.addEventListener('DOMContentLoaded', function() {
+  if (localStorage.getItem('ageVerified') === 'true') {
+    document.getElementById('ageGate').style.display = 'none';
+    document.getElementById('mainContent').classList.remove('blur-content');
+  }
+});
+</script>
 
                 <!-- Kunstfreiheit -->
                 <section id="kunstfreiheit" class="section-card bg-gradient-to-br from-teal-50 to-emerald-50 rounded-xl shadow-md p-6 md:p-8 border border-teal-100">
