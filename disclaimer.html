@@ -4,179 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NaturalBornChillaz klärt auf...</title>
-    <meta name="description" content="Rechtlicher Disclaimer und Altersverifikation für Inhalte zu Cannabis - NaturalBornChillaz">
     <meta name="robots" content="noindex, nofollow">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
-
-        :root {
-            --primary: #0d9488;
-            --primary-dark: #0f766e;
-            --accent: #10b981;
-        }
-
-        * { scroll-behavior: smooth; }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            color: #1e293b;
-        }
-
-        h1, h2, h3 {
-            font-family: 'Space Grotesk', sans-serif;
-        }
-
-       .gradient-bg {
-            background: linear-gradient(135deg, #0d9488 0%, #059669 50%, #047857 100%);
-        }
-
-       .glass {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
-       .section-card {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-       .section-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-        }
-
-       .age-gate {
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-        }
-
-       .blur-content {
+        body { font-family: 'Inter', sans-serif; }
+        .blur-content {
             filter: blur(8px);
             pointer-events: none;
             user-select: none;
         }
-
-       .legal-accent {
-            border-left: 4px solid var(--primary);
-        }
-
-       .btn-primary {
+        .gradient-bg {
             background: linear-gradient(135deg, #0d9488 0%, #059669 100%);
-            transition: all 0.3s ease;
-        }
-
-       .btn-primary:hover {
-            background: linear-gradient(135deg, #0f766e 0%, #047857 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px -5px rgba(13, 148, 136, 0.4);
-        }
-
-       .btn-secondary {
-            transition: all 0.3s ease;
-        }
-
-       .btn-secondary:hover {
-            background: #f1f5f9;
-            transform: translateY(-2px);
         }
     </style>
 </head>
 <body class="bg-slate-50">
 
-    <!-- Age Verification Gate -->
-    <div id="ageGate" class="age-gate fixed inset-0 bg-slate-900/95 z-[100] flex items-center justify-center p-4">
-        <div class="glass rounded-2xl shadow-2xl max-w-md w-full p-8 md:p-10 text-center border border-white/20">
-            <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center shadow-lg">
+    <!-- Age Gate - MUSS ALS ERSTES IM BODY STEHEN -->
+    <div id="ageGate" class="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center">
+            <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center">
                 <i class="fa-solid fa-shield-halved text-white text-3xl"></i>
             </div>
             <h2 class="text-3xl font-bold text-slate-900 mb-3">Altersprüfung</h2>
-            <p class="text-slate-600 mb-2 leading-relaxed">
-                Diese Website enthält Inhalte zu Cannabis und ist ausschließlich für volljährige Personen bestimmt.
+            <p class="text-slate-600 mb-2">
+                Diese Website enthält Inhalte zu Cannabis und ist nur für Personen ab 18 Jahren.
             </p>
             <p class="text-sm text-slate-500 mb-8">
-                Gemäß Jugendschutzgesetz (JuSchG) ist der Zugang erst ab 18 Jahren gestattet.
+                Gemäß Jugendschutzgesetz (JuSchG)
             </p>
             <div class="space-y-3">
-                <button onclick="confirmAge()" class="btn-primary w-full text-white font-semibold py-4 px-6 rounded-xl shadow-lg">
+                <button onclick="acceptAge()" class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-4 px-6 rounded-xl">
                     <i class="fa-solid fa-check mr-2"></i>Ich bin 18 Jahre oder älter
                 </button>
-                <button onclick="underage()" class="btn-secondary w-full bg-slate-100 text-slate-700 font-medium py-4 px-6 rounded-xl border border-slate-200">
+                <button onclick="denyAge()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-medium py-4 px-6 rounded-xl">
                     <i class="fa-solid fa-xmark mr-2"></i>Ich bin unter 18
                 </button>
             </div>
-            <p class="text-xs text-slate-400 mt-6">
-                Mit dem Betreten bestätigst du, dass du volljährig bist.
-            </p>
         </div>
     </div>
 
     <!-- Main Content -->
     <div id="mainContent" class="blur-content">
-        <!-- Header -->
-        <header class="gradient-bg text-white shadow-lg">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-                <div class="flex items-center gap-3 mb-4">
-                    <i class="fa-solid fa-leaf text-3xl md:text-4xl"></i>
-                    <div class="h-8 w-px bg-white/30"></div>
-                    <span class="text-sm font-medium tracking-wider uppercase text-teal-100">Aufklärung & Information</span>
-                </div>
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
-                    NaturalBornChillaz klärt auf...
-                </h1>
-                <p class="text-lg md:text-xl text-teal-50 max-w-3xl">
-                    Rechtliche Hinweise, Disclaimer und Informationen zu Cannabis-Inhalten nach deutschem Recht
-                </p>
+        <header class="gradient-bg text-white">
+            <div class="max-w-6xl mx-auto px-4 py-16">
+                <h1 class="text-5xl font-bold mb-4">NaturalBornChillaz klärt auf...</h1>
+                <p class="text-xl text-teal-50">Rechtliche Hinweise zu Cannabis-Inhalten nach deutschem Recht</p>
             </div>
         </header>
 
-        <!-- Quick Nav -->
-        <nav class="bg-white border-b border-slate-200 sticky top-0 z-40 shadow-sm">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center gap-6 py-4 overflow-x-auto">
-                    <a href="#disclaimer" class="text-sm font-medium text-slate-600 hover:text-teal-700 transition whitespace-nowrap">
-                        <i class="fa-solid fa-file-contract mr-1.5"></i>Disclaimer
-                    </a>
-                    <a href="#kunstfreiheit" class="text-sm font-medium text-slate-600 hover:text-teal-700 transition whitespace-nowrap">
-                        <i class="fa-solid fa-palette mr-1.5"></i>Kunstfreiheit
-                    </a>
-                    <a href="#jugendschutz" class="text-sm font-medium text-slate-600 hover:text-teal-700 transition whitespace-nowrap">
-                        <i class="fa-solid fa-user-shield mr-1.5"></i>Jugendschutz
-                    </a>
-                </div>
+        <main class="max-w-6xl mx-auto px-4 py-12">
+            <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Legal Disclaimer</h2>
+                <p class="text-slate-600 leading-relaxed mb-4">
+                    NaturalBornChillaz stellt Inhalte rund um Cannabis ausschließlich zur Information und Aufklärung bereit.
+                    Wir halten uns strikt an das Cannabis-Gesetz (CanG) und das Werbeverbot nach § 6 CanG.
+                </p>
+                <p class="text-slate-600 leading-relaxed">
+                    <strong>Kein Aufruf zum Konsum.</strong> Alle Informationen dienen der sachlichen Aufklärung über Risiken,
+                    Rechtslage und kulturelle Aspekte. Gemäß Art. 5 Abs. 3 GG fällt die Darstellung unter die Kunstfreiheit.
+                </p>
             </div>
-        </nav>
 
-        <!-- Main Sections -->
-        <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-            <div class="space-y-8">
+            <div class="bg-white rounded-xl shadow-md p-8">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Jugendschutz</h2>
+                <p class="text-slate-600 leading-relaxed">
+                    Gemäß Jugendschutzgesetz sind diese Inhalte ausschließlich für Volljährige. 
+                    Keine Abgabe an Minderjährige. Kein Konsum in Gegenwart von Minderjährigen.
+                </p>
+            </div>
+        </main>
 
-                <!-- Einleitung -->
-                <section class="section-card bg-white rounded-xl shadow-md p-6 md:p-8 border border-slate-100">
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-teal-50 flex items-center justify-center">
-                            <i class="fa-solid fa-circle-info text-teal-600 text-xl"></i>
-                        </div>
-                        <div class="flex-1">
-                            <h2 class="text-2xl font-bold text-slate-900 mb-3">Vorab zur Information</h2>
-                            <p class="text-slate-600 leading-relaxed">
-                                NaturalBornChillaz stellt auf dieser Plattform Inhalte rund um Cannabis, Hanfkultur und damit verbundene Themen bereit.
-                                Diese Inhalte dienen ausschließlich der Information, Aufklärung und künstlerischen Auseinandersetzung nach Art. 5 Abs. 3 GG.
-                                Wir halten uns strikt an geltendes deutsches Recht und distanzieren uns ausdrücklich von illegalen Aktivitäten.
-                            </p>
-                        </div>
-                    </div>
-                </section>
+        <footer class="bg-slate-900 text-slate-300 mt-16 py-8 text-center">
+            <p>&copy; 2024 NaturalBornChillaz | Keine Rechtsberatung</p>
+        </footer>
+    </div>
 
-                <!-- Legal Disclaimer -->
-                <section id="disclaimer" class="section-card bg-white rounded-xl shadow-md p-6 md:p-8 border border-slate-100">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="flex-shrink-0 w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center">
-                            <i class="fa-solid fa-gavel text-red-600 text-xl"></i>
-                        </div>
-                        <h2 class="text-2xl md:text-3xl font-bold text-slate-900">Legal Disclaimer für volljährige Inhalte</h2>
-                    </div>
-
-                    <div class="space-y-4 text-slate-700">
-                        <div class="legal-accent pl-4 py-2 bg
+    <script>
+    function acceptAge() {
+        document.getElementById('ageGate').style.display
