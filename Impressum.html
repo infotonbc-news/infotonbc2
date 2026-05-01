@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum - Natural Chillaz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #070807;
+            --gold: #C9A227;
+            --gold-light: #E6C45A;
+        }
+        * {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        body {
+            background-color: var(--bg);
+            font-family: 'Inter', sans-serif;
+            color: #E5E5E5;
+        }
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+            color: var(--gold);
+            letter-spacing: 0.02em;
+        }
+        .gold-gradient {
+            background: linear-gradient(135deg, #C9A227 0%, #E6C45A 50%, #C9A227 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .bg-grid {
+            background-image: radial-gradient(circle at 1px 1px, rgba(201,162,39,0.07) 1px, transparent 0);
+            background-size: 28px 28px;
+        }
+        .glass {
+            background: rgba(12, 12, 10, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(201, 162, 39, 0.15);
+        }
+        .placeholder {
+            display: inline-block;
+            background: rgba(201, 162, 39, 0.1);
+            border: 1px dashed rgba(201, 162, 39, 0.4);
+            color: #E6C45A;
+            padding: 0.15rem 0.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        .placeholder:hover {
+            background: rgba(201, 162, 39, 0.15);
+            border-color: rgba(201, 162, 39, 0.6);
+        }
+        .glow {
+            box-shadow: 0 0 80px rgba(201, 162, 39, 0.08), inset 0 1px 0 rgba(255,255,255,0.05);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #070807; }
+        ::-webkit-scrollbar-thumb { background: #C9A22755; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #C9A22799; }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden">
+    <!-- Background Effects -->
+    <div class="fixed inset-0 z-0">
+        <div class="absolute inset-0 bg-[#070807]"></div>
+        <div class="absolute inset-0 bg-grid opacity-40"></div>
+        <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[#C9A227]/[0.08] rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[#C9A227]/[0.06] rounded-full blur-[140px]"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="relative z-40 border-b border-[#C9A227]/10">
+        <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#C9A227] to-[#8B7318] flex items-center justify-center shadow-lg shadow-[#C9A227]/20 group-hover:shadow-[#C9A227]/30 transition-all">
+                    <span class="font-bold text-black text-lg" style="font-family: 'Cinzel', serif;">N</span>
+                </div>
+                <span class="text-xl tracking-wider" style="font-family: 'Cinzel', serif;">
+                    <span class="text-white/90">NATURAL</span> <span class="gold-gradient">CHILLAZ</span>
+                </span>
+            </a>
+            <a href="#" class="text-sm text-white/60 hover:text-[#C9A227] transition-colors hidden sm:flex items-center gap-2 group">
+                <svg class="w-4 h-4 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Zurück zur Startseite
+            </a>
+        </div>
+    </header>
+
+    <main class="relative z-30 max-w-4xl mx-auto px-6 py-12 md:py-20">
+        <div class="fade-in">
+            <!-- Title -->
+            <div class="text-center mb-12">
+                <h1 class="text-4xl md:text-5xl font-semibold mb-4 gold-gradient">Impressum</h1>
+                <p class="text-white/50 text-sm tracking-wide uppercase">Angaben gemäß § 5 TMG</p>
+                <div class="w-24 h-px bg-gradient-to-r from-transparent via-[#C9A227]/50 to-transparent mx-auto mt-6"></div>
+            </div>
+
+            <!-- Main Card -->
+            <div class="glass glow rounded-[24px] p-8 md:p-12 shadow-2xl">
+                
+                <!-- Anbieter -->
+                <section class="mb-12">
+                    <h2 class="text-2xl mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-[#C9A227]/10 border border-[#C9A227]/20 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-[#C9A227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </span>
+                        Diensteanbieter
+                    </h2>
+                    <div class="space-y-3 text-[15px] leading-relaxed text-white/80 pl-11">
+                        <p>Slawomir Wisniewski</p>
+                        <p>Dionysiuskirchplatz 2a</p>
+                        <p>45355 Essen</p>
+                        <p>Deutschland</p>
+                        
+                        <div class="pt-4 mt-4 border-t border-[#C9A227]/10">
+                            <p class="text-white/60 text-sm mb-2">Rechtsform / Vertretung:</p>
+                            <p>Privatperson</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Kontakt -->
+                <section class="mb-12">
+                    <h2 class="text-2xl mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-[#C9A227]/10 border border-[#C9A227]/20 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-[#C9A227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </span>
+                        Kontakt
+                    </h2>
+                    <div class="pl-11 space-y-3 text-[15px]">
+                        <div class="flex items-center gap-3">
+                            <span class="text-white/60 w-20">E-Mail:</span>
+                            <a href="mailto:infotonbc@gmail.com" id="emailLink" class="text-[#E6C45A] hover:text-white transition-colors font-medium">infotonbc@gmail.com</a>
+                            <button onclick="copyEmail()" class="ml-2 p-1.5 rounded-md bg-[#C9A227]/10 hover:bg-[#C9A227]/20 border border-[#C9A227]/20 transition-all group" title="E-Mail kopieren">
+                                <svg class="w-3.5 h-3.5 text-[#C9A227] group-hover:text-[#E6C45A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <div class="flex items-center gap-3">
+                            <span class="text-white/60 w-20">Website:</span>
+                            <span class="text-white/80">https://github.com/infotonbc-news/infotonbc2</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Verantwortlich -->
+                <section class="mb-12">
+                    <h2 class="text-2xl mb-6 flex items-center gap-3">
+                        <span class="w-8 h-8 rounded-lg bg-[#C9A227]/10 border border-[#C9A227]/20 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-[#C9A227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </span>
+                        Verantwortlich nach § 18 Abs. 2 MStV
+                    </h2>
+                    <div class="pl-11 text-[15px] text-white/80">
+                        <p>Slawomir Wisniewski, Anschrift wie oben.</p>
+                    </div>
+                </section>
+
+                <!-- Rechtliche Hinweise -->
+                <div class="space-y-10 pt-8 border-t border-[#C9A227]/15">
+                    
+                    <section>
+<h3 class="text-xl mb-4 text-[#E6C45A]">Registereintrag</h3>
+<div class="text-[14px] leading-relaxed text-white/70 pl-4 border-l-2 border-[#C9A227]/20">
+<p>Kein Eintrag vorhanden (Privatperson, kein Handelsregistereintrag erforderlich).</p>
+</div>
+</section>
+
+                    <section>
+                        <h3 class="text-xl mb-4 text-[#E6C45A]">Umsatzsteuer-ID</h3>
+                        <p class="text-[14px] text-white/70 pl-4 border-l-2 border-[#C9A227]/20">
+                            Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: 
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3 class="text-xl mb-4 text-[#E6C45A]">Haftung für Inhalte</h3>
+                        <p class="text-[14px] leading-relaxed text-white/65">
+                            Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3 class="text-xl mb-4 text-[#E6C45A]">Haftung für Links</h3>
+                        <p class="text-[14px] leading-relaxed text-white/65">
+                            Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3 class="text-xl mb-4 text-[#E6C45A]">Urheberrecht</h3>
+                        <p class="text-[14px] leading-relaxed text-white/65">
+                            Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3 class="text-xl mb-4 text-[#E6C45A]">EU-Streitschlichtung</h3>
+                        <p class="text-[14px] leading-relaxed text-white/65">
+                            Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" class="text-[#C9A227] hover:text-[#E6C45A] underline decoration-[#C9A227]/30 underline-offset-2">https://ec.europa.eu/consumers/odr</a>. Unsere E-Mail-Adresse finden Sie oben im Impressum.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3 class="text-xl mb-4 text-[#E6C45A]">Verbraucherstreitbeilegung / Universalschlichtungsstelle</h3>
+                        <p class="text-[14px] leading-relaxed text-white/65">
+                            Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
+                        </p>
+                    </section>
+
+                </div>
+
+                <!-- Additional Info -->
+                </div>
+
+            <!-- Footer Note -->
+            <div class="text-center mt-12">
+                <p class="text-white/40 text-xs">Stand: <span id="date"></span> • Natural Chillaz</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-30 border-t border-[#C9A227]/10 mt-16">
+        <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+            <p class="text-white/40">© <span id="year"></span> Natural Chillaz. Alle Rechte vorbehalten.</p>
+            <div class="flex items-center gap-6 text-white/50">
+                <a href="#" class="hover:text-[#C9A227] transition-colors">Datenschutz</a>
+                <a href="#" class="hover:text-[#C9A227] transition-colors">AGB</a>
+                <a href="#" class="text-[#C9A227]">Impressum</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 opacity-0 pointer-events-none transition-all duration-300 translate-y-4">
+        <div class="glass px-4 py-2.5 rounded-full shadow-xl border border-[#C9A227]/30">
+            <p class="text-sm text-[#E6C45A] font-medium flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                E-Mail kopiert
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Set dates
+        document.getElementById('year').textContent = new Date().getFullYear();
+        document.getElementById('date').textContent = new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' });
+
+        // Copy email function
+        function copyEmail() {
+            const email = 'infotonbc@gmail.com';
+            navigator.clipboard.writeText(email).then(() => {
+                const toast = document.getElementById('toast');
+                toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+                toast.classList.add('opacity-100');
+                setTimeout(() => {
+                    toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+                    toast.classList.remove('opacity-100');
+                }, 2000);
+            }).catch(() => {
+                // Fallback
+                const input = document.createElement('input');
+                input.value = email;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+            });
+        }
+
+        // Subtle parallax for glow orbs
+        document.addEventListener('mousemove', (e) => {
+            const orbs = document.querySelectorAll('.fixed .blur-\\[120px\\], .fixed .blur-\\[140px\\]');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            orbs.forEach((orb, i) => {
+                const factor = (i + 1) * 10;
+                orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
+            });
+        });
+    </script>
+</body>
+</html>
