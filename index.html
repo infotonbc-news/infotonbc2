@@ -32,9 +32,9 @@ body::before {
 .lang-switch select:hover{border-color:#C9A227}
 .lang-switch span{color:#aaa;font-size:12px}
 .unity-btn{position:absolute;top:55px;right:20px}
-.unity-btn a{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#0d5c2f,#C9A227);color:#fff;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;border:1px solid #C9A227;box-shadow:0 0 12px rgba(201,162,39,.4);transition:all .2s}
+.unity-btn a{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#0d5c2f,#C9A227);color:#fff;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;border:1px solid #C9A227;box-shadow:0 0 12px rgba(201,162,39,.4);transition:all.2s}
 .unity-btn a:hover{transform:scale(1.05);box-shadow:0 0 18px rgba(201,162,39,.6)}
-.unity-btn .leaf{font-size:16px}
+.unity-btn.leaf{font-size:16px}
 .wrap{max-width:1100px;margin:0 auto;padding:30px 20px}
 h2{color:#C9A227;text-align:center;margin:30px 0 20px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
@@ -50,8 +50,9 @@ h2{color:#C9A227;text-align:center;margin:30px 0 20px}
 .ad p{color:#ccc;margin:5px 0;font-size:14px}
 .ad a{color:#C9A227}
 .ig-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;align-items:stretch;margin:30px 0}
-.ig-card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:18px;width:200px;display:flex;flex-direction:column}
+.ig-card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:18px;width:320px;display:flex;flex-direction:column}
 .ig-card:hover{border-color:#C9A227}
+.ig-card iframe{width:100%;flex:1;border:2px solid #C9A227;border-radius:8px;margin-top:8px;background:#000}
 .qr{width:200px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .qr img{width:180px;border:2px solid #C9A227;border-radius:10px}
 footer{background:#000;border-top:1px solid #222;padding:25px;text-align:center;color:#888;margin-top:40px}
@@ -114,11 +115,10 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 
   <div class="ig-row">
     <div class="ig-card">
-      <div class="kicker">INSTAGRAM</div>
-      <h3 data-i18n="reels">Reels</h3>
-     <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DXi78Maje5U/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/DXi78Maje5U/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">Sieh dir diesen Beitrag auf Instagram an</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/DXi78Maje5U/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">Ein Beitrag geteilt von Suave (@infotonbc)</a></p></div></blockquote>
-<script async src="//www.instagram.com/embed.js"></script>
-      <div style="margin-top:8px;border:2px solid #C9A227;border-radius:8px;overflow:hidden;flex:1;background:#000;display:flex;align-items:center;justify-content:center;color:#C9A227;font-size:12px;">Reels</div>
+      <div class="kicker">VIDEO NEWS</div>
+      <h3 data-i18n="feed1_t">CanG Updates DE</h3>
+      <!-- YOUTUBE PLAYLIST: Cannabis News Deutschland -->
+      <iframe src="https://www.youtube.com/embed/videoseries?list=PL4QNnZJr8sRN4bZ6D2mV6X3J5qK8pL9vY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 
     <div class="qr">
@@ -127,10 +127,10 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
     </div>
 
     <div class="ig-card">
-      <div class="kicker"><blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DXt3bUojMar/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/DXt3bUojMar/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">Sieh dir diesen Beitrag auf Instagram an</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/DXt3bUojMar/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">Ein Beitrag geteilt von Suave (@infotonbc)</a></p></div></blockquote>
-<script async src="//www.instagram.com/embed.js"></script></div>
-      <h3 data-i18n="story">https://www.instagram.com/infotonbc/</h3>
-      <a href="https://instagram.com/stories/dein_handle" target="_blank" style="display:flex;margin-top:8px;border:2px solid #C9A227;border-radius:8px;overflow:hidden;flex:1;background:#000;align-items:center;justify-content:center;color:#C9A227;text-decoration:none;font-weight:bold;font-size:12px;" data-i18n="story_btn">Story öffnen</a>
+      <div class="kicker">VIDEO NEWS</div>
+      <h3 data-i18n="feed2_t">Global Cannabis</h3>
+      <!-- YOUTUBE PLAYLIST: International Cannabis News -->
+      <iframe src="https://www.youtube.com/embed/videoseries?list=PL4QNnZJr8sRN7cW9E3nW7Y4K6rL0qM1xZ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
   </div>
 
@@ -162,7 +162,7 @@ const translations = {
     ad1_t:"Höher als deine Toleranz? Dein Spot hier!",ad1_d:"Seeds • Shops • CBD • Lass die Chiller dich finden",
     ad2_t:"Günstiger als Amsterdam, näher als dein Dealer",ad2_d:"Werbung die kleben bleibt – ganz legal",
     ad3_t:"Hier könnte dein Gras… äh, deine Brand wachsen",ad3_d:"18+ Aufklärung | CanG-konform | High-Reichweite",
-    ad_btn:"Jetzt buchen",reels:"Reels",story:"Story",story_btn:"Story öffnen",
+    ad_btn:"Jetzt buchen",feed1_t:"CanG Updates DE",feed2_t:"Global Cannabis",
     imprint:"Impressum",privacy:"Datenschutz",disclaimer:"Disclaimer 18+",contact:"Kontakt",
     footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz klärt auf\nAufklärung 18+ | CanG-konform\nKeine Werbung. Keine Abgabe.\nKunst & Info nach Art. 5 GG",
     ticker:"DEUTSCHLAND: Clubs Ausbau • USA: Schedule III LIVE • THAILAND: Medical Only • MALTA: offen • SCHWEIZ: Pilot • KANADA: 72t Import •"
@@ -174,4 +174,112 @@ const translations = {
     news3_t:"Back to Medical-Only",news3_d:"New license stops recreational shops from 2025.",
     news4_t:"First Clubs Open",news4_d:"Non-profit distribution officially started.",
     news5_t:"Zurich Pilot Stable",news5_d:"Over 2,100 participants in the trial.",
-    news6
+    news6_t:"72 Tons to Germany",news6_d:"Export record continues in 2026.",
+    ad1_t:"Higher than your tolerance? Your spot here!",ad1_d:"Seeds • Shops • CBD • Let the chillers find you",
+    ad2_t:"Cheaper than Amsterdam, closer than your dealer",ad2_d:"Advertising that sticks – totally legal",
+    ad3_t:"Your grass… uh, your brand could grow here",ad3_d:"18+ Education | CanG-compliant | High-reach",
+    ad_btn:"Book now",feed1_t:"CanG Updates DE",feed2_t:"Global Cannabis",
+    imprint:"Imprint",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",
+    footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz educates\nEducation 18+ | CanG-compliant\nNo advertising. No distribution.\nArt & Info under Art. 5 GG",
+    ticker:"GERMANY: Club Expansion • USA: Schedule III LIVE • THAILAND: Medical Only • MALTA: open • SWITZERLAND: Pilot • CANADA: 72t Import •"
+  },
+  nl:{lang_hint:"Kies taal:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WERELDWIJD CANNABIS NIEUWS • 2026",highlights:"Actuele Highlights",
+    country_de:"Duitsland",country_us:"VS",country_th:"Thailand",country_mt:"Malta",country_ch:"Zwitserland",country_ca:"Canada",
+    news1_t:"Social Clubs Uitbreiding 2026",news1_d:"Uitbreiding onder CanG – eerste licenties verstrekt.",
+    news2_t:"Schedule III sinds 28-04-2026",news2_d:"DEA verlaagt cannabis – historische stap.",
+    news3_t:"Terug naar Medical-Only",news3_d:"Nieuwe licentie stopt recreatieve shops vanaf 2025.",
+    news4_t:"Eerste Clubs Open",news4_d:"Non-profit uitgifte officieel gestart.",
+    news5_t:"Zürich Pilot Stabiel",news5_d:"Meer dan 2.100 deelnemers aan proef.",
+    news6_t:"72 Ton naar Duitsland",news6_d:"Exportrecord houdt aan in 2026.",
+    ad1_t:"Hoger dan je tolerantie? Jouw spot hier!",ad1_d:"Zaden • Shops • CBD • Laat de chille mensen je vinden",
+    ad2_t:"Goedkoper dan Amsterdam, dichterbij dan je dealer",ad2_d:"Reclame die blijft plakken – helemaal legaal",
+    ad3_t:"Hier kan je gras… uh, je merk groeien",ad3_d:"18+ Voorlichting | CanG-conform | High-bereik",
+    ad_btn:"Nu boeken",feed1_t:"CanG Updates DE",feed2_t:"Global Cannabis",
+    imprint:"Colofon",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",
+    footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informeert\nVoorlichting 18+ | CanG-conform\nGeen reclame. Geen verstrekking.\nKunst & Info volgens Art. 5 GG",
+    ticker:"DUITSLAND: Club Uitbreiding • VS: Schedule III LIVE • THAILAND: Medical Only • MALTA: open • ZWITSERLAND: Pilot • CANADA: 72t Import •"
+  },
+  fr:{lang_hint:"Choisir la langue:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ACTUALITÉS CANNABIS MONDIALES • 2026",highlights:"À la Une",
+    country_de:"Allemagne",country_us:"États-Unis",country_th:"Thaïlande",country_mt:"Malte",country_ch:"Suisse",country_ca:"Canada",
+    news1_t:"Expansion Social Clubs 2026",news1_d:"Expansion sous CanG – premières licences accordées.",
+    news2_t:"Schedule III depuis 28/04/2026",news2_d:"La DEA déclasse le cannabis – étape historique.",
+    news3_t:"Retour au Medical-Only",news3_d:"Nouvelle licence stoppe les shops récréatifs dès 2025.",
+    news4_t:"Premiers Clubs Ouverts",news4_d:"Distribution non-lucrative officiellement lancée.",
+    news5_t:"Pilote Zurich Stable",news5_d:"Plus de 2 100 participants à l’essai.",
+    news6_t:"72 Tonnes vers l’Allemagne",news6_d:"Record d’exportation maintenu en 2026.",
+    ad1_t:"Plus haut que ta tolérance? Ton spot ici!",ad1_d:"Graines • Shops • CBD • Laisse les chillers te trouver",
+    ad2_t:"Moins cher qu’Amsterdam, plus près que ton dealer",ad2_d:"Pub qui colle – 100% légale",
+    ad3_t:"Ici ton herbe… euh, ta marque pourrait pousser",ad3_d:"18+ Sensibilisation | Conforme CanG | Haute portée",
+    ad_btn:"Réserver",feed1_t:"CanG Updates DE",feed2_t:"Global Cannabis",
+    imprint:"Mentions légales",privacy:"Confidentialité",disclaimer:"Avertissement 18+",contact:"Contact",
+    footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informe\nSensibilisation 18+ | Conforme CanG\nPas de pub. Pas de cession.\nArt & Info selon Art. 5 GG",
+    ticker:"ALLEMAGNE: Expansion Clubs • USA: Schedule III LIVE • THAÏLANDE: Medical Only • MALTE: ouvert • SUISSE: Pilote • CANADA: 72t Import •"
+  },
+  bg:{lang_hint:"Избери език:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"СВЕТОВНИ НОВИНИ ЗА КАНАБИС • 2026",highlights:"Актуални акценти",
+    country_de:"Германия",country_us:"САЩ",country_th:"Тайланд",country_mt:"Малта",country_ch:"Швейцария",country_ca:"Канада",
+    news1_t:"Разширяване на Social Clubs 2026",news1_d:"Разширяване по CanG – издадени първи лицензи.",
+    news2_t:"Schedule III от 28.04.2026",news2_d:"DEA понижава канабиса – историческа стъпка.",
+    news3_t:"Обратно към Medical-Only",news3_d:"Нов лиценз спира развлекателните магазини от 2025.",
+    news4_t:"Първи клубове отварят",news4_d:"Нестопанско разпространение официално стартира.",
+    news5_t:"Пилотът в Цюрих е стабилен",news5_d:"Над 2100 участници в изпитването.",
+    news6_t:"72 тона за Германия",news6_d:"Рекордният износ продължава през 2026.",
+    ad1_t:"По-високо от толеранса ти? Твоето място тук!",ad1_d:"Семена • Магазини • CBD • Нека чилърите те намерят",
+    ad2_t:"По-евтино от Амстердам, по-близо от дилъра ти",ad2_d:"Реклама, която залепва – напълно легално",
+    ad3_t:"Тук може да расте твоята трева… ах, твоята марка",ad3_d:"18+ Просвета | Съобразено с CanG | Висок обхват",
+    ad_btn:"Резервирай",feed1_t:"CanG Updates DE",feed2_t:"Global Cannabis",
+    imprint:"Импресум",privacy:"Поверителност",disclaimer:"Отказ 18+",contact:"Контакт",
+    footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz информира\nПросвета 18+ | Съобразено с CanG\nБез реклама. Без предоставяне.\nИзкуство & инфо по чл. 5 GG",
+    ticker:"ГЕРМАНИЯ: Разширяване на клубове • САЩ: Schedule III НА ЖИВО • ТАЙЛАНД: Medical Only • МАЛТА: отворено • ШВЕЙЦАРИЯ: Пилот • КАНАДА: 72т внос •"
+  },
+  pl:{lang_hint:"Wybierz język:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ŚWIATOWE WIADOMOŚCI O KONOPIACH • 2026",highlights:"Aktualne wydarzenia",
+    country_de:"Niemcy",country_us:"USA",country_th:"Tajlandia",country_mt:"Malta",country_ch:"Szwajcaria",country_ca:"Kanada",
+    news1_t:"Rozbudowa Social Clubs 2026",news1_d:"Rozszerzenie wg CanG – wydano pierwsze licencje.",
+    news2_t:"Schedule III od 28.04.2026",news2_d:"DEA obniża klasyfikację konopi – historyczny krok.",
+    news3_t:"Powrót do Medical-Only",news3_d:"Nowa licencja zatrzymuje sklepy rekreacyjne od 2025.",
+    news4_t:"Pierwsze kluby otwarte",news4_d:"Dystrybucja non-profit oficjalnie ruszyła.",
+    news5_t:"Pilotaż w Zurychu stabilny",news5_d:"Ponad 2100 uczestników w badaniu.",
+    news6_t:"72 tony do Niemiec",news6_d:"Rekord eksportu utrzymuje się w 2026.",
+    ad1_t:"Wyżej niż twoja tolerancja? Twój spot tutaj!",ad1_d:"Nasiona • Sklepy • CBD • Niech chillersi cię znajdą",
+    ad2_t:"Taniej niż Amsterdam, bliżej niż twój diler",ad2_d:"Reklama, która się klei – w pełni legalna",
+    ad3_t:"Tutaj może rosnąć twoja trawa… tzn. marka",ad3_d:"18+ Edukacja | Zgodne z CanG | High-zasięg",
+    ad_btn:"Rezerwuj",feed1_t:"CanG Updates DE",feed2_t:"Global Cannabis",
+    imprint:"Impressum",privacy:"Prywatność",disclaimer:"Oświadczenie 18+",contact:"Kontakt",
+    footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz edukuje\nEdukacja 18+ | Zgodne z CanG\nBrak reklamy. Brak wydawania.\nSztuka i info wg Art. 5 GG",
+    ticker:"NIEMCY: Rozbudowa klubów • USA: Schedule III NA ŻYWO • TAJLANDIA: Medical Only • MALTA: otwarte • SZWAJCARIA: Pilotaż • KANADA: 72t import •"
+  },
+  es:{lang_hint:"Elegir idioma:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"NOTICIAS MUNDIALES DE CANNABIS • 2026",highlights:"Destacados Actuales",
+    country_de:"Alemania",country_us:"EE.UU.",country_th:"Tailandia",country_mt:"Malta",country_ch:"Suiza",country_ca:"Canadá",
+    news1_t:"Expansión de Social Clubs 2026",news1_d:"Ampliación según CanG – primeras licencias otorgadas.",
+    news2_t:"Schedule III desde 28/04/2026",news2_d:"La DEA rebaja el cannabis – paso histórico.",
+    news3_t:"Vuelta a Medical-Only",news3_d:"Nueva licencia detiene tiendas recreativas desde 2025.",
+    news4_t:"Primeros Clubs Abren",news4_d:"Distribución sin fines de lucro oficialmente iniciada.",
+    news5_t:"Piloto de Zúrich estable",news5_d:"Más de 2.100 participantes en el ensayo.",
+    news6_t:"72 Toneladas a Alemania",news6_d:"Récord de exportación continúa en 2026.",
+    ad1_t:"¿Más alto que tu tolerancia? ¡Tu spot aquí!",ad1_d:"Semillas • Tiendas • CBD • Deja que los chillers te encuentren",
+    ad2_t:"Más barato que Ámsterdam, más cerca que tu dealer",ad2_d:"Publicidad que se pega – 100% legal",
+    ad3_t:"Aquí podría crecer tu hierba… digo, tu marca",ad3_d:"18+ Educación | Conforme a CanG | Alto alcance",
+    ad_btn:"Reservar",feed1_t:"CanG Updates DE",feed2_t:"Global Cannabis",
+    imprint:"Aviso legal",privacy:"Privacidad",disclaimer:"Aviso 18+",contact:"Contacto",
+    footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informa\nEducación 18+ | Conforme a CanG\nSin publicidad. Sin cesión.\nArte e Info según Art. 5 GG",
+    ticker:"ALEMANIA: Expansión de Clubs • EE.UU.: Schedule III EN VIVO • TAILANDIA: Medical Only • MALTA: abierto • SUIZA: Piloto • CANADÁ: 72t Import •"
+  }
+};
+
+function setLang(lang){
+  const t = translations[lang];
+  if(!t) return;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(t[key]) el.innerText = t[key];
+  });
+  document.documentElement.lang = lang;
+  document.querySelector('.lang-switch select').value = lang;
+  localStorage.setItem('nbc_lang', lang);
+}
+
+const saved = localStorage.getItem('nbc_lang');
+const browserLang = navigator.language.slice(0,2);
+setLang(saved || (translations[browserLang]? browserLang : 'de'));
+</script>
+</body>
+</html>
