@@ -3,22 +3,54 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NaturalBornChillaz - Worldwide News</title>
+<title>NaturalBornChillaz</title>
 <style>
-:root{--bg:#070807;--card:#141613;--gold:#C9A227;--text:#e8e8e6;--muted:#9a9a8f}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);background-image:radial-gradient(rgba(201,162,39,.07)1px,transparent 1px);background-size:22px 22px;color:var(--text);font-family:Arial,Helvetica,sans-serif;padding-bottom:70px}
-.wrap{max-width:1150px;margin:0 auto;padding:0 20px}
-.top-left{position:fixed;top:14px;left:18px;z-index:60;border:1px solid var(--gold);color:var(--gold);padding:7px 14px;border-radius:20px;font-size:13px;background:rgba(0,0,0,.7);text-decoration:none}
-.lang{position:fixed;top:14px;right:18px;z-index:60;display:flex;gap:8px}
-.lang button{width:38px;height:38px;border-radius:50%;border:1px solid rgba(201,162,39,.3);background:#0f110e;color:var(--gold);cursor:pointer;font-weight:bold}
-.lang button.active{background:var(--gold);color:#000}
-header{padding:80px 0 30px;display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
-.logo{font-size:44px;font-weight:800;color:var(--gold);text-shadow:0 0 25px rgba(201,162,39,.4)}
-.badge{width:92px;height:92px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;animation:spin 12s linear infinite;box-shadow:0 0 30px rgba(201,162,39,.25)}
-.badge span{font-size:10px;color:var(--gold);text-align:center;font-weight:700;line-height:1.2}
-@keyframes spin{to{transform:rotate(360deg)}}
-h1{text-align:center;color:var(--gold);font-size:48px;margin:10px 0 5px}
-.sub{text-align:center;color:var(--muted);margin-bottom:30px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax:250px,1fr));gap:18px;margin:30px 0}
-.card{display:block;background:var(--card);border:1px solid #2a2a2a;border-radius:12px;padding:18px;text-decoration:none;color:inherit;
+body{margin:0;background:#070807;color:#e8e8e6;font-family:Arial;padding-bottom:80px;background-image:radial-gradient(rgba(201,162,39,.07)1px,transparent 1px);background-size:22px 22px}
+.wrap{max-width:1100px;margin:0 auto;padding:20px}
+header{text-align:center;padding:60px 0 20px}
+.logo{font-size:44px;font-weight:800;color:#C9A227}
+h1{color:#C9A227;text-align:center;margin:10px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:30px 0}
+.card{display:block;background:#141613;border:1px solid #333;padding:18px;border-radius:10px;color:inherit;text-decoration:none}
+.card:hover{border-color:#C9A227}
+.card span{color:#C9A227;font-size:12px}
+.qr{text-align:center;margin:40px 0}
+.qr img{max-width:200px;border:2px solid #C9A227;border-radius:12px}
+.ticker{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:2px solid #C9A227;padding:12px;overflow:hidden;white-space:nowrap}
+.ticker div{animation:move 50s linear infinite;color:#C9A227;font-weight:bold}
+@keyframes move{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+#age{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:999}
+.agebox{background:#141613;padding:30px;border:2px solid #C9A227;border-radius:12px;text-align:center}
+button{background:#C9A227;border:none;padding:12px 24px;border-radius:8px;font-weight:bold;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div id="age"><div class="agebox">
+<h2 style="color:#C9A227;margin-top:0">18+</h2>
+<p>Nur für Volljährige</p>
+<button onclick="localStorage.setItem('ok','1');document.getElementById('age').style.display='none'">Ich bin 18+</button>
+</div></div>
+<script>if(localStorage.getItem('ok')=='1')document.getElementById('age').style.display='none'</script>
+
+<div class="wrap">
+<header><div class="logo">NaturalBornChillaz</div></header>
+<h1>WORLDWIDE NEWS</h1>
+
+<div class="grid">
+<a class="card" href="https://www.bundesgesundheitsministerium.de" target="_blank"><span>DEUTSCHLAND</span><h3>CanG live</h3><p>25g, 3 Pflanzen</p></a>
+<a class="card" href="https://norml.org" target="_blank"><span>USA</span><h3>Ohio startet</h3><p>Verkauf läuft</p></a>
+<a class="card" href="https://reuters.com" target="_blank"><span>EUROPA</span><h3>Malta</h3><p>Lizenzen</p></a>
+<a class="card" href="https://bangkokpost.com" target="_blank"><span>WELT</span><h3>Thailand</h3><p>Regulierung</p></a>
+</div>
+
+<div class="qr">
+<a href="https://instagram.com/infotonbc" target="_blank"><img src="qr_card.png" alt="QR"></a>
+<p>Scan für @infotonbc</p>
+</div>
+</div>
+
+<div class="ticker"><div>DEUTSCHLAND: Clubs Juli • USA: 24 Staaten legal • THAILAND: Regulierung • MALTA: Lizenzen • LUXEMBURG: Anbau • SCHWEIZ: Piloten •</div></div>
+
+</body>
+</html>
