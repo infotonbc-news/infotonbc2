@@ -65,4 +65,16 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 <div class="ticker"><span>DEUTSCHLAND: Clubs Ausbau • USA: Schedule III LIVE • THAILAND: Medical Only • MALTA: offen • SCHWEIZ: Pilot • KANADA: 72t Import •</span></div>
 
 </body>
+<script>
+const T = {
+  de:{title:"NaturalBornChillaz – Cannabis News & Kultur",subtitle:"Dein täglicher Überblick über Legalisierung, Medizin, Business & Lifestyle – kuratiert, unabhängig, chill.",highlights:"Aktuelle Highlights – live",partners:"Partner & Werbung",footer:"© 2026 NaturalBornChillaz – Infoportal. Kein Verkauf. 18+"},
+  en:{title:"NaturalBornChillaz – Cannabis News & Culture",subtitle:"Your daily briefing on legalization, medicine, business & lifestyle – curated, independent, chill.",highlights:"Latest Highlights – live",partners:"Partners & Advertising",footer:"© 2026 NaturalBornChillaz – Info portal. No sales. 18+"}
+};
+const lang=navigator.language.startsWith('de')?'de':'en';const t=T[lang];document.documentElement.lang=lang;
+document.querySelector('header h1').textContent=t.title;
+document.querySelector('header p').textContent=t.subtitle;
+document.querySelectorAll('h2')[0].textContent=t.highlights;
+document.querySelectorAll('h2')[1].textContent=t.partners;
+document.querySelector('footer div').innerHTML=t.footer+' · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="disclaimer.html">18+</a>';
+</script>
 </html>
