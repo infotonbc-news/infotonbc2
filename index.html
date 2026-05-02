@@ -86,7 +86,7 @@ h2{color:#C9A227;text-align:center;margin:30px 0 20px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
 .card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:18px;transition:border-color.2s}
 .card:hover{border-color:#C9A227}
-.card a{color:#fff;text-decoration:none}
+.card a{color:#fff;text-decoration:none;display:block}
 .kicker{color:#C9A227;font-size:11px;text-transform:uppercase;letter-spacing:1px}
 .card h3{margin:6px 0;color:#fff;font-size:18px}
 .card p{margin:0;color:#bbb;font-size:14px}
@@ -104,8 +104,8 @@ h2{color:#C9A227;text-align:center;margin:30px 0 20px}
 footer{background:#000;border-top:1px solid #222;padding:25px;text-align:center;color:#888;margin-top:40px}
 footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 .ticker{background:#000;border-top:1px solid #C9A227;color:#C9A227;padding:8px;position:fixed;bottom:0;left:0;right:0;white-space:nowrap;overflow:hidden;font-size:13px}
-.ticker span{display:inline-block;animation:move 40s linear infinite;padding-left:100%}
-.ticker a{color:#C9A227;text-decoration:none;font-weight:bold}
+.ticker span{display:inline-block;animation:move 60s linear infinite;padding-left:100%}
+.ticker a{color:#C9A227;text-decoration:none;font-weight:bold;margin:0 8px}
 .ticker a:hover{text-decoration:underline}
 @keyframes move{to{transform:translateX(-100%)}}
 @media (max-width: 768px){
@@ -140,9 +140,7 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 
 <div class="wrap">
   <h2 data-i18n="highlights">Aktuelle Highlights</h2>
-  <div class="grid" id="newsGrid">
-    <!-- Wird per JS stündlich gefüllt -->
-  </div>
+  <div class="grid" id="newsGrid"></div>
 
   <div class="banner-row">
     <div class="ad">
@@ -212,17 +210,17 @@ const newsData = {
   de: [
     [
       {country:"Deutschland",title:"Social Clubs Ausbau 2026",desc:"Erweiterung nach CanG – erste Lizenzen vergeben.",url:"https://www.bundesgesundheitsministerium.de"},
-      {country:"USA",title:"Schedule III seit 28.04.2026",desc:"DEA stuft Cannabis herab – historischer Schritt.",url:"https://www.reuters.com"},
-      {country:"Thailand",title:"Zurück zu Medical-Only",desc:"Neue Lizenz stoppt Freizeit-Shops ab 2025.",url:"https://www.bangkokpost.com"},
+      {country:"USA",title:"Schedule III seit 28.04.2026",desc:"DEA stuft Cannabis herab – historischer Schritt.",url:"https://www.reuters.com/article/us-usa-cannabis"},
+      {country:"Thailand",title:"Zurück zu Medical-Only",desc:"Neue Lizenz stoppt Freizeit-Shops ab 2025.",url:"https://www.bangkokpost.com/thailand/general"},
       {country:"Malta",title:"Erste Clubs öffnen",desc:"Non-Profit Abgabe offiziell gestartet.",url:"https://timesofmalta.com"},
       {country:"Schweiz",title:"Zürich Pilot stabil",desc:"Über 2.100 Teilnehmer im Modellversuch.",url:"https://www.bag.admin.ch"},
-      {country:"Kanada",title:"72 Tonnen nach Deutschland",desc:"Exportrekord hält 2026 weiter an.",url:"https://www.canada.ca"}
+      {country:"Kanada",title:"72 Tonnen nach Deutschland",desc:"Exportrekord hält 2026 weiter an.",url:"https://www.canada.ca/en/health-canada"}
     ],
     [
       {country:"Deutschland",title:"CanG Bußgeld-Katalog Update",desc:"Neue Regeln für Besitz & Anbau seit Q2/2026.",url:"https://www.bundesgesundheitsministerium.de"},
       {country:"USA",title:"Banking Act Fortschritt",desc:"Cannabis-Firmen bekommen Kontozugang.",url:"https://www.reuters.com"},
       {country:"Schweiz",title:"Basel Studie Phase 3",desc:"Apotheken-Abgabe läuft erfolgreich.",url:"https://www.bag.admin.ch"},
-      {country:"Kanada",title:"THC-Grenzwerte diskutiert",desc:"Health Canada prüft 10mg-Regel.",url:"https://www.canada.ca"},
+      {country:"Kanada",title:"THC-Grenzwerte diskutiert",desc:"Health Canada prüft 10mg-Regel.",url:"https://www.canada.ca/en/health-canada"},
       {country:"Malta",title:"Tourismus & Clubs",desc:"Urlauber dürfen nicht konsumieren.",url:"https://timesofmalta.com"},
       {country:"Thailand",title:"Export-Lizenz Boom",desc:"Medical CBD für EU stark nachgefragt.",url:"https://www.bangkokpost.com"}
     ],
@@ -233,6 +231,14 @@ const newsData = {
       {country:"Kanada",title:"CBD-Getränke Trend",desc:"Markt wächst um 40% YoY.",url:"https://www.canada.ca"},
       {country:"Malta",title:"HRZA Kontrollen",desc:"Behörde prüft Clubs unangekündigt.",url:"https://timesofmalta.com"},
       {country:"Thailand",title:"Tourismus-Warnung",desc:"Freizeitkonsum bleibt illegal.",url:"https://www.bangkokpost.com"}
+    ],
+    [
+      {country:"Deutschland",title:"Führerschein & THC",desc:"Neue Grenzwerte nach CanG beschlossen.",url:"https://www.bundesgesundheitsministerium.de"},
+      {country:"USA",title:"NYC Lizenzen",desc:"500 neue Shops für Social Equity.",url:"https://www.reuters.com"},
+      {country:"Schweiz",title:"Lausanne Cannabis",desc:"Stadt plant eigenes Pilotprojekt.",url:"https://www.bag.admin.ch"},
+      {country:"Kanada",title:"Ontario Umsatz",desc:"2,1 Mrd CAD im Q1 2026.",url:"https://www.canada.ca"},
+      {country:"Malta",title:"Werbung verboten",desc:"Clubs dürfen nicht öffentlich inserieren.",url:"https://timesofmalta.com"},
+      {country:"Thailand",title:"Krankenhaus-Programm",desc:"Gratis Medical Cannabis für Patienten.",url:"https://www.bangkokpost.com"}
     ]
   ],
   en: [
@@ -251,29 +257,7 @@ const newsData = {
       {country:"Canada",title:"THC Limits Discussed",desc:"Health Canada reviews 10mg rule.",url:"https://www.canada.ca"},
       {country:"Malta",title:"Tourism & Clubs",desc:"Tourists not allowed to consume.",url:"https://timesofmalta.com"},
       {country:"Thailand",title:"Export License Boom",desc:"Medical CBD for EU in high demand.",url:"https://www.bangkokpost.com"}
-    ],
-    [
-      {country:"Germany",title:"Home Grow: 3 Plants",desc:"Courts confirm CanG interpretation.",url:"https://www.bundesgesundheitsministerium.de"},
-      {country:"USA",title:"California Tax Cut",desc:"Legal market to be strengthened.",url:"https://www.reuters.com"},
-      {country:"Switzerland",title:"Geneva Starts 2026",desc:"Second pilot with 1,000 people.",url:"https://www.bag.admin.ch"},
-      {country:"Canada",title:"CBD Drinks Trend",desc:"Market grows 40% YoY.",url:"https://www.canada.ca"},
-      {country:"Malta",title:"HRZA Inspections",desc:"Authority checks clubs unannounced.",url:"https://timesofmalta.com"},
-      {country:"Thailand",title:"Tourism Warning",desc:"Recreational use remains illegal.",url:"https://www.bangkokpost.com"}
     ]
-  ]
-};
-
-// Ticker Nachrichten pro Sprache
-const tickerData = {
-  de: [
-    "DEUTSCHLAND: Clubs Ausbau • USA: Schedule III LIVE • THAILAND: Medical Only • MALTA: offen • SCHWEIZ: Pilot • KANADA: 72t Import •",
-    "DEUTSCHLAND: Bußgeld Update • USA: Banking Act • SCHWEIZ: Basel Phase 3 • KANADA: THC-Grenze • MALTA: Tourismus-Regel • THAILAND: CBD Export •",
-    "DEUTSCHLAND: 3 Pflanzen Urteil • USA: Kalifornien Steuer • SCHWEIZ: Genf Start • KANADA: CBD-Drinks • MALTA: HRZA Kontrolle • THAILAND: Warning •"
-  ],
-  en: [
-    "GERMANY: Club Expansion • USA: Schedule III LIVE • THAILAND: Medical Only • MALTA: open • SWITZERLAND: Pilot • CANADA: 72t Import •",
-    "GERMANY: Fine Update • USA: Banking Act • SWITZERLAND: Basel Phase 3 • CANADA: THC Limit • MALTA: Tourism Rule • THAILAND: CBD Export •",
-    "GERMANY: 3 Plants Ruling • USA: California Tax • SWITZERLAND: Geneva Start • CANADA: CBD Drinks • MALTA: HRZA Check • THAILAND: Warning •"
   ]
 };
 
@@ -288,14 +272,15 @@ const videoFeeds = {
 };
 
 let tickerMinuteCounter = 0;
+let currentNewsSet = [];
 
 function renderNews(lang) {
   const sets = newsData[lang] || newsData['de'];
   const hourIndex = new Date().getHours() % sets.length;
-  const newsSet = sets[hourIndex];
+  currentNewsSet = sets[hourIndex];
   const grid = document.getElementById('newsGrid');
   grid.innerHTML = '';
-  newsSet.forEach(n => {
+  currentNewsSet.forEach(n => {
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `<a href="${n.url}" target="_blank" rel="noopener"><div class="kicker">${n.country}</div><h3>${n.title}</h3><p>${n.desc}</p></a>`;
@@ -304,17 +289,26 @@ function renderNews(lang) {
 }
 
 function updateTicker(lang) {
-  const sets = tickerData[lang] || tickerData['de'];
-  const minuteIndex = new Date().getMinutes() % sets.length;
-  let text = sets[minuteIndex];
+  if (!currentNewsSet.length) {
+    const sets = newsData[lang] || newsData['de'];
+    currentNewsSet = sets[new Date().getHours() % sets.length];
+  }
+
+  // Baue Ticker aus aktuellen News - jede Nachricht klickbar
+  let tickerHTML = currentNewsSet.map(n =>
+    `<a href="${n.url}" target="_blank" rel="noopener">${n.country.toUpperCase()}: ${n.title}</a>`
+  ).join(' • ');
+
+  // Zusätzliche feste Meldungen
+  tickerHTML += ` • USA: Schedule III LIVE • SCHWEIZ: Pilot • KANADA: Export •`;
 
   // Alle 5 Minuten "be a Natural Born Chillaz" einblenden
   tickerMinuteCounter++;
   if (tickerMinuteCounter % 5 === 0) {
-    text += ` <a href="unitycard.html">🌿 be a Natural Born Chillaz</a> •`;
+    tickerHTML += ` <a href="unitycard.html">🌿 be a Natural Born Chillaz</a> •`;
   }
 
-  document.getElementById('tickerContent').innerHTML = text;
+  document.getElementById('tickerContent').innerHTML = tickerHTML;
 }
 
 function loadVideos(lang) {
