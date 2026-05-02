@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NaturalBornChillaz – Cannabis News & Kultur</title>
+<style>
+:root{--bg:#0a0a0a;--card:#141414;--gold:#C9A227;--text:#eaeaea;--muted:#9a9a9a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Arial;padding-bottom:60px}
+header{padding:48px 20px;text-align:center;background:linear-gradient(180deg,#111,#0a0a0a);border-bottom:1px solid #222}
+h1{margin:0;font-size:clamp(28px,4vw,48px)}h1 span{color:var(--gold)}
+p.lead{color:var(--muted);max-width:800px;margin:12px auto 0}
+.grid{display:grid;gap:16px;padding:24px;max-width:1200px;margin:0 auto;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:var(--card);border:1px solid #1f1f1f;border-radius:16px;padding:18px;transition:.2s}
+.card:hover{transform:translateY(-2px);border-color:#2a2a2a}
+.card h3{margin:6px 0 8px;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.kicker{font-size:12px;color:var(--gold);text-transform:uppercase;letter-spacing:.12em}
+.banner{max-width:1200px;margin:8px auto 24px;padding:0 24px}
+.banner a{display:block;background:#111;border:1px dashed #333;border-radius:14px;padding:16px;text-align:center;color:var(--muted);text-decoration:none}
+footer{padding:40px 20px;color:#777;text-align:center;border-top:1px solid #1b1b1b;margin-top:24px}
+a{color:var(--text);text-decoration:none}
+.ticker{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:2px solid var(--gold);overflow:hidden;white-space:nowrap;z-index:999}
+.ticker-track{display:inline-block;padding:14px 0;animation:ticker 60s linear infinite;font-weight:700}
+.ticker span{display:inline-block;margin-right:40px;color:#eee}
+.chip{background:var(--gold);color:#000;padding:4px 10px;border-radius:999px;font-weight:800}
+@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>NaturalBorn<span>Chillaz</span></h1>
+  <p class="lead">Dein täglicher Überblick über Legalisierung, Medizin, Business & Lifestyle – kuratiert, unabhängig, chill.</p>
+</header>
+
+<div class="banner"><a href="#">Werbeplatz 728×90 – „Dein Growshop hier“</a></div>
+
+<h2 style="max-width:1200px;margin:0 auto;padding:0 24px">Aktuelle Highlights – live</h2>
+<div class="grid" id="news-grid"><div class="card"><p style="color:#888">Lade News...</p></div></div>
+
+<h2 style="max-width:1200px;margin:16px auto 0;padding:0 24px">Partner & Werbung</h2>
+<div class="grid">
+  <div class="card"><div class="kicker">Sponsor</div><h3>Dein Logo hier</h3><p>Banner 300×250 – monatlich buchbar.</p></div>
+  <div class="card"><div class="kicker">Community</div><h3>CSC-Map Deutschland</h3><p>Interaktive Karte aller Clubs (bald).</p></div>
+  <div class="card"><div class="kicker">Shop</div><h3>Merch – NaturalBornChillaz</h3><p>Shirts, Grinder, Sticker
