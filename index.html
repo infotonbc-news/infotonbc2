@@ -24,11 +24,9 @@ h2{color:#C9A227;text-align:center;margin:30px 0 20px}
 .qr img{width:180px;border:2px solid #C9A227;border-radius:10px}
 footer{background:#000;border-top:1px solid #222;padding:25px;text-align:center;color:#888;margin-top:40px}
 footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
-.ticker{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:2px solid #C9A227;overflow:hidden;white-space:nowrap;z-index:999}
-.ticker-track{display:inline-block;padding:14px 0;animation:ticker 45s linear infinite;font-weight:700}
-.ticker span{display:inline-block;margin-right:40px;color:#eee}
-.ticker .chip{background:#C9A227;color:#000;padding:4px 10px;border-radius:999px;font-weight:800}
-@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+.ticker{background:#000;border-top:1px solid #C9A227;color:#C9A227;padding:8px;position:fixed;bottom:0;left:0;right:0;white-space:nowrap;overflow:hidden;font-size:13px}
+.ticker span{display:inline-block;animation:move 40s linear infinite;padding-left:100%}
+@keyframes move{to{transform:translateX(-100%)}}
 </style>
 </head>
 <body>
