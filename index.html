@@ -3,38 +3,76 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NaturalBornChillaz</title>
+<title>NaturalBornChillaz — Worldwide News 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#070807;--card:#141613;--gold:#C9A227;--text:#e8e8e6;--muted:#9a9a8f}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;padding-bottom:80px;background-image:radial-gradient(rgba(201,162,39,.07)1px,transparent 1px);background-size:22px 22px}
-.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
-header{padding:80px 0 20px;text-align:center}
-.logo{font-size:46px;font-weight:800;color:var(--gold)}
-h1{text-align:center;color:var(--gold);margin:10px 0}
-.sub{text-align:center;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:30px 0}
-.card{display:block;background:var(--card);border:1px solid #333;border-radius:12px;padding:18px;color:inherit;text-decoration:none}
-.card:hover{border-color:var(--gold)}
-.cat{color:var(--gold);font-size:12px;text-transform:uppercase}
-.rent-wrap{display:grid;grid-template-columns:1fr 220px 1fr;gap:20px;align-items:center;margin:50px 0}
-.rent-banner{display:block;background:#111;border:2px dashed var(--gold);border-radius:12px;padding:24px;text-align:center;color:inherit;text-decoration:none}
-.rent-banner:hover{background:#1a1a1a}
-.rent-banner h3{color:var(--gold);margin:0 0 8px}
-.qr{text-align:center}.qr img{max-width:200px;border:2px solid var(--gold);border-radius:12px}
-.ticker{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:2px solid var(--gold);padding:12px;white-space:nowrap;overflow:hidden}
-.ticker div{display:inline-block;animation:slide 60s linear infinite;color:var(--gold)}
-@keyframes slide{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
-#age{position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center}
-.ageBox{background:#141613;border:2px solid var(--gold);padding:30px;border-radius:12px;text-align:center}
-.ageBox button{background:var(--gold);color:#000;border:0;padding:10px 20px;border-radius:6px;font-weight:bold;margin-top:10px;cursor:pointer}
-.lang{position:fixed;top:12px;right:12px;display:flex;gap:6px}
-.lang button{width:36px;height:36px;border-radius:50%;background:#111;color:var(--gold);border:1px solid var(--gold);cursor:pointer}
-.lang button.active{background:var(--gold);color:#000}
-@media(max-width:800px){.rent-wrap{grid-template-columns:1fr}}
+:root{--gold:#C9A227;--bg:#050607;--ink:#e9e9e6}
+*{box-sizing:border-box}body{margin:0;font-family:Outfit,Arial;background:radial-gradient(1200px 600px at 15% -10%,rgba(201,162,39,.18),transparent),radial-gradient(900px 500px at 110% 20%,rgba(201,162,39,.10),transparent),var(--bg);color:var(--ink)}
+.wrap{max-width:1180px;margin:0 auto;padding:48px 20px 120px}
+.logo{font-weight:800;font-size:56px;text-align:center;color:var(--gold);text-shadow:0 0 40px rgba(201,162,39,.35)}
+.tag{text-align:center;color:#a7a79d;font-size:14px;letter-spacing:.3em;text-transform:uppercase;margin-bottom:20px}
+h1{text-align:center;color:var(--gold);font-size:38px;margin:20px 0 10px}
+.sub{text-align:center;color:#b8b8ae;margin-bottom:30px}
+
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:18px}
+.card{grid-column:span 4;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));border:1px solid rgba(201,162,39,.18);border-radius:20px;padding:22px;transition:.25s}
+.card:hover{transform:translateY(-4px);border-color:rgba(201,162,39,.45);box-shadow:0 12px 40px rgba(0,0,0,.45)}
+.kicker{color:var(--gold);font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:8px}
+.card h3{margin:0 0 6px;font-size:20px}
+.card p{margin:0;color:#c9c9c2;font-size:14px}
+.card a{color:inherit;text-decoration:none}
+
+.rent{margin:60px 0;display:grid;grid-template-columns:1fr 240px 1fr;gap:26px;align-items:center}
+.ad{background:rgba(255,255,255,.04);border:1.5px dashed rgba(201,162,39,.55);border-radius:18px;padding:26px;text-align:center;text-decoration:none;color:#fff;transition:.25s}
+.ad:hover{background:rgba(255,255,255,.07);transform:translateY(-3px)}
+.ad h4{margin:0 0 8px;color:var(--gold);font-size:20px}
+.qr{text-align:center}.qr img{width:210px;border-radius:16px;border:2px solid var(--gold);box-shadow:0 0 50px rgba(201,162,39,.25)}
+.qr small{display:block;margin-top:8px;color:#9f9f94}
+
+.ticker{position:fixed;left:0;right:0;bottom:0;background:rgba(0,0,0,.75);border-top:1px solid rgba(201,162,39,.35);padding:10px 0;overflow:hidden}
+.ticker div{white-space:nowrap;animation:mar 50s linear infinite;color:var(--gold);font-weight:600}
+@keyframes mar{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+
+/* AGE GATE */
+#gate{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:9999}
+.gatebox{background:#0d0f0c;border:1px solid rgba(201,162,39,.4);border-radius:20px;padding:34px;text-align:center;max-width:400px}
+.gatebox h2{color:var(--gold);font-size:30px;margin:0 0 10px}
+.btn{background:var(--gold);color:#000;font-weight:800;padding:12px 24px;border-radius:10px;border:0;cursor:pointer;font-size:16px}
+
+@media(max-width:900px){.card{grid-column:span 6}.rent{grid-template-columns:1fr}}
+@media(max-width:600px){.card{grid-column:span 12}.logo{font-size:42px}}
 </style>
 </head>
 <body>
 
-<div id="age">
- <div class="ageBox">
-  
+<!-- Altersprüfung -->
+<div id="gate">
+ <div class="gatebox">
+  <h2>18+</h2>
+  <p style="color:#bbb">Diese Seite ist nur für Erwachsene.</p>
+  <button class="btn" onclick="document.getElementById('gate').style.display='none';localStorage.setItem('nbc18','1')">Ich bin 18+</button>
+ </div>
+</div>
+<script>if(localStorage.getItem('nbc18')){document.getElementById('gate').style.display='none'}</script>
+
+<div class="wrap">
+ <div class="logo">NaturalBornChillaz</div>
+ <div class="tag">Worldwide Cannabis News • 2026</div>
+
+ <h1>Aktuell. Kuratiert. Echt.</h1>
+ <p class="sub">Die wichtigsten Updates – Mai 2026</p>
+
+ <div class="grid">
+  <article class="card" style="grid-column:span 6">
+   <a href="https://marijuana.net/germany-cannabis-social-clubs-expansion/" target="_blank">
+    <div class="kicker">Deutschland</div>
+    <h3>Social Clubs werden 2026 ausgebaut</h3>
+    <p>Deutschland erweitert die Cannabis-Clubs – gemeinsamer Anbau für Mitglieder unter strengen Regeln.</p>
+   </a>
+  </article>
+
+  <article class="card" style="grid-column:span 6">
+   <a href="https://www.reuters.com" target="_blank">
+    <div class="kicker">USA</div>
+    <h3>Historisch: Cannabis auf Schedule III</h3>
+    <p>Seit 28. April 2026 offiziell herabgestuft – mehr Forschung, Steuervorteile für Medical-Un
