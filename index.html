@@ -2,46 +2,75 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<title>NaturalBornChillaz - Worldwide Cannabis News 2026</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NaturalBornChillaz – Cannabis News & Kultur</title>
 <style>
-body{margin:0;background:#050607;color:#eee;font-family:Arial, sans-serif}
-.top{background:radial-gradient(circle at 30% 20%,rgba(201,162,39,.20),transparent 50%),#050607;padding:50px 20px 30px;text-align:center;border-bottom:1px solid #222}
-.logo{font-size:52px;font-weight:800;color:#C9A227;margin:0;text-shadow:0 0 15px rgba(201,162,39,.3)}
-.tag{color:#aaa;letter-spacing:3px;font-size:13px;margin-top:8px}
-.wrap{max-width:1100px;margin:0 auto;padding:30px 20px}
-h2{color:#C9A227;text-align:center;margin:30px 0 20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:18px}
-.card:hover{border-color:#C9A227}
-.card a{color:#fff;text-decoration:none}
-.kicker{color:#C9A227;font-size:11px;text-transform:uppercase;letter-spacing:1px}
-.card h3{margin:6px 0;color:#fff;font-size:18px}
-.card p{margin:0;color:#bbb;font-size:14px}
-.rent{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin:40px 0;text-align:center}
-.ad{background:#111;border:2px dashed #C9A227;border-radius:12px;padding:20px;width:240px}
-.ad h3{color:#C9A227;margin:0 0 5px}
-.qr img{width:180px;border:2px solid #C9A227;border-radius:10px}
-footer{background:#000;border-top:1px solid #222;padding:25px;text-align:center;color:#888;margin-top:40px}
-footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
+:root{--bg:#0a0a0a;--card:#141414;--gold:#C9A227;--text:#ea;--muted:#9a9a9a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Arial}
+header{padding:48px 20px;text-align:center;background:linear-gradient(180deg,#111,#0a0a);border-bottom:1px solid #222}
+h1{margin:0;font-size:clamp(28px,4vw,48px);letter-spacing:.5px}
+h1 span{color:var(--gold)}
+p.lead{color:var(--muted);max-width:800px;margin:12px auto 0}
+.grid{display:grid;gap:16px;padding:24px;max-width:1200px;margin:0 auto;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{background:var(--card);border:1px solid #1f1f1f;border-radius:16px;padding:18px;transition:.2s}
+.card:hover{transform:translateY(-2px);border-color:#2a2a2a}
+.card h3{margin:6px 0 8px;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.kicker{font-size:12px;color:var(--gold);text-transform:uppercase;letter-spacing:.12em}
+.badge{display:inline-block;font-size:12px;padding:4px 8px;border:1px solid #2a2a2a;border-radius:999px;color:var(--muted);margin-right:6px}
+.banner{max-width:1200px;margin:8px auto 24px;padding:0 24px}
+.banner a{display:block;background:#111;border:1px dashed #333;border-radius:14px;padding:16px;text-align:center;color:var(--muted);text-decoration:none}
+footer{padding:40px 20px;color:#777;text-align:center;border-top:1px solid #1b1b1b;margin-top:24px}
+a{color:var(--text);text-decoration:none}
 .ticker{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:2px solid #C9A227;overflow:hidden;white-space:nowrap;z-index:999}
-.ticker-track{display:inline-block;padding:14px 0;animation:ticker 45s linear infinite;font-weight:700}
+.ticker-track{display:inline-block;padding:14px 0;animation:ticker 60s linear infinite;font-weight:700}
 .ticker span{display:inline-block;margin-right:40px;color:#eee}
-.ticker .chip{background:#C9A227;color:#000;padding:4px 10px;border-radius:999px;font-weight:800}
+.ticker.chip{background:#C9A227;color:#000;padding:4px 10px;border-radius:999px;font-weight:800}
 @keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
+</style>
 </head>
-<body><div id="age" style="position:fixed;inset:0;background:rgba(0,0,0,.95);display:flex;align-items:center;justify-content:center;z-index:9999"><div style="background:#111;border:2px solid #C9A227;padding:30px;border-radius:12px;text-align:center"><h2 style="color:#C9A227;margin:0 0 10px">18+</h2><p style="color:#aaa;margin:0 0 15px">Nur für Erwachsene</p><button onclick="document.getElementById('age').remove()" style="background:#C9A227;border:0;padding:10px 20px;font-weight:bold;border-radius:6px;cursor:pointer">Ich bin 18+</button></div></div>
+<body>
+<header>
+  <h1>NaturalBorn<span>Chillaz</span></h1>
+  <p class="lead">Dein täglicher Überblick über Legalisierung, Medizin, Business & Lifestyle – kuratiert, unabhängig, chill.</p>
+</header>
 
-<div class="top">
-  <div class="logo">NaturalBornChillaz</div>
-  <div class="tag">WORLDWIDE CANNABIS NEWS • 2026</div>
+<div class="banner"><a href="#">Werbeplatz 728×90 – „Dein Growshop hier“</a></div>
+
+<h2 style="max-width:1200px;margin:0 auto;padding:0 24px">Aktuelle Highlights – live</h2>
+<div class="grid" id="news-grid">
+  <div class="card"><p style="color:#888">Lade News...</p></div>
 </div>
 
-<div class="wrap">
-  <h2>Aktuelle Highlights – live</h2>
-  <div class="grid" id="news-grid">
-    <div class="card"><p style="color:#888">Lade News...</p></div>
+<h2 style="max-width:1200px;margin:16px auto 0;padding:0 24px">Partner & Werbung</h2>
+<div class="grid">
+  <div class="card"><div class="kicker">Sponsor</div><h3>Dein Logo hier</h3><p>Banner 300×250 – monatlich buchbar.</p></div>
+  <div class="card"><div class="kicker">Community</div><h3>CSC-Map Deutschland</h3><p>Interaktive Karte aller Clubs (bald).</p></div>
+  <div class="card"><div class="kicker">Shop</div><h3>Merch – NaturalBornChillaz</h3><p>Shirts, Grinder, Sticker – Launch Q3.</p></div>
+</div>
+
+<footer>
+  <div>© 2026 NaturalBornChillaz – Infoportal. Kein Verkauf. 18+ · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="disclaimer.html">18+</a></div>
+</footer>
+
+<div class="ticker">
+  <div class="ticker-track" id="ticker-track">
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>DE: 25g Besitz legal seit 01.04.2024 • 3 Pflanzen Homegrow</span>
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>CSCs: Niedersachsen 12 Clubs, NRW 8, Bayern 0 – Stand Mai 2026</span>
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>Medizin: 62% Import aus Kanada • 3.500 Patienten in Studie</span>
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>EU: Nutzhanf-Blüte soll Agrarprodukt werden – Entscheidung 2026</span>
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>Am Steuer: THC-Grenzwert 3,5ng/ml diskutiert</span>
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>Wirtschaft: Deutscher Markt 2026 ca. 1,2 Mrd € Prognose</span>
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>Folge @infotonbc für tägliche Updates</span>
   </div>
+</div>
 
 <script>
 async function loadNews(){
@@ -57,7 +86,7 @@ async function loadNews(){
       const api = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed.url);
       const res = await fetch(api);
       const data = await res.json();
-      data.items.slice(0,3).forEach(item=>{  // 3 pro Quelle = 9 Karten
+      data.items.slice(0,3).forEach(item=>{
         const card = document.createElement('div');
         card.className='card';
         card.innerHTML = '<a href="'+item.link+'" target="_blank">'+
@@ -74,66 +103,18 @@ loadNews();
 setInterval(loadNews, 21600000);
 </script>
 
-  <div class="rent">
-    <div class="ad"><h3>DEIN SPOT HIER</h3><p style="color:#ccc;margin:5px 0">Günstiger als in Amsterdam, hält länger Seeds • Shops • CBD</p><p><a href="mailto:infotonbc@gmail.com" style="color:#C9A227">infotonbc@gmail.com</a></p></div>
-    <div class="qr"><a href="https://instagram.com/infotonbc" target="_blank"><img src="qr_card.png" alt="QR"></a><div style="color:#aaa;font-size:12px;margin-top:5px">@infotonbc</div></div>
-    <div class="ad"><h3>WERBUNG</h3><p style="color:#ccc;margin:5px 0">Hier chillen bald Ihre Kunden... Nur 2 Plätze frei</p><p><a href="mailto:infotonbc@gmail.com" style="color:#C9A227">Jetzt anfragen</a></p></div>
-  </div>
-</div>
-
-<footer>
-  <a href="Impressum.html">Impressum</a>
-  <a href="Datenschutz.html">Datenschutz</a>
-  <a href="disclaimer.html">Disclaimer 18+</a>
-  <a href="mailto:infotonbc@gmail.com">Kontakt</a>
-  <div style="margin-top:12px;font-size:12px">© 2026 NaturalBornChillaz – Infoportal, kein Verkauf</div>
-</footer>
-
-<div class="ticker">
-  <div class="ticker-track" id="ticker-track">
-    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
-    <span>DE: 25g Besitz legal seit 01.04.2024</span>
-    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
-    <span>Anbau: 3 Pflanzen pro Erwachsener</span>
-    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
-    <span>CSCs: Anträge in 12 Bundesländern offen</span>
-    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
-    <span>Medizin: 62% Import aus Kanada</span>
-    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
-    <span>EU: Nutzhanf-Blüte bald Agrarprodukt</span>
-    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
-    <span>News täglich auf @infotonbc</span>
-  </div>
-
-</body><script>
-// 1. Texte für DE und EN
+<script>
 const T = {
-  de: {
-    title:"NaturalBornChillaz – Cannabis News & Kultur",
-    subtitle:"Dein täglicher Überblick über Legalisierung, Medizin, Business & Lifestyle – kuratiert, unabhängig, chill.",
-    highlights:"Aktuelle Highlights – live",
-    partners:"Partner & Werbung",
-    footer:"© 2026 NaturalBornChillaz – Infoportal. Kein Verkauf. 18+"
-  },
-  en: {
-    title:"NaturalBornChillaz – Cannabis News & Culture",
-    subtitle:"Your daily briefing on legalization, medicine, business & lifestyle – curated, independent, chill.",
-    highlights:"Latest Highlights – live",
-    partners:"Partners & Advertising",
-    footer:"© 2026 NaturalBornChillaz – Info portal. No sales. 18+"
-  }
+  de:{title:"NaturalBornChillaz – Cannabis News & Kultur",subtitle:"Dein täglicher Überblick über Legalisierung, Medizin, Business & Lifestyle – kuratiert, unabhängig, chill.",highlights:"Aktuelle Highlights – live",partners:"Partner & Werbung",footer:"© 2026 NaturalBornChillaz – Infoportal. Kein Verkauf. 18+"},
+  en:{title:"NaturalBornChillaz – Cannabis News & Culture",subtitle:"Your daily briefing on legalization, medicine, business & lifestyle – curated, independent, chill.",highlights:"Latest Highlights – live",partners:"Partners & Advertising",footer:"© 2026 NaturalBornChillaz – Info portal. No sales. 18+"}
 };
-
-// 2. Sprache erkennen
-const lang = navigator.language.startsWith('de')? 'de' : 'en';
-const t = T[lang];
-document.documentElement.lang = lang;
-
-// 3. Inhalte ersetzen
-document.querySelector('header h1').textContent = t.title;
-document.querySelector('header p').textContent = t.subtitle;
-document.querySelector('h2').textContent = t.highlights;
-document.querySelectorAll('h2')[1].textContent = t.partners;
-document.querySelector('footer div').innerHTML = t.footer + ' · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="disclaimer.html">18+</a>';
+const lang=navigator.language.startsWith('de')?'de':'en';const t=T[lang];document.documentElement.lang=lang;
+document.querySelector('header h1').innerHTML='NaturalBorn<span>Chillaz</span>';
+document.querySelector('header h1').nextElementSibling.textContent=t.subtitle;
+document.querySelectorAll('h2')[0].textContent=t.highlights;
+document.querySelectorAll('h2')[1].textContent=t.partners;
+document.querySelector('footer div').innerHTML=t.footer+' · <a href="impressum.html">Impressum</a> · <a href="datenschutz.html">Datenschutz</a> · <a href="disclaimer.html">18+</a>';
+document.title = t.title;
 </script>
+</body>
 </html>
