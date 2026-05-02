@@ -3,73 +3,38 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NaturalBornChillaz - Worldwide News</title>
+<title>NaturalBornChillaz</title>
 <style>
 :root{--bg:#070807;--card:#141613;--gold:#C9A227;--text:#e8e8e6;--muted:#9a9a8f}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);background-image:radial-gradient(rgba(201,162,39,.07)1px,transparent 1px);background-size:22px 22px;color:var(--text);font-family:Arial,Helvetica,sans-serif;padding-bottom:80px}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;padding-bottom:80px;background-image:radial-gradient(rgba(201,162,39,.07)1px,transparent 1px);background-size:22px 22px}
 .wrap{max-width:1200px;margin:0 auto;padding:0 20px}
-.top-left{position:fixed;top:14px;left:18px;z-index:60;border:1px solid var(--gold);color:var(--gold);padding:7px 14px;border-radius:20px;font-size:13px;background:rgba(0,0,0,.7);text-decoration:none}
-.lang{position:fixed;top:14px;right:18px;z-index:60;display:flex;gap:8px}
-.lang button{width:38px;height:38px;border-radius:50%;border:1px solid rgba(201,162,39,.3);background:#0f110e;color:var(--gold);cursor:pointer;font-weight:bold}
-.lang button.active{background:var(--gold);color:#000}
 header{padding:80px 0 20px;text-align:center}
-.logo{font-size:46px;font-weight:800;color:var(--gold);text-shadow:0 0 25px rgba(201,162,39,.4)}
-h1{text-align:center;color:var(--gold);font-size:44px;margin:10px 0 5px}
-.sub{text-align:center;color:var(--muted);margin-bottom:30px}
+.logo{font-size:46px;font-weight:800;color:var(--gold)}
+h1{text-align:center;color:var(--gold);margin:10px 0}
+.sub{text-align:center;color:var(--muted)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin:30px 0}
-.card{display:block;background:var(--card);border:1px solid #2a2a2a;border-radius:12px;padding:18px;text-decoration:none;color:inherit;transition:.2s}
-.card:hover{border-color:var(--gold);transform:translateY(-3px)}
-.cat{color:var(--gold);font-size:12px;text-transform:uppercase;margin-bottom:6px}
-.card h3{margin:6px 0 8px;color:#fff}
-.card p{color:var(--muted);margin:0;font-size:14px}
-
-/* QR + Mietbanner */
-.rent-wrap{display:grid;grid-template-columns:1fr 240px 1fr;gap:20px;align-items:center;margin:50px 0}
-.rent-banner{display:block;background:linear-gradient(135deg,#1a1d16,#0f110e);border:2px dashed var(--gold);border-radius:14px;padding:28px;text-align:center;text-decoration:none;color:inherit;transition:.2s}
-.rent-banner:hover{background:#1f221c;transform:scale(1.02);box-shadow:0 0 25px rgba(201,162,39,.3)}
-.rent-banner h3{color:var(--gold);margin:0 0 8px;font-size:20px}
-.rent-banner p{color:var(--muted);font-size:14px;margin:0}
-.qr{text-align:center}
-.qr img{max-width:200px;width:100%;border:2px solid var(--gold);border-radius:14px;box-shadow:0 0 30px rgba(201,162,39,.25)}
+.card{display:block;background:var(--card);border:1px solid #333;border-radius:12px;padding:18px;color:inherit;text-decoration:none}
+.card:hover{border-color:var(--gold)}
+.cat{color:var(--gold);font-size:12px;text-transform:uppercase}
+.rent-wrap{display:grid;grid-template-columns:1fr 220px 1fr;gap:20px;align-items:center;margin:50px 0}
+.rent-banner{display:block;background:#111;border:2px dashed var(--gold);border-radius:12px;padding:24px;text-align:center;color:inherit;text-decoration:none}
+.rent-banner:hover{background:#1a1a1a}
+.rent-banner h3{color:var(--gold);margin:0 0 8px}
+.qr{text-align:center}.qr img{max-width:200px;border:2px solid var(--gold);border-radius:12px}
+.ticker{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:2px solid var(--gold);padding:12px;white-space:nowrap;overflow:hidden}
+.ticker div{display:inline-block;animation:slide 60s linear infinite;color:var(--gold)}
+@keyframes slide{from{transform:translateX(100%)}to{transform:translateX(-100%)}}
+#age{position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center}
+.ageBox{background:#141613;border:2px solid var(--gold);padding:30px;border-radius:12px;text-align:center}
+.ageBox button{background:var(--gold);color:#000;border:0;padding:10px 20px;border-radius:6px;font-weight:bold;margin-top:10px;cursor:pointer}
+.lang{position:fixed;top:12px;right:12px;display:flex;gap:6px}
+.lang button{width:36px;height:36px;border-radius:50%;background:#111;color:var(--gold);border:1px solid var(--gold);cursor:pointer}
+.lang button.active{background:var(--gold);color:#000}
 @media(max-width:800px){.rent-wrap{grid-template-columns:1fr}}
-
-footer{text-align:center;padding:35px;color:#777;border-top:1px solid #222;margin-top:40px;font-size:13px}
-footer a{color:var(--gold);margin:0 10px;text-decoration:none}
-.ticker{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:2px solid var(--gold);padding:14px 0;z-index:55;overflow:hidden;white-space:nowrap}
-.ticker div{display:inline-block;animation:slide 70s linear infinite;color:var(--gold);font-size:16px;font-weight:600}
-@keyframes slide{0%{transform:translateX(100%)}100%{transform:translateX(-120%)}}
-#age{position:fixed;inset:0;background:rgba(0,0,0,.95);z-index:9999;display:flex;align-items:center;justify-content:center}
-.ageBox{background:#141613;border:2px solid var(--gold);padding:32px;border-radius:14px;text-align:center;max-width:360px}
-.ageBox button{background:var(--gold);color:#000;border:0;padding:12px 26px;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:12px}
 </style>
 </head>
 <body>
-<div id="age"><div class="ageBox"><h2 style="color:var(--gold);margin:0">18+</h2><p id="ageTxt">Nur für Erwachsene</p><button id="ageBtn">Ich bin 18+</button></div></div>
 
-<a href="Disclaimer.html" class="top-left">18+ Info</a>
-<div class="lang"><button id="de">DE</button><button id="en">EN</button></div>
-
-<div class="wrap">
- <header><div class="logo">NaturalBornChillaz</div></header>
- <h1>WORLDWIDE NEWS</h1>
- <p class="sub" id="sub">Handverlesene Cannabis-Updates</p>
-
- <div class="grid" id="news"></div>
-
- <!-- QR in der Mitte, Mietbanner links/rechts -->
- <div class="rent-wrap">
-  <a href="mailto:infotonbc@gmail.com?subject=Banner%20links%20mieten" class="rent-banner">
-   <h3>DEIN SPOT HIER</h3>
-   <p>Günstiger als Gras in Amsterdam – und hält länger. Perfekt für Headshops, Seeds oder CBD. Klick & mieten!</p>
-  </a>
-
-  <div class="qr">
-   <a href="https://instagram.com/infotonbc" target="_blank"><img src="qr_card.png" alt="QR @infotonbc"></a>
-   <p style="color:var(--muted);margin-top:8px;font-size:13px">@infotonbc</p>
-  </div>
-
-  <a href="mailto:infotonbc@gmail.com?subject=Banner%20rechts%20mieten" class="rent-banner">
-   <h3>WERBUNG FÜR LEGENDEN</h3>
-   <p>Hier könnte dein Logo chillen. 420% mehr Aufmerksamkeit* (*gefühlt). Nur 1 Platz frei!</p>
-  </
+<div id="age">
+ <div class="ageBox">
+  
