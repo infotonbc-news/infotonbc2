@@ -24,10 +24,11 @@ h2{color:#C9A227;text-align:center;margin:30px 0 20px}
 .qr img{width:180px;border:2px solid #C9A227;border-radius:10px}
 footer{background:#000;border-top:1px solid #222;padding:25px;text-align:center;color:#888;margin-top:40px}
 footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
-.ticker{background:#000;border-top:1px solid #C9A227;color:#C9A227;padding:8px;position:fixed;bottom:0;left:0;right:0;white-space:nowrap;overflow:hidden;font-size:13px}
-.ticker span{display:inline-block;animation:move 40s linear infinite;padding-left:100%}
-@keyframes move{to{transform:translateX(-100%)}}
-</style>
+.ticker{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:2px solid #C9A227;overflow:hidden;white-space:nowrap;z-index:999}
+.ticker-track{display:inline-block;padding:14px 0;animation:ticker 45s linear infinite;font-weight:700}
+.ticker span{display:inline-block;margin-right:40px;color:#eee}
+.ticker .chip{background:#C9A227;color:#000;padding:4px 10px;border-radius:999px;font-weight:800}
+@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
 </head>
 <body><div id="age" style="position:fixed;inset:0;background:rgba(0,0,0,.95);display:flex;align-items:center;justify-content:center;z-index:9999"><div style="background:#111;border:2px solid #C9A227;padding:30px;border-radius:12px;text-align:center"><h2 style="color:#C9A227;margin:0 0 10px">18+</h2><p style="color:#aaa;margin:0 0 15px">Nur für Erwachsene</p><button onclick="document.getElementById('age').remove()" style="background:#C9A227;border:0;padding:10px 20px;font-weight:bold;border-radius:6px;cursor:pointer">Ich bin 18+</button></div></div>
 
@@ -88,7 +89,21 @@ setInterval(loadNews, 21600000);
   <div style="margin-top:12px;font-size:12px">© 2026 NaturalBornChillaz – Infoportal, kein Verkauf</div>
 </footer>
 
-<div class="ticker"><span>DEUTSCHLAND: Clubs Ausbau • USA: Schedule III LIVE • THAILAND: Medical Only • MALTA: offen • SCHWEIZ: Pilot • KANADA: 72t Import •</span></div>
+<div class="ticker">
+  <div class="ticker-track" id="ticker-track">
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>DE: 25g Besitz legal seit 01.04.2024</span>
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>Anbau: 3 Pflanzen pro Erwachsener</span>
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>CSCs: Anträge in 12 Bundesländern offen</span>
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>Medizin: 62% Import aus Kanada</span>
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>EU: Nutzhanf-Blüte bald Agrarprodukt</span>
+    <span class="chip">JOIN THE NATURALBORNCHILLAZ</span>
+    <span>News täglich auf @infotonbc</span>
+  </div>
 
 </body><script>
 // 1. Texte für DE und EN
