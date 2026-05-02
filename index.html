@@ -37,15 +37,41 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 </div>
 
 <div class="wrap">
-  <h2>Aktuelle Highlights</h2>
-  <div class="grid">
-    <div class="card"><a href="https://www.bundesgesundheitsministerium.de" target="_blank"><div class="kicker">Deutschland</div><h3>Social Clubs Ausbau 2026</h3><p>Erweiterung nach CanG – erste Lizenzen vergeben.</p></a></div>
-    <div class="card"><a href="https://www.reuters.com" target="_blank"><div class="kicker">USA</div><h3>Schedule III seit 28.04.2026</h3><p>DEA stuft Cannabis herab – historischer Schritt.</p></a></div>
-    <div class="card"><a href="https://www.bangkokpost.com" target="_blank"><div class="kicker">Thailand</div><h3>Zurück zu Medical-Only</h3><p>Neue Lizenz stoppt Freizeit-Shops ab 2025.</p></a></div>
-    <div class="card"><a href="https://timesofmalta.com" target="_blank"><div class="kicker">Malta</div><h3>Erste Clubs öffnen</h3><p>Non-Profit Abgabe offiziell gestartet.</p></a></div>
-    <div class="card"><a href="https://www.bag.admin.ch" target="_blank"><div class="kicker">Schweiz</div><h3>Zürich Pilot stabil</h3><p>Über 2.100 Teilnehmer im Modellversuch.</p></a></div>
-    <div class="card"><a href="https://www.canada.ca" target="_blank"><div class="kicker">Kanada</div><h3>72 Tonnen nach Deutschland</h3><p>Exportrekord hält 2026 weiter an.</p></a></div>
+    <h2>Aktuelle Highlights – live</h2>
+  <div class="grid" id="news-grid">
+    <div class="card"><p style="color:#888">Lade News...</p></div>
   </div>
+
+<script>
+async function loadNews(){
+  const feeds = [
+    {url:'https://feeds.feedburner.com/leafly', name:'Leafly'},
+    {url:'https://www.marijuanamoment.net/feed/', name:'Marijuana Moment'},
+    {url:'https://www.cannabisbusinesstimes.com/rss/', name:'Cannabis Business Times'}
+  ];
+  const grid = document.getElementById('news-grid');
+  grid.innerHTML = '';
+  for(const feed of feeds){
+    try{
+      const api = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed.url);
+      const res = await fetch(api);
+      const data = await res.json();
+      data.items.slice(0,2).forEach(item=>{
+        const card = document.createElement('div');
+        card.className='card';
+        card.innerHTML = '<a href="'+item.link+'" target="_blank">'+
+          '<div class="kicker">'+feed.name+' • '+new Date(item.pubDate).toLocaleDateString('de-DE')+'</div>'+
+          '<h3>'+item.title+'</h3>'+
+          '<p>'+item.description.replace(/<[^>]+>/g,'').slice(0,110)+'...</p>'+
+        '</a>';
+        grid.appendChild(card);
+      });
+    }catch(e){}
+  }
+}
+loadNews();
+setInterval(loadNews, 21600000);
+</script>
 
   <div class="rent">
     <div class="ad"><h3>DEIN SPOT HIER</h3><p style="color:#ccc;margin:5px 0">Günstiger als in Amsterdam, hält länger Seeds • Shops • CBD</p><p><a href="mailto:infotonbc@gmail.com" style="color:#C9A227">infotonbc@gmail.com</a></p></div>
