@@ -6,112 +6,17 @@
 <title>NaturalBornChillaz - Worldwide News</title>
 <style>
 :root{--bg:#070807;--card:#141613;--gold:#C9A227;--gold-30:rgba(201,162,39,.3);--text:#e8e8e6;--muted:#9a9a8f}
-*{box-sizing:border-box}html,body{height:100%}
-body{margin:0;background:var(--bg);background-image:radial-gradient(rgba(201,162,39,.07)1px,transparent 1px);background-size:22px 22px;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;padding-bottom:50px}
-a{color:inherit;text-decoration:none}
-.wrap{max-width:1150px;margin:0 auto;padding:0 20px}
-.disclaimer-btn{position:fixed;top:14px;left:18px;z-index:60;border:1px solid var(--gold);color:var(--gold);background:rgba(10,12,9,.6);backdrop-filter:blur(6px);padding:7px 14px;border-radius:999px;font-size:13px}
-.lang-switcher{position:fixed;top:14px;right:18px;z-index:70;display:flex;gap:8px}
-.lang-btn{width:38px;height:38px;border-radius:50%;background:#0f110e;border:1px solid var(--gold-30);color:var(--gold);display:grid;place-items:center;cursor:pointer}
-.lang-btn.active{background:var(--gold);color:#000}
-header{padding:70px 0 30px;display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
-.logo-text{font-size:44px;font-weight:800;color:var(--gold);text-shadow:0 0 25px rgba(201,162,39,.4);letter-spacing:.5px}
-.logo-text em{font-style:italic}
-.badge{width:92px;height:92px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;position:relative;box-shadow:0 0 30px rgba(201,162,39,.25);animation:spin 12s linear infinite}
-.badge span{font-size:10px;color:var(--gold);text-align:center;line-height:1.2;font-weight:700}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);background-image:radial-gradient(rgba(201,162,39,.07)1px,transparent 1px);background-size:22px 22px;color:var(--text);font-family:Arial,Helvetica,sans-serif}
+a{color:inherit;text-decoration:none}.wrap{max-width:1150px;margin:0 auto;padding:0 20px}
+.top-left{position:fixed;top:14px;left:18px;z-index:50;border:1px solid var(--gold);color:var(--gold);padding:7px 14px;border-radius:20px;font-size:13px;background:rgba(0,0,0,.7)}
+.lang{position:fixed;top:14px;right:18px;z-index:50;display:flex;gap:8px}
+.lang button{width:38px;height:38px;border-radius:50%;border:1px solid var(--gold-30);background:#0f110e;color:var(--gold);cursor:pointer;font-weight:bold}
+.lang button.active{background:var(--gold);color:#000}
+header{padding:80px 0 30px;display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
+.logo{font-size:44px;font-weight:800;color:var(--gold);text-shadow:0 0 25px rgba(201,162,39,.4)}
+.badge{width:92px;height:92px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;animation:spin 12s linear infinite;box-shadow:0 0 30px rgba(201,162,39,.25)}
+.badge span{font-size:10px;color:var(--gold);text-align:center;font-weight:700;line-height:1.2}
 @keyframes spin{to{transform:rotate(360deg)}}
-h1{text-align:center;color:var(--gold);font-size:48px;margin:10px 0 5px;letter-spacing:2px}
-.subtitle{text-align:center;color:var(--muted);margin:0 0 30px}
-.ticker{background:#0f110e;border:1px solid #2a2a2a;border-left:3px solid var(--gold);padding:10px;overflow:hidden;white-space:nowrap;margin:25px 0}
-.ticker div{display:inline-block;animation:ticker 45s linear infinite;color:var(--gold)}
-@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-110%)}}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:30px 0}
-.card{background:var(--card);border:1px solid #2a2a2a;border-radius:12px;padding:18px;transition:.2s}
-.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.4);border-color:var(--gold-30)}
-.card.cat{color:var(--gold);font-size:12px;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
-.card h3{margin:0 0 8px;font-size:18px}
-.card p{color:var(--muted);font-size:14px;margin:0;line-height:1.4}
-.banners{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:35px 0}
-.banner{background:linear-gradient(135deg,#1a1d16,#0f110e);border:1px solid rgba(201,162,39,.3);border-radius:12px;padding:24px;text-align:center}
-.banner h3{margin:8px 0;color:var(--text)}
-.banner p{color:var(--muted);font-size:13px}
-.btn{display:inline-block;background:var(--gold);color:#000;padding:10px 18px;border-radius:8px;font-weight:700;margin-top:10px}
-.cta{text-align:center;margin:40px 0}
-.cta a{background:var(--gold);color:#000;padding:16px 32px;border-radius:10px;font-weight:800;display:inline-block;box-shadow:0 0 25px rgba(201,162,39,.3)}
-footer{text-align:center;padding:35px 20px;color:#777;font-size:13px;border-top:1px solid #222;margin-top:40px}
-footer a{color:var(--gold);margin:0 12px}
-#ageGate{position:fixed;inset:0;background:rgba(7,8,7,.96);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
-.ageBox{background:#141613;border:1px solid var(--gold);border-radius:16px;padding:32px;max-width:420px;text-align:center;box-shadow:0 0 40px rgba(201,162,39,.2)}
-.ageBox h2{color:var(--gold);margin:0 0 12px}
-.ageBox p{color:#d0d0c8;margin:0 0 20px}
-.ageBox button{background:var(--gold);color:#070807;border:0;padding:12px 24px;border-radius:8px;font-weight:700;cursor:pointer}
-</style>
-</head>
-<body>
-<div id="ageGate"><div class="ageBox">
- <h2>18+ Zugang</h2>
- <p data-i18n="age_text">Diese Seite richtet sich nur an Volljährige.</p>
- <button onclick="localStorage.setItem('nbc_age','1');document.getElementById('ageGate').remove()">Ich bin 18+</button>
-</div></div>
-
-<a href="Disclaimer.html" class="disclaimer-btn">18+ Info</a>
-<div class="lang-switcher">
- <button class="lang-btn active" onclick="setLang('de')" id="deBtn">DE</button>
- <button class="lang-btn" onclick="setLang('en')" id="enBtn">EN</button>
-</div>
-
-<div class="wrap">
- <header>
-  <div class="logo-text">be a Natural Born <em>Chillaz</em></div>
-  <div class="badge"><span>UPDATE<br>COMING<br>SOON</span></div>
- </header>
-
- <h1>WORLDWIDE NEWS</h1>
- <p class="subtitle" data-i18n="subtitle">Globale Cannabis-News & Updates</p>
-
- <div class="ticker"><div data-i18n="ticker">DE: Clubs starten • USA: 24 Staaten legal • Thailand plant Regulierung • Malta Lizenzen • Luxemburg Anbau • Schweiz Piloten • Kanada Rekord • Niederlande Experiment • Tschechien plant •</div></div>
-
- <div class="grid" id="news"></div>
-
- <div class="banners">
-  <div class="banner">
-   <div style="color:var(--gold);font-size:13px" data-i18n="ad1_cat">PARTNER</div>
-   <h3 data-i18n="ad1_title">Dein Shop hier?</h3>
-   <p data-i18n="ad1_text">Werbung für Headshops & Brands</p>
-   <a href="mailto:infotonbc@gmail.com" class="btn" data-i18n="ad1_btn">Anfragen</a>
-  </div>
-  <div class="banner">
-   <div style="color:var(--gold);font-size:13px" data-i18n="ad2_cat">COMMUNITY</div>
-   <h3 data-i18n="ad2_title">Werde Teil der Crew</h3>
-   <p data-i18n="ad2_text">News, Memes, Updates täglich</p>
-   <a href="https://instagram.com/infotonbc" target="_blank" class="btn" data-i18n="ad2_btn">Folgen</a>
-  </div>
- </div>
-
- <div class="cta"><a href="https://instagram.com/infotonbc" target="_blank" data-i18n="cta">Folge @infotonbc auf Instagram</a></div>
-</div>
-
-<footer>
- <a href="Impressum.html">Impressum</a>
- <a href="Datenschutz.html">Datenschutz</a>
- <a href="Disclaimer.html">18+ Disclaimer</a>
- <p>© 2025 NaturalBornChillaz</p>
-</footer>
-
-<script>
-if(localStorage.getItem('nbc_age')==='1')document.getElementById('ageGate').remove();
-const t={
- de:{age_text:"Diese Seite richtet sich nur an Volljährige.",subtitle:"Globale Cannabis-News & Updates",ticker:"DE: Clubs starten Juli 2024 • USA: 24 Staaten legal, Ohio Verkauf • Thailand plant Regulierung • Malta vergibt Lizenzen • Luxemburg Eigenanbau erlaubt • Schweiz Pilotprojekte laufen • Kanada Umsatzrekord • Niederlande Wietexperiment • Tschechien plant Legalisierung •",ad1_cat:"PARTNER",ad1_title:"Dein Shop hier?",ad1_text:"Werbung für Headshops & Brands",ad1_btn:"Anfragen",ad2_cat:"COMMUNITY",ad2_title:"Werde Teil der Crew",ad2_text:"News, Memes, Updates täglich",ad2_btn:"Folgen",cta:"Folge @infotonbc auf Instagram",news:[{c:"DEUTSCHLAND",t:"CanG in Kraft",d:"Besitz 25g, 3 Pflanzen, Clubs ab Juli."},{c:"USA",t:"Ohio startet",d:"Verkauf läuft, 24+ Staaten legal."},{c:"EUROPA",t:"Malta & Luxemburg",d:"Erste Lizenzen, Modellprojekte."},{c:"WELTWEIT",t:"Thailand Update",d:"Regulierung statt Verbot geplant."}]},
- en:{age_text:"This site is for adults 18+ only.",subtitle:"Global Cannabis News & Updates",ticker:"GERMANY: Clubs July 2024 • USA: 24 states legal, Ohio sales • Thailand plans regulation • Malta licenses • Luxembourg homegrow • Switzerland pilots • Canada record • Netherlands experiment • Czech plans •",ad1_cat:"PARTNER",ad1_title:"Your Shop Here?",ad1_text:"Ads for headshops & brands",ad1_btn:"Contact",ad2_cat:"COMMUNITY",ad2_title:"Join the Crew",ad2_text:"Daily news & memes",ad2_btn:"Follow",cta:"Follow @infotonbc on Instagram",news:[{c:"GERMANY",t:"CanG Live",d:"25g possession, 3 plants, clubs soon."},{c:"USA",t:"Ohio Opens",d:"Sales start, 24+ states legal."},{c:"EUROPE",t:"Malta Leads",d:"First licenses issued."},{c:"WORLD",t:"Thailand",d:"Regulation planned not ban."}]}
-};
-function setLang(l){
- localStorage.setItem('nbc_lang',l);
- document.getElementById('deBtn').classList.toggle('active',l==='de');
- document.getElementById('enBtn').classList.toggle('active',l==='en');
- document.querySelectorAll('[data-i18n]').forEach(e=>{const k=e.dataset.i18n;if(t[l][k])e.textContent=t[l][k]});
- document.getElementById('news').innerHTML=t[l].news.map(n=>`<div class="card"><div class="cat">${n.c}</div><h3>${n.t}</h3><p>${n.d}</p></div>`).join('');
-}
-setLang(localStorage.getItem('nbc_lang')||'de');
-</script>
-</body>
-</html>
+h1{text-align:center;color:var(--gold);font-size:48px;margin:10px 0 5px}
+.sub{text-align:center;color:var(--muted);margin-bottom:30px}
+.ticker{background:#0f110e;border-left:3px solid var(--gold);padding:10px;overflow:hidden;white-space:nowrap;margin:25px 0;border:1px
