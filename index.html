@@ -37,7 +37,7 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 </div>
 
 <div class="wrap">
-    <h2>Aktuelle Highlights – live</h2>
+  <h2>Aktuelle Highlights – live</h2>
   <div class="grid" id="news-grid">
     <div class="card"><p style="color:#888">Lade News...</p></div>
   </div>
@@ -45,9 +45,9 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 <script>
 async function loadNews(){
   const feeds = [
-    {url:'https://feeds.feedburner.com/leafly', name:'Leafly'},
-    {url:'https://www.marijuanamoment.net/feed/', name:'Marijuana Moment'},
-    {url:'https://www.cannabisbusinesstimes.com/rss/', name:'Cannabis Business Times'}
+    {url:'https://hanf-magazin.com/feed/', name:'Hanf Magazin'},
+    {url:'https://hanfverband.de/feed', name:'DHV'},
+    {url:'https://www.lucys-magazin.com/feed/', name:'Lucys Rausch'}
   ];
   const grid = document.getElementById('news-grid');
   grid.innerHTML = '';
@@ -56,13 +56,13 @@ async function loadNews(){
       const api = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feed.url);
       const res = await fetch(api);
       const data = await res.json();
-      data.items.slice(0,2).forEach(item=>{
+      data.items.slice(0,3).forEach(item=>{  // 3 pro Quelle = 9 Karten
         const card = document.createElement('div');
         card.className='card';
         card.innerHTML = '<a href="'+item.link+'" target="_blank">'+
           '<div class="kicker">'+feed.name+' • '+new Date(item.pubDate).toLocaleDateString('de-DE')+'</div>'+
           '<h3>'+item.title+'</h3>'+
-          '<p>'+item.description.replace(/<[^>]+>/g,'').slice(0,110)+'...</p>'+
+          '<p>'+item.description.replace(/<[^>]+>/g,'').slice(0,120)+'...</p>'+
         '</a>';
         grid.appendChild(card);
       });
