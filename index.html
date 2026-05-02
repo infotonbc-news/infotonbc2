@@ -6,7 +6,8 @@
 <title>NaturalBornChillaz - Worldwide News</title>
 <style>
 :root{--bg:#070807;--card:#141613;--gold:#C9A227;--text:#e8e8e6;--muted:#9a9a8f}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);background-image:radial-gradient(rgba(201,162,39,.07)1px,transparent 1px);background-size:22px 22px;color:var(--text);font-family:Arial,Helvetica,sans-serif;padding-bottom:70px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);background-image:radial-gradient(rgba(201,162,39,.07)1px,transparent 1px);background-size:22px 22px;color:var(--text);font-family:Arial,Helvetica,sans-serif;padding-bottom:70px}
 .wrap{max-width:1150px;margin:0 auto;padding:0 20px}
 .top-left{position:fixed;top:14px;left:18px;z-index:60;border:1px solid var(--gold);color:var(--gold);padding:7px 14px;border-radius:20px;font-size:13px;background:rgba(0,0,0,.7);text-decoration:none}
 .lang{position:fixed;top:14px;right:18px;z-index:60;display:flex;gap:8px}
@@ -14,83 +15,10 @@
 .lang button.active{background:var(--gold);color:#000}
 header{padding:80px 0 30px;display:flex;align-items:center;justify-content:center;gap:40px;flex-wrap:wrap}
 .logo{font-size:44px;font-weight:800;color:var(--gold);text-shadow:0 0 25px rgba(201,162,39,.4)}
-.badge{width:92px;height:92px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;animation:spin 12s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}.badge span{font-size:10px;color:var(--gold);text-align:center;font-weight:700}
+.badge{width:92px;height:92px;border:2px solid var(--gold);border-radius:50%;display:grid;place-items:center;animation:spin 12s linear infinite;box-shadow:0 0 30px rgba(201,162,39,.25)}
+.badge span{font-size:10px;color:var(--gold);text-align:center;font-weight:700;line-height:1.2}
+@keyframes spin{to{transform:rotate(360deg)}}
 h1{text-align:center;color:var(--gold);font-size:48px;margin:10px 0 5px}
 .sub{text-align:center;color:var(--muted);margin-bottom:30px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:30px 0}
-.card{display:block;background:var(--card);border:1px solid #2a2a2a;border-radius:12px;padding:18px;text-decoration:none;color:inherit;transition:.2s}
-.card:hover{border-color:var(--gold);transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.4)}
-.cat{color:var(--gold);font-size:12px;text-transform:uppercase;margin-bottom:6px}
-.banners{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:35px 0}
-.banner{display:block;background:#1a1d16;border:1px solid rgba(201,162,39,.3);border-radius:12px;padding:24px;text-align:center;text-decoration:none;color:inherit}
-.banner:hover{border-color:var(--gold)}
-.qr{text-align:center;margin:40px 0}.qr img{max-width:220px;width:100%;border:2px solid var(--gold);border-radius:14px;box-shadow:0 0 30px rgba(201,162,39,.2)}
-footer{text-align:center;padding:35px;color:#777;border-top:1px solid #222;margin-top:40px;font-size:13px}footer a{color:var(--gold);margin:0 10px;text-decoration:none}
-/* LAUFBAND UNTEN */
-.ticker{position:fixed;bottom:0;left:0;right:0;background:#000;border-top:2px solid var(--gold);padding:14px 0;z-index:55;overflow:hidden;white-space:nowrap}
-.ticker div{display:inline-block;animation:slide 60s linear infinite;color:var(--gold);font-size:16px;font-weight:600;letter-spacing:.5px}
-@keyframes slide{0%{transform:translateX(100%)}100%{transform:translateX(-120%)}}
-#age{position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center}
-.ageBox{background:#141613;border:2px solid var(--gold);padding:32px;border-radius:14px;text-align:center}
-.ageBox button{background:var(--gold);color:#000;border:0;padding:12px 26px;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:12px}
-</style>
-</head>
-<body>
-<div id="age"><div class="ageBox"><h2 style="color:var(--gold);margin:0 0 10px">18+</h2><p id="ageTxt">Bitte bestätigen</p><button id="ageBtn">Ich bin 18+</button></div></div>
-
-<a href="Disclaimer.html" class="top-left">18+ Info</a>
-<div class="lang"><button id="de">DE</button><button id="en">EN</button></div>
-
-<div class="wrap">
- <header><div class="logo">NaturalBornChillaz</div><div class="badge"><span>UPDATE<br>COMING<br>SOON</span></div></header>
- <h1>WORLDWIDE NEWS</h1>
- <p class="sub" id="sub"></p>
- <div class="grid" id="news"></div>
- <div class="banners">
-  <a href="mailto:infotonbc@gmail.com" class="banner"><div style="color:var(--gold);font-size:13px" id="b1c"></div><h3 id="b1t"></h3><p id="b1d" style="color:var(--muted)"></p></a>
-  <a href="https://instagram.com/infotonbc" target="_blank" class="banner"><div style="color:var(--gold);font-size:13px" id="b2c"></div><h3 id="b2t"></h3><p id="b2d" style="color:var(--muted)"></p></a>
- </div>
- <div class="qr"><a href="https://instagram.com/infotonbc" target="_blank"><img src="qr_card.png" alt="QR Code @infotonbc"></a><p style="color:var(--muted);margin-top:10px">Scan für Instagram @infotonbc</p></div>
-</div>
-
-<div class="ticker"><div id="tick"></div></div>
-
-<footer><a href="Impressum.html">Impressum</a><a href="Datenschutz.html">Datenschutz</a><a href="Disclaimer.html">Disclaimer</a><p>© 2025 NaturalBornChillaz</p></footer>
-
-<script>
-const age=document.getElementById('age');
-document.getElementById('ageBtn').onclick=()=>{localStorage.setItem('nbc18','1');age.remove()};
-if(localStorage.getItem('nbc18')==='1')age.remove();
-
-const D={
- de:{age:"Diese Seite ist nur für Volljährige.",btn:"Ich bin 18+",sub:"Globale Cannabis-News & Updates",tick:"DEUTSCHLAND: Anbau-Clubs starten Juli 2024 • USA: Ohio Verkauf läuft, 24 Staaten legal • THAILAND: Regulierung statt Verbot • MALTA: Erste Lizenzen vergeben • LUXEMBURG: Eigenanbau legal • SCHWEIZ: Pilotprojekte Zürich/Basel • KANADA: Rekordumsatz 2024 •",b1:["PARTNER","Dein Shop hier?","Werbung"],b2:["COMMUNITY","Werde Teil","News täglich"],
-  news:[
-   {c:"DEUTSCHLAND",t:"CanG live",d:"25g, 3 Pflanzen, Clubs ab Juli",u:"https://www.bundesgesundheitsministerium.de/themen/cannabis"},
-   {c:"USA",t:"Ohio startet Verkauf",d:"24+ Staaten jetzt legal",u:"https://norml.org"},
-   {c:"EUROPA",t:"Malta Lizenzen",d:"Erstes EU-Land mit Modell",u:"https://www.reuters.com/world/europe/"},
-   {c:"WELT",t:"Thailand Update",d:"Kein Verbot, Regulierung kommt",u:"https://www.bangkokpost.com"}
-  ]},
- en:{age:"Adults 18+ only.",btn:"I am 18+",sub:"Global Cannabis News & Updates",tick:"GERMANY: Clubs launch July 2024 • USA: Ohio sales live, 24 states legal • THAILAND: regulation not ban • MALTA: first licenses • LUXEMBOURG: homegrow legal • SWITZERLAND: pilots • CANADA: record sales •",b1:["PARTNER","Your shop?","Advertising"],b2:["COMMUNITY","Join","Daily news"],
-  news:[
-   {c:"GERMANY",t:"CanG live",d:"25g, 3 plants, clubs",u:"https://www.bundesgesundheitsministerium.de/en/"},
-   {c:"USA",t:"Ohio opens",d:"24+ states legal",u:"https://norml.org"},
-   {c:"EUROPE",t:"Malta licenses",d:"First EU model",u:"https://www.reuters.com"},
-   {c:"WORLD",t:"Thailand",d:"Regulation planned",u:"https://www.bangkokpost.com"}
-  ]}
-};
-
-function set(l){
- const d=D[l];
- const at=document.getElementById('ageTxt'); if(at) at.textContent=d.age;
- const ab=document.getElementById('ageBtn'); if(ab) ab.textContent=d.btn;
- document.getElementById('sub').textContent=d.sub;
- document.getElementById('tick').textContent=d.tick;
- document.getElementById('news').innerHTML=d.news.map(n=>`<a class="card" href="${n.u}" target="_blank"><div class="cat">${n.c}</div><h3>${n.t}</h3><p style="color:var(--muted);margin:0">${n.d}</p></a>`).join('');
- document.getElementById('b1c').textContent=d.b1[0];document.getElementById('b1t').textContent=d.b1[1];document.getElementById('b1d').textContent=d.b1[2];
- document.getElementById('b2c').textContent=d.b2[0];document.getElementById('b2t').textContent=d.b2[1];document.getElementById('b2d').textContent=d.b2[2];
- document.getElementById('de').classList.toggle('active',l==='de');
- document.getElementById('en').classList.toggle('active',l==='en');
- localStorage.setItem('lang',l);
-}
-document.getElementById('de').onclick=()=>set('de');
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax:250px,1fr));gap:18px;margin:30px 0}
+.card{display:block;background:var(--card);border:1px solid #2a2a2a;border-radius:12px;padding:18px;text-decoration:none;color:inherit;
