@@ -6,67 +6,133 @@
 <title>NaturalBornChillaz - Worldwide News</title>
 </head>
 <body style="margin:0;background:#070807;color:#e8e8e6;font-family:Arial,Helvetica,sans-serif">
-<div id="age" style="position:fixed;inset:0;background:rgba(0,0,0,0.96);z-index:9999;display:flex;align-items:center;justify-content:center">
+
+<!-- AGE GATE -->
+<div id="age" style="position:fixed;inset:0;background:#000;z-index:9999;display:flex;align-items:center;justify-content:center">
  <div style="background:#141613;padding:32px;border:2px solid #C9A227;border-radius:14px;text-align:center;max-width:380px">
-  <div style="width:60px;height:60px;border:2px solid #C9A227;border-radius:12px;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;color:#C9A227;font-weight:bold">18+</div>
-  <h2 style="color:#C9A227;margin:0 0 10px">Zugang nur fuer Volljaehrige</h2>
-  <p style="color:#aaa;font-size:14px">Diese Seite enthaelt Informationen zu Cannabis.</p>
-  <button onclick="localStorage.setItem('nbc18','1');document.getElementById('age').style.display='none'" style="background:#C9A227;color:#000;border:0;padding:12px 26px;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px">Ich bin 18+</button>
+  <h2 style="color:#C9A227;margin:0 0 10px">18+ Zugang</h2>
+  <p style="color:#aaa;font-size:14px" id="ageText">Diese Seite richtet sich nur an Volljaehrige.</p>
+  <button onclick="localStorage.setItem('nbc18','1');document.getElementById('age').remove()" style="background:#C9A227;color:#000;border:0;padding:12px 26px;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px" id="ageBtn">Ich bin 18+</button>
  </div>
 </div>
-<script>if(localStorage.getItem('nbc18')==='1')document.getElementById('age').style.display='none';</script>
+<script>if(localStorage.getItem('nbc18')==='1'){document.getElementById('age').remove()}</script>
 
-<div style="position:fixed;top:12px;left:15px;z-index:50"><a href="Disclaimer.html" style="border:1px solid #C9A227;color:#C9A227;padding:6px 12px;border-radius:20px;font-size:12px;text-decoration:none;background:rgba(0,0,0,0.5)">18+ Info</a></div>
+<!-- TOP BUTTONS -->
+<div style="position:fixed;top:12px;left:15px;z-index:50"><a href="Disclaimer.html" style="border:1px solid #C9A227;color:#C9A227;padding:6px 12px;border-radius:20px;font-size:12px;text-decoration:none;background:rgba(0,0,0,0.7)">18+ Info</a></div>
+
+<div style="position:fixed;top:12px;right:15px;z-index:50;display:flex;gap:8px">
+ <button onclick="setLang('de')" id="btnDE" style="width:36px;height:36px;border-radius:50%;background:#C9A227;color:#000;border:0;font-weight:bold;cursor:pointer">DE</button>
+ <button onclick="setLang('en')" id="btnEN" style="width:36px;height:36px;border-radius:50%;background:#222;color:#C9A227;border:1px solid #C9A227;font-weight:bold;cursor:pointer">EN</button>
+</div>
 
 <div style="max-width:1150px;margin:0 auto;padding:20px">
- <div style="display:flex;align-items:center;justify-content:center;gap:40px;padding:60px 0 30px;flex-wrap:wrap">
-  <div style="font-size:42px;font-weight:800;color:#C9A227;letter-spacing:1px;text-shadow:0 0 25px rgba(201,162,39,0.4);text-align:center">be a Natural Born <span style="font-style:italic">Chillaz</span></div>
+ <!-- HEADER -->
+ <div style="display:flex;align-items:center;justify-content:center;gap:40px;padding:70px 0 30px;flex-wrap:wrap">
+  <div style="font-size:42px;font-weight:800;color:#C9A227;text-shadow:0 0 25px rgba(201,162,39,0.4);text-align:center">be a Natural Born <span style="font-style:italic">Chillaz</span></div>
   <div style="width:92px;height:92px;border:2px solid #C9A227;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;box-shadow:0 0 30px rgba(201,162,39,0.25);animation:spin 12s linear infinite">
-   <div style="position:absolute;width:70px;height:70px;border:1px solid rgba(201,162,39,0.3);border-radius:50%"></div>
    <span style="font-size:10px;color:#C9A227;text-align:center;line-height:1.2;font-weight:bold">UPDATE<br>COMING<br>SOON</span>
   </div>
  </div>
  <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
 
- <h1 style="text-align:center;color:#C9A227;font-size:48px;margin:10px 0 5px;letter-spacing:2px">WORLDWIDE NEWS</h1>
- <p style="text-align:center;color:#9a9a8f;margin:0 0 30px">Globale Cannabis-News & Updates</p>
+ <h1 style="text-align:center;color:#C9A227;font-size:48px;margin:10px 0 5px">WORLDWIDE NEWS</h1>
+ <p style="text-align:center;color:#9a9a8f;margin:0 0 30px" id="subtitle">Globale Cannabis-News & Updates</p>
 
+ <!-- TICKER -->
  <div style="background:#0f110e;border:1px solid #333;border-left:3px solid #C9A227;padding:10px;overflow:hidden;white-space:nowrap;margin:25px 0">
-  <div style="display:inline-block;animation:ticker 30s linear infinite;color:#C9A227;font-size:14px">
-   BREAKING: Deutschland - Anbauclubs starten • USA - 24+ Staaten legal • Thailand - Regulierung geplant • Malta - Erste Lizenzen vergeben • &nbsp;&nbsp;
+  <div style="display:inline-block;animation:ticker 45s linear infinite;color:#C9A227;font-size:14px" id="ticker">
+   DE: Clubs starten Juli 2024 • USA: 24 Staaten legal, Ohio startet Verkauf • Thailand plant Regulierung • Malta vergibt Lizenzen • Luxemburg Eigenanbau erlaubt • Schweiz Pilotprojekte laufen • Kanada Umsatzrekord • Niederlande Wietexperiment •
   </div>
  </div>
- <style>@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}</style>
+ <style>@keyframes ticker{0%{transform:translateX(100%)}100%{transform:translateX(-110%)}}</style>
 
- <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:30px 0">
-  <div style="background:#141613;border:1px solid #2a2a2a;border-radius:12px;padding:18px">
-   <div style="color:#C9A227;font-size:12px;margin-bottom:8px">DEUTSCHLAND</div>
-   <h3 style="margin:0 0 8px">CanG in Kraft</h3>
-   <p style="color:#aaa;font-size:14px;margin:0">Besitz bis 25g, Eigenanbau 3 Pflanzen. Clubs ab Juli 2024.</p>
-  </div>
-  <div style="background:#141613;border:1px solid #2a2a2a;border-radius:12px;padding:18px">
-   <div style="color:#C9A227;font-size:12px;margin-bottom:8px">USA</div>
-   <h3 style="margin:0 0 8px">Neue Staaten</h3>
-   <p style="color:#aaa;font-size:14px;margin:0">Ohio und weitere starten Verkauf 2024.</p>
-  </div>
-  <div style="background:#141613;border:1px solid #2a2a2a;border-radius:12px;padding:18px">
-   <div style="color:#C9A227;font-size:12px;margin-bottom:8px">EUROPA</div>
-   <h3 style="margin:0 0 8px">Malta & Luxemburg</h3>
-   <p style="color:#aaa;font-size:14px;margin:0">Modellprojekte laufen, weitere folgen.</p>
-  </div>
-  <div style="background:#141613;border:1px solid #2a2a2a;border-radius:12px;padding:18px">
-   <div style="color:#C9A227;font-size:12px;margin-bottom:8px">WELTWEIT</div>
-   <h3 style="margin:0 0 8px">Thailand Update</h3>
-   <p style="color:#aaa;font-size:14px;margin:0">Regulierung statt Verbot geplant.</p>
-  </div>
+ <!-- 4 NEWS -->
+ <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin:30px 0" id="newsGrid">
+  <!-- wird per JS gefüllt -->
  </div>
 
+ <!-- BANNER -->
  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin:35px 0">
-  <div style="background:linear-gradient(135deg,#1a1d16,#0f110e);border:1px solid rgba(201,162,39,0.3);border-radius:12px;padding:24px;text-align:center">
-   <div style="color:#C9A227;font-size:13px;margin-bottom:6px">PARTNER</div>
-   <h3 style="margin:0 0 10px">Dein Shop hier?</h3>
-   <p style="color:#aaa;font-size:13px;margin:0 0 12px">Werbung fuer Headshops & Brands</p>
-   <a href="mailto:infotonbc@gmail.com" style="color:#000;background:#C9A227;padding:8px 16px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold">Anfragen</a>
+  <div style="background:#141613;border:1px solid rgba(201,162,39,0.3);border-radius:12px;padding:24px;text-align:center">
+   <div style="color:#C9A227;font-size:13px" id="ad1title">PARTNER</div>
+   <h3 style="margin:8px 0" id="ad1h">Dein Shop hier?</h3>
+   <p style="color:#aaa;font-size:13px" id="ad1t">Werbung fuer Headshops</p>
+   <a href="mailto:infotonbc@gmail.com" style="color:#000;background:#C9A227;padding:8px 16px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;display:inline-block;margin-top:8px" id="ad1b">Anfragen</a>
   </div>
-  <div style="background:linear-gradient(135deg,#1a1d16,#0f110e);border:1px solid rgba(201,162,39,0.3);border-radius:12px;padding:24px;text-align:center">
-   <div style="color:#C9A227;font-size:13px;margin-bottom:6px">COMMUNITY</div
+  <div style="background:#141613;border:1px solid rgba(201,162,39,0.3);border-radius:12px;padding:24px;text-align:center">
+   <div style="color:#C9A227;font-size:13px" id="ad2title">COMMUNITY</div>
+   <h3 style="margin:8px 0" id="ad2h">Werde Teil der Crew</h3>
+   <p style="color:#aaa;font-size:13px" id="ad2t">News taeglich</p>
+   <a href="https://instagram.com/infotonbc" target="_blank" style="color:#000;background:#C9A227;padding:8px 16px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;display:inline-block;margin-top:8px" id="ad2b">Folgen</a>
+  </div>
+ </div>
+
+ <div style="text-align:center;margin:40px 0">
+  <a href="https://instagram.com/infotonbc" target="_blank" style="background:#C9A227;color:#000;padding:16px 32px;border-radius:10px;text-decoration:none;font-weight:bold;display:inline-block;font-size:16px">Folge @infotonbc</a>
+ </div>
+</div>
+
+<div style="text-align:center;padding:35px 20px;color:#777;font-size:13px;border-top:1px solid #222">
+ <a href="Impressum.html" style="color:#C9A227;margin:0 12px">Impressum</a>
+ <a href="Datenschutz.html" style="color:#C9A227;margin:0 12px">Datenschutz</a>
+ <a href="Disclaimer.html" style="color:#C9A227;margin:0 12px">18+ Disclaimer</a>
+ <p style="margin-top:15px">© 2025 NaturalBornChillaz</p>
+</div>
+
+<script>
+const data = {
+ de: {
+  ageText:"Diese Seite richtet sich nur an Volljaehrige.",
+  ageBtn:"Ich bin 18+",
+  subtitle:"Globale Cannabis-News & Updates",
+  ticker:"DE: Clubs starten Juli 2024 • USA: 24 Staaten legal • Thailand plant Regulierung • Malta vergibt Lizenzen • Luxemburg Eigenanbau erlaubt • Schweiz Pilotprojekte • Kanada Rekordumsatz • Niederlande Experiment • Tschechien plant Legalisierung •",
+  news:[
+   {c:"DEUTSCHLAND",t:"CanG in Kraft",d:"Besitz 25g, 3 Pflanzen, Clubs ab Juli."},
+   {c:"USA",t:"Ohio startet",d:"Verkauf laeuft, 24+ Staaten legal."},
+   {c:"EUROPA",t:"Malta & Co",d:"Erste Lizenzen, Luxemburg erlaubt Anbau."},
+   {c:"WELT",t:"Thailand",d:"Kein Verbot, neue Regulierung kommt."}
+  ],
+  ad1:["PARTNER","Dein Shop hier?","Werbung fuer Headshops","Anfragen"],
+  ad2:["COMMUNITY","Werde Teil","News taeglich","Folgen"]
+ },
+ en: {
+  ageText:"This site is for adults 18+ only.",
+  ageBtn:"I am 18+",
+  subtitle:"Global Cannabis News & Updates",
+  ticker:"GERMANY: Clubs launch July 2024 • USA: 24 states legal • Thailand plans regulation • Malta issues licenses • Luxembourg home grow • Switzerland pilots • Canada record sales • Netherlands experiment •",
+  news:[
+   {c:"GERMANY",t:"CanG Live",d:"25g possession, 3 plants, clubs soon."},
+   {c:"USA",t:"Ohio Opens",d:"Sales start, 24+ states legal."},
+   {c:"EUROPE",t:"Malta Leads",d:"First licenses issued."},
+   {c:"WORLD",t:"Thailand",d:"Regulation not ban planned."}
+  ],
+  ad1:["PARTNER","Your Shop Here?","Ads for brands","Contact"],
+  ad2:["COMMUNITY","Join Crew","Daily news","Follow"]
+ }
+};
+
+function setLang(l){
+ localStorage.setItem('lang',l);
+ document.getElementById('btnDE').style.background = l==='de'?'#C9A227':'#222';
+ document.getElementById('btnDE').style.color = l==='de'?'#000':'#C9A227';
+ document.getElementById('btnEN').style.background = l==='en'?'#C9A227':'#222';
+ document.getElementById('btnEN').style.color = l==='en'?'#000':'#C9A227';
+ const d=data[l];
+ document.getElementById('ageText').textContent=d.ageText;
+ document.getElementById('ageBtn').textContent=d.ageBtn;
+ document.getElementById('subtitle').textContent=d.subtitle;
+ document.getElementById('ticker').textContent=d.ticker;
+ document.getElementById('newsGrid').innerHTML = d.news.map(n=>`<div style="background:#141613;border:1px solid #2a2a2a;border-radius:12px;padding:18px"><div style="color:#C9A227;font-size:12px;margin-bottom:8px">${n.c}</div><h3 style="margin:0 0 8px">${n.t}</h3><p style="color:#aaa;font-size:14px;margin:0">${n.d}</p></div>`).join('');
+ document.getElementById('ad1title').textContent=d.ad1[0];
+ document.getElementById('ad1h').textContent=d.ad1[1];
+ document.getElementById('ad1t').textContent=d.ad1[2];
+ document.getElementById('ad1b').textContent=d.ad1[3];
+ document.getElementById('ad2title').textContent=d.ad2[0];
+ document.getElementById('ad2h').textContent=d.ad2[1];
+ document.getElementById('ad2t').textContent=d.ad2[2];
+ document.getElementById('ad2b').textContent=d.ad2[3];
+}
+setLang(localStorage.getItem('lang')||'de');
+</script>
+</body>
+</html>
