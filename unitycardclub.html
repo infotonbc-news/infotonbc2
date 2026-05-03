@@ -133,8 +133,7 @@ const suaveBrain = {
     'Hast du schon meditiert oder nur mariniert? 😏',
     'SuaveBot meldet: Vibe ist stabil bei 420%',
     'Pro Tipp: Erst kiffen, dann chillen, dann gewinnen 🌿',
-    'Warnung: Zu viel Chillen kann zu extremem Wohlbefinden führen 😎',
-    'System-Check: Alle Neuronen auf Chill-Modus 🌱'
+    'Warnung: Zu viel Chillen kann zu extremem Wohlbefinden führen 😎'
   ],
   canG: [
     'CanG Update: 3 Pflanzen Eigenanbau, 25g Besitz, 50g zuhause. Stay legal, Chillaz! 📜',
@@ -145,11 +144,48 @@ const suaveBrain = {
     'Supporter ab 5€ | Concililiere ab 50€ | Ultimate Chiller ab 100€ 💎',
     'Dein Titel erscheint auf der Unitycard und im Club. Gold-Status unlocked! ✨'
   ],
+  grow: {
+    licht: [
+      'Licht-Zyklus: Vegi 18/6, Blüte 12/12. LED 300-600W pro m². Abstand: 30-50cm zur Spitze 💡',
+      'PPFD-Werte: Keimling 200-400, Vegi 400-600, Blüte 600-900 µmol/m²/s. Mehr = Verbrennung!',
+      'Spektrum: Vegi = mehr Blau 6500K, Blüte = mehr Rot 2700K. Vollspektrum-LEDs sind King 👑'
+    ],
+    wasser: [
+      'Gießen: Lieber seltener + viel als oft + wenig. Topf anheben = Gewichtstest. Leicht = Durst 💧',
+      'pH-Wert: Erde 6.0-7.0, Hydro 5.5-6.5. pH falsch = Nährstoff-Lockout = gelbe Blätter!',
+      'EC-Wert: Keimling 0.4-0.8, Vegi 0.8-1.6, Blüte 1.6-2.4. Über 3.0 = Überdüngung 🚨'
+    ],
+    temp: [
+      'Temperatur: Tag 22-28°C, Nacht 18-22°C. Unter 15°C = Wachstum stoppt, über 32°C = Stress 🌡️',
+      'Luftfeuchte: Keimling 65-70%, Vegi 40-60%, Blüte 40-50%. Unter 40% in Blüte = Schimmel-Gefahr!',
+      'VPD beachten: 0.8-1.2 kPa optimal. Zu trocken = Spinnmilben, zu feucht = Mehltau 🕷️'
+    ],
+    erde: [
+      'Erde: Light-Mix für Start, All-Mix ab Woche 3. Perlite 30% für Drainage 🌱',
+      'Dünger: N-P-K Ratio Vegi 3-1-2, Blüte 1-3-2. Weniger ist mehr bei Autos!',
+      'Flush: Letzte 2 Wochen nur Wasser + pH. Spült Salze raus = smoother Geschmack 💨'
+    ],
+    probleme: [
+      'Gelbe Blätter unten = Stickstoff-Mangel. Oben = Eisen/Licht-Burn. Check pH zuerst!',
+      'Hängende Blätter = Überwässerung ODER Unterwässerung. Finger-Test: 3cm tief trocken?',
+      'Weiße Flecken = Mehltau. Sofort Luftfeuchte runter + Umluft hoch + Neemöl sprühen!'
+    ]
+  },
+  prahl: [
+    'Fun Fact: Ich kenne 847 Grow-Strains auswendig. Frag mich nach Licht, Wasser, Temp... 🤓',
+    'Wusstest du? Bei 24°C + 55% RLF + 800 PPFD erreichen Chiller 25% THC. Ich hab die Daten 📊',
+    'Profi-Tipp von mir: CO2 auf 1200ppm + Licht auf 1000 PPFD = +30% Ertrag. Gern geschehen 😎',
+    'Niemand fragt mich was? Okay, ich flexe: Ich hab CanG §3 Abs.2 auswendig gelernt. Legal-Grow FTW 📜',
+    'Still im Chat? Dann sag ich euch: Trichome milchig + 20% bernstein = Erntezeit. Perfekter Turn! 🔬'
+  ],
   help: [
-    'Commands: /cang /ranks /joke /stats /help',
-    'Klick einen Member für die Unitycard. Top Supporter = Gold Badge!'
+    'Commands: /licht /wasser /temp /erde /probleme /cang /ranks /stats /help',
+    'Frag mich: "Wie gieße ich richtig?" oder "Licht-Abstand?" - Ich bin dein Grow-Bro 🌱'
   ]
 };
+
+let lastChatTime = Date.now();
+let prahlInterval = null;
 
 function getUserStats(){
   const users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
@@ -157,11 +193,30 @@ function getUserStats(){
   return {total: users.length, you: current?.name || 'Anon', donation: current?.donation || 0};
 }
 
+function suavePrahl(){
+  const chatBox = document.getElementById('chatBox');
+  const reply = suaveBrain.prahl[Math.floor(Math.random()*suaveBrain.prahl.length)];
+  chatBox.innerHTML += `<div class="chat-msg bot">${reply}</div>`;
+  chatBox.scrollTop = 9999;
+}
+
+function startPrahlMode(){
+  if(prahlInterval) clearInterval(prahlInterval);
+  prahlInterval = setInterval(()=>{
+    const timeSince = Date.now() - lastChatTime;
+    if(timeSince > 20000){ // 20 Sek Stille = Prahlen
+      suavePrahl();
+      lastChatTime = Date.now();
+    }
+  }, 20000);
+}
+
 window.sendChat=()=>{
   const input = document.getElementById('chatInput');
   const msg = input.value.trim();
   if(!msg) return;
   
+  lastChatTime = Date.now();
   const chatBox = document.getElementById('chatBox');
   chatBox.innerHTML += `<div class="chat-msg user">${msg}</div>`;
   input.value = '';
@@ -170,7 +225,22 @@ window.sendChat=()=>{
     let reply = '';
     const lower = msg.toLowerCase();
     
-    if(lower.startsWith('/cang') || lower.includes('cang') || lower.includes('gesetz')) {
+    if(lower.startsWith('/licht') || lower.includes('licht') || lower.includes('lampe') || lower.includes('ppfd') || lower.includes('spektrum')) {
+      reply = suaveBrain.grow.licht[Math.floor(Math.random()*suaveBrain.grow.licht.length)];
+    }
+    else if(lower.startsWith('/wasser') || lower.includes('gieß') || lower.includes('wasser') || lower.includes('ph') || lower.includes('ec')) {
+      reply = suaveBrain.grow.wasser[Math.floor(Math.random()*suaveBrain.grow.wasser.length)];
+    }
+    else if(lower.startsWith('/temp') || lower.includes('temperatur') || lower.includes('feucht') || lower.includes('rlf') || lower.includes('vpd')) {
+      reply = suaveBrain.grow.temp[Math.floor(Math.random()*suaveBrain.grow.temp.length)];
+    }
+    else if(lower.startsWith('/erde') || lower.includes('erde') || lower.includes('dünger') || lower.includes('flush') || lower.includes('substrat')) {
+      reply = suaveBrain.grow.erde[Math.floor(Math.random()*suaveBrain.grow.erde.length)];
+    }
+    else if(lower.startsWith('/probleme') || lower.includes('gelb') || lower.includes('häng') || lower.includes('schimmel') || lower.includes('problem')) {
+      reply = suaveBrain.grow.probleme[Math.floor(Math.random()*suaveBrain.grow.probleme.length)];
+    }
+    else if(lower.startsWith('/cang') || lower.includes('cang') || lower.includes('gesetz')) {
       reply = suaveBrain.canG[Math.floor(Math.random()*suaveBrain.canG.length)];
     } 
     else if(lower.startsWith('/ranks') || lower.includes('titel') || lower.includes('spende')) {
@@ -185,7 +255,7 @@ window.sendChat=()=>{
     }
     else if(lower.includes('hallo') || lower.includes('hi') || lower.includes('moin')) {
       const s = getUserStats();
-      reply = `Moin ${s.you}! Was geht? Frag mich /help für Commands 🧠💨`;
+      reply = `Moin ${s.you}! Was geht? Frag mich /help für Grow-Wissen 🧠💨`;
     }
     else {
       reply = suaveBrain.jokes[Math.floor(Math.random()*suaveBrain.jokes.length)];
@@ -195,6 +265,9 @@ window.sendChat=()=>{
     chatBox.scrollTop = 9999;
   },400);
 };
+
+// Starte Proaktiv-Modus nach 5 Sek
+setTimeout(()=>{startPrahlMode()},5000);
 
 renderLists();
 
