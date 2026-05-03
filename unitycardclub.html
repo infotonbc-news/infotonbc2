@@ -202,10 +202,61 @@ const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
 const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('canvas'),alpha:true,antialias:true});
 renderer.setSize(window.innerWidth,window.innerHeight);
-const globe=new THREE.Mesh(new THREE.SphereGeometry(2,32,32),new THREE.MeshBasicMaterial({color:0x00D9FF,wireframe:true,transparent:true,opacity:0.2}));
+// Globus + Member Punkte
+const globe=new THREE.Mesh(
+  new THREE.SphereGeometry(2,32,32),
+  new THREE.MeshBasicMaterial({color:0x00D9FF,wireframe:true,transparent:true,opacity:0.2})
+);
 scene.add(globe);
+
+// Funktion: Lat/Lng zu 3D-Position auf Kugel
+function latLngToVector3(lat,lng,radius){
+  const phi = (90-lat)*(Math.PI/180);
+  const theta = (lng+180)*(Math.PI/180);
+  const x = -(radius * Math.sin(phi) * Math.cos(theta));
+  const z = (radius * Math.sin(phi) * Math.sin(theta));
+  const y = (radius * Math.cos(phi));
+  return new THREE.Vector3(x,y,z);
+}
+
+// Member-Punkte auf Globus setzen
+const memberGroup = new THREE.Group();
+allUsers.forEach(u=>{
+  if(!u.lat || !u.lng) return;
+  const pos = latLngToVector3(u.lat,u.lng,2.05);
+  const color = u.donation>=100 ? 0xD4AF37 : u.donation>=50 ? 0x00D9FF : u.donation>=5 ? 0xE5E4E2 : 0x666666;
+  const size = u.donation>=100 ? 0.08 : u.donation>=50 ? 0.06 : 0.04;
+  const point = new THREE.Mesh(
+    new THREE.SphereGeometry(size,16,16),
+    new THREE.MeshBasicMaterial({color:color})
+  );
+  point.position.copy(pos);
+  point.userData = u; // Für Klick-Events später
+  memberGroup.add(point);
+});
+scene.add(memberGroup);
+
+// Leuchteffekt für Ultimate Chiller
+const glowGeometry = new THREE.SphereGeometry(2.08,32,32);
+const glowMaterial = new THREE.MeshBasicMaterial({
+  color:0xD4AF37,
+  transparent:true,
+  opacity:0.05,
+  side:THREE.BackSide
+});
+const glow = new THREE.Mesh(glowGeometry,glowMaterial);
+scene.add(glow);
+
 camera.position.z=5;
-function animate(){requestAnimationFrame(animate);globe.rotation.y+=0.001;renderer.render(scene,camera);}
+
+// Animation
+function animate(){
+  requestAnimationFrame(animate);
+  globe.rotation.y+=0.001;
+  memberGroup.rotation.y+=0.001;
+  glow.rotation.y+=0.001;
+  renderer.render(scene,camera);
+}
 animate();
 window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
 </script>
