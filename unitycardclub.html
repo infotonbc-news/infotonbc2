@@ -53,6 +53,12 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 <div class="chat-msg bot">Chillaz, hast du heute schon dein Gehirn gegossen? 🧠💨</div>
 </div>
 <div class="chat-input">
+<input type="text" id="chatInput" placeholder="Frag SuaveBot..." onkeypress="if(event.key==='Enter')sendChat()">
+<button class="btn" onclick="sendChat()">Send</button>
+</div>
+<button class="btn" style="width:100%;margin-top:15px" onclick="window.open('https://paypal.me/DeinLink','_blank')" onmouseover="this.textContent='Fütter den Grow 🌱'" onmouseout="this.textContent='Chillaz Support 💰'">Chillaz Support 💰</button>
+</div>
+<div class="chat-input">
 <input type="text" id="chatInput" placeholder="Frag SuaveBot...">
 <button class="btn" onclick="sendChat()">Send</button>
 </div>
@@ -127,23 +133,74 @@ document.getElementById('cardPopup').classList.add('active');
 
 window.closeCard=()=>document.getElementById('cardPopup').classList.remove('active');
 
-const jokes=[
-'Chillaz, THC-Level im Chat optimal 🧠💨',
-'Hast du schon meditiert oder nur mariniert? 😏',
-'SuaveBot meldet: Vibe ist stabil bei 420%',
-'Pro Tipp: Erst kiffen, dann chillen, dann gewinnen 🌿',
-'Warnung: Zu viel Chillen kann zu extremem Wohlbefinden führen 😎'
-];
+// Schlauer SuaveBot mit Context + Commands
+const suaveBrain = {
+  jokes: [
+    'Chillaz, THC-Level im Chat optimal 🧠💨',
+    'Hast du schon meditiert oder nur mariniert? 😏',
+    'SuaveBot meldet: Vibe ist stabil bei 420%',
+    'Pro Tipp: Erst kiffen, dann chillen, dann gewinnen 🌿',
+    'Warnung: Zu viel Chillen kann zu extremem Wohlbefinden führen 😎',
+    'System-Check: Alle Neuronen auf Chill-Modus 🌱'
+  ],
+  canG: [
+    'CanG Update: 3 Pflanzen Eigenanbau, 25g Besitz, 50g zuhause. Stay legal, Chillaz! 📜',
+    'Social Clubs: Max 500 Member, Non-Profit. Kein Straßenverkauf!',
+    'THC-Grenzwert Auto: 3,5ng/ml Blutserum seit 2024. Safety first 🚗'
+  ],
+  ranks: [
+    'Supporter ab 5€ | Concililiere ab 50€ | Ultimate Chiller ab 100€ 💎',
+    'Dein Titel erscheint auf der Unitycard und im Club. Gold-Status unlocked! ✨'
+  ],
+  help: [
+    'Commands: /cang /ranks /joke /stats /help',
+    'Klick einen Member für die Unitycard. Top Supporter = Gold Badge!'
+  ]
+};
+
+function getUserStats(){
+  const users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  const current = JSON.parse(localStorage.getItem('nbc_current')||'null');
+  return {total: users.length, you: current?.name || 'Anon', donation: current?.donation || 0};
+}
 
 window.sendChat=()=>{
-const msg=document.getElementById('chatInput').value;
-if(!msg)return;
-document.getElementById('chatBox').innerHTML+=`<div class="chat-msg user">${msg}</div>`;
-setTimeout(()=>{
-document.getElementById('chatBox').innerHTML+=`<div class="chat-msg bot">${jokes[Math.floor(Math.random()*jokes.length)]}</div>`;
-document.getElementById('chatBox').scrollTop=9999;
-},500);
-document.getElementById('chatInput').value='';
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if(!msg) return;
+  
+  const chatBox = document.getElementById('chatBox');
+  chatBox.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+  input.value = '';
+  
+  setTimeout(()=>{
+    let reply = '';
+    const lower = msg.toLowerCase();
+    
+    if(lower.startsWith('/cang') || lower.includes('cang') || lower.includes('gesetz')) {
+      reply = suaveBrain.canG[Math.floor(Math.random()*suaveBrain.canG.length)];
+    } 
+    else if(lower.startsWith('/ranks') || lower.includes('titel') || lower.includes('spende')) {
+      reply = suaveBrain.ranks[Math.floor(Math.random()*suaveBrain.ranks.length)];
+    }
+    else if(lower.startsWith('/stats')) {
+      const s = getUserStats();
+      reply = `Stats: ${s.total} Chillaz registriert. Du: ${s.you} | Gespendet: ${s.donation}€ 🏆`;
+    }
+    else if(lower.startsWith('/help') || lower.includes('hilfe')) {
+      reply = suaveBrain.help.join(' | ');
+    }
+    else if(lower.includes('hallo') || lower.includes('hi') || lower.includes('moin')) {
+      const s = getUserStats();
+      reply = `Moin ${s.you}! Was geht? Frag mich /help für Commands 🧠💨`;
+    }
+    else {
+      reply = suaveBrain.jokes[Math.floor(Math.random()*suaveBrain.jokes.length)];
+    }
+    
+    chatBox.innerHTML += `<div class="chat-msg bot">${reply}</div>`;
+    chatBox.scrollTop = 9999;
+  },400);
 };
 
 renderLists();
