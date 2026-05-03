@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unitycard Club - NaturalBornChillaz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#0A0A0F;color:#E5E4E2;overflow:hidden}
+#canvas{position:absolute;top:0;left:0;width:100%;height:100%}
+.ui-overlay{position:relative;z-index:10;height:100vh;display:grid;grid-template-columns:300px 1fr 350px;gap:20px;padding:20px;pointer-events:none}
+.panel{background:rgba(229,228,226,0.03);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.2);border-radius:20px;padding:20px;pointer-events:all;overflow-y:auto}
+h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:15px;letter-spacing:2px}
+.member-item{padding:12px;background:rgba(10,10,15,0.4);border:1px solid rgba(229,228,226,0.1);border-radius:10px;margin-bottom:10px;cursor:pointer;transition:all 0.3s}
+.member-item:hover{background:rgba(212,175,55,0.1);border-color:#D4AF37}
+.member-name{font-weight:600;margin-bottom:4px}
+.member-title{font-size:11px;color:#00D9FF;letter-spacing:1px}
+.badge{display:inline-block;padding:2px 8px;background:linear-gradient(135deg,#D4AF37,#E5E4E2);color:#0A0A0F;border-radius:6px;font-size:10px;font-weight:700;margin-left:6px}
+.unitycard-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;background:linear-gradient(135deg,#0A0A0F 0%,#1A1A2E 100%);border:2px solid #D4AF37;border-radius:20px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,0.8),0 0 40px rgba(212,175,55,0.3);z-index:1000;display:none}
+.unitycard-popup.active{display:block}
+.card-header{border-bottom:1px solid rgba(212,175,55,0.3);padding-bottom:15px;margin-bottom:20px}
+.card-name{font-family:'Orbitron',sans-serif;font-size:24px;color:#D4AF37;margin-bottom:5px}
+.card-insta{color:#00D9FF;font-size:14px}
+.card-rank{margin-top:15px;padding:10px;background:rgba(212,175,55,0.1);border-radius:8px;text-align:center;font-weight:600;color:#D4AF37}
+.chat-box{height:300px;background:rgba(10,10,15,0.6);border-radius:10px;padding:15px;overflow-y:auto;margin-bottom:10px}
+.chat-msg{margin-bottom:12px;font-size:13px}
+.chat-msg.bot{color:#00D9FF}
+.chat-msg.user{text-align:right;color:#D4AF37}
+.chat-input{display:flex;gap:10px}
+.chat-input input{flex:1;padding:10px;background:rgba(10,10,15,0.6);border:1px solid rgba(229,228,226,0.2);border-radius:8px;color:#E5E4E2}
+.btn{padding:10px 20px;background:linear-gradient(135deg,#D4AF37,#E5E4E2);color:#0A0A0F;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;letter-spacing:1px}
+.btn:hover{box-shadow:0 5px 20px rgba(212,175,55,0.4)}
+.footer-links{position:absolute;bottom:20px;left:20px;font-size:12px;z-index:10;pointer-events:all}
+.footer-links a{color:#00D9FF;text-decoration:none;margin-right:15px}
+.footer-links a:hover{color:#D4AF37}
+@media(max-width:1024px){.ui-overlay{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div class="ui-overlay">
+<div class="panel">
+<h2>Top Chillaz Supporter</h2>
+<div id="topList"></div>
+<h2 style="margin-top:30px">Members</h2>
+<div id="memberList"></div>
+</div>
+<div></div>
+<div class="panel">
+<h2>SuaveBot</h2>
+<div class="chat-box" id="chatBox">
+<div class="chat-msg bot">Chillaz, hast du heute schon dein Gehirn gegossen? 🧠💨</div>
+</div>
+<div class="chat-input">
+<input type="text" id="chatInput" placeholder="Frag SuaveBot...">
+<button class="btn" onclick="sendChat()">Send</button>
+</div>
+<button class="btn" style="width:100%;margin-top:15px" onclick="window.open('https://paypal.me/DeinLink','_blank')" onmouseover="this.textContent='Fütter den Grow 🌱'" onmouseout="this.textContent='Chillaz Support 💰'">Chillaz Support 💰</button>
+</div>
+</div>
+
+<div class="unitycard-popup" id="cardPopup">
+<div class="card-header">
+<div class="card-name" id="cardName"></div>
+<div class="card-insta" id="cardInsta"></div>
+</div>
+<div id="cardNation" style="margin-bottom:15px"></div>
+<div class="card-rank" id="cardRank"></div>
+<button class="btn" style="width:100%;margin-top:20px" onclick="closeCard()">Schließen</button>
+</div>
+
+<div class="footer-links">
+<a href="impressumUnity.html">Impressum</a>
+<a href="datenschutzUnity.html">Datenschutz</a>
+<a href="unitycard.html">Logout</a>
+</div>
+
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
+if(!localStorage.getItem('nbc_current')){alert('Bitte erst einloggen, Chillaz!');location.href='unitycard.html';}
+
+const demoMembers=[
+{name:'Luca Weedmann',insta:'@luca_chill',nation:'DE',donation:120,lat:52.52,lng:13.40},
+{name:'Mia Hashfield',insta:'@mia_high',nation:'NL',donation:60,lat:52.37,lng:4.90},
+{name:'Diego Kush',insta:'@diego_blaze',nation:'ES',donation:10,lat:40.42,lng:-3.70},
+{name:'Jean Chronic',insta:'@jean_puff',nation:'FR',donation:0,lat:48.86,lng:2.35},
+{name:'Giovanni Ganja',insta:'@gio_green',nation:'IT',donation:0,lat:41.90,lng:12.50}
+];
+
+const allUsers=[...users,...demoMembers.filter(d=>!users.find(u=>u.insta===d.insta))];
+
+function getTitle(amount){
+if(amount>=100)return 'Ultimate Chiller';
+if(amount>50)return 'Concililiere';
+if(amount>=5)return 'Supporter';
+return 'Member';
+}
+
+function renderLists(){
+const topUsers=[...allUsers].filter(u=>u.donation>0).sort((a,b)=>b.donation-a.donation);
+document.getElementById('topList').innerHTML=topUsers.length?topUsers.map(u=>`
+<div class="member-item" onclick="showCard('${u.insta}')">
+<div class="member-name">${u.name} <span class="badge">${getTitle(u.donation)}</span></div>
+<div class="member-title">${u.donation}€ gespendet</div>
+</div>`).join(''):'<p style="font-size:12px;opacity:0.6">Noch keine Chillaz online... sind wohl alle kiffen 😴🌿</p>';
+
+document.getElementById('memberList').innerHTML=allUsers.map(u=>`
+<div class="member-item" onclick="showCard('${u.insta}')">
+<div class="member-name">${u.name}</div>
+<div class="member-title">${u.insta}</div>
+</div>`).join('');
+}
+
+window.showCard=(insta)=>{
+const user=allUsers.find(u=>u.insta===insta);
+document.getElementById('cardName').textContent=user.name;
+document.getElementById('cardInsta').textContent=user.insta;
+document.getElementById('cardNation').textContent='Nation: '+user.nation;
+document.getElementById('cardRank').textContent=getTitle(user.donation||0)+(user.donation?` - ${user.donation}€`:'');
+document.getElementById('cardPopup').classList.add('active');
+};
+
+window.closeCard=()=>document.getElementById('cardPopup').classList.remove('active');
+
+const jokes=[
+'Chillaz, THC-Level im Chat optimal 🧠💨',
+'Hast du schon meditiert oder nur mariniert? 😏',
+'SuaveBot meldet: Vibe ist stabil bei 420%',
+'Pro Tipp: Erst kiffen, dann chillen, dann gewinnen 🌿',
+'Warnung: Zu viel Chillen kann zu extremem Wohlbefinden führen 😎'
+];
+
+window.sendChat=()=>{
+const msg=document.getElementById('chatInput').value;
+if(!msg)return;
+document.getElementById('chatBox').innerHTML+=`<div class="chat-msg user">${msg}</div>`;
+setTimeout(()=>{
+document.getElementById('chatBox').innerHTML+=`<div class="chat-msg bot">${jokes[Math.floor(Math.random()*jokes.length)]}</div>`;
+document.getElementById('chatBox').scrollTop=9999;
+},500);
+document.getElementById('chatInput').value='';
+};
+
+renderLists();
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('canvas'),alpha:true,antialias:true});
+renderer.setSize(window.innerWidth,window.innerHeight);
+const globe=new THREE.Mesh(new THREE.SphereGeometry(2,32,32),new THREE.MeshBasicMaterial({color:0x00D9FF,wireframe:true,transparent:true,opacity:0.2}));
+scene.add(globe);
+camera.position.z=5;
+function animate(){requestAnimationFrame(animate);globe.rotation.y+=0.001;renderer.render(scene,camera);}
+animate();
+window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
+</script>
+</body>
+</html>
