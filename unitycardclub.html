@@ -50,7 +50,7 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 <div class="panel">
 <h2>SuaveBot</h2>
 <div class="chat-box" id="chatBox">
-<div class="chat-msg bot">Chillaz, hast du heute schon dein Gehirn gegossen? 🧠💨 Tipp: /help für Commands</div>
+<div class="chat-msg bot">Chillaz, hast du heute schon dein Gehirn gegossen? 🧠💨 Tipp: /help für Grow-Wissen</div>
 </div>
 <div class="chat-input">
 <input type="text" id="chatInput" placeholder="Frag SuaveBot... /help" onkeypress="if(event.key==='Enter')sendChat()">
@@ -204,7 +204,7 @@ function startPrahlMode(){
   if(prahlInterval) clearInterval(prahlInterval);
   prahlInterval = setInterval(()=>{
     const timeSince = Date.now() - lastChatTime;
-    if(timeSince > 20000){ // 20 Sek Stille = Prahlen
+    if(timeSince > 20000){
       suavePrahl();
       lastChatTime = Date.now();
     }
@@ -215,16 +215,16 @@ window.sendChat=()=>{
   const input = document.getElementById('chatInput');
   const msg = input.value.trim();
   if(!msg) return;
-  
+
   lastChatTime = Date.now();
   const chatBox = document.getElementById('chatBox');
   chatBox.innerHTML += `<div class="chat-msg user">${msg}</div>`;
   input.value = '';
-  
+
   setTimeout(()=>{
     let reply = '';
     const lower = msg.toLowerCase();
-    
+
     if(lower.startsWith('/licht') || lower.includes('licht') || lower.includes('lampe') || lower.includes('ppfd') || lower.includes('spektrum')) {
       reply = suaveBrain.grow.licht[Math.floor(Math.random()*suaveBrain.grow.licht.length)];
     }
@@ -242,7 +242,7 @@ window.sendChat=()=>{
     }
     else if(lower.startsWith('/cang') || lower.includes('cang') || lower.includes('gesetz')) {
       reply = suaveBrain.canG[Math.floor(Math.random()*suaveBrain.canG.length)];
-    } 
+    }
     else if(lower.startsWith('/ranks') || lower.includes('titel') || lower.includes('spende')) {
       reply = suaveBrain.ranks[Math.floor(Math.random()*suaveBrain.ranks.length)];
     }
@@ -260,23 +260,20 @@ window.sendChat=()=>{
     else {
       reply = suaveBrain.jokes[Math.floor(Math.random()*suaveBrain.jokes.length)];
     }
-    
+
     chatBox.innerHTML += `<div class="chat-msg bot">${reply}</div>`;
     chatBox.scrollTop = 9999;
   },400);
 };
 
-// Starte Proaktiv-Modus nach 5 Sek
 setTimeout(()=>{startPrahlMode()},5000);
-
 renderLists();
 
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
 const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('canvas'),alpha:true,antialias:true});
 renderer.setSize(window.innerWidth,window.innerHeight);
-// Globus + Member Punkte
-// Globus + Member Punkte + Klick-Funktion
+
 const globe=new THREE.Mesh(
   new THREE.SphereGeometry(2,32,32),
   new THREE.MeshBasicMaterial({color:0x00D9FF,wireframe:true,transparent:true,opacity:0.2})
@@ -320,7 +317,6 @@ scene.add(glow);
 
 camera.position.z=5;
 
-// Raycaster für Klick-Detection
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 let hoveredPoint = null;
