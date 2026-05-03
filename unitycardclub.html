@@ -17,12 +17,106 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .member-name{font-weight:600;margin-bottom:4px}
 .member-title{font-size:11px;color:#00D9FF;letter-spacing:1px}
 .badge{display:inline-block;padding:2px 8px;background:linear-gradient(135deg,#D4AF37,#E5E4E2);color:#0A0A0F;border-radius:6px;font-size:10px;font-weight:700;margin-left:6px}
-.unitycard-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;background:linear-gradient(135deg,#0A0A0F 0%,#1A1A2E 100%);border:2px solid #D4AF37;border-radius:20px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,0.8),0 0 40px rgba(212,175,55,0.3);z-index:1000;display:none}
-.unitycard-popup.active{display:block}
-.card-header{border-bottom:1px solid rgba(212,175,55,0.3);padding-bottom:15px;margin-bottom:20px}
-.card-name{font-family:'Orbitron',sans-serif;font-size:24px;color:#D4AF37;margin-bottom:5px}
-.card-insta{color:#00D9FF;font-size:14px}
-.card-rank{margin-top:15px;padding:10px;background:rgba(212,175,55,0.1);border-radius:8px;text-align:center;font-weight:600;color:#D4AF37}
+
+.unitycard-popup{
+  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:480px;height:300px;
+  background:linear-gradient(135deg,#0A0A0F 0%,#1A1A2E 50%,#0A0A0F 100%);
+  border-radius:20px;
+  box-shadow:0 25px 80px rgba(0,0,0,0.9),0 0 0 1px rgba(212,175,55,0.3),0 0 60px rgba(212,175,55,0.2);
+  z-index:1000;display:none;overflow:hidden;
+  perspective:1000px;
+}
+.unitycard-popup.active{display:block;animation:cardFlip 0.6s ease-out}
+@keyframes cardFlip{from{transform:translate(-50%,-50%) rotateY(90deg);opacity:0}to{transform:translate(-50%,-50%) rotateY(0);opacity:1}}
+
+.card-bg-effect{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.card-bg-effect::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle,rgba(212,175,55,0.15) 1px,transparent 1px);
+  background-size:20px 20px;animation:stars 20s linear infinite;
+}
+@keyframes stars{to{transform:rotate(360deg)}}
+
+.card-holo-stripe{
+  position:absolute;top:55%;left:0;width:100%;height:40px;
+  background:linear-gradient(90deg,#00D9FF,#D4AF37,#FF00FF,#00D9FF);
+  background-size:200% 100%;
+  animation:holoMove 3s linear infinite;
+  opacity:0.9;mix-blend-mode:screen;
+}
+@keyframes holoMove{to{background-position:200% 0}}
+
+.card-glow-edge{position:absolute;inset:0;border-radius:20px;box-shadow:inset 0 0 0 2px rgba(212,175,55,0.5),0 0 40px rgba(212,175,55,0.4);pointer-events:none}
+
+.card-content{position:relative;z-index:2;padding:25px;height:100%;display:flex;flex-direction:column}
+
+.card-leaf{position:absolute;top:25px;left:25px;width:70px;height:70px;opacity:0.9}
+.card-leaf svg{width:100%;height:100%;filter:drop-shadow(0 0 10px rgba(212,175,55,0.6))}
+
+.card-title{
+  font-family:'Orbitron',sans-serif;font-size:28px;color:#D4AF37;
+  text-align:right;margin-top:10px;letter-spacing:3px;
+  text-shadow:0 0 20px rgba(212,175,55,0.5);
+}
+
+.card-nbc-badge{
+  position:absolute;top:20px;right:20px;width:50px;height:50px;
+  border:2px solid #D4AF37;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 15px rgba(212,175,55,0.4);
+}
+.card-nbc-badge span{font-size:10px;color:#00D9FF;font-weight:700}
+
+.card-neon-lines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.card-neon-lines::before,.card-neon-lines::after{
+  content:'';position:absolute;background:#00D9FF;box-shadow:0 0 10px #00D9FF;opacity:0.3;
+}
+.card-neon-lines::before{top:40%;left:0;width:100%;height:1px}
+.card-neon-lines::after{top:20%;right:15%;width:1px;height:30%}
+
+.card-rank-badge{
+  position:absolute;bottom:70px;right:25px;
+  padding:8px 16px;
+  background:linear-gradient(135deg,#D4AF37,#B8860B);
+  border:3px solid #D4AF37;
+  border-radius:10px;
+  box-shadow:0 0 20px rgba(212,175,55,0.6),inset 0 2px 0 rgba(255,255,255,0.3),inset 0 -2px 0 rgba(0,0,0,0.3);
+  z-index:3;
+}
+.card-rank-badge::before{
+  content:'';position:absolute;inset:-6px;
+  border:1px solid #D4AF37;
+  border-radius:12px;
+  opacity:0.5;
+}
+.card-rank-text{
+  font-family:'Orbitron',sans-serif;
+  font-size:11px;font-weight:900;color:#0A0A0F;
+  text-transform:uppercase;letter-spacing:1.5px;
+  text-shadow:0 1px 0 rgba(255,255,255,0.4);
+}
+.card-rank-donation{
+  font-size:9px;color:#0A0A0F;opacity:0.8;
+  text-align:center;margin-top:2px;
+}
+
+.card-bottom{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end}
+.card-name{
+  font-family:'Orbitron',sans-serif;font-size:18px;color:#00D9FF;
+  text-transform:uppercase;letter-spacing:2px;
+  text-shadow:0 0 15px #00D9FF;
+}
+.card-number{
+  padding:8px 15px;
+  background:linear-gradient(135deg,#D4AF37,#B8860B);
+  border:2px solid #D4AF37;border-radius:8px;
+  font-family:'Orbitron',sans-serif;font-size:14px;color:#0A0A0F;font-weight:700;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.3),0 5px 15px rgba(212,175,55,0.4);
+}
+.card-close{position:absolute;top:15px;left:15px;background:rgba(0,0,0,0.5);border:1px solid rgba(212,175,55,0.3);color:#D4AF37;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;z-index:3}
+.card-close:hover{background:rgba(212,175,55,0.2)}
+
 .chat-box{height:300px;background:rgba(10,10,15,0.6);border-radius:10px;padding:15px;overflow-y:auto;margin-bottom:10px}
 .chat-msg{margin-bottom:12px;font-size:13px}
 .chat-msg.bot{color:#00D9FF}
@@ -34,7 +128,7 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .footer-links{position:absolute;bottom:20px;left:20px;font-size:12px;z-index:10;pointer-events:all}
 .footer-links a{color:#00D9FF;text-decoration:none;margin-right:15px}
 .footer-links a:hover{color:#D4AF37}
-@media(max-width:1024px){.ui-overlay{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}}
+@media(max-width:1024px){.ui-overlay{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}.unitycard-popup{width:90%;height:auto;min-height:300px}}
 </style>
 </head>
 <body>
@@ -61,13 +155,42 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 </div>
 
 <div class="unitycard-popup" id="cardPopup">
-<div class="card-header">
-<div class="card-name" id="cardName"></div>
-<div class="card-insta" id="cardInsta"></div>
-</div>
-<div id="cardNation" style="margin-bottom:15px"></div>
-<div class="card-rank" id="cardRank"></div>
-<button class="btn" style="width:100%;margin-top:20px" onclick="closeCard()">Schließen</button>
+  <div class="card-bg-effect"></div>
+  <div class="card-neon-lines"></div>
+  <div class="card-holo-stripe"></div>
+  <div class="card-glow-edge"></div>
+
+  <button class="card-close" onclick="closeCard()">×</button>
+
+  <div class="card-content">
+    <div class="card-leaf">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M50 10C45 25 35 35 20 40C30 45 40 55 50 75C60 55 70 45 80 40C65 35 55 25 50 10Z M50 75L50 90" stroke="#D4AF37" stroke-width="2" fill="url(#goldGrad)"/>
+        <defs>
+          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#D4AF37"/>
+            <stop offset="100%" style="stop-color:#B8860B"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <div class="card-nbc-badge"><span>@NBC</span></div>
+    <div class="card-title">NBC Unitycard</div>
+
+    <div class="card-rank-badge" id="cardRankBadge">
+      <div class="card-rank-text" id="cardRankText">MEMBER</div>
+      <div class="card-rank-donation" id="cardRankDonation">0€</div>
+    </div>
+
+    <div class="card-bottom">
+      <div>
+        <div class="card-name" id="cardName"></div>
+        <div style="font-size:11px;color:#00D9FF;margin-top:5px;opacity:0.7" id="cardInsta"></div>
+      </div>
+      <div class="card-number" id="cardNumber">XXXX XXXX 1234</div>
+    </div>
+  </div>
 </div>
 
 <div class="footer-links">
@@ -117,12 +240,39 @@ document.getElementById('memberList').innerHTML=allUsers.map(u=>`
 }
 
 window.showCard=(insta)=>{
-const user=allUsers.find(u=>u.insta===insta);
-document.getElementById('cardName').textContent=user.name;
-document.getElementById('cardInsta').textContent=user.insta;
-document.getElementById('cardNation').textContent='Nation: '+user.nation;
-document.getElementById('cardRank').textContent=getTitle(user.donation||0)+(user.donation?` - ${user.donation}€`:'');
-document.getElementById('cardPopup').classList.add('active');
+  const user=allUsers.find(u=>u.insta===insta);
+  const donation = user.donation || 0;
+
+  document.getElementById('cardName').textContent=user.name;
+  document.getElementById('cardInsta').textContent=user.insta;
+
+  const num = user.insta.replace('@','').toUpperCase().slice(0,4).padEnd(4,'X');
+  document.getElementById('cardNumber').textContent=`${num} XXXX XXXX ${Math.floor(Math.random()*9000+1000)}`;
+
+  const rankBadge = document.getElementById('cardRankBadge');
+  const rankText = document.getElementById('cardRankText');
+  const rankDonation = document.getElementById('cardRankDonation');
+
+  if(donation >= 100){
+    rankText.textContent = 'ULTIMATE CHILLER';
+    rankBadge.style.background = 'linear-gradient(135deg,#D4AF37,#FFD700)';
+    rankBadge.style.boxShadow = '0 0 30px rgba(255,215,0,0.8),inset 0 2px 0 rgba(255,255,255,0.4)';
+  } else if(donation > 50){
+    rankText.textContent = 'CONCILILIERE';
+    rankBadge.style.background = 'linear-gradient(135deg,#00D9FF,#0099CC)';
+    rankBadge.style.boxShadow = '0 0 30px rgba(0,217,255,0.8),inset 0 2px 0 rgba(255,255,255,0.4)';
+  } else if(donation >= 5){
+    rankText.textContent = 'SUPPORTER';
+    rankBadge.style.background = 'linear-gradient(135deg,#E5E4E2,#B8B7B5)';
+    rankBadge.style.boxShadow = '0 0 20px rgba(229,228,226,0.6),inset 0 2px 0 rgba(255,255,255,0.4)';
+  } else {
+    rankText.textContent = 'MEMBER';
+    rankBadge.style.background = 'linear-gradient(135deg,#666666,#444444)';
+    rankBadge.style.boxShadow = '0 0 10px rgba(100,100,100,0.4),inset 0 2px 0 rgba(255,255,255,0.2)';
+  }
+
+  rankDonation.textContent = `${donation}€`;
+  document.getElementById('cardPopup').classList.add('active');
 };
 
 window.closeCard=()=>document.getElementById('cardPopup').classList.remove('active');
