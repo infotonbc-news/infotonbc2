@@ -50,16 +50,10 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 <div class="panel">
 <h2>SuaveBot</h2>
 <div class="chat-box" id="chatBox">
-<div class="chat-msg bot">Chillaz, hast du heute schon dein Gehirn gegossen? 🧠💨</div>
+<div class="chat-msg bot">Chillaz, hast du heute schon dein Gehirn gegossen? 🧠💨 Tipp: /help für Commands</div>
 </div>
 <div class="chat-input">
-<input type="text" id="chatInput" placeholder="Frag SuaveBot..." onkeypress="if(event.key==='Enter')sendChat()">
-<button class="btn" onclick="sendChat()">Send</button>
-</div>
-<button class="btn" style="width:100%;margin-top:15px" onclick="window.open('https://paypal.me/DeinLink','_blank')" onmouseover="this.textContent='Fütter den Grow 🌱'" onmouseout="this.textContent='Chillaz Support 💰'">Chillaz Support 💰</button>
-</div>
-<div class="chat-input">
-<input type="text" id="chatInput" placeholder="Frag SuaveBot...">
+<input type="text" id="chatInput" placeholder="Frag SuaveBot... /help" onkeypress="if(event.key==='Enter')sendChat()">
 <button class="btn" onclick="sendChat()">Send</button>
 </div>
 <button class="btn" style="width:100%;margin-top:15px" onclick="window.open('https://paypal.me/DeinLink','_blank')" onmouseover="this.textContent='Fütter den Grow 🌱'" onmouseout="this.textContent='Chillaz Support 💰'">Chillaz Support 💰</button>
@@ -133,7 +127,6 @@ document.getElementById('cardPopup').classList.add('active');
 
 window.closeCard=()=>document.getElementById('cardPopup').classList.remove('active');
 
-// Schlauer SuaveBot mit Context + Commands
 const suaveBrain = {
   jokes: [
     'Chillaz, THC-Level im Chat optimal 🧠💨',
