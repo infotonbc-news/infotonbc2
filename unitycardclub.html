@@ -18,17 +18,23 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .member-title{font-size:11px;color:#00D9FF;letter-spacing:1px}
 .badge{display:inline-block;padding:2px 8px;background:linear-gradient(135deg,#D4AF37,#E5E4E2);color:#0A0A0F;border-radius:6px;font-size:10px;font-weight:700;margin-left:6px}
 
+/* UNITYCARD - ANFASSBAR */
 .unitycard-popup{
-  position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);
+  position:fixed;top:50%;left:50%;
   width:480px;height:300px;
   background:linear-gradient(135deg,#0A0A0F 0%,#1A1A2E 50%,#0A0A0F 100%);
   border-radius:20px;
   box-shadow:0 25px 80px rgba(0,0,0,0.9),0 0 0 1px rgba(212,175,55,0.3),0 0 60px rgba(212,175,55,0.2);
   z-index:1000;display:none;overflow:hidden;
   perspective:1000px;
+  cursor:grab;
+  transform:translate(-50%,-50%) rotateX(0deg) rotateY(0deg);
+  transition:box-shadow 0.3s;
 }
 .unitycard-popup.active{display:block;animation:cardFlip 0.6s ease-out}
-@keyframes cardFlip{from{transform:translate(-50%,-50%) rotateY(90deg);opacity:0}to{transform:translate(-50%,-50%) rotateY(0);opacity:1}}
+.unitycard-popup.dragging{cursor:grabbing;transition:none}
+.unitycard-popup:hover{box-shadow:0 35px 100px rgba(0,0,0,0.9),0 0 0 1px rgba(212,175,55,0.5),0 0 80px rgba(212,175,55,0.4)}
+@keyframes cardFlip{from{transform:translate(-50%,-50%) rotateY(90deg) scale(0.8);opacity:0}to{transform:translate(-50%,-50%) rotateY(0deg) scale(1);opacity:1}}
 
 .card-bg-effect{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .card-bg-effect::before{
@@ -48,10 +54,24 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 @keyframes holoMove{to{background-position:200% 0}}
 
 .card-glow-edge{position:absolute;inset:0;border-radius:20px;box-shadow:inset 0 0 0 2px rgba(212,175,55,0.5),0 0 40px rgba(212,175,55,0.4);pointer-events:none}
+.card-content{position:relative;z-index:2;padding:25px;height:100%;display:flex;flex-direction:column;pointer-events:none}
 
-.card-content{position:relative;z-index:2;padding:25px;height:100%;display:flex;flex-direction:column}
+/* INSTAGRAM AVATAR */
+.card-insta-avatar{
+  position:absolute;top:20px;left:20px;
+  width:60px;height:60px;
+  border-radius:50%;
+  border:2px solid #D4AF37;
+  box-shadow:0 0 15px rgba(212,175,55,0.6);
+  cursor:pointer;
+  pointer-events:all;
+  transition:all 0.3s;
+  object-fit:cover;
+  background:rgba(212,175,55,0.2);
+}
+.card-insta-avatar:hover{transform:scale(1.1);box-shadow:0 0 25px rgba(212,175,55,0.9)}
 
-.card-leaf{position:absolute;top:25px;left:25px;width:70px;height:70px;opacity:0.9}
+.card-leaf{position:absolute;top:25px;left:95px;width:50px;height:50px;opacity:0.6}
 .card-leaf svg{width:100%;height:100%;filter:drop-shadow(0 0 10px rgba(212,175,55,0.6))}
 
 .card-title{
@@ -65,6 +85,7 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
   border:2px solid #D4AF37;border-radius:50%;
   display:flex;align-items:center;justify-content:center;
   box-shadow:0 0 15px rgba(212,175,55,0.4);
+  pointer-events:none;
 }
 .card-nbc-badge span{font-size:10px;color:#00D9FF;font-weight:700}
 
@@ -83,6 +104,7 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
   border-radius:10px;
   box-shadow:0 0 20px rgba(212,175,55,0.6),inset 0 2px 0 rgba(255,255,255,0.3),inset 0 -2px 0 rgba(0,0,0,0.3);
   z-index:3;
+  pointer-events:none;
 }
 .card-rank-badge::before{
   content:'';position:absolute;inset:-6px;
@@ -114,10 +136,10 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
   font-family:'Orbitron',sans-serif;font-size:14px;color:#0A0A0F;font-weight:700;
   box-shadow:inset 0 1px 0 rgba(255,255,255,0.3),0 5px 15px rgba(212,175,55,0.4);
 }
-.card-close{position:absolute;top:15px;left:15px;background:rgba(0,0,0,0.5);border:1px solid rgba(212,175,55,0.3);color:#D4AF37;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;z-index:3}
+.card-close{position:absolute;top:15px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.5);border:1px solid rgba(212,175,55,0.3);color:#D4AF37;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;z-index:3;pointer-events:all}
 .card-close:hover{background:rgba(212,175,55,0.2)}
 
-.chat-box{height:300px;background:rgba(10,10,15,0.6);border-radius:10px;padding:15px;overflow-y:auto;margin-bottom:10px}
+.chat-box{height:200px;background:rgba(10,10,15,0.6);border-radius:10px;padding:15px;overflow-y:auto;margin-bottom:10px}
 .chat-msg{margin-bottom:12px;font-size:13px}
 .chat-msg.bot{color:#00D9FF}
 .chat-msg.user{text-align:right;color:#D4AF37}
@@ -125,38 +147,84 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .chat-input input{flex:1;padding:10px;background:rgba(10,10,15,0.6);border:1px solid rgba(229,228,226,0.2);border-radius:8px;color:#E5E4E2}
 .btn{padding:10px 20px;background:linear-gradient(135deg,#D4AF37,#E5E4E2);color:#0A0A0F;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;letter-spacing:1px}
 .btn:hover{box-shadow:0 5px 20px rgba(212,175,55,0.4)}
+.btn-small{padding:8px 12px;font-size:11px}
+
+/* GAME STYLES */
+.game-select{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:15px 0;
+}
+.game-btn{
+    padding:12px 8px;background:rgba(0,217,255,0.1);border:1px solid #00D9FF;
+    color:#00D9FF;border-radius:8px;cursor:pointer;font-size:11px;
+    transition:all 0.3s;text-align:center;
+}
+.game-btn:hover{background:rgba(0,217,255,0.2);box-shadow:0 0 15px rgba(0,217,255,0.4)}
+.game-btn.active{background:rgba(212,175,55,0.2);border-color:#D4AF37;color:#D4AF37}
+#game-area{
+    background:rgba(10,10,15,0.6);border:1px solid rgba(212,175,55,0.2);
+    border-radius:10px;padding:15px;margin-top:10px;min-height:120px;
+    font-size:13px;
+}
+.game-result{font-family:'Orbitron',sans-serif;font-size:24px;color:#D4AF37;margin:10px 0;text-align:center}
+.reaction-box{
+    width:100%;height:80px;background:rgba(255,0,0,0.2);border:2px solid #ff4757;
+    border-radius:8px;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-weight:700;margin:10px 0;
+}
+.reaction-box.ready{background:rgba(0,255,0,0.2);border-color:#00ff88;color:#00ff88}
+
+/* HIGHSCORE FLIPPER STYLE */
+#highscore-board{
+    margin-top:15px;padding:12px;
+    background:linear-gradient(135deg,rgba(212,175,55,0.1),rgba(0,217,255,0.05));
+    border:2px solid #D4AF37;border-radius:10px;
+    box-shadow:0 0 20px rgba(212,175,55,0.2),inset 0 0 20px rgba(0,0,0,0.5);
+}
+.highscore-title{
+    font-family:'Orbitron',sans-serif;font-size:14px;color:#D4AF37;
+    text-align:center;margin-bottom:10px;letter-spacing:2px;
+    text-shadow:0 0 10px rgba(212,175,55,0.6);
+}
+.highscore-entry{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:8px 10px;margin:5px 0;
+    background:rgba(10,10,15,0.6);border-radius:6px;
+    border-left:3px solid #00D9FF;font-size:12px;
+    transition:all 0.3s;
+}
+.highscore-entry:hover{background:rgba(212,175,55,0.1);border-left-color:#D4AF37}
+.highscore-entry.me{border-left-color:#D4AF37;background:rgba(212,175,55,0.15)}
+.highscore-name{color:#00D9FF;cursor:pointer;font-weight:600}
+.highscore-name:hover{color:#D4AF37;text-decoration:underline}
+.highscore-points{font-family:'Orbitron',sans-serif;color:#D4AF37;font-weight:700}
+
 .footer-links{position:absolute;bottom:20px;left:20px;font-size:12px;z-index:10;pointer-events:all}
 .footer-links a{color:#00D9FF;text-decoration:none;margin-right:15px}
 .footer-links a:hover{color:#D4AF37}
 @media(max-width:1024px){.ui-overlay{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}.unitycard-popup{width:90%;height:auto;min-height:300px}}
 </style>
 
-<!-- i18n Auto Language Switch -->
 <script>
 const translations = {
   de: {
     "spenden": "Spenden",
     "chat_placeholder": "Schreibe eine Nachricht...",
     "bot_greeting": "Hey, ich bin dein Unity Bot. Frag mich alles zu Cannabis, Club & Party!",
-    "spiele_title": "Mini Games",
-    "spiele_vs_ki": "Gegen KI spielen",
-    "spiele_vs_member": "Mit Member spielen",
-    "spende_privat": "Spendenbetrag privat anzeigen"
+    "spiele_title": "Spiel gegen Den Chillaz Bot",
+    "highscore_title": "🏆 FLIPPER HIGHSCORE"
   },
   en: {
     "spenden": "Donate",
     "chat_placeholder": "Type a message...",
     "bot_greeting": "Hey, I'm your Unity Bot. Ask me anything about cannabis, club & party!",
-    "spiele_title": "Mini Games",
-    "spiele_vs_ki": "Play vs AI",
-    "spiele_vs_member": "Play with member",
-    "spende_privat": "Show donation amount privately"
+    "spiele_title": "Play vs The Chillaz Bot",
+    "highscore_title": "🏆 FLIPPER HIGHSCORE"
   }
 };
 
 function detectLang() {
   const userLang = (navigator.language || navigator.userLanguage).slice(0,2);
-  return translations[userLang] ? userLang : 'de';
+  return translations[userLang]? userLang : 'de';
 }
 
 function applyTranslations(lang) {
@@ -179,18 +247,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 </script>
 
-
-<!-- 
-WICHTIG: Für echtes globales Ranking brauchst du eine eigene Firebase DB:
-1. Geh auf https://console.firebase.google.com
-2. Neues Projekt "unitycardclub" erstellen
-3. Realtime Database aktivieren im Test-Modus
-4. Ersetze firebaseConfig oben mit deinen Daten
-5. Rules setzen: { "rules": { ".read": true, ".write": true } } für Start
-
-Ohne eigene DB nutzt es eine Demo-DB die jeder lesen kann.
--->
-
 </head>
 <body>
 <canvas id="canvas"></canvas>
@@ -212,6 +268,25 @@ Ohne eigene DB nutzt es eine Demo-DB die jeder lesen kann.
 <button class="btn" onclick="sendChat()">Send</button>
 </div>
 <button class="btn" style="width:100%;margin-top:15px" onclick="window.open('https://paypal.me/DeinLink','_blank')" onmouseover="this.textContent='Fütter den Grow 🌱'" onmouseout="this.textContent='Chillaz Support 💰'">Chillaz Support 💰</button>
+
+<!-- MINI GAMES SECTION -->
+<h2 style="margin-top:20px" data-i18n="spiele_title">Spiel gegen Den Chillaz Bot</h2>
+<div class="game-select">
+  <button class="game-btn" onclick="selectGame('21er')">21er Duell</button>
+  <button class="game-btn" onclick="selectGame('reaction')">Reaktion</button>
+  <button class="game-btn" onclick="selectGame('quiz')">Kiffer-Quiz</button>
+  <button class="game-btn" onclick="selectGame('slots')">Weed-Slots</button>
+</div>
+<div id="game-area">
+  <div style="text-align:center;opacity:0.6;font-size:12px">Wähle ein Spiel 👆</div>
+</div>
+
+<!-- HIGHSCORE BOARD -->
+<div id="highscore-board">
+  <div class="highscore-title" data-i18n="highscore_title">🏆 FLIPPER HIGHSCORE</div>
+  <div id="highscore-list"></div>
+</div>
+
 </div>
 </div>
 
@@ -220,13 +295,12 @@ Ohne eigene DB nutzt es eine Demo-DB die jeder lesen kann.
   <div class="card-neon-lines"></div>
   <div class="card-holo-stripe"></div>
   <div class="card-glow-edge"></div>
-
   <button class="card-close" onclick="closeCard()">×</button>
-
   <div class="card-content">
+    <img class="card-insta-avatar" id="cardAvatar" src="" alt="Instagram" onclick="openInstagram()">
     <div class="card-leaf">
       <svg viewBox="0 0 100 100" fill="none">
-        <path d="M50 10C45 25 35 35 20 40C30 45 40 55 50 75C60 55 70 45 80 40C65 35 55 25 50 10Z M50 75L50 90" stroke="#D4AF37" stroke-width="2" fill="url(#goldGrad)"/>
+        <path d="M50 10C45 25 35 20 40C30 45 40 55 50 75C60 55 70 45 80 40C65 35 55 25 50 10Z M50 75L50 90" stroke="#D4AF37" stroke-width="2" fill="url(#goldGrad)"/>
         <defs>
           <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" style="stop-color:#D4AF37"/>
@@ -235,15 +309,12 @@ Ohne eigene DB nutzt es eine Demo-DB die jeder lesen kann.
         </defs>
       </svg>
     </div>
-
     <div class="card-nbc-badge"><span>@NBC</span></div>
     <div class="card-title">NBC Unitycard</div>
-
     <div class="card-rank-badge" id="cardRankBadge">
       <div class="card-rank-text" id="cardRankText">MEMBER</div>
       <div class="card-rank-donation" id="cardRankDonation">0€</div>
     </div>
-
     <div class="card-bottom">
       <div>
         <div class="card-name" id="cardName"></div>
@@ -266,7 +337,8 @@ Ohne eigene DB nutzt es eine Demo-DB die jeder lesen kann.
 <script type="module">
 import * as THREE from 'three';
 let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
-if(!localStorage.getItem('nbc_current')){alert('Bitte erst einloggen, Chillaz!');location.href='unitycard.html';}
+let currentUser=JSON.parse(localStorage.getItem('nbc_current')||'null');
+if(!currentUser){alert('Bitte erst einloggen, Chillaz!');location.href='unitycard.html';}
 
 const demoMembers=[
 {name:'Luca Weedmann',insta:'@luca_chill',nation:'DE',donation:120,lat:52.52,lng:13.40},
@@ -300,13 +372,23 @@ document.getElementById('memberList').innerHTML=allUsers.map(u=>`
 </div>`).join('');
 }
 
+let currentCardUser = null;
+
 window.showCard=(insta)=>{
   const user=allUsers.find(u=>u.insta===insta);
+  currentCardUser = user;
   const donation = user.donation || 0;
+  const scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
+  const highscore = scores[user.insta] || 0;
+
+  // Instagram Avatar laden
+  const handle = user.insta.replace('@','');
+  const avatarEl = document.getElementById('cardAvatar');
+  avatarEl.src = `https://unavatar.io/instagram/${handle}`;
+  avatarEl.onerror = function(){ this.style.display='none'; }; // Fallback wenn kein Bild
 
   document.getElementById('cardName').textContent=user.name;
-  document.getElementById('cardInsta').textContent=user.insta;
-
+  document.getElementById('cardInsta').textContent=user.insta + ` | Highscore: ${highscore}`;
   const num = user.insta.replace('@','').toUpperCase().slice(0,4).padEnd(4,'X');
   document.getElementById('cardNumber').textContent=`${num} XXXX XXXX ${Math.floor(Math.random()*9000+1000)}`;
 
@@ -336,140 +418,302 @@ window.showCard=(insta)=>{
   document.getElementById('cardPopup').classList.add('active');
 };
 
-window.closeCard=()=>document.getElementById('cardPopup').classList.remove('active');
-
-const suaveBrain = {
-  jokes: [
-    'Chillaz, THC-Level im Chat optimal 🧠💨',
-    'Hast du schon meditiert oder nur mariniert? 😏',
-    'SuaveBot meldet: Vibe ist stabil bei 420%',
-    'Pro Tipp: Erst kiffen, dann chillen, dann gewinnen 🌿',
-    'Warnung: Zu viel Chillen kann zu extremem Wohlbefinden führen 😎'
-  ],
-  canG: [
-    'CanG Update: 3 Pflanzen Eigenanbau, 25g Besitz, 50g zuhause. Stay legal, Chillaz! 📜',
-    'Social Clubs: Max 500 Member, Non-Profit. Kein Straßenverkauf!',
-    'THC-Grenzwert Auto: 3,5ng/ml Blutserum seit 2024. Safety first 🚗'
-  ],
-  ranks: [
-    'Supporter ab 5€ | Concililiere ab 50€ | Ultimate Chiller ab 100€ 💎',
-    'Dein Titel erscheint auf der Unitycard und im Club. Gold-Status unlocked! ✨'
-  ],
-  grow: {
-    licht: [
-      'Licht-Zyklus: Vegi 18/6, Blüte 12/12. LED 300-600W pro m². Abstand: 30-50cm zur Spitze 💡',
-      'PPFD-Werte: Keimling 200-400, Vegi 400-600, Blüte 600-900 µmol/m²/s. Mehr = Verbrennung!',
-      'Spektrum: Vegi = mehr Blau 6500K, Blüte = mehr Rot 2700K. Vollspektrum-LEDs sind King 👑'
-    ],
-    wasser: [
-      'Gießen: Lieber seltener + viel als oft + wenig. Topf anheben = Gewichtstest. Leicht = Durst 💧',
-      'pH-Wert: Erde 6.0-7.0, Hydro 5.5-6.5. pH falsch = Nährstoff-Lockout = gelbe Blätter!',
-      'EC-Wert: Keimling 0.4-0.8, Vegi 0.8-1.6, Blüte 1.6-2.4. Über 3.0 = Überdüngung 🚨'
-    ],
-    temp: [
-      'Temperatur: Tag 22-28°C, Nacht 18-22°C. Unter 15°C = Wachstum stoppt, über 32°C = Stress 🌡️',
-      'Luftfeuchte: Keimling 65-70%, Vegi 40-60%, Blüte 40-50%. Unter 40% in Blüte = Schimmel-Gefahr!',
-      'VPD beachten: 0.8-1.2 kPa optimal. Zu trocken = Spinnmilben, zu feucht = Mehltau 🕷️'
-    ],
-    erde: [
-      'Erde: Light-Mix für Start, All-Mix ab Woche 3. Perlite 30% für Drainage 🌱',
-      'Dünger: N-P-K Ratio Vegi 3-1-2, Blüte 1-3-2. Weniger ist mehr bei Autos!',
-      'Flush: Letzte 2 Wochen nur Wasser + pH. Spült Salze raus = smoother Geschmack 💨'
-    ],
-    probleme: [
-      'Gelbe Blätter unten = Stickstoff-Mangel. Oben = Eisen/Licht-Burn. Check pH zuerst!',
-      'Hängende Blätter = Überwässerung ODER Unterwässerung. Finger-Test: 3cm tief trocken?',
-      'Weiße Flecken = Mehltau. Sofort Luftfeuchte runter + Umluft hoch + Neemöl sprühen!'
-    ]
-  },
-  prahl: [
-    'Fun Fact: Ich kenne 847 Grow-Strains auswendig. Frag mich nach Licht, Wasser, Temp... 🤓',
-    'Wusstest du? Bei 24°C + 55% RLF + 800 PPFD erreichen Chiller 25% THC. Ich hab die Daten 📊',
-    'Profi-Tipp von mir: CO2 auf 1200ppm + Licht auf 1000 PPFD = +30% Ertrag. Gern geschehen 😎',
-    'Niemand fragt mich was? Okay, ich flexe: Ich hab CanG §3 Abs.2 auswendig gelernt. Legal-Grow FTW 📜',
-    'Still im Chat? Dann sag ich euch: Trichome milchig + 20% bernstein = Erntezeit. Perfekter Turn! 🔬'
-  ],
-  help: [
-    'Commands: /licht /wasser /temp /erde /probleme /cang /ranks /stats /help',
-    'Frag mich: "Wie gieße ich richtig?" oder "Licht-Abstand?" - Ich bin dein Grow-Bro 🌱'
-  ]
+window.openInstagram=()=>{
+  if(currentCardUser){
+    window.open(`https://instagram.com/${currentCardUser.insta.replace('@','')}`,'_blank');
+    addActivityScore(2);
+  }
 };
 
-let lastChatTime = Date.now();
-let prahlInterval = null;
+window.closeCard=()=>document.getElementById('cardPopup').classList.remove('active');
 
-function getUserStats(){
-  const users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
-  const current = JSON.parse(localStorage.getItem('nbc_current')||'null');
-  return {total: users.length, you: current?.name || 'Anon', donation: current?.donation || 0};
+// ===== DRAG & TILT LOGIK =====
+const card = document.getElementById('cardPopup');
+let isDragging = false;
+let startX, startY, currentX = 0, currentY = 0;
+
+function handleDragStart(e){
+  if(e.target.classList.contains('card-close') || e.target.classList.contains('card-insta-avatar')) return;
+  isDragging = true;
+  card.classList.add('dragging');
+
+  const point = e.type.includes('mouse')? e : e.touches[0];
+  startX = point.clientX;
+  startY = point.clientY;
 }
 
-function suavePrahl(){
-  const chatBox = document.getElementById('chatBox');
-  const reply = suaveBrain.prahl[Math.floor(Math.random()*suaveBrain.prahl.length)];
-  chatBox.innerHTML += `<div class="chat-msg bot">${reply}</div>`;
-  chatBox.scrollTop = 9999;
+function handleDragMove(e){
+  if(!isDragging) return;
+  e.preventDefault();
+
+  const point = e.type.includes('mouse')? e : e.touches[0];
+  const deltaX = point.clientX - startX;
+  const deltaY = point.clientY - startY;
+
+  currentX = deltaX;
+  currentY = deltaY;
+
+  // 3D Tilt basierend auf Mausposition
+  const rotateY = deltaX * 0.1;
+  const rotateX = -deltaY * 0.1;
+
+  card.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px)) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 }
 
-function startPrahlMode(){
-  if(prahlInterval) clearInterval(prahlInterval);
-  prahlInterval = setInterval(()=>{
-    const timeSince = Date.now() - lastChatTime;
-    if(timeSince > 20000){
-      suavePrahl();
-      lastChatTime = Date.now();
+function handleDragEnd(){
+  if(!isDragging) return;
+  isDragging = false;
+  card.classList.remove('dragging');
+
+  // Smooth zurück zur Mitte mit Feder-Effekt
+  card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+  card.style.transform = 'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
+
+  setTimeout(()=>{
+    card.style.transition = '';
+  }, 500);
+
+  addActivityScore(1);
+}
+
+card.addEventListener('mousedown', handleDragStart);
+document.addEventListener('mousemove', handleDragMove);
+document.addEventListener('mouseup', handleDragEnd);
+card.addEventListener('touchstart', handleDragStart);
+document.addEventListener('touchmove', handleDragMove);
+document.addEventListener('touchend', handleDragEnd);
+
+// ===== MINI GAMES SYSTEM =====
+let currentGame = null;
+let gameState = {};
+
+window.selectGame=(game)=>{
+    currentGame = game;
+    document.querySelectorAll('.game-btn').forEach(b=>b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    if(game==='21er') init21er();
+    if(game==='reaction') initReaction();
+    if(game==='quiz') initQuiz();
+    if(game==='slots') initSlots();
+
+    addActivityScore(2);
+}
+
+function init21er(){
+    gameState = {player:0, bot:0, playerTurn:true};
+    document.getElementById('game-area').innerHTML = `
+        <div style="text-align:center">
+            <div>Du: <span id="pScore">0</span> | Bot: <span id="bScore">?</span></div>
+            <div class="game-result" id="gameMsg">Dein Zug!</div>
+            <button class="btn btn-small" onclick="draw21()">Karte ziehen</button>
+            <button class="btn btn-small" onclick="stand21()">Passen</button>
+        </div>
+    `;
+}
+
+window.draw21=()=>{
+    if(!gameState.playerTurn) return;
+    const card = Math.floor(Math.random()*11)+1;
+    gameState.player += card;
+    document.getElementById('pScore').textContent = gameState.player;
+
+    if(gameState.player > 21){
+        end21er('Bust! Bot gewinnt 😢', 0);
+    } else if(gameState.player === 21){
+        end21er('21! Perfect! 🎉', 50);
     }
-  }, 20000);
 }
 
+window.stand21=()=>{
+    gameState.playerTurn = false;
+    while(gameState.bot < 17){
+        gameState.bot += Math.floor(Math.random()*11)+1;
+    }
+    document.getElementById('bScore').textContent = gameState.bot;
+
+    if(gameState.bot > 21 || gameState.player > gameState.bot){
+        end21er('Du gewinnst! 🏆', 25);
+    } else if(gameState.player < gameState.bot){
+        end21er('Bot gewinnt!', 5);
+    } else {
+        end21er('Unentschieden!', 10);
+    }
+}
+
+function end21er(msg, points){
+    document.getElementById('gameMsg').textContent = msg;
+    addActivityScore(points);
+    setTimeout(()=>init21er(), 2000);
+}
+
+function initReaction(){
+    gameState = {waiting:true, startTime:0};
+    document.getElementById('game-area').innerHTML = `
+        <div class="reaction-box" id="reactBox" onclick="clickReaction()">
+            Warte auf GRÜN...
+        </div>
+        <div style="text-align:center;font-size:11px">Klick sobald es grün wird!</div>
+    `;
+    setTimeout(()=>{
+        if(gameState.waiting){
+            gameState.waiting = false;
+            gameState.startTime = Date.now();
+            document.getElementById('reactBox').classList.add('ready');
+            document.getElementById('reactBox').textContent = 'JETZT KLICKEN!';
+        }
+    }, Math.random()*3000+2000);
+}
+
+window.clickReaction=()=>{
+    if(gameState.waiting){
+        document.getElementById('game-area').innerHTML = '<div class="game-result">Zu früh! 😵 0 Punkte</div>';
+        addActivityScore(0);
+    } else if(gameState.startTime > 0){
+        const time = Date.now() - gameState.startTime;
+        const points = Math.max(5, 100 - Math.floor(time/10));
+        document.getElementById('game-area').innerHTML = `<div class="game-result">${time}ms<br>+${points} Punkte! ⚡</div>`;
+        addActivityScore(points);
+    }
+    setTimeout(()=>initReaction(), 2000);
+}
+
+function initQuiz(){
+    const questions = [
+        {q:'Wie viele Pflanzen erlaubt CanG?', a:['3','5','1'], correct:0},
+        {q:'THC Grenzwert Auto?', a:['3,5ng/ml','1,0ng/ml','10ng/ml'], correct:0},
+        {q:'Ideale Temp Blüte?', a:['22-28°C','15-18°C','30-35°C'], correct:0},
+        {q:'pH-Wert Erde?', a:['6.0-7.0','5.0-5.5','8.0-9.0'], correct:0}
+    ];
+    const q = questions[Math.floor(Math.random()*questions.length)];
+    gameState = {correct:q.correct};
+    document.getElementById('game-area').innerHTML = `
+        <div style="margin-bottom:10px;font-weight:600">${q.q}</div>
+        ${q.a.map((ans,i)=>`<button class="btn btn-small" style="width:100%;margin:4px 0" onclick="answerQuiz(${i})">${ans}</button>`).join('')}
+    `;
+}
+
+window.answerQuiz=(i)=>{
+    if(i === gameState.correct){
+        document.getElementById('game-area').innerHTML = '<div class="game-result">Richtig! +20 🎓</div>';
+        addActivityScore(20);
+    } else {
+        document.getElementById('game-area').innerHTML = '<div class="game-result">Falsch! +5 fürs Mitmachen</div>';
+        addActivityScore(5);
+    }
+    setTimeout(()=>initQuiz(), 2000);
+}
+
+function initSlots(){
+    gameState = {spinning:false};
+    document.getElementById('game-area').innerHTML = `
+        <div style="text-align:center">
+            <div class="game-result" id="slotResult" style="font-size:32px;letter-spacing:8px">🌿🌿</div>
+            <button class="btn" onclick="spinSlots()">SPIN (5 Punkte)</button>
+        </div>
+    `;
+}
+
+window.spinSlots=()=>{
+    if(gameState.spinning) return;
+    addActivityScore(-5);
+    gameState.spinning = true;
+    const symbols = ['🌿','💎','🔥','⭐','🍄'];
+    let spins = 0;
+    const interval = setInterval(()=>{
+        const s1 = symbols[Math.floor(Math.random()*5)];
+        const s2 = symbols[Math.floor(Math.random()*5)];
+        const s3 = symbols[Math.floor(Math.random()*5)];
+        document.getElementById('slotResult').textContent = s1+s2+s3;
+        spins++;
+        if(spins > 10){
+            clearInterval(interval);
+            gameState.spinning = false;
+            if(s1===s2 && s2===s3){
+                addActivityScore(100);
+                document.getElementById('slotResult').innerHTML += '<br><span style="font-size:14px">JACKPOT! +100 🎰</span>';
+            } else if(s1===s2 || s2===s3 || s1===s3){
+                addActivityScore(15);
+                document.getElementById('slotResult').innerHTML += '<br><span style="font-size:14px">2 Gleiche! +15</span>';
+            }
+        }
+    }, 100);
+}
+
+// ===== HIGHSCORE SYSTEM =====
+function addActivityScore(points){
+    if(!currentUser) return;
+    let scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
+    scores[currentUser.insta] = (scores[currentUser.insta] || 0) + points;
+    localStorage.setItem('nbc_highscores', JSON.stringify(scores));
+    updateHighscore();
+}
+
+function updateHighscore(){
+    let scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
+    let sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+    document.getElementById('highscore-list').innerHTML = sorted.length? sorted.map(([insta,pts],i)=>{
+        const user = allUsers.find(u=>u.insta===insta);
+        const name = user? user.name : insta;
+        const isMe = insta === currentUser?.insta? 'me' : '';
+        return `<div class="highscore-entry ${isMe}">
+            <span class="highscore-name" onclick="showCard('${insta}')">${i+1}. ${name}</span>
+            <span class="highscore-points">${pts}</span>
+        </div>`;
+    }).join('') : '<div style="text-align:center;opacity:0.5;font-size:11px">Noch keine Scores</div>';
+}
+
+// Bot Chat
 window.sendChat=()=>{
   const input = document.getElementById('chatInput');
   const msg = input.value.trim();
   if(!msg) return;
-
-  lastChatTime = Date.now();
   const chatBox = document.getElementById('chatBox');
   chatBox.innerHTML += `<div class="chat-msg user">${msg}</div>`;
   input.value = '';
+  addActivityScore(1); // 1 Punkt für Chat
 
   setTimeout(()=>{
-    let reply = '';
+    let reply = 'Chillaz, THC-Level im Chat optimal 🧠💨';
     const lower = msg.toLowerCase();
 
-    if(lower.startsWith('/licht') || lower.includes('licht') || lower.includes('lampe') || lower.includes('ppfd') || lower.includes('spektrum')) {
-      reply = suaveBrain.grow.licht[Math.floor(Math.random()*suaveBrain.grow.licht.length)];
+    if(lower.includes('hallo') || lower.includes('hi') || lower.includes('moin')) {
+      reply = `Moin ${currentUser.name}! Was geht? 🧠💨`;
     }
-    else if(lower.startsWith('/wasser') || lower.includes('gieß') || lower.includes('wasser') || lower.includes('ph') || lower.includes('ec')) {
-      reply = suaveBrain.grow.wasser[Math.floor(Math.random()*suaveBrain.grow.wasser.length)];
+    else if(lower.startsWith('/help') || lower.includes('hilfe')) {
+      reply = 'Commands: /licht /wasser /temp /erde /probleme /cang /ranks /stats - Frag mich was! 🌱';
     }
-    else if(lower.startsWith('/temp') || lower.includes('temperatur') || lower.includes('feucht') || lower.includes('rlf') || lower.includes('vpd')) {
-      reply = suaveBrain.grow.temp[Math.floor(Math.random()*suaveBrain.grow.temp.length)];
+    else if(lower.startsWith('/licht') || lower.includes('licht') || lower.includes('lampe')) {
+      reply = 'Licht-Zyklus: Vegi 18/6, Blüte 12/12. LED 300-600W pro m². Abstand: 30-50cm 💡';
     }
-    else if(lower.startsWith('/erde') || lower.includes('erde') || lower.includes('dünger') || lower.includes('flush') || lower.includes('substrat')) {
-      reply = suaveBrain.grow.erde[Math.floor(Math.random()*suaveBrain.grow.erde.length)];
+    else if(lower.startsWith('/wasser') || lower.includes('gieß') || lower.includes('wasser')) {
+      reply = 'Gießen: Lieber seltener + viel als oft + wenig. pH Erde 6.0-7.0 💧';
     }
-    else if(lower.startsWith('/probleme') || lower.includes('gelb') || lower.includes('häng') || lower.includes('schimmel') || lower.includes('problem')) {
-      reply = suaveBrain.grow.probleme[Math.floor(Math.random()*suaveBrain.grow.probleme.length)];
+    else if(lower.startsWith('/temp') || lower.includes('temperatur')) {
+      reply = 'Temperatur: Tag 22-28°C, Nacht 18-22°C. RLF Blüte 40-50% 🌡️';
+    }
+    else if(lower.startsWith('/erde') || lower.includes('erde') || lower.includes('dünger')) {
+      reply = 'Erde: Light-Mix Start, All-Mix ab Woche 3. NPK Vegi 3-1-2, Blüte 1-3-2 🌱';
+    }
+    else if(lower.startsWith('/probleme') || lower.includes('gelb') || lower.includes('problem')) {
+      reply = 'Gelbe Blätter unten = N-Mangel. Check pH zuerst! Überwässerung = hängende Blätter 🌿';
     }
     else if(lower.startsWith('/cang') || lower.includes('cang') || lower.includes('gesetz')) {
-      reply = suaveBrain.canG[Math.floor(Math.random()*suaveBrain.canG.length)];
+      reply = 'CanG: 3 Pflanzen Eigenanbau, 25g Besitz, 50g zuhause. THC Auto: 3,5ng/ml 📜';
     }
     else if(lower.startsWith('/ranks') || lower.includes('titel') || lower.includes('spende')) {
-      reply = suaveBrain.ranks[Math.floor(Math.random()*suaveBrain.ranks.length)];
+      reply = 'Supporter ab 5€ | Concililiere ab 50€ | Ultimate Chiller ab 100€ 💎';
     }
     else if(lower.startsWith('/stats')) {
       const s = getUserStats();
-      reply = `Stats: ${s.total} Chillaz registriert. Du: ${s.you} | Gespendet: ${s.donation}€ 🏆`;
+      reply = `Stats: ${s.total} Chillaz. Du: ${s.you} | Gespendet: ${s.donation}€ 🏆`;
     }
-    else if(lower.startsWith('/help') || lower.includes('hilfe')) {
-      reply = suaveBrain.help.join(' | ');
-    }
-    else if(lower.includes('hallo') || lower.includes('hi') || lower.includes('moin')) {
-      const s = getUserStats();
-      reply = `Moin ${s.you}! Was geht? Frag mich /help für Grow-Wissen 🧠💨`;
-    }
-    else {
-      reply = suaveBrain.jokes[Math.floor(Math.random()*suaveBrain.jokes.length)];
+
+    // Anti-Hate Filter
+    const bannedWords = ['nazi', 'hitler', 'sieg heil', 'juden', 'ausländer raus', 'kanake', 'neger', 'asylant'];
+    if(bannedWords.some(w => lower.includes(w))) {
+      reply = 'Bitte respektvoll bleiben. Keine Hetze im Unity Club ✌️';
     }
 
     chatBox.innerHTML += `<div class="chat-msg bot">${reply}</div>`;
@@ -477,19 +721,87 @@ window.sendChat=()=>{
   },400);
 };
 
-setTimeout(()=>{startPrahlMode()},5000);
-renderLists();
+function getUserStats(){
+  const users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  return {total: users.length, you: currentUser?.name || 'Anon', donation: currentUser?.donation || 0};
+}
 
+// Auto-Prahl wenn Chat still
+let lastChatTime = Date.now();
+setInterval(()=>{
+  if(Date.now() - lastChatTime > 20000){
+    const prahl = [
+      'Fun Fact: Ich kenne 847 Grow-Strains auswendig 🤓',
+      'Profi-Tipp: CO2 1200ppm + 1000 PPFD = +30% Ertrag 😎',
+      'Trichome milchig + 20% bernstein = Erntezeit! 🔬',
+      'Unity bedeutet zusammen stark sein. Du gehörst dazu! ✨'
+    ];
+    const chatBox = document.getElementById('chatBox');
+    chatBox.innerHTML += `<div class="chat-msg bot">${prahl[Math.floor(Math.random()*prahl.length)]}</div>`;
+    chatBox.scrollTop = 9999;
+    lastChatTime = Date.now();
+  }
+}, 5000);
+
+// Init
+renderLists();
+updateHighscore();
+
+// 3D GLOBE MIT WELTKARTE
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
 const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('canvas'),alpha:true,antialias:true});
 renderer.setSize(window.innerWidth,window.innerHeight);
 
+// Weltkarten-Textur als Basis
+const textureLoader = new THREE.TextureLoader();
+const earthTexture = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
+const earthBump = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-topology.png');
+
+const earthGlobe = new THREE.Mesh(
+  new THREE.SphereGeometry(1.98, 64, 64),
+  new THREE.MeshPhongMaterial({
+    map: earthTexture,
+    bumpMap: earthBump,
+    bumpScale: 0.05,
+    transparent: true,
+    opacity: 0.6,
+    emissive: 0x00D9FF,
+    emissiveIntensity: 0.15
+  })
+);
+scene.add(earthGlobe);
+
+// Wireframe drüber für Cyber-Look
 const globe=new THREE.Mesh(
-  new THREE.SphereGeometry(2,32,32),
-  new THREE.MeshBasicMaterial({color:0x00D9FF,wireframe:true,transparent:true,opacity:0.2})
+  new THREE.SphereGeometry(2.02,32,32),
+  new THREE.MeshBasicMaterial({
+    color:0xD4AF37,
+    wireframe:true,
+    transparent:true,
+    opacity:0.3
+  })
 );
 scene.add(globe);
+
+// Atmosphäre-Glow
+const atmosphere = new THREE.Mesh(
+  new THREE.SphereGeometry(2.15, 32, 32),
+  new THREE.MeshBasicMaterial({
+    color: 0x00D9FF,
+    transparent: true,
+    opacity: 0.08,
+    side: THREE.BackSide
+  })
+);
+scene.add(atmosphere);
+
+// Licht für die Textur
+const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+scene.add(ambientLight);
+const dirLight = new THREE.DirectionalLight(0x00D9FF, 0.8);
+dirLight.position.set(5, 3, 5);
+scene.add(dirLight);
 
 function latLngToVector3(lat,lng,radius){
   const phi = (90-lat)*(Math.PI/180);
@@ -503,9 +815,11 @@ function latLngToVector3(lat,lng,radius){
 const memberGroup = new THREE.Group();
 allUsers.forEach(u=>{
   if(!u.lat ||!u.lng) return;
-  const pos = latLngToVector3(u.lat,u.lng,2.05);
+  const pos = latLngToVector3(u.lat,u.lng,2.08);
   const color = u.donation>=100? 0xD4AF37 : u.donation>=50? 0x00D9FF : u.donation>=5? 0xE5E4E2 : 0x666666;
-  const size = u.donation>=100? 0.08 : u.donation>=50? 0.06 : 0.04;
+  const size = u.donation>=100? 0.09 : u.donation>=50? 0.07 : 0.05;
+
+  // Glühender Punkt
   const point = new THREE.Mesh(
     new THREE.SphereGeometry(size,16,16),
     new THREE.MeshBasicMaterial({color:color})
@@ -513,18 +827,19 @@ allUsers.forEach(u=>{
   point.position.copy(pos);
   point.userData = u;
   memberGroup.add(point);
+
+  // Glow-Ring für wichtige Member
+  if(u.donation >= 50){
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(size*1.5, size*2, 16),
+      new THREE.MeshBasicMaterial({color:color, transparent:true, opacity:0.4, side:THREE.DoubleSide})
+    );
+    ring.position.copy(pos);
+    ring.lookAt(0,0,0);
+    memberGroup.add(ring);
+  }
 });
 scene.add(memberGroup);
-
-const glowGeometry = new THREE.SphereGeometry(2.08,32,32);
-const glowMaterial = new THREE.MeshBasicMaterial({
-  color:0xD4AF37,
-  transparent:true,
-  opacity:0.05,
-  side:THREE.BackSide
-});
-const glow = new THREE.Mesh(glowGeometry,glowMaterial);
-scene.add(glow);
 
 camera.position.z=5;
 
@@ -544,7 +859,7 @@ function onMouseMove(event){
     if(hoveredPoint!== intersects[0].object){
       if(hoveredPoint) hoveredPoint.scale.set(1,1,1);
       hoveredPoint = intersects[0].object;
-      hoveredPoint.scale.set(1.5,1.5);
+      hoveredPoint.scale.set(1.8,1.8);
       document.body.style.cursor = 'pointer';
     }
   } else {
@@ -557,6 +872,7 @@ function onMouseMove(event){
 function onClick(){
   if(hoveredPoint){
     showCard(hoveredPoint.userData.insta);
+    addActivityScore(3); // 3 Punkte für Member entdecken
   }
 }
 
@@ -565,655 +881,14 @@ renderer.domElement.addEventListener('click', onClick);
 
 function animate(){
   requestAnimationFrame(animate);
+  earthGlobe.rotation.y+=0.0005;
   globe.rotation.y+=0.001;
   memberGroup.rotation.y+=0.001;
-  glow.rotation.y+=0.001;
+  atmosphere.rotation.y+=0.0003;
   renderer.render(scene,camera);
 }
 animate();
 window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
-</script>
-
-<div id="mini-games" style="margin-top:20px; padding:15px; border:1px solid #444; border-radius:8px;">
-  <h3 data-i18n="spiele_title">Mini Games</h3>
-  <button onclick="startGame('ki')" data-i18n="spiele_vs_ki">Gegen KI spielen</button>
-  <button onclick="startGame('member')" data-i18n="spiele_vs_member">Mit Member spielen</button>
-  <div id="game-area" style="margin-top:10px;"></div>
-</div>
-<script>
-// 3. Simples Member-Matchmaking für Games via BroadcastChannel
-const gameChannel = new BroadcastChannel('unity_games');
-let waitingForMatch = false;
-let currentOpponent = null;
-
-function startGame(mode) {
-  const area = document.getElementById('game-area');
-  if (mode === 'ki') {
-    let player = Math.floor(Math.random()*11)+10;
-    let ki = Math.floor(Math.random()*11)+10;
-    let result = player > 21 ? 'Verloren' : ki > 21 || player > ki ? 'Gewonnen!' : 'KI gewinnt';
-    area.innerHTML = `Du: ${player} | KI: ${ki} → ${result}`;
-  } else if (mode === 'member') {
-    if (!waitingForMatch) {
-      waitingForMatch = true;
-      area.innerHTML = 'Suche Member... <button onclick="cancelMatchmaking()">Abbrechen</button>';
-      gameChannel.postMessage({ type: 'search', player: 'User_' + Math.floor(Math.random()*1000) });
-    }
-  }
-}
-
-function cancelMatchmaking() {
-  waitingForMatch = false;
-  document.getElementById('game-area').innerHTML = 'Matchmaking abgebrochen.';
-  gameChannel.postMessage({ type: 'cancel' });
-}
-
-gameChannel.onmessage = (e) => {
-  const area = document.getElementById('game-area');
-  if (e.data.type === 'search' && waitingForMatch && !currentOpponent) {
-    currentOpponent = e.data.player;
-    waitingForMatch = false;
-    gameChannel.postMessage({ type: 'matched', player: currentOpponent });
-    area.innerHTML = `Match gefunden: ${currentOpponent}! <br><button onclick="playVsMember()">Spielen</button>`;
-  } else if (e.data.type === 'matched' && waitingForMatch) {
-    currentOpponent = e.data.player;
-    waitingForMatch = false;
-    area.innerHTML = `Match gefunden: ${currentOpponent}! <br><button onclick="playVsMember()">Spielen</button>`;
-  }
-};
-
-function playVsMember() {
-  const area = document.getElementById('game-area');
-  // Simples Zufallsspiel - später durch echte Game-Logik ersetzen
-  const you = Math.floor(Math.random()*21)+1;
-  const opp = Math.floor(Math.random()*21)+1;
-  let result = you > opp ? 'Du gewinnst!' : you < opp ? `${currentOpponent} gewinnt!` : 'Unentschieden';
-  area.innerHTML = `Du: ${you} | ${currentOpponent}: ${opp} → ${result} <br><button onclick="startGame('member')">Nochmal</button>`;
-  currentOpponent = null;
-}
-
-// Chat-Bot auch auf Sprache umstellen
-function postBotMessage(text) {
-  const chat = document.querySelector('#chat-output');
-  const lang = detectLang();
-  const prefix = lang === 'en' ? 'UnityBot: ' : 'UnityBot: ';
-  if (chat) {
-    const el = document.createElement('div');
-    el.className = 'bot-msg';
-    el.textContent = prefix + text;
-    chat.appendChild(el);
-    chat.scrollTop = chat.scrollHeight;
-  }
-}
-window.postBotMessage = postBotMessage;
-</script>
-
-
-<div style="margin-top:10px;">
-  <label style="font-size:0.9em;">
-    <input type="checkbox" id="donation-private" checked> 
-    <span data-i18n="spende_privat">Spendenbetrag privat anzeigen</span>
-  </label>
-</div>
-<script>
-document.getElementById('donation-private')?.addEventListener('change', (e) => {
-  const isPrivate = e.target.checked;
-  document.querySelectorAll('.spenden-betrag').forEach(el => {
-    el.style.display = isPrivate ? 'none' : 'inline';
-  });
-  // Hier: API Call um Einstellung in Clubkarte zu speichern
-});
-</script>
-
-
-<script>
-// Bot Auto Update + Jokes
-const botTopics = ['Cannabis', 'Club', 'Party', 'Feiern', 'Arbeit'];
-const jokes = [
-  'Warum nimmt der Kiffer einen Stuhl mit zur Party? Falls die Stimmung mal sitzt.',
-  'Was sagt ein Budtender zum Feierabend? High five!',
-  'Arbeit und Cannabis? Nenn es Homeoffice mit Upgrade.'
-];
-
-<script>
-// 1. Cannabis News mit kostenlosen RSS-Feeds - kein API Key nötig
-async function fetchCannabisNews() {
-  try {
-    // Kostenlose Cannabis RSS-Feeds
-    const feeds = [
-      'https://www.cannabisindustryjournal.com/feed/',
-      'https://www.marijuanamoment.net/feed/',
-      'https://hightimes.com/feed/'
-    ];
-    
-    const randomFeed = feeds[Math.floor(Math.random() * feeds.length)];
-    // rss2json wandelt RSS in JSON um, kostenlos bis 10k/Tag
-    const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(randomFeed)}&count=1`;
-    
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('RSS Feed Fehler');
-    const data = await res.json();
-    
-    if (data.items && data.items.length > 0) {
-      const item = data.items[0];
-      const lang = detectLang();
-      const time = new Date(item.pubDate).toLocaleTimeString(lang);
-      return [{
-        title: item.title,
-        url: item.link,
-        time: time
-      }];
-    }
-    return [{title: 'Keine neuen Cannabis-News gefunden', time: 'jetzt'}];
-  } catch (e) {
-    console.error('News fetch failed:', e);
-    // Fallback auf statische News wenn API down ist
-    const fallbackNews = [
-      'Deutschland: Cannabis Social Clubs wachsen weiter',
-      'Neue Studie untersucht Cannabis bei chronischen Schmerzen',
-      'Cannabis Messe kündigt Termine für 2026 an',
-      'Legalisierung: Erste Bilanz nach 2 Jahren'
-    ];
-    return [{
-      title: fallbackNews[Math.floor(Math.random() * fallbackNews.length)],
-      time: 'jetzt'
-    }];
-  }
-}
-
-// Bot postet direkt beim Laden die erste News
-setTimeout(async () => {
-  const news = await fetchCannabisNews();
-  postBotMessage(`📰 News Update: ${news[0].title}`);
-}, 3000);
-</script>
-
-async function botAutoUpdate() {
-  const news = await fetchCannabisNews();
-  const msg = `Update: ${news[0].title}`;
-  window.postBotMessage?.(msg);
-}
-
-function botRandomJoke() {
-  const joke = jokes[Math.floor(Math.random()*jokes.length)];
-  window.postBotMessage?.('😄 ' + joke);
-}
-
-// News alle 30min, Jokes alle 5-15min zufällig
-setInterval(botAutoUpdate, 30*60*1000);
-setInterval(() => {
-  if (Math.random() < 0.3) botRandomJoke();
-}, 5*60*1000);
-
-window.postBotMessage = function(text) {
-  const chat = document.querySelector('#chat-output');
-  if (chat) {
-    const el = document.createElement('div');
-    el.className = 'bot-msg';
-    el.textContent = 'UnityBot: ' + text;
-    chat.appendChild(el);
-    chat.scrollTop = chat.scrollHeight;
-  }
-};
-</script>
-
-
-<!-- Globe: Für echte Member-Standorte brauchst du Geolocation + WebGL Globe wie three.js globe.gl -->
-<!-- Beispiel: globe.gl kann echte Koordinaten + Texturen -->
-<script>
-// Pseudocode für Member-Positionen
-// globe.pointsData(memberList.map(m => ({ lat: m.lat, lng: m.lng, label: m.name })));
-</script>
-
-
-<!-- Globe.gl für echten Globus mit Member-Standorten -->
-<script src="https://unpkg.com/globe.gl"></script>
-<div id="globeViz" style="width:100%; height:400px;"></div>
-<script>
-// Demo Member Daten - später aus Backend/DB laden
-const memberList = [
-  { name: 'Alex', lat: 51.4556, lng: 7.0116, city: 'Essen' }, // Du in Essen
-  { name: 'Mia', lat: 52.5200, lng: 13.4050, city: 'Berlin' },
-  { name: 'Tom', lat: 48.1351, lng: 11.5820, city: 'München' }
-];
-
-const world = Globe()
-  (document.getElementById('globeViz'))
-  .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
-  .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
-  .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
-  .pointOfView({ lat: 51.4556, lng: 7.0116, altitude: 2 }) // Start bei Essen
-  .pointsData(memberList)
-  .pointLat('lat')
-  .pointLng('lng')
-  .pointLabel(d => `${d.name} - ${d.city}`)
-  .pointColor(() => '#00ff88')
-  .pointAltitude(0.01)
-  .pointRadius(0.3);
-
-// Auto-rotate
-world.controls().autoRotate = true;
-world.controls().autoRotateSpeed = 0.5;
-
-// Später: Member per WebSocket/Firebase live updaten
-function updateMemberLocation(memberName, lat, lng) {
-  const member = memberList.find(m => m.name === memberName);
-  if (member) {
-    member.lat = lat;
-    member.lng = lng;
-    world.pointsData([...memberList]);
-  }
-}
-
-// Geolocation für aktuellen User
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(pos => {
-    updateMemberLocation('Alex', pos.coords.latitude, pos.coords.longitude);
-    world.pointOfView({ lat: pos.coords.latitude, lng: pos.coords.longitude, altitude: 2 }, 2000);
-  });
-}
-</script>
-
-
-<style>
-/* Mini Schultafel Styling */
-#mini-tafel {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 180px;
-  height: 120px;
-  background: #2d4a2d;
-  border: 8px solid #8b4513;
-  border-radius: 4px;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  z-index: 1000;
-  transition: transform 0.2s;
-}
-#mini-tafel:hover { transform: scale(1.05); }
-#mini-tafel::before {
-  content: 'Für Kreative Chillaz';
-  position: absolute;
-  bottom: -25px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 11px;
-  color: #ccc;
-  white-space: nowrap;
-  font-family: 'Comic Sans MS', cursive;
-}
-#mini-tafel .kreide-text {
-  color: #f0f0f0;
-  font-family: 'Comic Sans MS', cursive;
-  font-size: 14px;
-  text-align: center;
-  padding-top: 45px;
-  text-shadow: 1px 1px 2px #000;
-}
-
-/* Fullscreen Zeichenbereich */
-#zeichen-modal {
-  display: none;
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.9);
-  z-index: 2000;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-#zeichen-modal.active { display: flex; }
-#zeichen-board {
-  background: #2d4a2d;
-  border: 15px solid #8b4513;
-  border-radius: 8px;
-  cursor: crosshair;
-}
-#zeichen-tools {
-  margin-top: 15px;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
-#zeichen-tools button, #zeichen-tools select {
-  padding: 8px 12px;
-  background: #444;
-  color: white;
-  border: 1px solid #666;
-  border-radius: 4px;
-  cursor: pointer;
-}
-#zeichen-tools button:hover { background: #555; }
-
-/* Ranking Liste */
-#ranking-list {
-  margin-top: 15px;
-  padding: 10px;
-  background: rgba(0,0,0,0.3);
-  border-radius: 6px;
-  max-height: 200px;
-  overflow-y: auto;
-}
-#ranking-list h4 { margin: 0 0 10px 0; font-size: 14px; }
-.ranking-entry {
-  display: flex;
-  justify-content: space-between;
-  padding: 4px 0;
-  border-bottom: 1px solid #444;
-  font-size: 13px;
-}
-.ranking-entry.me { color: #00ff88; font-weight: bold; }
-</style>
-
-<!-- Mini Schultafel -->
-<div id="mini-tafel" onclick="openZeichenboard()">
-  <div class="kreide-text">Klick zum Malen</div>
-</div>
-
-<!-- Zeichen Modal -->
-<div id="zeichen-modal">
-  <canvas id="zeichen-board" width="900" height="600"></canvas>
-  <div id="zeichen-tools">
-    <select id="tool-select">
-      <option value="pinsel">Pinsel</option>
-      <option value="kreide">Kreide</option>
-      <option value="stift">Stift</option>
-      <option value="radierer">Radierer</option>
-    </select>
-    <input type="color" id="color-picker" value="#ffffff">
-    <input type="range" id="size-slider" min="1" max="30" value="5">
-    <button onclick="clearCanvas()">Löschen</button>
-    <button onclick="sendDrawing()">✉️ An infotonbc@gmail senden</button>
-    <button onclick="closeZeichenboard()">Schließen</button>
-  </div>
-</div>
-
-<script>
-// Member System - später aus Login übernehmen
-let currentMember = localStorage.getItem('unity_member') || 'Gast_' + Math.floor(Math.random()*999);
-let memberScores = JSON.parse(localStorage.getItem('unity_scores') || '{}');
-
-// Ranking aktualisieren
-function updateRanking() {
-  memberScores[currentMember] = memberScores[currentMember] || 0;
-  const sorted = Object.entries(memberScores).sort((a,b) => b[1] - a[1]).slice(0,10);
-  
-  let html = '<h4 data-i18n="ranking_title">🏆 Top Chillaz</h4>';
-  sorted.forEach(([name, score], i) => {
-    const isMe = name === currentMember ? 'me' : '';
-    html += `<div class="ranking-entry ${isMe}"><span>${i+1}. ${name}</span><span>${score} Pkt</span></div>`;
-  });
-  
-  let rankingDiv = document.getElementById('ranking-list');
-  if (!rankingDiv) {
-    rankingDiv = document.createElement('div');
-    rankingDiv.id = 'ranking-list';
-    document.getElementById('game-area').appendChild(rankingDiv);
-  }
-  rankingDiv.innerHTML = html;
-}
-
-// Punkte geben bei Sieg
-function addScore(points) {
-  memberScores[currentMember] = (memberScores[currentMember] || 0) + points;
-  localStorage.setItem('unity_scores', JSON.stringify(memberScores));
-  updateRanking();
-}
-
-// Game mit Ranking erweitern
-const oldPlayVsMember = window.playVsMember;
-window.playVsMember = function() {
-  const area = document.getElementById('game-area');
-  const you = Math.floor(Math.random()*21)+1;
-  const opp = Math.floor(Math.random()*21)+1;
-  let result = '';
-  if (you > opp) {
-    result = 'Du gewinnst! +10 Pkt';
-    addScore(10);
-  } else if (you < opp) {
-    result = `${currentOpponent} gewinnt!`;
-  } else {
-    result = 'Unentschieden +3 Pkt';
-    addScore(3);
-  }
-  area.innerHTML = `Du: ${you} | ${currentOpponent}: ${opp} → ${result} <br><button onclick="startGame('member')">Nochmal</button>`;
-  currentOpponent = null;
-  updateRanking();
-}
-
-// Initial Ranking anzeigen
-setTimeout(updateRanking, 500);
-
-// Zeichenboard Logik
-const canvas = document.getElementById('zeichen-board');
-const ctx = canvas.getContext('2d');
-let isDrawing = false;
-let lastX = 0, lastY = 0;
-
-function openZeichenboard() {
-  document.getElementById('zeichen-modal').classList.add('active');
-  ctx.fillStyle = '#2d4a2d';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-}
-
-function closeZeichenboard() {
-  document.getElementById('zeichen-modal').classList.remove('active');
-}
-
-function clearCanvas() {
-  ctx.fillStyle = '#2d4a2d';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-}
-
-function getToolSettings() {
-  const tool = document.getElementById('tool-select').value;
-  const color = document.getElementById('color-picker').value;
-  const size = document.getElementById('size-slider').value;
-  
-  if (tool === 'radierer') return { color: '#2d4a2d', size: size * 2, opacity: 1 };
-  if (tool === 'kreide') return { color: color, size: size, opacity: 0.6 };
-  if (tool === 'stift') return { color: color, size: Math.max(1, size/3), opacity: 1 };
-  return { color: color, size: size, opacity: 0.8 }; // pinsel
-}
-
-canvas.addEventListener('mousedown', (e) => {
-  isDrawing = true;
-  [lastX, lastY] = [e.offsetX, e.offsetY];
-});
-
-canvas.addEventListener('mousemove', (e) => {
-  if (!isDrawing) return;
-  const {color, size, opacity} = getToolSettings();
-  
-  ctx.globalAlpha = opacity;
-  ctx.strokeStyle = color;
-  ctx.lineWidth = size;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  
-  ctx.beginPath();
-  ctx.moveTo(lastX, lastY);
-  ctx.lineTo(e.offsetX, e.offsetY);
-  ctx.stroke();
-  
-  [lastX, lastY] = [e.offsetX, e.offsetY];
-  ctx.globalAlpha = 1;
-});
-
-canvas.addEventListener('mouseup', () => isDrawing = false);
-canvas.addEventListener('mouseout', () => isDrawing = false);
-
-function sendDrawing() {
-  const dataURL = canvas.toDataURL('image/png');
-  const subject = encodeURIComponent('Kreatives von ' + currentMember + ' - Unity Card Club');
-  const body = encodeURIComponent('Hey NBC Team,%0A%0Ahier ist mein Kunstwerk von der Unity Tafel!%0A%0ALG ' + currentMember + '%0A%0A(Häng das Bild aus dem Download an)');
-  
-  // Bild Download triggern
-  const a = document.createElement('a');
-  a.href = dataURL;
-  a.download = `unity-tafel-${currentMember}-${Date.now()}.png`;
-  a.click();
-  
-  // Mail Client öffnen
-  setTimeout(() => {
-    window.location.href = `mailto:infotonbc@gmail?subject=${subject}&body=${body}`;
-  }, 500);
-  
-  addScore(5); // 5 Punkte für Kreativität
-  alert('Bild gespeichert! Häng es an die Email an die sich jetzt öffnet.');
-}
-
-// i18n erweitern
-if (translations.de) {
-  translations.de.ranking_title = '🏆 Top Chillaz';
-  translations.en.ranking_title = '🏆 Top Chillaz';
-}
-</script>
-
-
-<!-- Firebase für globales Ranking -->
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
-<script>
-// Firebase Config - ANONYM für Demo, später eigene DB anlegen
-const firebaseConfig = {
-  apiKey: "AIzaSyDemo_Key_Replace_With_Yours",
-  authDomain: "unitycardclub-demo.firebaseapp.com",
-  databaseURL: "https://unitycardclub-demo-default-rtdb.firebaseio.com",
-  projectId: "unitycardclub-demo"
-};
-
-// Firebase nur initialisieren wenn noch nicht vorhanden
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-const db = firebase.database();
-
-// Globales Ranking System
-function updateGlobalRanking() {
-  db.ref('scores').orderByChild('points').limitToLast(10).once('value', snapshot => {
-    const scores = [];
-    snapshot.forEach(child => {
-      scores.unshift({ name: child.key, points: child.val().points });
-    });
-    
-    let html = '<h4 data-i18n="ranking_title">🏆 Top Chillaz Global</h4>';
-    scores.forEach((entry, i) => {
-      const isMe = entry.name === currentMember ? 'me' : '';
-      html += `<div class="ranking-entry ${isMe}"><span>${i+1}. ${entry.name}</span><span>${entry.points} Pkt</span></div>`;
-    });
-    document.getElementById('ranking-list').innerHTML = html;
-  });
-}
-
-// Punkte global speichern
-function addScore(points) {
-  const userRef = db.ref('scores/' + currentMember);
-  userRef.transaction(current => {
-    if (current === null) {
-      return { points: points, lastUpdate: Date.now() };
-    }
-    return { points: current.points + points, lastUpdate: Date.now() };
-  });
-  setTimeout(updateGlobalRanking, 500);
-}
-
-// Live-Update wenn sich Ranking ändert
-db.ref('scores').on('value', updateGlobalRanking);
-setTimeout(updateGlobalRanking, 1000);
-
-// Chat Filter gegen Rechtsradikalismus + Fremdenfeindlichkeit
-const bannedWords = [
-  'nazi', 'hitler', 'sieg heil', 'heil hitler', 'juden', 'ausländer raus', 
-  'kanake', 'neger', 'zigeneur', 'asylant', 'musel', 'islamist',
-  'white power', 'ku klux', 'holocaust', 'gaskammer', 'vergasen',
-  'abschieben', 'deutschland den deutschen', 'afrikaner', 'schwarzkopf'
-];
-
-function filterMessage(text) {
-  const lower = text.toLowerCase();
-  for (let word of bannedWords) {
-    if (lower.includes(word)) {
-      return { blocked: true, reason: 'Bitte respektvoll bleiben. Keine Hetze im Unity Club ✌️' };
-    }
-  }
-  // Zusätzlich: Check auf ALL CAPS Hate
-  if (text.length > 10 && text === text.toUpperCase() && (lower.includes('raus') || lower.includes('weg'))) {
-    return { blocked: true, reason: 'Chill mal, kein Hate hier 🌿' };
-  }
-  return { blocked: false };
-}
-
-// Hook in bestehende Chat-Send Funktion
-const originalSend = window.sendChatMessage || function(){};
-window.sendChatMessage = function(text) {
-  const check = filterMessage(text);
-  if (check.blocked) {
-    postBotMessage(check.reason);
-    return false;
-  }
-  originalSend(text);
-  return true;
-}
-
-// Cooler + motivierender Bot
-const coolMotivation = [
-  'Yo, du rockst das! 💚 Keep it chill',
-  'High Five! Du bist auf nem guten Weg 🚀',
-  'Unity bedeutet zusammen stark sein. Du gehörst dazu! ✨',
-  'Jeder Punkt zählt - du machst das super! 🌿',
-  'Feier deine Wins, egal wie klein! 🎉',
-  'Cannabis verbindet, Hate trennt. Du bist auf der richtigen Seite 💚',
-  'Kreativität > Aggression. Zeig was du drauf hast! 🎨',
-  'Chillaz halten zusammen. Respekt! 🤝'
-];
-
-const coolJokes = [
-  'Warum sind Kiffer so entspannt? Weil sie Stress einfach weg-pusten 💨',
-  'Was sagt ein Joint zur Arbeit? Lass uns das durchziehen! 😄',
-  'Club-Regel #1: Sei kein Spießer, sei ein Chiller 🌿',
-  'Wieso feiern wir? Weil das Leben zu kurz für schlechte Vibes ist! 🎉'
-];
-
-// Bot postet alle 8-20 Min Motivation oder Joke
-setInterval(() => {
-  if (Math.random() < 0.6) {
-    const msg = coolMotivation[Math.floor(Math.random() * coolMotivation.length)];
-    postBotMessage(msg);
-  } else {
-    const joke = coolJokes[Math.floor(Math.random() * coolJokes.length)];
-    postBotMessage('😄 ' + joke);
-  }
-}, (8 + Math.random() * 12) * 60 * 1000);
-
-// Bot begrüßt neue Member cool
-setTimeout(() => {
-  postBotMessage(`Welcome ${currentMember}! Hier wird gechillt, nicht gehatet. Leg los! 🌿💚`);
-}, 4000);
-
-// Bot reagiert auf Chat mit Motivation
-window.postBotMessage = function(text) {
-  const chat = document.querySelector('#chat-output');
-  const lang = detectLang();
-  if (chat) {
-    const el = document.createElement('div');
-    el.className = 'bot-msg';
-    el.style.color = '#00ff88';
-    el.style.fontWeight = '500';
-    el.textContent = 'UnityBot: ' + text;
-    chat.appendChild(el);
-    chat.scrollTop = chat.scrollHeight;
-  }
-}
-
-// Update i18n
-if (translations.de) {
-  translations.de.ranking_title = '🏆 Top Chillaz Global';
-  translations.en.ranking_title = '🏆 Top Chillaz Global';
-}
 </script>
 
 </body>
