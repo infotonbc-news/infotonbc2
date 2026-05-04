@@ -3,335 +3,1097 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NaturalBornChillaz Unitycard</title>
+<title>Unitycard Club - NaturalBornChillaz</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Inter',sans-serif;background:#0A0A0F;color:#E5E4E2;overflow-x:hidden;min-height:100vh}
-body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(circle at 20% 50%,rgba(0,217,255,0.08) 0%,transparent 50%),radial-gradient(circle at 80% 80%,rgba(212,175,55,0.06) 0%,transparent 50%),url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4"/></filter><rect width="100" height="100" filter="url(%23n)" opacity="0.03"/></svg>');pointer-events:none;z-index:0}
-.container{position:relative;z-index:1;max-width:1400px;margin:0 auto;padding:40px 20px}
-header{text-align:center;margin-bottom:60px;position:relative}
-h1{font-family:'Orbitron',sans-serif;font-size:72px;font-weight:900;letter-spacing:8px;background:linear-gradient(135deg,#E5E4E2 0%,#D4AF37 50%,#E5E4E2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:0 0 40px rgba(212,175,55,0.3);margin-bottom:10px}
-.subtitle{font-size:18px;color:#00D9FF;letter-spacing:4px;font-weight:300}
+body{font-family:'Inter',sans-serif;background:#0A0A0F;color:#E5E4E2;overflow:hidden}
+#canvas{position:absolute;top:0;left:0;width:100%;height:100%}
+.ui-overlay{position:relative;z-index:10;height:100vh;display:grid;grid-template-columns:300px 1fr 350px;gap:20px;padding:20px;pointer-events:none}
+.panel{background:rgba(229,228,226,0.03);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.2);border-radius:20px;padding:20px;pointer-events:all;overflow-y:auto}
+h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:15px;letter-spacing:2px}
+.member-item{padding:12px;background:rgba(10,10,15,0.4);border:1px solid rgba(229,228,226,0.1);border-radius:10px;margin-bottom:10px;cursor:pointer;transition:all 0.3s}
+.member-item:hover{background:rgba(212,175,55,0.1);border-color:#D4AF37}
+.member-name{font-weight:600;margin-bottom:4px}
+.member-title{font-size:11px;color:#00D9FF;letter-spacing:1px}
+.badge{display:inline-block;padding:2px 8px;background:linear-gradient(135deg,#D4AF37,#E5E4E2);color:#0A0A0F;border-radius:6px;font-size:10px;font-weight:700;margin-left:6px}
 
-/* Uhrzeit + Datum Anzeige */
-.datetime-display{
-    position:absolute;
-    top:0;
-    right:0;
-    font-family:'Orbitron',sans-serif;
-    text-align:right;
-    padding:12px 20px;
-    background:rgba(229,228,226,0.03);
-    backdrop-filter:blur(20px);
-    border:1px solid rgba(0,217,255,0.2);
-    border-radius:12px;
+.unitycard-popup{
+  position:fixed;top:50%;left:50%;
+  width:480px;height:300px;
+  background:linear-gradient(135deg,#0A0A0F 0%,#1A1A2E 50%,#0A0A0F 100%);
+  border-radius:20px;
+  box-shadow:0 25px 80px rgba(0,0,0,0.9),0 0 0 1px rgba(212,175,55,0.3),0 0 60px rgba(212,175,55,0.2);
+  z-index:1000;display:none;overflow:hidden;
+  perspective:1000px;
+  cursor:grab;
+  transform:translate(-50%,-50%) rotateX(0deg) rotateY(0deg);
+  transition:box-shadow 0.3s;
 }
-.datetime-display.time{
-    font-size:28px;
-    font-weight:700;
-    color:#00D9FF;
-    text-shadow:0 0 20px rgba(0,217,255,0.5);
-    letter-spacing:2px;
-}
-.datetime-display.date{
-    font-size:12px;
-    color:rgba(229,228,226,0.7);
-    letter-spacing:1px;
-    margin-top:4px;
-}
+.unitycard-popup.active{display:block;animation:cardFlip 0.6s ease-out}
+.unitycard-popup.dragging{cursor:grabbing;transition:none}
+.unitycard-popup:hover{box-shadow:0 35px 100px rgba(0,0,0,0.9),0 0 0 1px rgba(212,175,55,0.5),0 0 80px rgba(212,175,55,0.4)}
+@keyframes cardFlip{from{transform:translate(-50%,-50%) rotateY(90deg) scale(0.8);opacity:0}to{transform:translate(-50%,-50%) rotateY(0deg) scale(1);opacity:1}}
 
-.glass-panel{background:rgba(229,228,226,0.03);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.2);border-radius:20px;padding:40px;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.1);margin-bottom:30px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-bottom:30px}
-.form-group{display:flex;flex-direction:column}
-label{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#D4AF37;margin-bottom:8px;font-weight:600}
-input,select{padding:14px 18px;background:rgba(10,10,15,0.6);border:1px solid rgba(229,228,226,0.2);border-radius:10px;color:#E5E4E2;font-size:15px;transition:all 0.3s}
-input:focus,select:focus{outline:none;border-color:#D4AF37;box-shadow:0 0 20px rgba(212,175,55,0.2)}
-.btn{padding:16px 40px;background:linear-gradient(135deg,#D4AF37 0%,#E5E4E2 100%);color:#0A0A0F;border:none;border-radius:12px;font-family:'Orbitron',sans-serif;font-weight:700;font-size:16px;letter-spacing:2px;cursor:pointer;transition:all 0.3s;text-transform:uppercase}
-.btn:hover{transform:translateY(-2px);box-shadow:0 10px 40px rgba(212,175,55,0.4)}
-.btn-secondary{background:transparent;border:1px solid #00D9FF;color:#00D9FF}
-.btn-secondary:hover{background:rgba(0,217,255,0.1)}
+.card-bg-effect{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.card-bg-effect::before{
+  content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle,rgba(212,175,55,0.15) 1px,transparent 1px);
+  background-size:20px 20px;animation:stars 20s linear infinite;
+}
+@keyframes stars{to{transform:rotate(360deg)}}
 
-/* Zurück zu News Button */
-.btn-back{
-    margin-top:20px;
-    float:right;
-    background:transparent;
-    border:1px solid #D4AF37;
-    color:#D4AF37;
-    padding:12px 30px;
-    font-size:14px;
+.card-holo-stripe{
+  position:absolute;top:55%;left:0;width:100%;height:40px;
+  background:linear-gradient(90deg,#00D9FF,#D4AF37,#FF00FF,#00D9FF);
+  background-size:200% 100%;
+  animation:holoMove 3s linear infinite;
+  opacity:0.9;mix-blend-mode:screen;
 }
-.btn-back:hover{
-    background:rgba(212,175,55,0.1);
-    box-shadow:0 5px 20px rgba(212,175,55,0.3);
-}
-.clearfix::after{content:"";display:table;clear:both}
+@keyframes holoMove{to{background-position:200% 0}}
 
-.tabs{display:flex;gap:20px;margin-bottom:30px;border-bottom:1px solid rgba(212,175,55,0.2)}
-.tab{padding:12px 24px;background:transparent;border:none;color:#E5E4E2;font-size:14px;letter-spacing:2px;cursor:pointer;transition:all 0.3s;border-bottom:2px solid transparent}
-.tab.active{color:#D4AF37;border-bottom-color:#D4AF37}
-footer{text-align:center;margin-top:80px;padding-top:40px;border-top:1px solid rgba(212,175,55,0.2);font-size:13px;color:rgba(229,228,226,0.6)}
-footer a{color:#00D9FF;text-decoration:none;margin:0 15px}
-footer a:hover{color:#D4AF37}
-.we-are-chillaz{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);font-family:'Orbitron',sans-serif;font-size:80px;font-weight:900;color:#D4AF37;text-shadow:0 0 60px rgba(212,175,55,0.8);z-index:9999;pointer-events:none;opacity:0}
-.we-are-chillaz.active{animation:popup 2s ease-out forwards}
-@keyframes popup{0%{transform:translate(-50%,-50%) scale(0);opacity:0}50%{transform:translate(-50%,-50%) scale(1.2);opacity:1}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
-.admin-panel{display:none}
+.card-glow-edge{position:absolute;inset:0;border-radius:20px;box-shadow:inset 0 0 0 2px rgba(212,175,55,0.5),0 0 40px rgba(212,175,55,0.4);pointer-events:none}
+.card-content{position:relative;z-index:2;padding:25px;height:100%;display:flex;flex-direction:column;pointer-events:none}
 
-/* Instagram Modal im Glass Design */
-.modal{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(10,10,15,0.8);
-    backdrop-filter:blur(10px);
-    z-index:10000;
-    align-items:center;
-    justify-content:center;
+.card-insta-avatar{
+  position:absolute;top:20px;left:20px;
+  width:60px;height:60px;
+  border-radius:50%;
+  border:2px solid #D4AF37;
+  box-shadow:0 0 15px rgba(212,175,55,0.6);
+  cursor:pointer;
+  pointer-events:all;
+  transition:all 0.3s;
+  object-fit:cover;
+  background:rgba(212,175,55,0.2);
 }
-.modal.active{display:flex}
-.modal-content{
-    background:rgba(229,228,226,0.05);
-    backdrop-filter:blur(20px);
-    border:1px solid rgba(212,175,55,0.3);
-    border-radius:20px;
-    padding:40px;
-    max-width:500px;
-    width:90%;
-    box-shadow:0 8px 32px rgba(0,0,0,0.6);
-}
-.modal-content h3{
-    font-family:'Orbitron',sans-serif;
-    color:#D4AF37;
-    margin-bottom:20px;
-    font-size:24px;
-    letter-spacing:2px;
-}
-.modal-buttons{
-    display:flex;
-    gap:15px;
-    margin-top:25px;
-}
-.modal-buttons.btn{
-    flex:1;
-    padding:14px 20px;
-    font-size:14px;
+.card-insta-avatar:hover{transform:scale(1.1);box-shadow:0 0 25px rgba(212,175,55,0.9)}
+
+.card-leaf{position:absolute;top:25px;left:95px;width:50px;height:50px;opacity:0.6}
+.card-leaf svg{width:100%;height:100%;filter:drop-shadow(0 0 10px rgba(212,175,55,0.6))}
+
+.card-title{
+  font-family:'Orbitron',sans-serif;font-size:28px;color:#D4AF37;
+  text-align:right;margin-top:10px;letter-spacing:3px;
+  text-shadow:0 0 20px rgba(212,175,55,0.5);
 }
 
-.error-msg{
-    color:#ff4757;
-    font-size:12px;
-    margin-top:8px;
-    letter-spacing:1px;
+.card-nbc-badge{
+  position:absolute;top:20px;right:20px;width:50px;height:50px;
+  border:2px solid #D4AF37;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 15px rgba(212,175,55,0.4);
+  pointer-events:none;
+}
+.card-nbc-badge span{font-size:10px;color:#00D9FF;font-weight:700}
+
+.card-neon-lines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.card-neon-lines::before,.card-neon-lines::after{
+  content:'';position:absolute;background:#00D9FF;box-shadow:0 0 10px #00D9FF;opacity:0.3;
+}
+.card-neon-lines::before{top:40%;left:0;width:100%;height:1px}
+.card-neon-lines::after{top:20%;right:15%;width:1px;height:30%}
+
+.card-rank-badge{
+  position:absolute;bottom:70px;right:25px;
+  padding:8px 16px;
+  background:linear-gradient(135deg,#D4AF37,#B8860B);
+  border:3px solid #D4AF37;
+  border-radius:10px;
+  box-shadow:0 0 20px rgba(212,175,55,0.6),inset 0 2px 0 rgba(255,255,255,0.3),inset 0 -2px 0 rgba(0,0,0,0.3);
+  z-index:3;
+  pointer-events:none;
+}
+.card-rank-badge::before{
+  content:'';position:absolute;inset:-6px;
+  border:1px solid #D4AF37;
+  border-radius:12px;
+  opacity:0.5;
+}
+.card-rank-text{
+  font-family:'Orbitron',sans-serif;
+  font-size:11px;font-weight:900;color:#0A0A0F;
+  text-transform:uppercase;letter-spacing:1.5px;
+  text-shadow:0 1px 0 rgba(255,255,255,0.4);
+}
+.card-rank-donation{
+  font-size:9px;color:#0A0A0F;opacity:0.8;
+  text-align:center;margin-top:2px;
 }
 
-@media(max-width:768px){
-    h1{font-size:40px;letter-spacing:4px}
-   .form-grid{grid-template-columns:1fr}
-   .datetime-display{position:static;margin-bottom:20px;text-align:center}
-   .datetime-display.time{font-size:22px}
+.card-bottom{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end}
+.card-name{
+  font-family:'Orbitron',sans-serif;font-size:18px;color:#00D9FF;
+  text-transform:uppercase;letter-spacing:2px;
+  text-shadow:0 0 15px #00D9FF;
 }
+.card-number{
+  padding:8px 15px;
+  background:linear-gradient(135deg,#D4AF37,#B8860B);
+  border:2px solid #D4AF37;border-radius:8px;
+  font-family:'Orbitron',sans-serif;font-size:14px;color:#0A0A0F;font-weight:700;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.3),0 5px 15px rgba(212,175,55,0.4);
+}
+.card-close{position:absolute;top:15px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.5);border:1px solid rgba(212,175,55,0.3);color:#D4AF37;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;z-index:3;pointer-events:all}
+.card-close:hover{background:rgba(212,175,55,0.2)}
+
+.chat-box{height:200px;background:rgba(10,10,15,0.6);border-radius:10px;padding:15px;overflow-y:auto;margin-bottom:10px}
+.chat-msg{margin-bottom:12px;font-size:13px}
+.chat-msg.bot{color:#00D9FF}
+.chat-msg.user{text-align:right;color:#D4AF37}
+.chat-input{display:flex;gap:10px}
+.chat-input input{flex:1;padding:10px;background:rgba(10,10,15,0.6);border:1px solid rgba(229,228,226,0.2);border-radius:8px;color:#E5E4E2}
+.btn{padding:10px 20px;background:linear-gradient(135deg,#D4AF37,#E5E4E2);color:#0A0A0F;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;letter-spacing:1px}
+.btn:hover{box-shadow:0 5px 20px rgba(212,175,55,0.4)}
+.btn-small{padding:8px 12px;font-size:11px}
+
+.game-select{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:15px 0;
+}
+.game-btn{
+    padding:12px 8px;background:rgba(0,217,255,0.1);border:1px solid #00D9FF;
+    color:#00D9FF;border-radius:8px;cursor:pointer;font-size:11px;
+    transition:all 0.3s;text-align:center;
+}
+.game-btn:hover{background:rgba(0,217,255,0.2);box-shadow:0 0 15px rgba(0,217,255,0.4)}
+.game-btn.active{background:rgba(212,175,55,0.2);border-color:#D4AF37;color:#D4AF37}
+#game-area{
+    background:rgba(10,10,15,0.6);border:1px solid rgba(212,175,55,0.2);
+    border-radius:10px;padding:15px;margin-top:10px;min-height:120px;
+    font-size:13px;
+}
+.game-result{font-family:'Orbitron',sans-serif;font-size:24px;color:#D4AF37;margin:10px 0;text-align:center}
+.reaction-box{
+    width:100%;height:80px;background:rgba(255,0,0,0.2);border:2px solid #ff4757;
+    border-radius:8px;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;font-weight:700;margin:10px 0;
+}
+.reaction-box.ready{background:rgba(0,255,0,0.2);border-color:#00ff88;color:#00ff88}
+
+#highscore-board{
+    margin-top:15px;padding:12px;
+    background:linear-gradient(135deg,rgba(212,175,55,0.1),rgba(0,217,255,0.05));
+    border:2px solid #D4AF37;border-radius:10px;
+    box-shadow:0 0 20px rgba(212,175,55,0.2),inset 0 0 20px rgba(0,0,0,0.5);
+}
+.highscore-title{
+    font-family:'Orbitron',sans-serif;font-size:14px;color:#D4AF37;
+    text-align:center;margin-bottom:10px;letter-spacing:2px;
+    text-shadow:0 0 10px rgba(212,175,55,0.6);
+}
+.highscore-entry{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:8px 10px;margin:5px 0;
+    background:rgba(10,10,15,0.6);border-radius:6px;
+    border-left:3px solid #00D9FF;font-size:12px;
+    transition:all 0.3s;
+}
+.highscore-entry:hover{background:rgba(212,175,55,0.1);border-left-color:#D4AF37}
+.highscore-entry.me{border-left-color:#D4AF37;background:rgba(212,175,55,0.15)}
+.highscore-name{color:#00D9FF;cursor:pointer;font-weight:600}
+.highscore-name:hover{color:#D4AF37;text-decoration:underline}
+.highscore-points{font-family:'Orbitron',sans-serif;color:#D4AF37;font-weight:700}
+
+.footer-links{position:absolute;bottom:20px;left:20px;font-size:12px;z-index:10;pointer-events:all}
+.footer-links a{color:#00D9FF;text-decoration:none;margin-right:15px}
+.footer-links a:hover{color:#D4AF37}
+@media(max-width:1024px){.ui-overlay{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}.unitycard-popup{width:90%;height:auto;min-height:300px}}
 </style>
 </head>
 <body>
-<div class="container">
-<header>
-<div class="datetime-display">
-    <div class="time" id="currentTime">00:00:00</div>
-    <div class="date" id="currentDate">05. Mai 2026</div>
-</div>
-<h1>WE ARE CHILLAZ</h1>
-<p class="subtitle">Your Access to the Neo-Jungle</p>
-</header>
 
-<div class="glass-panel">
-<div class="tabs">
-<button class="tab active" onclick="showTab('register')">Registrieren</button>
-<button class="tab" onclick="showTab('login')">Login</button>
-</div>
-
-<div id="registerTab">
-<form id="registerForm">
-<div class="form-grid">
-<div class="form-group"><label>Name</label><input type="text" id="regName" required></div>
-<div class="form-group">
-    <label>Email</label>
-    <input type="email" id="regEmail" required>
-    <div class="error-msg" id="emailError" style="display:none">Diese Email ist schon registriert, Chillaz!</div>
-</div>
-<div class="form-group"><label>Passwort</label><input type="password" id="regPass" required></div>
-<div class="form-group">
-    <label>Instagram</label>
-    <input type="text" id="regInsta" placeholder="@handle" required>
-    <div class="error-msg" id="instaError" style="display:none">Dieses Instagram ist schon vergeben!</div>
-</div>
-<div class="form-group"><label>Nation</label><select id="regNation" required>
-<option value="">Wählen...</option><option value="DE">🇩🇪 Deutschland</option><option value="AT">🇦🇹 Österreich</option><option value="CH">🇨🇭 Schweiz</option><option value="NL">🇳🇱 Niederlande</option><option value="ES">🇪🇸 Spanien</option></select></div>
-</div>
-<div class="clearfix">
-    <button type="submit" class="btn">Unitycard erstellen</button>
-    <button type="button" class="btn btn-back" onclick="location.href='index.html'">Zurück zu den News</button>
-</div>
-</form>
+<!-- LANGUAGE SWITCHER -->
+<div id="langSwitcher" style="position:fixed;top:20px;right:20px;z-index:100;pointer-events:all">
+  <div id="langCurrent" onclick="toggleLangMenu()" style="width:45px;height:30px;border:2px solid #D4AF37;border-radius:6px;cursor:pointer;box-shadow:0 0 15px rgba(212,175,55,0.4);overflow:hidden;background-size:cover;background-position:center"></div>
+  <div id="langMenu" style="display:none;position:absolute;top:38px;right:0;background:rgba(10,10,15,0.95);border:1px solid rgba(212,175,55,0.3);border-radius:10px;padding:8px;backdrop-filter:blur(20px)">
+    <div class="lang-option" data-lang="de" style="width:40px;height:25px;margin:4px;cursor:pointer;border-radius:4px;background:url('https://flagcdn.com/w40/de.png') center/cover;border:1px solid rgba(229,228,226,0.2)" onclick="setLang('de')" title="Deutsch"></div>
+    <div class="lang-option" data-lang="nl" style="width:40px;height:25px;margin:4px;cursor:pointer;border-radius:4px;background:url('https://flagcdn.com/w40/nl.png') center/cover;border:1px solid rgba(229,228,226,0.2)" onclick="setLang('nl')" title="Nederlands"></div>
+    <div class="lang-option" data-lang="en" style="width:40px;height:25px;margin:4px;cursor:pointer;border-radius:4px;background:url('https://flagcdn.com/w40/gb.png') center/cover;border:1px solid rgba(229,228,226,0.2)" onclick="setLang('en')" title="English"></div>
+    <div class="lang-option" data-lang="fr" style="width:40px;height:25px;margin:4px;cursor:pointer;border-radius:4px;background:url('https://flagcdn.com/w40/fr.png') center/cover;border:1px solid rgba(229,228,226,0.2)" onclick="setLang('fr')" title="Français"></div>
+    <div class="lang-option" data-lang="es" style="width:40px;height:25px;margin:4px;cursor:pointer;border-radius:4px;background:url('https://flagcdn.com/w40/es.png') center/cover;border:1px solid rgba(229,228,226,0.2)" onclick="setLang('es')" title="Español"></div>
+    <div class="lang-option" data-lang="bg" style="width:40px;height:25px;margin:4px;cursor:pointer;border-radius:4px;background:url('https://flagcdn.com/w40/bg.png') center/cover;border:1px solid rgba(229,228,226,0.2)" onclick="setLang('bg')" title="Български"></div>
+    <div class="lang-option" data-lang="pl" style="width:40px;height:25px;margin:4px;cursor:pointer;border-radius:4px;background:url('https://flagcdn.com/w40/pl.png') center/cover;border:1px solid rgba(229,228,226,0.2)" onclick="setLang('pl')" title="Polski"></div>
+  </div>
 </div>
 
-<div id="loginTab" style="display:none">
-<form id="loginForm">
-<div class="form-grid">
-<div class="form-group"><label>Email</label><input type="email" id="loginEmail" required></div>
-<div class="form-group"><label>Passwort</label><input type="password" id="loginPass" required></div>
+<canvas id="canvas"></canvas>
+<div class="ui-overlay">
+<div class="panel">
+<h2 data-i18n="top_supporter">Top Chillaz Supporter</h2>
+<div id="topList"></div>
+<h2 style="margin-top:30px" data-i18n="members">Members</h2>
+<div id="memberList"></div>
+
+<!-- ADMIN MEMBER KARTEI -->
+<div id="adminPanel" style="display:none;margin-top:20px;border-top:1px solid rgba(212,175,55,0.3);padding-top:15px">
+<h2 data-i18n="admin_kartei">Admin Member Kartei</h2>
+<input type="text" id="memberSearch" data-i18n="suche" placeholder="Suche Name/Insta..." style="width:100%;padding:8px;margin-bottom:10px;background:rgba(10,10,15,0.6);border:1px solid rgba(229,228,226,0.2);border-radius:8px;color:#E5E4E2" onkeyup="filterMembers()">
+<div id="memberTable" style="max-height:300px;overflow-y:auto;font-size:12px"></div>
+<button class="btn" style="width:100%;margin-top:10px" data-i18n="email_markierte" onclick="openMailPopup()">Email an Markierte</button>
 </div>
-<button type="submit" class="btn">Login</button>
-<button type="button" class="btn btn-secondary" onclick="showInstaModal()">Login mit Instagram</button>
-</form>
+
+</div>
+<div></div>
+<div class="panel">
+<h2 data-i18n="suavebot">SuaveBot</h2>
+<div class="chat-box" id="chatBox">
+<div class="chat-msg bot">Chillaz, hast du heute schon dein Gehirn gegossen? 🧠💨 Tipp: /help für Grow-Wissen</div>
+</div>
+<div class="chat-input">
+<input type="text" id="chatInput" data-i18n="chat_placeholder" placeholder="Frag SuaveBot... /help" onkeypress="if(event.key==='Enter')sendChat()">
+<button class="btn" onclick="sendChat()">Send</button>
+</div>
+<button class="btn" style="width:100%;margin-top:15px" data-i18n="chillaz_support" onclick="window.open('https://paypal.me/DeinLink','_blank')">Chillaz Support 💰</button>
+
+<h2 style="margin-top:20px" data-i18n="spiele_title">Spiel gegen Den Chillaz Bot</h2>
+<div class="game-select">
+  <button class="game-btn" onclick="selectGame('21er')">21er Duell</button>
+  <button class="game-btn" onclick="selectGame('reaction')">Reaktion</button>
+  <button class="game-btn" onclick="selectGame('quiz')">Kiffer-Quiz</button>
+  <button class="game-btn" onclick="selectGame('slots')">Weed-Slots</button>
+</div>
+<div id="game-area">
+  <div style="text-align:center;opacity:0.6;font-size:12px">Wähle ein Spiel 👆</div>
+</div>
+
+<div id="highscore-board">
+  <div class="highscore-title" data-i18n="highscore_title">🏆 FLIPPER HIGHSCORE</div>
+  <div id="highscore-list"></div>
+</div>
+
 </div>
 </div>
 
-<div class="glass-panel admin-panel" id="adminPanel">
-<h2 style="font-family:'Orbitron';color:#D4AF37;margin-bottom:20px">Admin: Spenden verwalten</h2>
-<div class="form-grid">
-<div class="form-group"><label>Chillaz auswählen</label><select id="adminUser"></select></div>
-<div class="form-group"><label>Spendenbetrag €</label><input type="number" id="adminAmount" min="1"></div>
-</div>
-<button class="btn" onclick="saveDonation()">Spende eintragen</button>
+<div class="unitycard-popup" id="cardPopup">
+  <div class="card-bg-effect"></div>
+  <div class="card-neon-lines"></div>
+  <div class="card-holo-stripe"></div>
+  <div class="card-glow-edge"></div>
+  <button class="card-close" onclick="closeCard()">×</button>
+  <div class="card-content">
+    <img class="card-insta-avatar" id="cardAvatar" src="" alt="Instagram" onclick="openInstagram()">
+    <div class="card-leaf">
+      <svg viewBox="0 0 100 100" fill="none">
+        <path d="M50 10C45 25 35 20 40C30 45 40 55 50 75C60 55 70 45 80 40C65 35 55 25 50 10Z M50 75L50 90" stroke="#D4AF37" stroke-width="2" fill="url(#goldGrad)"/>
+        <defs>
+          <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#D4AF37"/>
+            <stop offset="100%" style="stop-color:#B8860B"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+    <div class="card-nbc-badge"><span>@NBC</span></div>
+    <div class="card-title">NBC Unitycard</div>
+    <div class="card-rank-badge" id="cardRankBadge">
+      <div class="card-rank-text" id="cardRankText">MEMBER</div>
+      <div class="card-rank-donation" id="cardRankDonation">0€</div>
+    </div>
+    <div class="card-bottom">
+      <div>
+        <div class="card-name" id="cardName"></div>
+        <div style="font-size:11px;color:#00D9FF;margin-top:5px;opacity:0.7" id="cardInsta"></div>
+      </div>
+      <div class="card-number" id="cardNumber">XXXX XXXX 1234</div>
+    </div>
+  </div>
 </div>
 
-<footer>
-<p>Die NaturalBornChillaz Unitycard ist ein privates Kunst- und Spaßprojekt. Spenden freiwillig, ohne Gegenleistung.</p>
-<div style="margin-top:15px">
+<!-- EMAIL POPUP -->
+<div id="mailPopup" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;background:rgba(10,10,15,0.95);border:2px solid #D4AF37;border-radius:15px;padding:25px;z-index:2000">
+<h2 style="margin-bottom:15px">Email versenden</h2>
+<label style="font-size:12px;color:#00D9FF">Betreff:</label>
+<input type="text" id="mailSubject" value="NBC NaturalBornChillaz informiert..." style="width:100%;padding:10px;margin:8px 0;background:rgba(10,10,15,0.6);border:1px solid rgba(229,228,226,0.2);border-radius:8px;color:#E5E4E2">
+<label style="font-size:12px;color:#00D9FF">Nachricht:</label>
+<textarea id="mailBody" rows="8" style="width:100%;padding:10px;margin:8px 0;background:rgba(10,10,15,0.6);border:1px solid rgba(229,228,226,0.2);border-radius:8px;color:#E5E4E2"></textarea>
+<div style="font-size:11px;opacity:0.6;margin:5px 0" id="mailRecipients"></div>
+<div style="display:flex;gap:10px;margin-top:15px">
+<button class="btn" onclick="sendAdminMail()">Senden</button>
+<button class="btn" style="background:rgba(255,0,0,0.2);border:1px solid #ff4757;color:#ff4757" onclick="closeMailPopup()">Abbrechen</button>
+</div>
+</div>
+
+<div class="footer-links">
 <a href="impressumUnity.html">Impressum</a>
 <a href="datenschutzUnity.html">Datenschutz</a>
-<a href="#" onclick="showAdmin();return false">Admin</a>
-</div>
-</footer>
+<a href="unitycard.html">Logout</a>
 </div>
 
-<div class="we-are-chillaz" id="popup">WE ARE CHILLAZ</div>
-
-<!-- Instagram Login Modal -->
-<div class="modal" id="instaModal">
-    <div class="modal-content">
-        <h3>Instagram Login</h3>
-        <div class="form-group">
-            <label>Instagram Handle</label>
-            <input type="text" id="modalInstaHandle" placeholder="@dein_handle">
-            <div class="error-msg" id="modalError" style="display:none"></div>
-        </div>
-        <div class="modal-buttons">
-            <button class="btn" onclick="instaLoginConfirm()">Einloggen</button>
-            <button class="btn btn-secondary" onclick="closeInstaModal()">Abbrechen</button>
-        </div>
-    </div>
-</div>
-
-<script>
-// Uhrzeit + Datum Live Update
-function updateDateTime(){
-    const now = new Date();
-    const timeOpts = {hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false};
-    const dateOpts = {day:'2-digit', month:'long', year:'numeric'};
-    document.getElementById('currentTime').textContent = now.toLocaleTimeString('de-DE', timeOpts);
-    document.getElementById('currentDate').textContent = now.toLocaleDateString('de-DE', dateOpts);
-}
-updateDateTime();
-setInterval(updateDateTime, 1000);
-
-const isAdmin = new URLSearchParams(location.search).get('admin') === 'true';
-if(isAdmin){document.getElementById('adminPanel').style.display='block';loadAdminUsers();}
-
-function showTab(tab){
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.getElementById('registerTab').style.display='none';
-document.getElementById('loginTab').style.display='none';
-if(tab==='register'){document.querySelectorAll('.tab')[0].classList.add('active');document.getElementById('registerTab').style.display='block';}
-else{document.querySelectorAll('.tab')[1].classList.add('active');document.getElementById('loginTab').style.display='block';}
-}
-
-// Registrierung mit Duplicate-Check
-document.getElementById('registerForm').onsubmit=(e)=>{
-e.preventDefault();
-document.getElementById('emailError').style.display='none';
-document.getElementById('instaError').style.display='none';
-
-const user={name:regName.value,email:regEmail.value,pass:regPass.value,insta:regInsta.value,nation:regNation.value,donation:0};
-let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
-
-// Check auf doppelte Email
-if(users.some(u=>u.email===user.email)){
-    document.getElementById('emailError').style.display='block';
-    return;
-}
-// Check auf doppeltes Instagram
-if(users.some(u=>u.insta===user.insta)){
-    document.getElementById('instaError').style.display='block';
-    return;
-}
-
-users.push(user);
-localStorage.setItem('nbc_users',JSON.stringify(users));
-localStorage.setItem('nbc_current',JSON.stringify(user));
-window.location.href='mailto:infotonbc@gmail.com?subject=Unitycard Member&body='+encodeURIComponent(JSON.stringify(user));
-document.getElementById('popup').classList.add('active');
-setTimeout(()=>location.href='unitycardclub.html',2000);
-};
-
-document.getElementById('loginForm').onsubmit=(e)=>{
-e.preventDefault();
-let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
-let user=users.find(u=>u.email===loginEmail.value&&u.pass===loginPass.value);
-if(user){localStorage.setItem('nbc_current',JSON.stringify(user));location.href='unitycardclub.html';}
-else alert('Chillaz, falsche Daten. Hast du schon dein Gehirn gegossen? 🧠💨');
-};
-
-// Instagram Modal Funktionen
-function showInstaModal(){
-    document.getElementById('instaModal').classList.add('active');
-    document.getElementById('modalInstaHandle').value='';
-    document.getElementById('modalError').style.display='none';
-}
-function closeInstaModal(){
-    document.getElementById('instaModal').classList.remove('active');
-}
-function instaLoginConfirm(){
-    const handle = document.getElementById('modalInstaHandle').value;
-    if(!handle){
-        document.getElementById('modalError').textContent='Bitte Handle eingeben, Chillaz!';
-        document.getElementById('modalError').style.display='block';
-        return;
-    }
-    let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
-    let user=users.find(u=>u.insta===handle);
-    if(user){
-        localStorage.setItem('nbc_current',JSON.stringify(user));
-        location.href='unitycardclub.html';
-    } else {
-        document.getElementById('modalError').textContent='Noch nicht registriert, Chillaz!';
-        document.getElementById('modalError').style.display='block';
-    }
-}
-
-function showAdmin(){
-let pw=prompt('Admin Passwort:');
-if(pw==='nbc420'){document.getElementById('adminPanel').style.display='block';loadAdminUsers();}
-}
-
-function loadAdminUsers(){
-let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
-adminUser.innerHTML=users.map(u=>`<option value="${u.email}">${u.name} - ${u.donation||0}€</option>`).join('');
-}
-
-function saveDonation(){
-let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
-let user=users.find(u=>u.email===adminUser.value);
-user.donation=(user.donation||0)+parseInt(adminAmount.value);
-localStorage.setItem('nbc_users',JSON.stringify(users));
-alert('Spende eingetragen! Titel wird vergeben 🌱');
-loadAdminUsers();
-}
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js"}}
 </script>
+<script type="module">
+import * as THREE from 'three';
+
+// ===== SPRACHSYSTEM =====
+const translations = {
+  de: {
+    "top_supporter": "Top Chillaz Supporter",
+    "members": "Members",
+    "suavebot": "SuaveBot",
+    "chat_placeholder": "Frag SuaveBot... /help",
+    "chillaz_support": "Chillaz Support 💰",
+    "feed_grow": "Fütter den Grow 🌱",
+    "spiele_title": "Spiel gegen Den Chillaz Bot",
+    "highscore_title": "🏆 FLIPPER HIGHSCORE",
+    "admin_kartei": "Admin Member Kartei",
+    "suche": "Suche Name/Insta...",
+    "email_markierte": "Email an Markierte",
+    "bot_greeting": "Chillaz, hast du heute schon dein Gehirn gegossen? 🧠💨 Tipp: /help für Grow-Wissen"
+  },
+  nl: {
+    "top_supporter": "Top Chillaz Supporters",
+    "members": "Leden",
+    "suavebot": "SuaveBot",
+    "chat_placeholder": "Vraag SuaveBot... /help",
+    "chillaz_support": "Chillaz Support 💰",
+    "feed_grow": "Voer de Grow 🌱",
+    "spiele_title": "Speel tegen De Chillaz Bot",
+    "highscore_title": "🏆 FLIPPER HIGHSCORE",
+    "admin_kartei": "Admin Ledenregister",
+    "suche": "Zoek Naam/Insta...",
+    "email_markierte": "Email naar Geselecteerden",
+    "bot_greeting": "Chillaz, heb je vandaag al je hersenen bewaterd? 🧠💨 Tip: /help voor Grow-kennis"
+  },
+  en: {
+    "top_supporter": "Top Chillaz Supporters",
+    "members": "Members",
+    "suavebot": "SuaveBot",
+    "chat_placeholder": "Ask SuaveBot... /help",
+    "chillaz_support": "Chillaz Support 💰",
+    "feed_grow": "Feed the Grow 🌱",
+    "spiele_title": "Play vs The Chillaz Bot",
+    "highscore_title": "🏆 FLIPPER HIGHSCORE",
+    "admin_kartei": "Admin Member Registry",
+    "suche": "Search Name/Insta...",
+    "email_markierte": "Email Selected",
+    "bot_greeting": "Chillaz, did you water your brain today? 🧠💨 Tip: /help for grow knowledge"
+  },
+  fr: {
+    "top_supporter": "Top Supporters Chillaz",
+    "members": "Membres",
+    "suavebot": "SuaveBot",
+    "chat_placeholder": "Demande à SuaveBot... /help",
+    "chillaz_support": "Support Chillaz 💰",
+    "feed_grow": "Nourris le Grow 🌱",
+    "spiele_title": "Joue contre Le Bot Chillaz",
+    "highscore_title": "🏆 FLIPPER HIGHSCORE",
+    "admin_kartei": "Registre Admin Membres",
+    "suche": "Rechercher Nom/Insta...",
+    "email_markierte": "Email aux Sélectionnés",
+    "bot_greeting": "Chillaz, as-tu arrosé ton cerveau aujourd'hui? 🧠💨 Astuce: /help pour conseils grow"
+  },
+  es: {
+    "top_supporter": "Top Chillaz Supporters",
+    "members": "Miembros",
+    "suavebot": "SuaveBot",
+    "chat_placeholder": "Pregunta a SuaveBot... /help",
+    "chillaz_support": "Soporte Chillaz 💰",
+    "feed_grow": "Alimenta el Grow 🌱",
+    "spiele_title": "Juega vs El Bot Chillaz",
+    "highscore_title": "🏆 FLIPPER HIGHSCORE",
+    "admin_kartei": "Registro Admin Miembros",
+    "suche": "Buscar Nombre/Insta...",
+    "email_markierte": "Email a Seleccionados",
+    "bot_greeting": "Chillaz, ¿regaste tu cerebro hoy? 🧠💨 Tip: /help para conocimientos grow"
+  },
+  bg: {
+    "top_supporter": "Топ Chillaz Поддръжници",
+    "members": "Членове",
+    "suavebot": "SuaveBot",
+    "chat_placeholder": "Питай SuaveBot... /help",
+    "chillaz_support": "Chillaz Подкрепа 💰",
+    "feed_grow": "Нахрани Grow 🌱",
+    "spiele_title": "Играй срещу Chillaz Бот",
+    "highscore_title": "🏆 FLIPPER HIGHSCORE",
+    "admin_kartei": "Админ Регистър",
+    "suche": "Търси Име/Insta...",
+    "email_markierte": "Имейл до Избраните",
+    "bot_greeting": "Chillaz, поля ли мозъка си днес? 🧠💨 Съвет: /help за grow знания"
+  },
+  pl: {
+    "top_supporter": "Top Chillaz Supporterzy",
+    "members": "Członkowie",
+    "suavebot": "SuaveBot",
+    "chat_placeholder": "Zapytaj SuaveBot... /help",
+    "chillaz_support": "Wsparcie Chillaz 💰",
+    "feed_grow": "Nakarm Grow 🌱",
+    "spiele_title": "Graj vs Bot Chillaz",
+    "highscore_title": "🏆 FLIPPER HIGHSCORE",
+    "admin_kartei": "Rejestr Admin Członków",
+    "suche": "Szukaj Nazwa/Insta...",
+    "email_markierte": "Email do Zaznaczonych",
+    "bot_greeting": "Chillaz, podlałeś dziś swój mózg? 🧠💨 Wskazówka: /help po wiedzę grow"
+  }
+};
+
+const flagUrls = {
+  de: 'https://flagcdn.com/w40/de.png',
+  nl: 'https://flagcdn.com/w40/nl.png',
+  en: 'https://flagcdn.com/w40/gb.png',
+  fr: 'https://flagcdn.com/w40/fr.png',
+  es: 'https://flagcdn.com/w40/es.png',
+  bg: 'https://flagcdn.com/w40/bg.png',
+  pl: 'https://flagcdn.com/w40/pl.png'
+};
+
+function getLang() {
+  return localStorage.getItem('nbc_lang') || (navigator.language || 'de').slice(0,2);
+}
+
+window.setLang = (lang) => {
+  localStorage.setItem('nbc_lang', lang);
+  document.documentElement.lang = lang;
+  applyTranslations(lang);
+  document.getElementById('langCurrent').style.backgroundImage = `url('${flagUrls[lang]}')`;
+  document.getElementById('langMenu').style.display = 'none';
+}
+
+function applyTranslations(lang) {
+  const t = translations[lang] || translations['de'];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = t[key];
+      } else {
+        el.textContent = t[key];
+      }
+    }
+  });
+  const botMsg = document.querySelector('#chatBox .chat-msg.bot');
+  if(botMsg) botMsg.textContent = t.bot_greeting;
+}
+
+window.toggleLangMenu = () => {
+  const menu = document.getElementById('langMenu');
+  menu.style.display = menu.style.display === 'none'? 'block' : 'none';
+}
+
+document.addEventListener('click', (e) => {
+  if(!e.target.closest('#langSwitcher')) {
+    document.getElementById('langMenu').style.display = 'none';
+  }
+});
+
+// ===== CORE APP =====
+let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
+let currentUser=JSON.parse(localStorage.getItem('nbc_current')||'null');
+if(!currentUser){alert('Bitte erst einloggen, Chillaz!');location.href='unitycard.html';}
+
+const demoMembers=[
+{name:'Luca Weedmann',insta:'@luca_chill',email:'luca@example.com',nation:'DE',donation:120,lat:52.52,lng:13.40},
+{name:'Mia Hashfield',insta:'@mia_high',email:'mia@example.com',nation:'NL',donation:60,lat:52.37,lng:4.90},
+{name:'Diego Kush',insta:'@diego_blaze',email:'diego@example.com',nation:'ES',donation:10,lat:40.42,lng:-3.70},
+{name:'Jean Chronic',insta:'@jean_puff',email:'',nation:'FR',donation:0,lat:48.86,lng:2.35},
+{name:'Giovanni Ganja',insta:'@gio_green',email:'gio@example.com',nation:'IT',donation:0,lat:41.90,lng:12.50}
+];
+
+const allUsers=[...users,...demoMembers.filter(d=>!users.find(u=>u.insta===d.insta))];
+
+function getTitle(amount){
+if(amount>=100)return 'Ultimate Chiller';
+if(amount>50)return 'Concililiere';
+if(amount>=5)return 'Supporter';
+return 'Member';
+}
+
+function renderLists(){
+const topUsers=[...allUsers].filter(u=>u.donation>0).sort((a,b)=>b.donation-a.donation);
+document.getElementById('topList').innerHTML=topUsers.length?topUsers.map(u=>`
+<div class="member-item" onclick="showCard('${u.insta}')">
+<div class="member-name">${u.name} <span class="badge">${getTitle(u.donation)}</span></div>
+<div class="member-title">${u.donation}€ gespendet</div>
+</div>`).join(''):'<p style="font-size:12px;opacity:0.6">Noch keine Chillaz online... sind wohl alle kiffen 😴🌿</p>';
+
+document.getElementById('memberList').innerHTML=allUsers.map(u=>`
+<div class="member-item" onclick="showCard('${u.insta}')">
+<div class="member-name">${u.name}</div>
+<div class="member-title">${u.insta}</div>
+</div>`).join('');
+}
+
+let currentCardUser = null;
+
+window.showCard=(insta)=>{
+  const user=allUsers.find(u=>u.insta===insta);
+  currentCardUser = user;
+  const donation = user.donation || 0;
+  const scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
+  const highscore = scores[user.insta] || 0;
+
+  const handle = user.insta.replace('@','');
+  const avatarEl = document.getElementById('cardAvatar');
+  avatarEl.src = `https://unavatar.io/instagram/${handle}`;
+  avatarEl.onerror = function(){ this.style.display='none'; };
+
+  document.getElementById('cardName').textContent=user.name;
+  document.getElementById('cardInsta').textContent=user.insta + ` | Highscore: ${highscore}`;
+  const num = user.insta.replace('@','').toUpperCase().slice(0,4).padEnd(4,'X');
+  document.getElementById('cardNumber').textContent=`${num} XXXX XXXX ${Math.floor(Math.random()*9000+1000)}`;
+
+  const rankBadge = document.getElementById('cardRankBadge');
+  const rankText = document.getElementById('cardRankText');
+  const rankDonation = document.getElementById('cardRankDonation');
+
+  if(donation >= 100){
+    rankText.textContent = 'ULTIMATE CHILLER';
+    rankBadge.style.background = 'linear-gradient(135deg,#D4AF37,#FFD700)';
+    rankBadge.style.boxShadow = '0 0 30px rgba(255,215,0,0.8),inset 0 2px 0 rgba(255,255,255,0.4)';
+  } else if(donation > 50){
+    rankText.textContent = 'CONCILILIERE';
+    rankBadge.style.background = 'linear-gradient(135deg,#00D9FF,#0099CC)';
+    rankBadge.style.boxShadow = '0 0 30px rgba(0,217,255,0.8),inset 0 2px 0 rgba(255,255,255,0.4)';
+  } else if(donation >= 5){
+    rankText.textContent = 'SUPPORTER';
+    rankBadge.style.background = 'linear-gradient(135deg,#E5E4E2,#B8B7B5)';
+    rankBadge.style.boxShadow = '0 0 20px rgba(229,228,226,0.6),inset 0 2px 0 rgba(255,255,255,0.4)';
+  } else {
+    rankText.textContent = 'MEMBER';
+    rankBadge.style.background = 'linear-gradient(135deg,#666666,#444444)';
+    rankBadge.style.boxShadow = '0 0 10px rgba(100,100,100,0.4),inset 0 2px 0 rgba(255,255,255,0.2)';
+  }
+
+  rankDonation.textContent = `${donation}€`;
+  document.getElementById('cardPopup').classList.add('active');
+};
+
+window.openInstagram=()=>{
+  if(currentCardUser){
+    window.open(`https://instagram.com/${currentCardUser.insta.replace('@','')}`,'_blank');
+    addActivityScore(2);
+  }
+};
+
+window.closeCard=()=>document.getElementById('cardPopup').classList.remove('active');
+
+const card = document.getElementById('cardPopup');
+let isDragging = false;
+let startX, startY, currentX = 0, currentY = 0;
+
+function handleDragStart(e){
+  if(e.target.classList.contains('card-close') || e.target.classList.contains('card-insta-avatar')) return;
+  isDragging = true;
+  card.classList.add('dragging');
+
+  const point = e.type.includes('mouse')? e : e.touches[0];
+  startX = point.clientX;
+  startY = point.clientY;
+}
+
+function handleDragMove(e){
+  if(!isDragging) return;
+  e.preventDefault();
+
+  const point = e.type.includes('mouse')? e : e.touches[0];
+  const deltaX = point.clientX - startX;
+  const deltaY = point.clientY - startY;
+
+  currentX = deltaX;
+  currentY = deltaY;
+
+  const rotateY = deltaX * 0.1;
+  const rotateX = -deltaY * 0.1;
+
+  card.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px)) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+}
+
+function handleDragEnd(){
+  if(!isDragging) return;
+  isDragging = false;
+  card.classList.remove('dragging');
+
+  card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+  card.style.transform = 'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
+
+  setTimeout(()=>{
+    card.style.transition = '';
+  }, 500);
+
+  addActivityScore(1);
+}
+
+card.addEventListener('mousedown', handleDragStart);
+document.addEventListener('mousemove', handleDragMove);
+document.addEventListener('mouseup', handleDragEnd);
+card.addEventListener('touchstart', handleDragStart);
+document.addEventListener('touchmove', handleDragMove);
+document.addEventListener('touchend', handleDragEnd);
+
+let currentGame = null;
+let gameState = {};
+
+window.selectGame=(game)=>{
+    currentGame = game;
+    document.querySelectorAll('.game-btn').forEach(b=>b.classList.remove('active'));
+    event.target.classList.add('active');
+
+    if(game==='21er') init21er();
+    if(game==='reaction') initReaction();
+    if(game==='quiz') initQuiz();
+    if(game==='slots') initSlots();
+
+    addActivityScore(2);
+}
+
+function init21er(){
+    gameState = {player:0, bot:0, playerTurn:true};
+    document.getElementById('game-area').innerHTML = `
+        <div style="text-align:center">
+            <div>Du: <span id="pScore">0</span> | Bot: <span id="bScore">?</span></div>
+            <div class="game-result" id="gameMsg">Dein Zug!</div>
+            <button class="btn btn-small" onclick="draw21()">Karte ziehen</button>
+            <button class="btn btn-small" onclick="stand21()">Passen</button>
+        </div>
+    `;
+}
+
+window.draw21=()=>{
+    if(!gameState.playerTurn) return;
+    const card = Math.floor(Math.random()*11)+1;
+    gameState.player += card;
+    document.getElementById('pScore').textContent = gameState.player;
+
+    if(gameState.player > 21){
+        end21er('Bust! Bot gewinnt 😢', 0);
+    } else if(gameState.player === 21){
+        end21er('21! Perfect! 🎉', 50);
+    }
+}
+
+window.stand21=()=>{
+    gameState.playerTurn = false;
+    while(gameState.bot < 17){
+        gameState.bot += Math.floor(Math.random()*11)+1;
+    }
+    document.getElementById('bScore').textContent = gameState.bot;
+
+    if(gameState.bot > 21 || gameState.player > gameState.bot){
+        end21er('Du gewinnst! 🏆', 25);
+    } else if(gameState.player < gameState.bot){
+        end21er('Bot gewinnt!', 5);
+    } else {
+        end21er('Unentschieden!', 10);
+    }
+}
+
+function end21er(msg, points){
+    document.getElementById('gameMsg').textContent = msg;
+    addActivityScore(points);
+    setTimeout(()=>init21er(), 2000);
+}
+
+function initReaction(){
+    gameState = {waiting:true, startTime:0};
+    document.getElementById('game-area').innerHTML = `
+        <div class="reaction-box" id="reactBox" onclick="clickReaction()">
+            Warte auf GRÜN...
+        </div>
+        <div style="text-align:center;font-size:11px">Klick sobald es grün wird!</div>
+    `;
+    setTimeout(()=>{
+        if(gameState.waiting){
+            gameState.waiting = false;
+            gameState.startTime = Date.now();
+            document.getElementById('reactBox').classList.add('ready');
+            document.getElementById('reactBox').textContent = 'JETZT KLICKEN!';
+        }
+    }, Math.random()*3000+2000);
+}
+
+window.clickReaction=()=>{
+    if(gameState.waiting){
+        document.getElementById('game-area').innerHTML = '<div class="game-result">Zu früh! 😵 0 Punkte</div>';
+        addActivityScore(0);
+    } else if(gameState.startTime > 0){
+        const time = Date.now() - gameState.startTime;
+        const points = Math.max(5, 100 - Math.floor(time/10));
+        document.getElementById('game-area').innerHTML = `<div class="game-result">${time}ms<br>+${points} Punkte! ⚡</div>`;
+        addActivityScore(points);
+    }
+    setTimeout(()=>initReaction(), 2000);
+}
+
+function initQuiz(){
+    const questions = [
+        {q:'Wie viele Pflanzen erlaubt CanG?', a:['3','5','1'], correct:0},
+        {q:'THC Grenzwert Auto?', a:['3,5ng/ml','1,0ng/ml','10ng/ml'], correct:0},
+        {q:'Ideale Temp Blüte?', a:['22-28°C','15-18°C','30-35°C'], correct:0},
+        {q:'pH-Wert Erde?', a:['6.0-7.0','5.0-5.5','8.0-9.0'], correct:0}
+    ];
+    const q = questions[Math.floor(Math.random()*questions.length)];
+    gameState = {correct:q.correct};
+    document.getElementById('game-area').innerHTML = `
+        <div style="margin-bottom:10px;font-weight:600">${q.q}</div>
+        ${q.a.map((ans,i)=>`<button class="btn btn-small" style="width:100%;margin:4px 0" onclick="answerQuiz(${i})">${ans}</button>`).join('')}
+    `;
+}
+
+window.answerQuiz=(i)=>{
+    if(i === gameState.correct){
+        document.getElementById('game-area').innerHTML = '<div class="game-result">Richtig! +20 🎓</div>';
+        addActivityScore(20);
+    } else {
+        document.getElementById('game-area').innerHTML = '<div class="game-result">Falsch! +5 fürs Mitmachen</div>';
+        addActivityScore(5);
+    }
+    setTimeout(()=>initQuiz(), 2000);
+}
+
+function initSlots(){
+    gameState = {spinning:false};
+    document.getElementById('game-area').innerHTML = `
+        <div style="text-align:center">
+            <div class="game-result" id="slotResult" style="font-size:32px;letter-spacing:8px">🌿🌿</div>
+            <button class="btn" onclick="spinSlots()">SPIN (5 Punkte)</button>
+        </div>
+    `;
+}
+
+window.spinSlots=()=>{
+    if(gameState.spinning) return;
+    addActivityScore(-5);
+    gameState.spinning = true;
+    const symbols = ['🌿','💎','🔥','⭐','🍄'];
+    let spins = 0;
+    const interval = setInterval(()=>{
+        const s1 = symbols[Math.floor(Math.random()*5)];
+        const s2 = symbols[Math.floor(Math.random()*5)];
+        const s3 = symbols[Math.floor(Math.random()*5)];
+        document.getElementById('slotResult').textContent = s1+s2+s3;
+        spins++;
+        if(spins > 10){
+            clearInterval(interval);
+            gameState.spinning = false;
+            if(s1===s2 && s2===s3){
+                addActivityScore(100);
+                document.getElementById('slotResult').innerHTML += '<br><span style="font-size:14px">JACKPOT! +100 🎰</span>';
+            } else if(s1===s2 || s2===s3 || s1===s3){
+                addActivityScore(15);
+                document.getElementById('slotResult').innerHTML += '<br><span style="font-size:14px">2 Gleiche! +15</span>';
+            }
+        }
+    }, 100);
+}
+
+function addActivityScore(points){
+    if(!currentUser) return;
+    let scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
+    scores[currentUser.insta] = (scores[currentUser.insta] || 0) + points;
+    localStorage.setItem('nbc_highscores', JSON.stringify(scores));
+    updateHighscore();
+}
+
+function updateHighscore(){
+    let scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
+    let sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+    document.getElementById('highscore-list').innerHTML = sorted.length? sorted.map(([insta,pts],i)=>{
+        const user = allUsers.find(u=>u.insta===insta);
+        const name = user? user.name : insta;
+        const isMe = insta === currentUser?.insta? 'me' : '';
+        return `<div class="highscore-entry ${isMe}">
+            <span class="highscore-name" onclick="showCard('${insta}')">${i+1}. ${name}</span>
+            <span class="highscore-points">${pts}</span>
+        </div>`;
+    }).join('') : '<div style="text-align:center;opacity:0.5;font-size:11px">Noch keine Scores</div>';
+}
+
+window.sendChat=()=>{
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if(!msg) return;
+  const chatBox = document.getElementById('chatBox');
+  chatBox.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+  input.value = '';
+  addActivityScore(1);
+
+  setTimeout(()=>{
+    let reply = 'Chillaz, THC-Level im Chat optimal 🧠💨';
+    const lower = msg.toLowerCase();
+
+    if(lower.includes('hallo') || lower.includes('hi') || lower.includes('moin')) {
+      reply = `Moin ${currentUser.name}! Was geht? 🧠💨`;
+    }
+    else if(lower.startsWith('/help') || lower.includes('hilfe')) {
+      reply = 'Commands: /licht /wasser /temp /erde /probleme /cang /ranks /stats - Frag mich was! 🌱';
+    }
+    else if(lower.startsWith('/licht') || lower.includes('licht') || lower.includes('lampe')) {
+      reply = 'Licht-Zyklus: Vegi 18/6, Blüte 12/12. LED 300-600W pro m². Abstand: 30-50cm 💡';
+    }
+    else if(lower.startsWith('/wasser') || lower.includes('gieß') || lower.includes('wasser')) {
+      reply = 'Gießen: Lieber seltener + viel als oft + wenig. pH Erde 6.0-7.0 💧';
+    }
+    else if(lower.startsWith('/temp') || lower.includes('temperatur')) {
+      reply = 'Temperatur: Tag 22-28°C, Nacht 18-22°C. RLF Blüte 40-50% 🌡️';
+    }
+    else if(lower.startsWith('/erde') || lower.includes('erde') || lower.includes('dünger')) {
+      reply = 'Erde: Light-Mix Start, All-Mix ab Woche 3. NPK Vegi 3-1-2, Blüte 1-3-2 🌱';
+    }
+    else if(lower.startsWith('/probleme') || lower.includes('gelb') || lower.includes('problem')) {
+      reply = 'Gelbe Blätter unten = N-Mangel. Check pH zuerst! Überwässerung = hängende Blätter 🌿';
+    }
+    else if(lower.startsWith('/cang') || lower.includes('cang') || lower.includes('gesetz')) {
+      reply = 'CanG: 3 Pflanzen Eigenanbau, 25g Besitz, 50g zuhause. THC Auto: 3,5ng/ml 📜';
+    }
+    else if(lower.startsWith('/ranks') || lower.includes('titel') || lower.includes('spende')) {
+      reply = 'Supporter ab 5€ | Concililiere ab 50€ | Ultimate Chiller ab 100€ 💎';
+    }
+    else if(lower.startsWith('/stats')) {
+      const s = getUserStats();
+      reply = `Stats: ${s.total} Chillaz. Du: ${s.you} | Gespendet: ${s.donation}€ 🏆`;
+    }
+
+    const bannedWords = ['nazi', 'hitler', 'sieg heil', 'juden', 'ausländer raus', 'kanake', 'neger', 'asylant'];
+    if(bannedWords.some(w => lower.includes(w))) {
+      reply = 'Bitte respektvoll bleiben. Keine Hetze im Unity Club ✌️';
+    }
+
+    chatBox.innerHTML += `<div class="chat-msg bot">${reply}</div>`;
+    chatBox.scrollTop = 9999;
+  },400);
+};
+
+function getUserStats(){
+  const users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  return {total: users.length, you: currentUser?.name || 'Anon', donation: currentUser?.donation || 0};
+}
+
+let lastChatTime = Date.now();
+setInterval(()=>{
+  if(Date.now() - lastChatTime > 20000){
+    const prahl = [
+      'Fun Fact: Ich kenne 847 Grow-Strains auswendig 🤓',
+      'Profi-Tipp: CO2 1200ppm + 1000 PPFD = +30% Ertrag 😎',
+      'Trichome milchig + 20% bernstein = Erntezeit! 🔬',
+      'Unity bedeutet zusammen stark sein. Du gehörst dazu! ✨'
+    ];
+    const chatBox = document.getElementById('chatBox');
+    chatBox.innerHTML += `<div class="chat-msg bot">${prahl[Math.floor(Math.random()*prahl.length)]}</div>`;
+    chatBox.scrollTop = 9999;
+    lastChatTime = Date.now();
+  }
+}, 5000);
+
+// ===== ADMIN MEMBER KARTEI =====
+let markedMembers = [];
+
+if(currentUser.insta === '@NBC_Official' || currentUser.admin === true){
+  document.getElementById('adminPanel').style.display = 'block';
+  renderMemberTable();
+}
+
+function renderMemberTable(){
+  const table = document.getElementById('memberTable');
+  table.innerHTML = allUsers.map(u=>`
+    <div style="padding:8px;border-bottom:1px solid rgba(229,228,226,0.1);display:grid;grid-template-columns:20px 1fr 1fr 60px 80px;gap:8px;align-items:center">
+      <input type="checkbox" onchange="toggleMark('${u.insta}',this.checked)" ${markedMembers.includes(u.insta)?'checked':''}>
+      <span>${u.name}</span>
+      <span style="color:#00D9FF">${u.insta}</span>
+      <span>${u.donation||0}€</span>
+      <span style="font-size:10px;opacity:0.7">${u.email||'keine'}</span>
+    </div>
+  `).join('');
+}
+
+window.toggleMark = (insta, checked) => {
+  if(checked){
+    if(!markedMembers.includes(insta)) markedMembers.push(insta);
+  } else {
+    markedMembers = markedMembers.filter(i=>i!==insta);
+  }
+}
+
+window.filterMembers = () => {
+  const search = document.getElementById('memberSearch').value.toLowerCase();
+  const rows = document.getElementById('memberTable').children;
+  Array.from(rows).forEach(row=>{
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(search)? 'grid' : 'none';
+  });
+}
+
+window.openMailPopup = () => {
+  const recipients = allUsers.filter(u=>markedMembers.includes(u.insta) && u.email);
+  if(recipients.length === 0){
+    alert('Bitte markiere Member mit Email-Adresse!');
+    return;
+  }
+  document.getElementById('mailRecipients').textContent = `Empfänger: ${recipients.length} Member`;
+  document.getElementById('mailPopup').style.display = 'block';
+}
+
+window.closeMailPopup = () => {
+  document.getElementById('mailPopup').style.display = 'none';
+}
+
+window.sendAdminMail = () => {
+  const subject = document.getElementById('mailSubject').value;
+  const message = document.getElementById('mailBody').value;
+  const recipients = allUsers.filter(u=>markedMembers.includes(u.insta) && u.email);
+
+  if(!message.trim()){
+    alert('Nachricht darf nicht leer sein!');
+    return;
+  }
+
+  if(recipients.length === 0){
+    alert('Bitte markiere Member mit Email-Adresse!');
+    return;
+  }
+
+  const bcc = recipients.map(u=>u.email).join(',');
+  const mailtoLink = `mailto:infotonbc@gmail.com?bcc=${encodeURIComponent(bcc)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+  window.location.href = mailtoLink;
+
+  alert(`Mailprogramm geöffnet!\n${recipients.length} Empfänger im BCC\nSende die Mail von infotonbc@gmail.com ab.`);
+  closeMailPopup();
+  markedMembers = [];
+  renderMemberTable();
+}
+
+// ===== INIT =====
+renderLists();
+updateHighscore();
+setLang(getLang());
+
+// 3D GLOBE
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
+const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('canvas'),alpha:true,antialias:true});
+renderer.setSize(window.innerWidth,window.innerHeight);
+
+const textureLoader = new THREE.TextureLoader();
+const earthTexture = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
+const earthBump = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-topology.png');
+
+const earthGlobe = new THREE.Mesh(
+  new THREE.SphereGeometry(1.98, 64, 64),
+  new THREE.MeshPhongMaterial({
+    map: earthTexture,
+    bumpMap: earthBump,
+    bumpScale: 0.05,
+    transparent: true,
+    opacity: 0.6,
+    emissive: 0x00D9FF,
+    emissiveIntensity: 0.15
+  })
+);
+scene.add(earthGlobe);
+
+const globe=new THREE.Mesh(
+  new THREE.SphereGeometry(2.02,32,32),
+  new THREE.MeshBasicMaterial({
+    color:0xD4AF37,
+    wireframe:true,
+    transparent:true,
+    opacity:0.3
+  })
+);
+scene.add(globe);
+
+const atmosphere = new THREE.Mesh(
+  new THREE.SphereGeometry(2.15, 32, 32),
+  new THREE.MeshBasicMaterial({
+    color: 0x00D9FF,
+    transparent: true,
+    opacity: 0.08,
+    side: THREE.BackSide
+  })
+);
+scene.add(atmosphere);
+
+const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+scene.add(ambientLight);
+const dirLight = new THREE.DirectionalLight(0x00D9FF, 0.8);
+dirLight.position.set(5, 3, 5);
+scene.add(dirLight);
+
+function latLngToVector3(lat,lng,radius){
+  const phi = (90-lat)*(Math.PI/180);
+  const theta = (lng+180)*(Math.PI/180);
+  const x = -(radius * Math.sin(phi) * Math.cos(theta));
+  const z = (radius * Math.sin(phi) * Math.sin(theta));
+  const y = (radius * Math.cos(phi));
+  return new THREE.Vector3(x,y,z);
+}
+
+const memberGroup = new THREE.Group();
+allUsers.forEach(u=>{
+  if(!u.lat ||!u.lng) return;
+  const pos = latLngToVector3(u.lat,u.lng,2.08);
+  const color = u.donation>=100? 0xD4AF37 : u.donation>=50? 0x00D9FF : u.donation>=5? 0xE5E4E2 : 0x666666;
+  const size = u.donation>=100? 0.09 : u.donation>=50? 0.07 : 0.05;
+
+  const point = new THREE.Mesh(
+    new THREE.SphereGeometry(size,16,16),
+    new THREE.MeshBasicMaterial({color:color})
+  );
+  point.position.copy(pos);
+  point.userData = u;
+  memberGroup.add(point);
+
+  if(u.donation >= 50){
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(size*1.5, size*2, 16),
+      new THREE.MeshBasicMaterial({color:color, transparent:true, opacity:0.4, side:THREE.DoubleSide})
+    );
+    ring.position.copy(pos);
+    ring.lookAt(0,0,0);
+    memberGroup.add(ring);
+  }
+});
+scene.add(memberGroup);
+
+camera.position.z=5;
+
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let hoveredPoint = null;
+
+function onMouseMove(event){
+  const rect = renderer.domElement.getBoundingClientRect();
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(memberGroup.children);
+
+  if(intersects.length > 0){
+    if(hoveredPoint!== intersects[0].object){
+      if(hoveredPoint) hoveredPoint.scale.set(1,1,1);
+      hoveredPoint = intersects[0].object;
+      hoveredPoint.scale.set(1.8,1.8);
+      document.body.style.cursor = 'pointer';
+    }
+  } else {
+    if(hoveredPoint) hoveredPoint.scale.set(1,1,1);
+    hoveredPoint = null;
+    document.body.style.cursor = 'default';
+  }
+}
+
+function onClick(){
+  if(hoveredPoint){
+    showCard(hoveredPoint.userData.insta);
+    addActivityScore(3);
+  }
+}
+
+renderer.domElement.addEventListener('mousemove', onMouseMove);
+renderer.domElement.addEventListener('click', onClick);
+
+function animate(){
+  requestAnimationFrame(animate);
+  earthGlobe.rotation.y+=0.0005;
+  globe.rotation.y+=0.001;
+  memberGroup.rotation.y+=0.001;
+  atmosphere.rotation.y+=0.0003;
+  renderer.render(scene,camera);
+}
+animate();
+window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
+</script>
+
 </body>
 </html>
