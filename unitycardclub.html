@@ -130,6 +130,67 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .footer-links a:hover{color:#D4AF37}
 @media(max-width:1024px){.ui-overlay{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}.unitycard-popup{width:90%;height:auto;min-height:300px}}
 </style>
+
+<!-- i18n Auto Language Switch -->
+<script>
+const translations = {
+  de: {
+    "spenden": "Spenden",
+    "chat_placeholder": "Schreibe eine Nachricht...",
+    "bot_greeting": "Hey, ich bin dein Unity Bot. Frag mich alles zu Cannabis, Club & Party!",
+    "spiele_title": "Mini Games",
+    "spiele_vs_ki": "Gegen KI spielen",
+    "spiele_vs_member": "Mit Member spielen",
+    "spende_privat": "Spendenbetrag privat anzeigen"
+  },
+  en: {
+    "spenden": "Donate",
+    "chat_placeholder": "Type a message...",
+    "bot_greeting": "Hey, I'm your Unity Bot. Ask me anything about cannabis, club & party!",
+    "spiele_title": "Mini Games",
+    "spiele_vs_ki": "Play vs AI",
+    "spiele_vs_member": "Play with member",
+    "spende_privat": "Show donation amount privately"
+  }
+};
+
+function detectLang() {
+  const userLang = (navigator.language || navigator.userLanguage).slice(0,2);
+  return translations[userLang] ? userLang : 'de';
+}
+
+function applyTranslations(lang) {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang] && translations[lang][key]) {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+        el.placeholder = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const lang = detectLang();
+  document.documentElement.lang = lang;
+  applyTranslations(lang);
+});
+</script>
+
+
+<!-- 
+WICHTIG: Für echtes globales Ranking brauchst du eine eigene Firebase DB:
+1. Geh auf https://console.firebase.google.com
+2. Neues Projekt "unitycardclub" erstellen
+3. Realtime Database aktivieren im Test-Modus
+4. Ersetze firebaseConfig oben mit deinen Daten
+5. Rules setzen: { "rules": { ".read": true, ".write": true } } für Start
+
+Ohne eigene DB nutzt es eine Demo-DB die jeder lesen kann.
+-->
+
 </head>
 <body>
 <canvas id="canvas"></canvas>
@@ -512,5 +573,648 @@ function animate(){
 animate();
 window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
 </script>
+
+<div id="mini-games" style="margin-top:20px; padding:15px; border:1px solid #444; border-radius:8px;">
+  <h3 data-i18n="spiele_title">Mini Games</h3>
+  <button onclick="startGame('ki')" data-i18n="spiele_vs_ki">Gegen KI spielen</button>
+  <button onclick="startGame('member')" data-i18n="spiele_vs_member">Mit Member spielen</button>
+  <div id="game-area" style="margin-top:10px;"></div>
+</div>
+<script>
+// 3. Simples Member-Matchmaking für Games via BroadcastChannel
+const gameChannel = new BroadcastChannel('unity_games');
+let waitingForMatch = false;
+let currentOpponent = null;
+
+function startGame(mode) {
+  const area = document.getElementById('game-area');
+  if (mode === 'ki') {
+    let player = Math.floor(Math.random()*11)+10;
+    let ki = Math.floor(Math.random()*11)+10;
+    let result = player > 21 ? 'Verloren' : ki > 21 || player > ki ? 'Gewonnen!' : 'KI gewinnt';
+    area.innerHTML = `Du: ${player} | KI: ${ki} → ${result}`;
+  } else if (mode === 'member') {
+    if (!waitingForMatch) {
+      waitingForMatch = true;
+      area.innerHTML = 'Suche Member... <button onclick="cancelMatchmaking()">Abbrechen</button>';
+      gameChannel.postMessage({ type: 'search', player: 'User_' + Math.floor(Math.random()*1000) });
+    }
+  }
+}
+
+function cancelMatchmaking() {
+  waitingForMatch = false;
+  document.getElementById('game-area').innerHTML = 'Matchmaking abgebrochen.';
+  gameChannel.postMessage({ type: 'cancel' });
+}
+
+gameChannel.onmessage = (e) => {
+  const area = document.getElementById('game-area');
+  if (e.data.type === 'search' && waitingForMatch && !currentOpponent) {
+    currentOpponent = e.data.player;
+    waitingForMatch = false;
+    gameChannel.postMessage({ type: 'matched', player: currentOpponent });
+    area.innerHTML = `Match gefunden: ${currentOpponent}! <br><button onclick="playVsMember()">Spielen</button>`;
+  } else if (e.data.type === 'matched' && waitingForMatch) {
+    currentOpponent = e.data.player;
+    waitingForMatch = false;
+    area.innerHTML = `Match gefunden: ${currentOpponent}! <br><button onclick="playVsMember()">Spielen</button>`;
+  }
+};
+
+function playVsMember() {
+  const area = document.getElementById('game-area');
+  // Simples Zufallsspiel - später durch echte Game-Logik ersetzen
+  const you = Math.floor(Math.random()*21)+1;
+  const opp = Math.floor(Math.random()*21)+1;
+  let result = you > opp ? 'Du gewinnst!' : you < opp ? `${currentOpponent} gewinnt!` : 'Unentschieden';
+  area.innerHTML = `Du: ${you} | ${currentOpponent}: ${opp} → ${result} <br><button onclick="startGame('member')">Nochmal</button>`;
+  currentOpponent = null;
+}
+
+// Chat-Bot auch auf Sprache umstellen
+function postBotMessage(text) {
+  const chat = document.querySelector('#chat-output');
+  const lang = detectLang();
+  const prefix = lang === 'en' ? 'UnityBot: ' : 'UnityBot: ';
+  if (chat) {
+    const el = document.createElement('div');
+    el.className = 'bot-msg';
+    el.textContent = prefix + text;
+    chat.appendChild(el);
+    chat.scrollTop = chat.scrollHeight;
+  }
+}
+window.postBotMessage = postBotMessage;
+</script>
+
+
+<div style="margin-top:10px;">
+  <label style="font-size:0.9em;">
+    <input type="checkbox" id="donation-private" checked> 
+    <span data-i18n="spende_privat">Spendenbetrag privat anzeigen</span>
+  </label>
+</div>
+<script>
+document.getElementById('donation-private')?.addEventListener('change', (e) => {
+  const isPrivate = e.target.checked;
+  document.querySelectorAll('.spenden-betrag').forEach(el => {
+    el.style.display = isPrivate ? 'none' : 'inline';
+  });
+  // Hier: API Call um Einstellung in Clubkarte zu speichern
+});
+</script>
+
+
+<script>
+// Bot Auto Update + Jokes
+const botTopics = ['Cannabis', 'Club', 'Party', 'Feiern', 'Arbeit'];
+const jokes = [
+  'Warum nimmt der Kiffer einen Stuhl mit zur Party? Falls die Stimmung mal sitzt.',
+  'Was sagt ein Budtender zum Feierabend? High five!',
+  'Arbeit und Cannabis? Nenn es Homeoffice mit Upgrade.'
+];
+
+<script>
+// 1. Cannabis News mit kostenlosen RSS-Feeds - kein API Key nötig
+async function fetchCannabisNews() {
+  try {
+    // Kostenlose Cannabis RSS-Feeds
+    const feeds = [
+      'https://www.cannabisindustryjournal.com/feed/',
+      'https://www.marijuanamoment.net/feed/',
+      'https://hightimes.com/feed/'
+    ];
+    
+    const randomFeed = feeds[Math.floor(Math.random() * feeds.length)];
+    // rss2json wandelt RSS in JSON um, kostenlos bis 10k/Tag
+    const url = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(randomFeed)}&count=1`;
+    
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('RSS Feed Fehler');
+    const data = await res.json();
+    
+    if (data.items && data.items.length > 0) {
+      const item = data.items[0];
+      const lang = detectLang();
+      const time = new Date(item.pubDate).toLocaleTimeString(lang);
+      return [{
+        title: item.title,
+        url: item.link,
+        time: time
+      }];
+    }
+    return [{title: 'Keine neuen Cannabis-News gefunden', time: 'jetzt'}];
+  } catch (e) {
+    console.error('News fetch failed:', e);
+    // Fallback auf statische News wenn API down ist
+    const fallbackNews = [
+      'Deutschland: Cannabis Social Clubs wachsen weiter',
+      'Neue Studie untersucht Cannabis bei chronischen Schmerzen',
+      'Cannabis Messe kündigt Termine für 2026 an',
+      'Legalisierung: Erste Bilanz nach 2 Jahren'
+    ];
+    return [{
+      title: fallbackNews[Math.floor(Math.random() * fallbackNews.length)],
+      time: 'jetzt'
+    }];
+  }
+}
+
+// Bot postet direkt beim Laden die erste News
+setTimeout(async () => {
+  const news = await fetchCannabisNews();
+  postBotMessage(`📰 News Update: ${news[0].title}`);
+}, 3000);
+</script>
+
+async function botAutoUpdate() {
+  const news = await fetchCannabisNews();
+  const msg = `Update: ${news[0].title}`;
+  window.postBotMessage?.(msg);
+}
+
+function botRandomJoke() {
+  const joke = jokes[Math.floor(Math.random()*jokes.length)];
+  window.postBotMessage?.('😄 ' + joke);
+}
+
+// News alle 30min, Jokes alle 5-15min zufällig
+setInterval(botAutoUpdate, 30*60*1000);
+setInterval(() => {
+  if (Math.random() < 0.3) botRandomJoke();
+}, 5*60*1000);
+
+window.postBotMessage = function(text) {
+  const chat = document.querySelector('#chat-output');
+  if (chat) {
+    const el = document.createElement('div');
+    el.className = 'bot-msg';
+    el.textContent = 'UnityBot: ' + text;
+    chat.appendChild(el);
+    chat.scrollTop = chat.scrollHeight;
+  }
+};
+</script>
+
+
+<!-- Globe: Für echte Member-Standorte brauchst du Geolocation + WebGL Globe wie three.js globe.gl -->
+<!-- Beispiel: globe.gl kann echte Koordinaten + Texturen -->
+<script>
+// Pseudocode für Member-Positionen
+// globe.pointsData(memberList.map(m => ({ lat: m.lat, lng: m.lng, label: m.name })));
+</script>
+
+
+<!-- Globe.gl für echten Globus mit Member-Standorten -->
+<script src="https://unpkg.com/globe.gl"></script>
+<div id="globeViz" style="width:100%; height:400px;"></div>
+<script>
+// Demo Member Daten - später aus Backend/DB laden
+const memberList = [
+  { name: 'Alex', lat: 51.4556, lng: 7.0116, city: 'Essen' }, // Du in Essen
+  { name: 'Mia', lat: 52.5200, lng: 13.4050, city: 'Berlin' },
+  { name: 'Tom', lat: 48.1351, lng: 11.5820, city: 'München' }
+];
+
+const world = Globe()
+  (document.getElementById('globeViz'))
+  .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+  .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+  .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+  .pointOfView({ lat: 51.4556, lng: 7.0116, altitude: 2 }) // Start bei Essen
+  .pointsData(memberList)
+  .pointLat('lat')
+  .pointLng('lng')
+  .pointLabel(d => `${d.name} - ${d.city}`)
+  .pointColor(() => '#00ff88')
+  .pointAltitude(0.01)
+  .pointRadius(0.3);
+
+// Auto-rotate
+world.controls().autoRotate = true;
+world.controls().autoRotateSpeed = 0.5;
+
+// Später: Member per WebSocket/Firebase live updaten
+function updateMemberLocation(memberName, lat, lng) {
+  const member = memberList.find(m => m.name === memberName);
+  if (member) {
+    member.lat = lat;
+    member.lng = lng;
+    world.pointsData([...memberList]);
+  }
+}
+
+// Geolocation für aktuellen User
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(pos => {
+    updateMemberLocation('Alex', pos.coords.latitude, pos.coords.longitude);
+    world.pointOfView({ lat: pos.coords.latitude, lng: pos.coords.longitude, altitude: 2 }, 2000);
+  });
+}
+</script>
+
+
+<style>
+/* Mini Schultafel Styling */
+#mini-tafel {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 180px;
+  height: 120px;
+  background: #2d4a2d;
+  border: 8px solid #8b4513;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  z-index: 1000;
+  transition: transform 0.2s;
+}
+#mini-tafel:hover { transform: scale(1.05); }
+#mini-tafel::before {
+  content: 'Für Kreative Chillaz';
+  position: absolute;
+  bottom: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  color: #ccc;
+  white-space: nowrap;
+  font-family: 'Comic Sans MS', cursive;
+}
+#mini-tafel .kreide-text {
+  color: #f0f0f0;
+  font-family: 'Comic Sans MS', cursive;
+  font-size: 14px;
+  text-align: center;
+  padding-top: 45px;
+  text-shadow: 1px 1px 2px #000;
+}
+
+/* Fullscreen Zeichenbereich */
+#zeichen-modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9);
+  z-index: 2000;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+#zeichen-modal.active { display: flex; }
+#zeichen-board {
+  background: #2d4a2d;
+  border: 15px solid #8b4513;
+  border-radius: 8px;
+  cursor: crosshair;
+}
+#zeichen-tools {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+#zeichen-tools button, #zeichen-tools select {
+  padding: 8px 12px;
+  background: #444;
+  color: white;
+  border: 1px solid #666;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#zeichen-tools button:hover { background: #555; }
+
+/* Ranking Liste */
+#ranking-list {
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#ranking-list h4 { margin: 0 0 10px 0; font-size: 14px; }
+.ranking-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  border-bottom: 1px solid #444;
+  font-size: 13px;
+}
+.ranking-entry.me { color: #00ff88; font-weight: bold; }
+</style>
+
+<!-- Mini Schultafel -->
+<div id="mini-tafel" onclick="openZeichenboard()">
+  <div class="kreide-text">Klick zum Malen</div>
+</div>
+
+<!-- Zeichen Modal -->
+<div id="zeichen-modal">
+  <canvas id="zeichen-board" width="900" height="600"></canvas>
+  <div id="zeichen-tools">
+    <select id="tool-select">
+      <option value="pinsel">Pinsel</option>
+      <option value="kreide">Kreide</option>
+      <option value="stift">Stift</option>
+      <option value="radierer">Radierer</option>
+    </select>
+    <input type="color" id="color-picker" value="#ffffff">
+    <input type="range" id="size-slider" min="1" max="30" value="5">
+    <button onclick="clearCanvas()">Löschen</button>
+    <button onclick="sendDrawing()">✉️ An infotonbc@gmail senden</button>
+    <button onclick="closeZeichenboard()">Schließen</button>
+  </div>
+</div>
+
+<script>
+// Member System - später aus Login übernehmen
+let currentMember = localStorage.getItem('unity_member') || 'Gast_' + Math.floor(Math.random()*999);
+let memberScores = JSON.parse(localStorage.getItem('unity_scores') || '{}');
+
+// Ranking aktualisieren
+function updateRanking() {
+  memberScores[currentMember] = memberScores[currentMember] || 0;
+  const sorted = Object.entries(memberScores).sort((a,b) => b[1] - a[1]).slice(0,10);
+  
+  let html = '<h4 data-i18n="ranking_title">🏆 Top Chillaz</h4>';
+  sorted.forEach(([name, score], i) => {
+    const isMe = name === currentMember ? 'me' : '';
+    html += `<div class="ranking-entry ${isMe}"><span>${i+1}. ${name}</span><span>${score} Pkt</span></div>`;
+  });
+  
+  let rankingDiv = document.getElementById('ranking-list');
+  if (!rankingDiv) {
+    rankingDiv = document.createElement('div');
+    rankingDiv.id = 'ranking-list';
+    document.getElementById('game-area').appendChild(rankingDiv);
+  }
+  rankingDiv.innerHTML = html;
+}
+
+// Punkte geben bei Sieg
+function addScore(points) {
+  memberScores[currentMember] = (memberScores[currentMember] || 0) + points;
+  localStorage.setItem('unity_scores', JSON.stringify(memberScores));
+  updateRanking();
+}
+
+// Game mit Ranking erweitern
+const oldPlayVsMember = window.playVsMember;
+window.playVsMember = function() {
+  const area = document.getElementById('game-area');
+  const you = Math.floor(Math.random()*21)+1;
+  const opp = Math.floor(Math.random()*21)+1;
+  let result = '';
+  if (you > opp) {
+    result = 'Du gewinnst! +10 Pkt';
+    addScore(10);
+  } else if (you < opp) {
+    result = `${currentOpponent} gewinnt!`;
+  } else {
+    result = 'Unentschieden +3 Pkt';
+    addScore(3);
+  }
+  area.innerHTML = `Du: ${you} | ${currentOpponent}: ${opp} → ${result} <br><button onclick="startGame('member')">Nochmal</button>`;
+  currentOpponent = null;
+  updateRanking();
+}
+
+// Initial Ranking anzeigen
+setTimeout(updateRanking, 500);
+
+// Zeichenboard Logik
+const canvas = document.getElementById('zeichen-board');
+const ctx = canvas.getContext('2d');
+let isDrawing = false;
+let lastX = 0, lastY = 0;
+
+function openZeichenboard() {
+  document.getElementById('zeichen-modal').classList.add('active');
+  ctx.fillStyle = '#2d4a2d';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function closeZeichenboard() {
+  document.getElementById('zeichen-modal').classList.remove('active');
+}
+
+function clearCanvas() {
+  ctx.fillStyle = '#2d4a2d';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function getToolSettings() {
+  const tool = document.getElementById('tool-select').value;
+  const color = document.getElementById('color-picker').value;
+  const size = document.getElementById('size-slider').value;
+  
+  if (tool === 'radierer') return { color: '#2d4a2d', size: size * 2, opacity: 1 };
+  if (tool === 'kreide') return { color: color, size: size, opacity: 0.6 };
+  if (tool === 'stift') return { color: color, size: Math.max(1, size/3), opacity: 1 };
+  return { color: color, size: size, opacity: 0.8 }; // pinsel
+}
+
+canvas.addEventListener('mousedown', (e) => {
+  isDrawing = true;
+  [lastX, lastY] = [e.offsetX, e.offsetY];
+});
+
+canvas.addEventListener('mousemove', (e) => {
+  if (!isDrawing) return;
+  const {color, size, opacity} = getToolSettings();
+  
+  ctx.globalAlpha = opacity;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = size;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  
+  ctx.beginPath();
+  ctx.moveTo(lastX, lastY);
+  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.stroke();
+  
+  [lastX, lastY] = [e.offsetX, e.offsetY];
+  ctx.globalAlpha = 1;
+});
+
+canvas.addEventListener('mouseup', () => isDrawing = false);
+canvas.addEventListener('mouseout', () => isDrawing = false);
+
+function sendDrawing() {
+  const dataURL = canvas.toDataURL('image/png');
+  const subject = encodeURIComponent('Kreatives von ' + currentMember + ' - Unity Card Club');
+  const body = encodeURIComponent('Hey NBC Team,%0A%0Ahier ist mein Kunstwerk von der Unity Tafel!%0A%0ALG ' + currentMember + '%0A%0A(Häng das Bild aus dem Download an)');
+  
+  // Bild Download triggern
+  const a = document.createElement('a');
+  a.href = dataURL;
+  a.download = `unity-tafel-${currentMember}-${Date.now()}.png`;
+  a.click();
+  
+  // Mail Client öffnen
+  setTimeout(() => {
+    window.location.href = `mailto:infotonbc@gmail?subject=${subject}&body=${body}`;
+  }, 500);
+  
+  addScore(5); // 5 Punkte für Kreativität
+  alert('Bild gespeichert! Häng es an die Email an die sich jetzt öffnet.');
+}
+
+// i18n erweitern
+if (translations.de) {
+  translations.de.ranking_title = '🏆 Top Chillaz';
+  translations.en.ranking_title = '🏆 Top Chillaz';
+}
+</script>
+
+
+<!-- Firebase für globales Ranking -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+<script>
+// Firebase Config - ANONYM für Demo, später eigene DB anlegen
+const firebaseConfig = {
+  apiKey: "AIzaSyDemo_Key_Replace_With_Yours",
+  authDomain: "unitycardclub-demo.firebaseapp.com",
+  databaseURL: "https://unitycardclub-demo-default-rtdb.firebaseio.com",
+  projectId: "unitycardclub-demo"
+};
+
+// Firebase nur initialisieren wenn noch nicht vorhanden
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const db = firebase.database();
+
+// Globales Ranking System
+function updateGlobalRanking() {
+  db.ref('scores').orderByChild('points').limitToLast(10).once('value', snapshot => {
+    const scores = [];
+    snapshot.forEach(child => {
+      scores.unshift({ name: child.key, points: child.val().points });
+    });
+    
+    let html = '<h4 data-i18n="ranking_title">🏆 Top Chillaz Global</h4>';
+    scores.forEach((entry, i) => {
+      const isMe = entry.name === currentMember ? 'me' : '';
+      html += `<div class="ranking-entry ${isMe}"><span>${i+1}. ${entry.name}</span><span>${entry.points} Pkt</span></div>`;
+    });
+    document.getElementById('ranking-list').innerHTML = html;
+  });
+}
+
+// Punkte global speichern
+function addScore(points) {
+  const userRef = db.ref('scores/' + currentMember);
+  userRef.transaction(current => {
+    if (current === null) {
+      return { points: points, lastUpdate: Date.now() };
+    }
+    return { points: current.points + points, lastUpdate: Date.now() };
+  });
+  setTimeout(updateGlobalRanking, 500);
+}
+
+// Live-Update wenn sich Ranking ändert
+db.ref('scores').on('value', updateGlobalRanking);
+setTimeout(updateGlobalRanking, 1000);
+
+// Chat Filter gegen Rechtsradikalismus + Fremdenfeindlichkeit
+const bannedWords = [
+  'nazi', 'hitler', 'sieg heil', 'heil hitler', 'juden', 'ausländer raus', 
+  'kanake', 'neger', 'zigeneur', 'asylant', 'musel', 'islamist',
+  'white power', 'ku klux', 'holocaust', 'gaskammer', 'vergasen',
+  'abschieben', 'deutschland den deutschen', 'afrikaner', 'schwarzkopf'
+];
+
+function filterMessage(text) {
+  const lower = text.toLowerCase();
+  for (let word of bannedWords) {
+    if (lower.includes(word)) {
+      return { blocked: true, reason: 'Bitte respektvoll bleiben. Keine Hetze im Unity Club ✌️' };
+    }
+  }
+  // Zusätzlich: Check auf ALL CAPS Hate
+  if (text.length > 10 && text === text.toUpperCase() && (lower.includes('raus') || lower.includes('weg'))) {
+    return { blocked: true, reason: 'Chill mal, kein Hate hier 🌿' };
+  }
+  return { blocked: false };
+}
+
+// Hook in bestehende Chat-Send Funktion
+const originalSend = window.sendChatMessage || function(){};
+window.sendChatMessage = function(text) {
+  const check = filterMessage(text);
+  if (check.blocked) {
+    postBotMessage(check.reason);
+    return false;
+  }
+  originalSend(text);
+  return true;
+}
+
+// Cooler + motivierender Bot
+const coolMotivation = [
+  'Yo, du rockst das! 💚 Keep it chill',
+  'High Five! Du bist auf nem guten Weg 🚀',
+  'Unity bedeutet zusammen stark sein. Du gehörst dazu! ✨',
+  'Jeder Punkt zählt - du machst das super! 🌿',
+  'Feier deine Wins, egal wie klein! 🎉',
+  'Cannabis verbindet, Hate trennt. Du bist auf der richtigen Seite 💚',
+  'Kreativität > Aggression. Zeig was du drauf hast! 🎨',
+  'Chillaz halten zusammen. Respekt! 🤝'
+];
+
+const coolJokes = [
+  'Warum sind Kiffer so entspannt? Weil sie Stress einfach weg-pusten 💨',
+  'Was sagt ein Joint zur Arbeit? Lass uns das durchziehen! 😄',
+  'Club-Regel #1: Sei kein Spießer, sei ein Chiller 🌿',
+  'Wieso feiern wir? Weil das Leben zu kurz für schlechte Vibes ist! 🎉'
+];
+
+// Bot postet alle 8-20 Min Motivation oder Joke
+setInterval(() => {
+  if (Math.random() < 0.6) {
+    const msg = coolMotivation[Math.floor(Math.random() * coolMotivation.length)];
+    postBotMessage(msg);
+  } else {
+    const joke = coolJokes[Math.floor(Math.random() * coolJokes.length)];
+    postBotMessage('😄 ' + joke);
+  }
+}, (8 + Math.random() * 12) * 60 * 1000);
+
+// Bot begrüßt neue Member cool
+setTimeout(() => {
+  postBotMessage(`Welcome ${currentMember}! Hier wird gechillt, nicht gehatet. Leg los! 🌿💚`);
+}, 4000);
+
+// Bot reagiert auf Chat mit Motivation
+window.postBotMessage = function(text) {
+  const chat = document.querySelector('#chat-output');
+  const lang = detectLang();
+  if (chat) {
+    const el = document.createElement('div');
+    el.className = 'bot-msg';
+    el.style.color = '#00ff88';
+    el.style.fontWeight = '500';
+    el.textContent = 'UnityBot: ' + text;
+    chat.appendChild(el);
+    chat.scrollTop = chat.scrollHeight;
+  }
+}
+
+// Update i18n
+if (translations.de) {
+  translations.de.ranking_title = '🏆 Top Chillaz Global';
+  translations.en.ranking_title = '🏆 Top Chillaz Global';
+}
+</script>
+
 </body>
 </html>
