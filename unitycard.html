@@ -42,6 +42,12 @@ footer a:hover{color:#D4AF37}
 </head>
 <body>
 
+<!-- UHRZEIT + DATUM -->
+<div id="datetime" style="position:fixed;top:20px;left:20px;z-index:100;font-family:'Orbitron',sans-serif;color:#D4AF37;text-shadow:0 0 15px rgba(212,175,55,0.6);pointer-events:none">
+  <div id="time" style="font-size:24px;font-weight:700;letter-spacing:2px"></div>
+  <div id="date" style="font-size:12px;opacity:0.8;margin-top:2px"></div>
+</div>
+
 <!-- LANGUAGE SWITCHER -->
 <div id="langSwitcher" style="position:fixed;top:20px;right:20px;z-index:100">
   <div id="langCurrent" onclick="toggleLangMenu()" style="width:45px;height:30px;border:2px solid #D4AF37;border-radius:6px;cursor:pointer;box-shadow:0 0 15px rgba(212,175,55,0.4);overflow:hidden;background-size:cover;background-position:center"></div>
@@ -180,6 +186,7 @@ function setLang(lang) {
   applyTranslations(lang);
   document.getElementById('langCurrent').style.backgroundImage = `url('${flagUrls[lang]}')`;
   document.getElementById('langMenu').style.display = 'none';
+  updateDateTime();
 }
 
 function applyTranslations(lang) {
@@ -204,6 +211,32 @@ document.addEventListener('click', (e) => {
     document.getElementById('langMenu').style.display = 'none';
   }
 });
+
+// ===== DATUM + UHRZEIT =====
+const locales = {
+  de: 'de-DE',
+  nl: 'nl-NL',
+  en: 'en-GB',
+  fr: 'fr-FR',
+  es: 'es-ES',
+  bg: 'bg-BG',
+  pl: 'pl-PL'
+};
+
+function updateDateTime(){
+  const lang = getLang();
+  const locale = locales[lang] || 'de-DE';
+  const now = new Date();
+
+  const timeOptions = {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false};
+  const dateOptions = {weekday:'short',year:'numeric',month:'2-digit',day:'2-digit'};
+
+  document.getElementById('time').textContent = now.toLocaleTimeString(locale, timeOptions);
+  document.getElementById('date').textContent = now.toLocaleDateString(locale, dateOptions);
+}
+
+setInterval(updateDateTime, 1000);
+updateDateTime();
 
 // ===== CORE APP =====
 let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
