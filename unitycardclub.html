@@ -411,6 +411,30 @@ let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
 let currentUser=JSON.parse(localStorage.getItem('nbc_current')||'null');
 if(!currentUser){alert('Bitte erst einloggen, Chillaz!');location.href='unitycard.html';}
 
+// ===== HIGHSCORE SYSTEM - MUSS GANZ OBEN STEHEN =====
+window.addActivityScore = function(points){
+    if(!currentUser) return;
+    let scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
+    scores[currentUser.insta] = (scores[currentUser.insta] || 0) + points;
+    localStorage.setItem('nbc_highscores', JSON.stringify(scores));
+    updateHighscore();
+}
+
+function updateHighscore(){
+    let scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
+    let sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+    document.getElementById('highscore-list').innerHTML = sorted.length? sorted.map(([insta,pts],i)=>{
+        const user = allUsers.find(u=>u.insta===insta);
+        const name = user? user.name : insta;
+        const isMe = insta === currentUser?.insta? 'me' : '';
+        return `<div class="highscore-entry ${isMe}">
+            <span class="highscore-name" onclick="showCard('${insta}')">${i+1}. ${name}</span>
+            <span class="highscore-points">${pts}</span>
+        </div>`;
+    }).join('') : '<div style="text-align:center;opacity:0.5;font-size:11px">Noch keine Scores</div>';
+}
+
 const demoMembers=[
 {name:'Luca Weedmann',insta:'@luca_chill',nation:'DE',donation:120,lat:52.52,lng:13.40},
 {name:'Mia Hashfield',insta:'@mia_high',nation:'NL',donation:60,lat:52.37,lng:4.90},
@@ -452,11 +476,10 @@ window.showCard=(insta)=>{
   const scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
   const highscore = scores[user.insta] || 0;
 
-  // Instagram Avatar laden
   const handle = user.insta.replace('@','');
   const avatarEl = document.getElementById('cardAvatar');
   avatarEl.src = `https://unavatar.io/instagram/${handle}`;
-  avatarEl.onerror = function(){ this.style.display='none'; }; // Fallback wenn kein Bild
+  avatarEl.onerror = function(){ this.style.display='none'; };
 
   document.getElementById('cardName').textContent=user.name;
   document.getElementById('cardInsta').textContent=user.insta + ` | Highscore: ${highscore}`;
@@ -507,7 +530,6 @@ function handleDragStart(e){
   if(e.target.classList.contains('card-close') || e.target.classList.contains('card-insta-avatar')) return;
   isDragging = true;
   card.classList.add('dragging');
-
   const point = e.type.includes('mouse')? e : e.touches[0];
   startX = point.clientX;
   startY = point.clientY;
@@ -516,18 +538,13 @@ function handleDragStart(e){
 function handleDragMove(e){
   if(!isDragging) return;
   e.preventDefault();
-
   const point = e.type.includes('mouse')? e : e.touches[0];
   const deltaX = point.clientX - startX;
   const deltaY = point.clientY - startY;
-
   currentX = deltaX;
   currentY = deltaY;
-
-  // 3D Tilt basierend auf Mausposition
   const rotateY = deltaX * 0.1;
   const rotateX = -deltaY * 0.1;
-
   card.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px)) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
 }
 
@@ -535,15 +552,9 @@ function handleDragEnd(){
   if(!isDragging) return;
   isDragging = false;
   card.classList.remove('dragging');
-
-  // Smooth zurück zur Mitte mit Feder-Effekt
   card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
   card.style.transform = 'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
-
-  setTimeout(()=>{
-    card.style.transition = '';
-  }, 500);
-
+  setTimeout(()=>{ card.style.transition = ''; }, 500);
   addActivityScore(1);
 }
 
@@ -562,12 +573,10 @@ window.selectGame=(game)=>{
     currentGame = game;
     document.querySelectorAll('.game-btn').forEach(b=>b.classList.remove('active'));
     event.target.classList.add('active');
-
     if(game==='21er') init21er();
     if(game==='reaction') initReaction();
     if(game==='quiz') initQuiz();
     if(game==='slots') initSlots();
-
     addActivityScore(2);
 }
 
@@ -588,7 +597,6 @@ window.draw21=()=>{
     const card = Math.floor(Math.random()*11)+1;
     gameState.player += card;
     document.getElementById('pScore').textContent = gameState.player;
-
     if(gameState.player > 21){
         end21er('Bust! Bot gewinnt 😢', 0);
     } else if(gameState.player === 21){
@@ -602,7 +610,6 @@ window.stand21=()=>{
         gameState.bot += Math.floor(Math.random()*11)+1;
     }
     document.getElementById('bScore').textContent = gameState.bot;
-
     if(gameState.bot > 21 || gameState.player > gameState.bot){
         end21er('Du gewinnst! 🏆', 25);
     } else if(gameState.player < gameState.bot){
@@ -711,54 +718,33 @@ window.spinSlots=()=>{
     }, 100);
 }
 
-// ===== HIGHSCORE SYSTEM =====
-function addActivityScore(points){
-    if(!currentUser) return;
-    let scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
-    scores[currentUser.insta] = (scores[currentUser.insta] || 0) + points;
-    localStorage.setItem('nbc_highscores', JSON.stringify(scores));
-    updateHighscore();
-}
-
-function updateHighscore(){
-    let scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
-    let sorted = Object.entries(scores).sort((a,b)=>b[1]-a[1]).slice(0,10);
-
-    document.getElementById('highscore-list').innerHTML = sorted.length? sorted.map(([insta,pts],i)=>{
-        const user = allUsers.find(u=>u.insta===insta);
-        const name = user? user.name : insta;
-        const isMe = insta === currentUser?.insta? 'me' : '';
-        return `<div class="highscore-entry ${isMe}">
-            <span class="highscore-name" onclick="showCard('${insta}')">${i+1}. ${name}</span>
-            <span class="highscore-points">${pts}</span>
-        </div>`;
-    }).join('') : '<div style="text-align:center;opacity:0.5;font-size:11px">Noch keine Scores</div>';
-}
-
 // ===== CHILLAZ TV SYSTEM =====
 let netzkinoVideos = [];
 let currentVideoIndex = 0;
 let ytPlayer = null;
 const CACHE_KEY = 'chillaz_netzkino_cache';
-const CACHE_DURATION = 1000 * 60 * 30; // 30 Minuten
+const CACHE_DURATION = 1000 * 60 * 30;
 
-// YouTube IFrame API laden
 let ytApiReady = false;
+let ytApiPromise = null;
+
 function loadYouTubeAPI() {
-  if (window.YT) {
-    ytApiReady = true;
-    return Promise.resolve();
-  }
-  return new Promise(resolve => {
-    const tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    const firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  if (ytApiPromise) return ytApiPromise;
+  ytApiPromise = new Promise(resolve => {
+    if (window.YT && window.YT.Player) {
+      ytApiReady = true;
+      resolve();
+      return;
+    }
     window.onYouTubeIframeAPIReady = () => {
       ytApiReady = true;
       resolve();
     };
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
   });
+  return ytApiPromise;
 }
 
 async function loadNetzkinoVideos(forceRefresh = false) {
@@ -781,7 +767,6 @@ async function loadNetzkinoVideos(forceRefresh = false) {
 
     const response = await fetch(proxyUrl);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
     const data = await response.json();
     if (!data.contents) throw new Error('Leere Proxy-Antwort');
 
@@ -790,8 +775,8 @@ async function loadNetzkinoVideos(forceRefresh = false) {
     const entries = xml.querySelectorAll('entry');
 
     netzkinoVideos = Array.from(entries)
-    .slice(0, 10)
-    .map(entry => {
+   .slice(0, 10)
+   .map(entry => {
         const videoId = entry.getElementsByTagNameNS('http://www.youtube.com/xml/schemas/2015', 'videoId')[0]?.textContent;
         const title = entry.querySelector('title')?.textContent || 'Ohne Titel';
         return {
@@ -800,7 +785,7 @@ async function loadNetzkinoVideos(forceRefresh = false) {
           thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
         };
       })
-    .filter(v => v.id);
+   .filter(v => v.id);
 
     sessionStorage.setItem(CACHE_KEY, JSON.stringify({
       timestamp: Date.now(),
@@ -829,22 +814,17 @@ function playNextNetzkinoVideo() {
   return getCurrentVideo();
 }
 
-// CHILLAZ TV öffnen
 window.openChillazTV = async () => {
   const overlay = document.getElementById('chillazTV');
   overlay.classList.add('active');
-
   await loadYouTubeAPI();
   await loadNetzkinoVideos();
-
   const video = getCurrentVideo();
   if (!video) {
     document.getElementById('tvPlayer').innerHTML = '<div style="color:#D4AF37;text-align:center;padding:50px">Keine Videos gefunden 😴</div>';
     return;
   }
-
   if (ytPlayer) ytPlayer.destroy();
-
   ytPlayer = new YT.Player('tvPlayer', {
     height: '100%',
     width: '100%',
@@ -859,19 +839,16 @@ window.openChillazTV = async () => {
       'onStateChange': onPlayerStateChange
     }
   });
-
   document.querySelector('.tv-title').textContent = `NETZKINO // ${video.title.slice(0,40)}`;
-  addActivityScore(5); // Punkte für TV schauen
+  addActivityScore(5);
 };
 
 function onPlayerStateChange(event) {
-  // Auto-Next wenn Video zu Ende
   if (event.data === YT.PlayerState.ENDED) {
     window.nextVideo();
   }
 }
 
-// Nächstes Video
 window.nextVideo = () => {
   const video = playNextNetzkinoVideo();
   if (video && ytPlayer) {
@@ -881,7 +858,6 @@ window.nextVideo = () => {
   }
 };
 
-// TV schließen
 window.closeChillazTV = () => {
   document.getElementById('chillazTV').classList.remove('active');
   if (ytPlayer) {
@@ -897,7 +873,8 @@ window.sendChat=()=>{
   const chatBox = document.getElementById('chatBox');
   chatBox.innerHTML += `<div class="chat-msg user">${msg}</div>`;
   input.value = '';
-  addActivityScore(1); // 1 Punkt für Chat
+  addActivityScore(1);
+  lastChatTime = Date.now();
 
   setTimeout(()=>{
     let reply = 'Chillaz, THC-Level im Chat optimal 🧠💨';
@@ -935,7 +912,6 @@ window.sendChat=()=>{
       reply = `Stats: ${s.total} Chillaz. Du: ${s.you} | Gespendet: ${s.donation}€ 🏆`;
     }
 
-    // Anti-Hate Filter
     const bannedWords = ['nazi', 'hitler', 'sieg heil', 'juden', 'ausländer raus', 'kanake', 'neger', 'asylant'];
     if(bannedWords.some(w => lower.includes(w))) {
       reply = 'Bitte respektvoll bleiben. Keine Hetze im Unity Club ✌️';
@@ -971,7 +947,7 @@ setInterval(()=>{
 // Init
 renderLists();
 updateHighscore();
-loadYouTubeAPI(); // YouTube API direkt beim Start laden für schnelleren TV-Start
+loadYouTubeAPI();
 
 // 3D GLOBE MIT WELTKARTE
 const scene=new THREE.Scene();
@@ -979,7 +955,6 @@ const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight
 const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('canvas'),alpha:true,antialias:true});
 renderer.setSize(window.innerWidth,window.innerHeight);
 
-// Weltkarten-Textur als Basis
 const textureLoader = new THREE.TextureLoader();
 const earthTexture = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
 const earthBump = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-topology.png');
@@ -998,7 +973,6 @@ const earthGlobe = new THREE.Mesh(
 );
 scene.add(earthGlobe);
 
-// Wireframe drüber für Cyber-Look
 const globe=new THREE.Mesh(
   new THREE.SphereGeometry(2.02,32,32),
   new THREE.MeshBasicMaterial({
@@ -1010,7 +984,6 @@ const globe=new THREE.Mesh(
 );
 scene.add(globe);
 
-// Atmosphäre-Glow
 const atmosphere = new THREE.Mesh(
   new THREE.SphereGeometry(2.15, 32, 32),
   new THREE.MeshBasicMaterial({
@@ -1022,7 +995,6 @@ const atmosphere = new THREE.Mesh(
 );
 scene.add(atmosphere);
 
-// Licht für die Textur
 const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
 scene.add(ambientLight);
 const dirLight = new THREE.DirectionalLight(0x00D9FF, 0.8);
@@ -1044,8 +1016,6 @@ allUsers.forEach(u=>{
   const pos = latLngToVector3(u.lat,u.lng,2.08);
   const color = u.donation>=100? 0xD4AF37 : u.donation>=50? 0x00D9FF : u.donation>=5? 0xE5E4E2 : 0x666666;
   const size = u.donation>=100? 0.09 : u.donation>=50? 0.07 : 0.05;
-
-  // Glühender Punkt
   const point = new THREE.Mesh(
     new THREE.SphereGeometry(size,16,16),
     new THREE.MeshBasicMaterial({color:color})
@@ -1053,8 +1023,6 @@ allUsers.forEach(u=>{
   point.position.copy(pos);
   point.userData = u;
   memberGroup.add(point);
-
-  // Glow-Ring für wichtige Member
   if(u.donation >= 50){
     const ring = new THREE.Mesh(
       new THREE.RingGeometry(size*1.5, size*2, 16),
@@ -1077,10 +1045,8 @@ function onMouseMove(event){
   const rect = renderer.domElement.getBoundingClientRect();
   mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
   mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(memberGroup.children);
-
   if(intersects.length > 0){
     if(hoveredPoint!== intersects[0].object){
       if(hoveredPoint) hoveredPoint.scale.set(1,1,1);
@@ -1098,186 +1064,7 @@ function onMouseMove(event){
 function onClick(){
   if(hoveredPoint){
     showCard(hoveredPoint.userData.insta);
-    addActivityScore(3); // 3 Punkte für Member entdecken
-  }
-}
-
-renderer.domElement.addEventListener('mousemove', onMouseMove);
-renderer.domElement.addEventListener('click', onClick);
-
-function animate(){
-  requestAnimationFrame(animate);
-  earthGlobe.rotation.y+=0.0005;
-  globe.rotation.y+=0.001;
-  memberGroup.rotation.y+=0.001;
-  atmosphere.rotation.y+=0.0003;
-  renderer.render(scene,camera);
-}
-animate();
-window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
-    // Anti-Hate Filter
-    const bannedWords = ['nazi', 'hitler', 'sieg heil', 'juden', 'ausländer raus', 'kanake', 'neger', 'asylant'];
-    if(bannedWords.some(w => lower.includes(w))) {
-      reply = 'Bitte respektvoll bleiben. Keine Hetze im Unity Club ✌️';
-    }
-
-    chatBox.innerHTML += `<div class="chat-msg bot">${reply}</div>`;
-    chatBox.scrollTop = 9999;
-  },400);
-};
-
-function getUserStats(){
-  const users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
-  return {total: users.length, you: currentUser?.name || 'Anon', donation: currentUser?.donation || 0};
-}
-
-// Auto-Prahl wenn Chat still
-let lastChatTime = Date.now();
-setInterval(()=>{
-  if(Date.now() - lastChatTime > 20000){
-    const prahl = [
-      'Fun Fact: Ich kenne 847 Grow-Strains auswendig 🤓',
-      'Profi-Tipp: CO2 1200ppm + 1000 PPFD = +30% Ertrag 😎',
-      'Trichome milchig + 20% bernstein = Erntezeit! 🔬',
-      'Unity bedeutet zusammen stark sein. Du gehörst dazu! ✨'
-    ];
-    const chatBox = document.getElementById('chatBox');
-    chatBox.innerHTML += `<div class="chat-msg bot">${prahl[Math.floor(Math.random()*prahl.length)]}</div>`;
-    chatBox.scrollTop = 9999;
-    lastChatTime = Date.now();
-  }
-}, 5000);
-
-// Init
-renderLists();
-updateHighscore();
-
-// 3D GLOBE MIT WELTKARTE
-const scene=new THREE.Scene();
-const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
-const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('canvas'),alpha:true,antialias:true});
-renderer.setSize(window.innerWidth,window.innerHeight);
-
-// Weltkarten-Textur als Basis
-const textureLoader = new THREE.TextureLoader();
-const earthTexture = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
-const earthBump = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-topology.png');
-
-const earthGlobe = new THREE.Mesh(
-  new THREE.SphereGeometry(1.98, 64, 64),
-  new THREE.MeshPhongMaterial({
-    map: earthTexture,
-    bumpMap: earthBump,
-    bumpScale: 0.05,
-    transparent: true,
-    opacity: 0.6,
-    emissive: 0x00D9FF,
-    emissiveIntensity: 0.15
-  })
-);
-scene.add(earthGlobe);
-
-// Wireframe drüber für Cyber-Look
-const globe=new THREE.Mesh(
-  new THREE.SphereGeometry(2.02,32,32),
-  new THREE.MeshBasicMaterial({
-    color:0xD4AF37,
-    wireframe:true,
-    transparent:true,
-    opacity:0.3
-  })
-);
-scene.add(globe);
-
-// Atmosphäre-Glow
-const atmosphere = new THREE.Mesh(
-  new THREE.SphereGeometry(2.15, 32, 32),
-  new THREE.MeshBasicMaterial({
-    color: 0x00D9FF,
-    transparent: true,
-    opacity: 0.08,
-    side: THREE.BackSide
-  })
-);
-scene.add(atmosphere);
-
-// Licht für die Textur
-const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
-scene.add(ambientLight);
-const dirLight = new THREE.DirectionalLight(0x00D9FF, 0.8);
-dirLight.position.set(5, 3, 5);
-scene.add(dirLight);
-
-function latLngToVector3(lat,lng,radius){
-  const phi = (90-lat)*(Math.PI/180);
-  const theta = (lng+180)*(Math.PI/180);
-  const x = -(radius * Math.sin(phi) * Math.cos(theta));
-  const z = (radius * Math.sin(phi) * Math.sin(theta));
-  const y = (radius * Math.cos(phi));
-  return new THREE.Vector3(x,y,z);
-}
-
-const memberGroup = new THREE.Group();
-allUsers.forEach(u=>{
-  if(!u.lat ||!u.lng) return;
-  const pos = latLngToVector3(u.lat,u.lng,2.08);
-  const color = u.donation>=100? 0xD4AF37 : u.donation>=50? 0x00D9FF : u.donation>=5? 0xE5E4E2 : 0x666666;
-  const size = u.donation>=100? 0.09 : u.donation>=50? 0.07 : 0.05;
-
-  // Glühender Punkt
-  const point = new THREE.Mesh(
-    new THREE.SphereGeometry(size,16,16),
-    new THREE.MeshBasicMaterial({color:color})
-  );
-  point.position.copy(pos);
-  point.userData = u;
-  memberGroup.add(point);
-
-  // Glow-Ring für wichtige Member
-  if(u.donation >= 50){
-    const ring = new THREE.Mesh(
-      new THREE.RingGeometry(size*1.5, size*2, 16),
-      new THREE.MeshBasicMaterial({color:color, transparent:true, opacity:0.4, side:THREE.DoubleSide})
-    );
-    ring.position.copy(pos);
-    ring.lookAt(0,0,0);
-    memberGroup.add(ring);
-  }
-});
-scene.add(memberGroup);
-
-camera.position.z=5;
-
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-let hoveredPoint = null;
-
-function onMouseMove(event){
-  const rect = renderer.domElement.getBoundingClientRect();
-  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-  raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObjects(memberGroup.children);
-
-  if(intersects.length > 0){
-    if(hoveredPoint!== intersects[0].object){
-      if(hoveredPoint) hoveredPoint.scale.set(1,1,1);
-      hoveredPoint = intersects[0].object;
-      hoveredPoint.scale.set(1.8,1.8);
-      document.body.style.cursor = 'pointer';
-    }
-  } else {
-    if(hoveredPoint) hoveredPoint.scale.set(1,1,1);
-    hoveredPoint = null;
-    document.body.style.cursor = 'default';
-  }
-}
-
-function onClick(){
-  if(hoveredPoint){
-    showCard(hoveredPoint.userData.insta);
-    addActivityScore(3); // 3 Punkte für Member entdecken
+    addActivityScore(3);
   }
 }
 
