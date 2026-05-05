@@ -718,7 +718,7 @@ window.spinSlots=()=>{
     }, 100);
 }
 
-// ===== CHILLAZ TV SYSTEM =====
+// ===== CHILLAZ TV SYSTEM - GEFIXTE VERSION =====
 let netzkinoVideos = [];
 let currentVideoIndex = 0;
 let ytPlayer = null;
@@ -738,6 +738,7 @@ function loadYouTubeAPI() {
     }
     window.onYouTubeIframeAPIReady = () => {
       ytApiReady = true;
+      console.log('YouTube API ready ✅');
       resolve();
     };
     const tag = document.createElement('script');
@@ -775,8 +776,8 @@ async function loadNetzkinoVideos(forceRefresh = false) {
     const entries = xml.querySelectorAll('entry');
 
     netzkinoVideos = Array.from(entries)
-   .slice(0, 10)
-   .map(entry => {
+  .slice(0, 10)
+  .map(entry => {
         const videoId = entry.getElementsByTagNameNS('http://www.youtube.com/xml/schemas/2015', 'videoId')[0]?.textContent;
         const title = entry.querySelector('title')?.textContent || 'Ohne Titel';
         return {
@@ -785,7 +786,7 @@ async function loadNetzkinoVideos(forceRefresh = false) {
           thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
         };
       })
-   .filter(v => v.id);
+  .filter(v => v.id);
 
     sessionStorage.setItem(CACHE_KEY, JSON.stringify({
       timestamp: Date.now(),
@@ -798,7 +799,8 @@ async function loadNetzkinoVideos(forceRefresh = false) {
     console.error('Netzkino RSS Fehler:', e);
     netzkinoVideos = [
       {id: 'dQw4w9WgXcQ', title: 'Fallback 1'},
-      {id: 'jNQXAC9IVRw', title: 'Fallback 2'}
+      {id: 'jNQXAC9IVRw', title: 'Fallback 2'},
+      {id: '9bZkp7q19f0', title: 'Fallback 3'}
     ];
     return netzkinoVideos;
   }
@@ -816,29 +818,60 @@ function playNextNetzkinoVideo() {
 
 window.openChillazTV = async () => {
   const overlay = document.getElementById('chillazTV');
+  const playerDiv = document.getElementById('tvPlayer');
   overlay.classList.add('active');
+
+  playerDiv.innerHTML = '<div style="color:#D4AF37;text-align:center;padding:50px;font-family:Orbitron">Lade CHILLAZ TV... 🎬</div>';
+
+  // 1. Warte auf YouTube API
   await loadYouTubeAPI();
-  await loadNetzkinoVideos();
-  const video = getCurrentVideo();
-  if (!video) {
-    document.getElementById('tvPlayer').innerHTML = '<div style="color:#D4AF37;text-align:center;padding:50px">Keine Videos gefunden 😴</div>';
+  if (!window.YT ||!YT.Player) {
+    playerDiv.innerHTML = '<div style="color:#FF4757;text-align:center;padding:50px">YouTube lädt nicht. Refresh die Seite 🔄</div>';
     return;
   }
-  if (ytPlayer) ytPlayer.destroy();
+
+  // 2. Lade Videos
+  await loadNetzkinoVideos();
+  const video = getCurrentVideo();
+
+  if (!video) {
+    playerDiv.innerHTML = '<div style="color:#D4AF37;text-align:center;padding:50px">Keine Videos gefunden 😴<br>Versuch es später nochmal</div>';
+    return;
+  }
+
+  // 3. Alten Player killen
+  if (ytPlayer) {
+    ytPlayer.destroy();
+    ytPlayer = null;
+  }
+
+  // 4. Neuen Player erstellen - MIT MUTE für Autoplay
   ytPlayer = new YT.Player('tvPlayer', {
     height: '100%',
     width: '100%',
     videoId: video.id,
     playerVars: {
       autoplay: 1,
+      mute: 1, // Wichtig: Browser erlaubt Autoplay nur muted
       controls: 1,
       modestbranding: 1,
-      rel: 0
+      rel: 0,
+      playsinline: 1 // Wichtig für Mobile
     },
     events: {
-      'onStateChange': onPlayerStateChange
+      'onReady': (event) => {
+        console.log('Player ready, starte Video');
+        event.target.playVideo();
+      },
+      'onStateChange': onPlayerStateChange,
+      'onError': (e) => {
+        console.error('YouTube Error:', e.data);
+        playerDiv.innerHTML = '<div style="color:#FF4757;text-align:center;padding:50px">Video lädt nicht. Nächstes wird geladen... ⏭️</div>';
+        setTimeout(() => window.nextVideo(), 2000);
+      }
     }
   });
+
   document.querySelector('.tv-title').textContent = `NETZKINO // ${video.title.slice(0,40)}`;
   addActivityScore(5);
 };
@@ -846,6 +879,9 @@ window.openChillazTV = async () => {
 function onPlayerStateChange(event) {
   if (event.data === YT.PlayerState.ENDED) {
     window.nextVideo();
+  }
+  if (event.data === YT.PlayerState.PLAYING) {
+    console.log('Video läuft ✅');
   }
 }
 
@@ -862,6 +898,14 @@ window.closeChillazTV = () => {
   document.getElementById('chillazTV').classList.remove('active');
   if (ytPlayer) {
     ytPlayer.stopVideo();
+  }
+};
+
+// UNMUTE BUTTON FUNKTION
+window.unmuteTV = () => {
+  if (ytPlayer && ytPlayer.unMute) {
+    ytPlayer.unMute();
+    ytPlayer.setVolume(80);
   }
 };
 
@@ -1094,6 +1138,7 @@ window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.inn
   </div>
   <div class="tv-player" id="tvPlayer"></div>
   <button class="tv-next-btn" onclick="nextVideo()">NÄCHSTES VIDEO →</button>
+  <button class="tv-next-btn" style="right:180px" onclick="unmuteTV()">🔊 TON AN</button>
 </div>
   
 </body>
