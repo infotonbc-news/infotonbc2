@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Unitycard Club - NaturalBornChillaz</title>
 <style>
-@import url('https://fonts.googleapis.comtv/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;600&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:#0A0A0F;color:#E5E4E2;overflow:hidden}
 #canvas{position:absolute;top:0;left:0;width:100%;height:100%}
@@ -56,7 +56,6 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .card-glow-edge{position:absolute;inset:0;border-radius:20px;box-shadow:inset 0 0 0 2px rgba(212,175,55,0.5),0 0 40px rgba(212,175,55,0.4);pointer-events:none}
 .card-content{position:relative;z-index:2;padding:25px;height:100%;display:flex;flex-direction:column;pointer-events:none}
 
-/* INSTAGRAM AVATAR */
 .card-insta-avatar{
   position:absolute;top:20px;left:20px;
   width:60px;height:60px;
@@ -149,7 +148,6 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .btn:hover{box-shadow:0 5px 20px rgba(212,175,55,0.4)}
 .btn-small{padding:8px 12px;font-size:11px}
 
-/* GAME STYLES */
 .game-select{
     display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:15px 0;
 }
@@ -173,7 +171,6 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 }
 .reaction-box.ready{background:rgba(0,255,0,0.2);border-color:#00ff88;color:#00ff88}
 
-/* HIGHSCORE FLIPPER STYLE */
 #highscore-board{
     margin-top:15px;padding:12px;
     background:linear-gradient(135deg,rgba(212,175,55,0.1),rgba(0,217,255,0.05));
@@ -202,7 +199,7 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .footer-links a{color:#00D9FF;text-decoration:none;margin-right:15px}
 .footer-links a:hover{color:#D4AF37}
 @media(max-width:1024px){.ui-overlay{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}.unitycard-popup{width:90%;height:auto;min-height:300px}}
-/* CHILLAZ TV BUTTON */
+
 .chillaz-tv-btn{
   position:fixed;bottom:30px;right:30px;z-index:999;
   padding:15px 25px;
@@ -218,7 +215,6 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
   box-shadow:0 0 40px rgba(255,0,0,0.8),0 8px 30px rgba(0,0,0,0.7);
 }
 
-/* CHILLAZ TV OVERLAY */
 .chillaz-tv-overlay{
   position:fixed;top:50%;left:50%;
   width:80vw;height:80vh;max-width:1200px;max-height:800px;
@@ -238,26 +234,28 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
   display:flex;justify-content:space-between;align-items:center;
   padding:15px 25px;background:linear-gradient(135deg,#FF0000,#1A1A2E);
   border-bottom:2px solid #D4AF37;
+  position:relative;
+  z-index:2001;
 }
 .tv-title{
   font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;
   letter-spacing:3px;text-shadow:0 0 15px rgba(212,175,55,0.6);
 }
 .tv-close{
-  position:absolute;
-  top:15px;
-  right:15px;
-  width:40px;
-  height:40px;
-  background:rgba(0,0,0.8);
+  width:40px;height:40px;
+  background:rgba(0,0,0,0.8);
   border:2px solid #D4AF37;
   border-radius:50%;
   color:#D4AF37;
   font-size:24px;
   cursor:pointer;
   transition:all 0.3s;
-  z-index:9999; /* <- Wichtig: Ganz nach oben */
-  pointer-events:all; /* <- Klicks erlauben */
+  z-index:9999;
+  pointer-events:all;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  line-height:1;
 }
 .tv-close:hover{
   background:rgba(212,175,55,0.3);
@@ -266,9 +264,12 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .tv-player{
   width:100%;height:calc(100% - 70px);
   background:#000;
+  position:relative;
+  z-index:2000;
 }
 .tv-player iframe{
   width:100%;height:100%;border:none;
+  pointer-events:all;
 }
 
 .tv-next-btn{
@@ -277,12 +278,14 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
   border:1px solid #D4AF37;border-radius:8px;
   color:#D4AF37;font-family:'Orbitron',sans-serif;
   font-size:12px;cursor:pointer;transition:all 0.3s;
+  z-index:2001;
+  pointer-events:all;
 }
 .tv-next-btn:hover{background:rgba(212,175,55,0.4)}
 
 @media(max-width:1024px){
-  .chillaz-tv-overlay{width:95vw;height:70vh}
-  .chillaz-tv-btn{bottom:20px;right:20px;padding:12px 20px;font-size:12px}
+.chillaz-tv-overlay{width:95vw;height:70vh}
+.chillaz-tv-btn{bottom:20px;right:20px;padding:12px 20px;font-size:12px}
 }
 </style>
 
@@ -351,7 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 <button class="btn" style="width:100%;margin-top:15px" onclick="window.open('https://paypal.me/DeinLink','_blank')" onmouseover="this.textContent='Fütter den Grow 🌱'" onmouseout="this.textContent='Chillaz Support 💰'">Chillaz Support 💰</button>
 
-<!-- MINI GAMES SECTION -->
 <h2 style="margin-top:20px" data-i18n="spiele_title">Spiel gegen Den Chillaz Bot</h2>
 <div class="game-select">
   <button class="game-btn" onclick="selectGame('21er')">21er Duell</button>
@@ -363,7 +365,6 @@ document.addEventListener('DOMContentLoaded', () => {
   <div style="text-align:center;opacity:0.6;font-size:12px">Wähle ein Spiel 👆</div>
 </div>
 
-<!-- HIGHSCORE BOARD -->
 <div id="highscore-board">
   <div class="highscore-title" data-i18n="highscore_title">🏆 FLIPPER HIGHSCORE</div>
   <div id="highscore-list"></div>
@@ -422,7 +423,7 @@ let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
 let currentUser=JSON.parse(localStorage.getItem('nbc_current')||'null');
 if(!currentUser){alert('Bitte erst einloggen, Chillaz!');location.href='unitycard.html';}
 
-// ===== HIGHSCORE SYSTEM - MUSS GANZ OBEN STEHEN =====
+// ===== HIGHSCORE SYSTEM =====
 window.addActivityScore = function(points){
     if(!currentUser) return;
     let scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
@@ -510,6 +511,105 @@ window.showCard=(insta)=>{
     rankBadge.style.background = 'linear-gradient(135deg,#00D9FF,#0099CC)';
     rankBadge.style.boxShadow = '0 0 30px rgba(0,217,255,0.8),inset 0 2px 0 rgba(255,255,255,0.4)';
   } else if(donation >= 5){
+    rankText.textContent = 'SUPPORTER';
+    rankBadge.style.background = 'linear-gradient(135deg,#E5E4E2,#B8B7B5)';
+    rankBadge.style.boxShadow = '0 0 20px rgba(229,228,226,0.6),inset 0 2px 0 rgba(255,255,255,0.4)';
+  } else {
+    rankText.textContent = 'MEMBER';
+    rankBadge.style.background = 'linear-gradient(135deg,#666666,#444444)';
+    rankBadge.style.boxShadow = '0 0 10px rgba(100,100,100,0.4),inset 0 2px 0 rgba(255,255,255,0.2)';
+  }
+
+  rankDonation.textContent = `${donation}€`;
+  document.getElementById('cardPopup').classList.add('active');
+};
+
+window.openInstagram=()=>{
+  if(currentCardUser){
+    window.open(`https://instagram.com/${currentCardUser.insta.replace('@','')}`,'_blank');
+    addActivityScore(2);
+  }
+};
+
+window.closeCard=()=>document.getElementById('cardPopup').classList.remove('active');
+
+// ===== DRAG & TILT LOGIK =====
+const card = document.getElementById('cardPopup');
+let isDragging = false;
+let startX, startY, currentX = 0, currentY = 0;
+
+function handleDragStart(e){
+  if(e.target.classList.contains('card-close') || e.target.classList.contains('card-insta-avatar')) return;
+  isDragging = true;
+  card.classList.add('dragging');
+  const point = e.type.includes('mouse')? e : e.touches[0];
+  startX = point.clientX;
+  startY = point.clientY;
+}
+
+function handleDragMove(e){
+  if(!isDragging) return;
+  e.preventDefault();
+  const point = e.type.includes('mouse')? e : e.touches[0];
+  const deltaX = point.clientX - startX;
+  const deltaY = point.clientY - startY;
+  currentX = deltaX;
+  currentY = deltaY;
+  const rotateY = deltaX * 0.1;
+  const rotateX = -deltaY * 0.1;
+  card.style.transform = `translate(calc(-50% + ${deltaX}px), calc(-50% + ${deltaY}px)) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+}
+
+function handleDragEnd(){
+  if(!isDragging) return;
+  isDragging = false;
+  card.classList.remove('dragging');
+  card.style.transition = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+  card.style.transform = 'translate(-50%, -50%) rotateX(0deg) rotateY(0deg)';
+  setTimeout(()=>{ card.style.transition = ''; }, 500);
+  addActivityScore(1);
+}
+
+card.addEventListener('mousedown', handleDragStart);
+document.addEventListener('mousemove', handleDragMove);
+document.addEventListener('mouseup', handleDragEnd);
+card.addEventListener('touchstart', handleDragStart);
+document.addEventListener('touchmove', handleDragMove);
+document.addEventListener('touchend', handleDragEnd);
+
+// ===== MINI GAMES SYSTEM =====
+let currentGame = null;
+let gameState = {};
+
+window.selectGame=(game)=>{
+    currentGame = game;
+    document.querySelectorAll('.game-btn').forEach(b=>b.classList.remove('active'));
+    event.target.classList.add('active');
+    if(game==='21er') init21er();
+    if(game==='reaction') initReaction();
+    if(game==='quiz') initQuiz();
+    if(game==='slots') initSlots();
+    addActivityScore(2);
+}
+
+function init21er(){
+    gameState = {player:0, bot:0, playerTurn:true};
+    document.getElementById('game-area').innerHTML = `
+        <div style="text-align:center">
+            <div>Du: <span id="pScore">0</span> | Bot: <span id="bScore">?</span></div>
+            <div class="game-result" id="gameMsg">Dein Zug!</div>
+            <button class="btn btn-small" onclick="draw21()">Karte ziehen</button>
+            <button class="btn btn-small" onclick="stand21()">Passen</button>
+        </div>
+    `;
+}
+
+window.draw21=()=>{
+    if(!gameState.playerTurn) return;
+    const card = Math.floor(Math.random()*11)+1;
+    gameState.player += card;
+    document.getElementById('pScore').textContent = gameState.player;
+    if(gameState.player > 21){  } else if(donation >= 5){
     rankText.textContent = 'SUPPORTER';
     rankBadge.style.background = 'linear-gradient(135deg,#E5E4E2,#B8B7B5)';
     rankBadge.style.boxShadow = '0 0 20px rgba(229,228,226,0.6),inset 0 2px 0 rgba(255,255,255,0.4)';
@@ -734,14 +834,12 @@ let ytPlayer = null;
 let ytApiReady = false;
 let ytApiPromise = null;
 
-// Deine 2 Playlists
 const PLAYLISTS = {
   playlist1: {id: 'PLfEblejE-l3kyjaHm0muCj8w47r9fk7K2', name: 'Playlist 1'},
   playlist2: {id: 'PLfEblejE-l3lJF3o22quT1AiWSfLE7IBD', name: 'Playlist 2'}
 };
 let currentPlaylist = 'playlist1';
 
-// YouTube API sicher laden
 function loadYouTubeAPI() {
   if (ytApiPromise) return ytApiPromise;
   ytApiPromise = new Promise((resolve) => {
@@ -759,11 +857,9 @@ function loadYouTubeAPI() {
     tag.src = "https://www.youtube.com/iframe_api";
     tag.onerror = () => {
       console.error('YouTube API konnte nicht geladen werden');
-      resolve(); // Trotzdem resolven damit es nicht hängt
+      resolve();
     };
     document.head.appendChild(tag);
-
-    // Timeout Fallback nach 5s
     setTimeout(() => {
       if (!ytApiReady) {
         console.warn('YouTube API Timeout');
@@ -774,7 +870,6 @@ function loadYouTubeAPI() {
   return ytApiPromise;
 }
 
-// Player sicher zerstören
 function destroyPlayer() {
   if (ytPlayer && typeof ytPlayer.destroy === 'function') {
     try {
@@ -786,28 +881,21 @@ function destroyPlayer() {
   }
 }
 
-// Hauptfunktion - Öffnet TV
 window.openChillazTV = async () => {
   const overlay = document.getElementById('chillazTV');
   const playerDiv = document.getElementById('tvPlayer');
-
   if (!overlay ||!playerDiv) {
     console.error('TV Elemente nicht gefunden');
     return;
   }
-
   overlay.classList.add('active');
   playerDiv.innerHTML = '<div style="color:#D4AF37;text-align:center;padding:50px;font-family:Orbitron">Lade CHILLAZ TV... 🎬</div>';
-
   try {
     await loadYouTubeAPI();
-
     if (!window.YT ||!YT.Player) {
       throw new Error('YouTube API nicht verfügbar');
     }
-
     destroyPlayer();
-
     ytPlayer = new YT.Player('tvPlayer', {
       height: '100%',
       width: '100%',
@@ -815,13 +903,13 @@ window.openChillazTV = async () => {
         listType: 'playlist',
         list: PLAYLISTS[currentPlaylist].id,
         autoplay: 1,
-        mute: 1, // Browser brauchen mute für Autoplay
+        mute: 1,
         controls: 1,
         modestbranding: 1,
         rel: 0,
         playsinline: 1,
         loop: 1,
-        iv_load_policy: 3 // Keine Annotations
+        iv_load_policy: 3
       },
       events: {
         'onReady': (event) => {
@@ -848,10 +936,8 @@ window.openChillazTV = async () => {
         }
       }
     });
-
     document.querySelector('.tv-title').textContent = `CHILLAZ TV // ${PLAYLISTS[currentPlaylist].name}`;
     if (typeof addActivityScore === 'function') addActivityScore(5);
-
   } catch (error) {
     console.error('CHILLAZ TV Fehler:', error);
     playerDiv.innerHTML = `<div style="color:#FF4757;text-align:center;padding:50px">
@@ -862,7 +948,6 @@ window.openChillazTV = async () => {
   }
 };
 
-// Steuerung
 window.nextVideo = () => {
   if (ytPlayer && typeof ytPlayer.nextVideo === 'function') {
     try {
@@ -887,7 +972,6 @@ window.prevVideo = () => {
 window.switchPlaylist = () => {
   currentPlaylist = currentPlaylist === 'playlist1'? 'playlist2' : 'playlist1';
   const newPlaylist = PLAYLISTS[currentPlaylist];
-
   if (ytPlayer && typeof ytPlayer.loadPlaylist === 'function') {
     try {
       ytPlayer.loadPlaylist({
@@ -900,7 +984,6 @@ window.switchPlaylist = () => {
       console.error('Switch Error:', e);
     }
   } else {
-    // Falls Player noch nicht da ist, neu öffnen
     window.openChillazTV();
   }
 };
@@ -916,7 +999,6 @@ window.unmuteTV = () => {
   }
 };
 
-// Bot Chat
 window.sendChat=()=>{
   const input = document.getElementById('chatInput');
   const msg = input.value.trim();
@@ -926,11 +1008,9 @@ window.sendChat=()=>{
   input.value = '';
   addActivityScore(1);
   lastChatTime = Date.now();
-
   setTimeout(()=>{
     let reply = 'Chillaz, THC-Level im Chat optimal 🧠💨';
     const lower = msg.toLowerCase();
-
     if(lower.includes('hallo') || lower.includes('hi') || lower.includes('moin')) {
       reply = `Moin ${currentUser.name}! Was geht? 🧠💨`;
     }
@@ -962,12 +1042,10 @@ window.sendChat=()=>{
       const s = getUserStats();
       reply = `Stats: ${s.total} Chillaz. Du: ${s.you} | Gespendet: ${s.donation}€ 🏆`;
     }
-
     const bannedWords = ['nazi', 'hitler', 'sieg heil', 'juden', 'ausländer raus', 'kanake', 'neger', 'asylant'];
     if(bannedWords.some(w => lower.includes(w))) {
       reply = 'Bitte respektvoll bleiben. Keine Hetze im Unity Club ✌️';
     }
-
     chatBox.innerHTML += `<div class="chat-msg bot">${reply}</div>`;
     chatBox.scrollTop = 9999;
   },400);
@@ -978,7 +1056,6 @@ function getUserStats(){
   return {total: users.length, you: currentUser?.name || 'Anon', donation: currentUser?.donation || 0};
 }
 
-// Auto-Prahl wenn Chat still
 let lastChatTime = Date.now();
 setInterval(()=>{
   if(Date.now() - lastChatTime > 20000){
@@ -995,12 +1072,10 @@ setInterval(()=>{
   }
 }, 5000);
 
-// Init
 renderLists();
 updateHighscore();
 loadYouTubeAPI();
 
-// 3D GLOBE MIT WELTKARTE
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
 const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('canvas'),alpha:true,antialias:true});
@@ -1133,13 +1208,13 @@ function animate(){
 animate();
 window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
 
-  // SICHERSTELLEN DASS CLOSE IMMER GEHT
+// CLOSE FUNKTION - NUR EINMAL DEFINIEREN!
 window.closeChillazTV = function() {
   const overlay = document.getElementById('chillazTV');
   if (overlay) {
     overlay.classList.remove('active');
   }
-  if (typeof ytPlayer !== 'undefined' && ytPlayer) {
+  if (typeof ytPlayer!== 'undefined' && ytPlayer) {
     try {
       ytPlayer.stopVideo();
       ytPlayer.destroy();
@@ -1149,13 +1224,10 @@ window.closeChillazTV = function() {
     }
   }
 }
-
 </script>
 
-<!-- CHILLAZ TV BUTTON -->
 <button class="chillaz-tv-btn" onclick="openChillazTV()">📺 CHILLAZ TV</button>
 
-<!-- CHILLAZ TV OVERLAY -->
 <div class="chillaz-tv-overlay" id="chillazTV">
   <div class="tv-header">
     <div class="tv-title">NETZKINO // CHILLAZ TV</div>
@@ -1163,10 +1235,10 @@ window.closeChillazTV = function() {
   </div>
   <div class="tv-player" id="tvPlayer"></div>
   <button class="tv-next-btn" style="right:420px" onclick="prevVideo()">← ZURÜCK</button>
-<button class="tv-next-btn" style="right:300px" onclick="switchPlaylist()">🔄 PLAYLIST</button>
-<button class="tv-next-btn" style="right:180px" onclick="unmuteTV()">🔊 TON AN</button>
-<button class="tv-next-btn" onclick="nextVideo()">NÄCHSTES →</button>
+  <button class="tv-next-btn" style="right:300px" onclick="switchPlaylist()">🔄 PLAYLIST</button>
+  <button class="tv-next-btn" style="right:180px" onclick="unmuteTV()">🔊 TON AN</button>
+  <button class="tv-next-btn" onclick="nextVideo()">NÄCHSTES →</button>
 </div>
-  
+
 </body>
 </html>
