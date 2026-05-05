@@ -738,80 +738,105 @@ function updateHighscore(){
 // ===== CHILLAZ TV SYSTEM =====
 let netzkinoVideos = [];
 let currentVideoIndex = 0;
+const CACHE_KEY = 'chillaz_netzkino_cache';
+const CACHE_DURATION = 1000 * 60 * 30; // 30 Minuten
 
-async function loadNetzkinoVideos(){
+async function loadNetzkinoVideos(forceRefresh = false) {
+  // 1. Cache checken um API Calls zu sparen
+  if (!forceRefresh) {
+    const cached = sessionStorage.getItem(CACHE_KEY);
+    if (cached) {
+      const { timestamp, videos } = JSON.parse(cached);
+      if (Date.now() - timestamp < CACHE_DURATION) {
+        netzkinoVideos = videos;
+        currentVideoIndex = 0;
+        console.log('Netzkino Videos aus Cache:', netzkinoVideos.length);
+        return netzkinoVideos;
+      }
+    }
+  }
+
   try {
-    // YouTube RSS Feed von Netzkino Channel
-    const channelId = 'UC5uJfu-3gUHD1SdbZ1pXyvw'; // Netzkino Channel ID
+    const channelId = 'UC5uJfu-3gUHD1SdbZ1pXyvw'; // Netzkino
     const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-
-    // CORS Proxy nötig für Browser
     const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl);
+
     const response = await fetch(proxyUrl);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
     const data = await response.json();
+    if (!data.contents) throw new Error('Leere Proxy-Antwort');
 
     const parser = new DOMParser();
     const xml = parser.parseFromString(data.contents, 'text/xml');
+
+    // YouTube Namespace richtig auslesen
     const entries = xml.querySelectorAll('entry');
 
-    netzkinoVideos = Array.from(entries).slice(0,10).map(entry => {
-      const videoId = entry.querySelector('yt\\:videoId, videoId').textContent;
-      const title = entry.querySelector('title').textContent;
-      return {id: videoId, title: title};
-    });
+    netzkinoVideos = Array.from(entries)
+     .slice(0, 10)
+     .map(entry => {
+        const videoId = entry.getElementsByTagNameNS('http://www.youtube.com/xml/schemas/2015', 'videoId')[0]?.textContent;
+        const title = entry.querySelector('title')?.textContent || 'Ohne Titel';
+        const published = entry.querySelector('published')?.textContent;
+        const link = entry.querySelector('link')?.getAttribute('href');
+
+        return {
+          id: videoId,
+          title: title,
+          published: published? new Date(published) : null,
+          url: link || `https://www.youtube.com/watch?v=${videoId}`,
+          thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
+        };
+      })
+     .filter(v => v.id); // Nur Videos mit gültiger ID
+
+    // In Cache speichern
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+      timestamp: Date.now(),
+      videos: netzkinoVideos
+    }));
 
     console.log('Netzkino Videos geladen:', netzkinoVideos.length);
-  } catch(e) {
+    return netzkinoVideos;
+
+  } catch (e) {
     console.error('Fehler beim Laden der Netzkino Videos:', e);
-    // Fallback Videos falls RSS failt
+    // Fallback Videos
     netzkinoVideos = [
-      {id:'dQw4w9WgXcQ', title:'Fallback Video 1'},
-      {id:'jNQXAC9IVRw', title:'Fallback Video 2'}
+      {
+        id: 'dQw4w9WgXcQ',
+        title: 'Fallback Video 1',
+        thumbnail: 'https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg',
+        url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+      },
+      {
+        id: 'jNQXAC9IVRw',
+        title: 'Fallback Video 2',
+        thumbnail: 'https://i.ytimg.com/vi/jNQXAC9IVRw/hqdefault.jpg',
+        url: 'https://www.youtube.com/watch?v=jNQXAC9IVRw'
+      }
     ];
+    return netzkinoVideos;
   }
 }
 
-window.openChillazTV = async () => {
-  const overlay = document.getElementById('chillazTV');
-  overlay.classList.add('active');
-
-  if(netzkinoVideos.length === 0){
-    await loadNetzkinoVideos();
-  }
-
-  playVideo(currentVideoIndex);
-  addActivityScore(5); // 5 Punkte für TV öffnen
-};
-
-window.closeChillazTV = () => {
-  const overlay = document.getElementById('chillazTV');
-  overlay.classList.remove('active');
-  document.getElementById('tvPlayer').innerHTML = ''; // Stop video
-};
-
-function playVideo(index){
-  if(netzkinoVideos.length === 0) return;
-
-  const video = netzkinoVideos[index];
-  const player = document.getElementById('tvPlayer');
-
-  player.innerHTML = `
-    <iframe
-      src="https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
-    </iframe>
-  `;
+// Hilfsfunktionen für dein TV System
+function getCurrentVideo() {
+  return netzkinoVideos[currentVideoIndex] || null;
 }
 
-window.nextVideo = () => {
+function playNextNetzkinoVideo() {
+  if (netzkinoVideos.length === 0) return null;
   currentVideoIndex = (currentVideoIndex + 1) % netzkinoVideos.length;
-  playVideo(currentVideoIndex);
-  addActivityScore(1);
-};
+  return getCurrentVideo();
+}
 
-// Videos beim Laden der Seite schon mal cachen
-loadNetzkinoVideos();
+function playPrevNetzkinoVideo() {
+  if (netzkinoVideos.length === 0) return null;
+  currentVideoIndex = currentVideoIndex === 0? netzkinoVideos.length - 1 : currentVideoIndex - 1;
+  return getCurrentVideo();
+}
   
 // Bot Chat
 window.sendChat=()=>{
