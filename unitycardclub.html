@@ -202,6 +202,77 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .footer-links a{color:#00D9FF;text-decoration:none;margin-right:15px}
 .footer-links a:hover{color:#D4AF37}
 @media(max-width:1024px){.ui-overlay{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}.unitycard-popup{width:90%;height:auto;min-height:300px}}
+/* CHILLAZ TV BUTTON */
+.chillaz-tv-btn{
+  position:fixed;bottom:30px;right:30px;z-index:999;
+  padding:15px 25px;
+  background:linear-gradient(135deg,#FF0000,#CC0000);
+  border:2px solid #D4AF37;border-radius:50px;
+  font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;
+  color:#FFF;letter-spacing:2px;cursor:pointer;
+  box-shadow:0 0 30px rgba(255,0,0,0.6),0 5px 20px rgba(0,0,0,0.5);
+  transition:all 0.3s;pointer-events:all;
+}
+.chillaz-tv-btn:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 40px rgba(255,0,0,0.8),0 8px 30px rgba(0,0,0,0.7);
+}
+
+/* CHILLAZ TV OVERLAY */
+.chillaz-tv-overlay{
+  position:fixed;top:50%;left:50%;
+  width:80vw;height:80vh;max-width:1200px;max-height:800px;
+  transform:translate(-50%,-50%) scale(0);
+  background:rgba(10,10,15,0.98);
+  border:3px solid #D4AF37;border-radius:20px;
+  box-shadow:0 0 100px rgba(212,175,55,0.5),0 25px 80px rgba(0,0,0,0.9);
+  z-index:2000;display:none;overflow:hidden;
+  transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1);
+}
+.chillaz-tv-overlay.active{
+  display:block;
+  transform:translate(-50%,-50%) scale(1);
+}
+
+.tv-header{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:15px 25px;background:linear-gradient(135deg,#FF0000,#1A1A2E);
+  border-bottom:2px solid #D4AF37;
+}
+.tv-title{
+  font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;
+  letter-spacing:3px;text-shadow:0 0 15px rgba(212,175,55,0.6);
+}
+.tv-close{
+  width:35px;height:35px;background:rgba(0,0,0,0.5);
+  border:2px solid #D4AF37;border-radius:50%;color:#D4AF37;
+  font-size:20px;cursor:pointer;transition:all 0.3s;
+}
+.tv-close:hover{
+  background:rgba(212,175,55,0.2);transform:rotate(90deg);
+}
+
+.tv-player{
+  width:100%;height:calc(100% - 70px);
+  background:#000;
+}
+.tv-player iframe{
+  width:100%;height:100%;border:none;
+}
+
+.tv-next-btn{
+  position:absolute;bottom:20px;right:20px;
+  padding:10px 20px;background:rgba(212,175,55,0.2);
+  border:1px solid #D4AF37;border-radius:8px;
+  color:#D4AF37;font-family:'Orbitron',sans-serif;
+  font-size:12px;cursor:pointer;transition:all 0.3s;
+}
+.tv-next-btn:hover{background:rgba(212,175,55,0.4)}
+
+@media(max-width:1024px){
+  .chillaz-tv-overlay{width:95vw;height:70vh}
+  .chillaz-tv-btn{bottom:20px;right:20px;padding:12px 20px;font-size:12px}
+}
 </style>
 
 <script>
@@ -664,6 +735,84 @@ function updateHighscore(){
     }).join('') : '<div style="text-align:center;opacity:0.5;font-size:11px">Noch keine Scores</div>';
 }
 
+// ===== CHILLAZ TV SYSTEM =====
+let netzkinoVideos = [];
+let currentVideoIndex = 0;
+
+async function loadNetzkinoVideos(){
+  try {
+    // YouTube RSS Feed von Netzkino Channel
+    const channelId = 'UC5uJfu-3gUHD1SdbZ1pXyvw'; // Netzkino Channel ID
+    const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+
+    // CORS Proxy nötig für Browser
+    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl);
+    const response = await fetch(proxyUrl);
+    const data = await response.json();
+
+    const parser = new DOMParser();
+    const xml = parser.parseFromString(data.contents, 'text/xml');
+    const entries = xml.querySelectorAll('entry');
+
+    netzkinoVideos = Array.from(entries).slice(0,10).map(entry => {
+      const videoId = entry.querySelector('yt\\:videoId, videoId').textContent;
+      const title = entry.querySelector('title').textContent;
+      return {id: videoId, title: title};
+    });
+
+    console.log('Netzkino Videos geladen:', netzkinoVideos.length);
+  } catch(e) {
+    console.error('Fehler beim Laden der Netzkino Videos:', e);
+    // Fallback Videos falls RSS failt
+    netzkinoVideos = [
+      {id:'dQw4w9WgXcQ', title:'Fallback Video 1'},
+      {id:'jNQXAC9IVRw', title:'Fallback Video 2'}
+    ];
+  }
+}
+
+window.openChillazTV = async () => {
+  const overlay = document.getElementById('chillazTV');
+  overlay.classList.add('active');
+
+  if(netzkinoVideos.length === 0){
+    await loadNetzkinoVideos();
+  }
+
+  playVideo(currentVideoIndex);
+  addActivityScore(5); // 5 Punkte für TV öffnen
+};
+
+window.closeChillazTV = () => {
+  const overlay = document.getElementById('chillazTV');
+  overlay.classList.remove('active');
+  document.getElementById('tvPlayer').innerHTML = ''; // Stop video
+};
+
+function playVideo(index){
+  if(netzkinoVideos.length === 0) return;
+
+  const video = netzkinoVideos[index];
+  const player = document.getElementById('tvPlayer');
+
+  player.innerHTML = `
+    <iframe
+      src="https://www.youtube.com/embed/${video.id}?autoplay=1&rel=0&modestbranding=1"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+  `;
+}
+
+window.nextVideo = () => {
+  currentVideoIndex = (currentVideoIndex + 1) % netzkinoVideos.length;
+  playVideo(currentVideoIndex);
+  addActivityScore(1);
+};
+
+// Videos beim Laden der Seite schon mal cachen
+loadNetzkinoVideos();
+  
 // Bot Chat
 window.sendChat=()=>{
   const input = document.getElementById('chatInput');
@@ -891,5 +1040,18 @@ animate();
 window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
 </script>
 
+<!-- CHILLAZ TV BUTTON -->
+<button class="chillaz-tv-btn" onclick="openChillazTV()">📺 CHILLAZ TV</button>
+
+<!-- CHILLAZ TV OVERLAY -->
+<div class="chillaz-tv-overlay" id="chillazTV">
+  <div class="tv-header">
+    <div class="tv-title">NETZKINO // CHILLAZ TV</div>
+    <button class="tv-close" onclick="closeChillazTV()">×</button>
+  </div>
+  <div class="tv-player" id="tvPlayer"></div>
+  <button class="tv-next-btn" onclick="nextVideo()">NÄCHSTES VIDEO →</button>
+</div>
+  
 </body>
 </html>
