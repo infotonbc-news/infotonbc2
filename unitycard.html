@@ -37,6 +37,12 @@ footer a:hover{color:#D4AF37}
 #memberTable th{background:rgba(212,175,55,0.1);padding:12px;text-align:left;color:#D4AF37;font-weight:600;letter-spacing:1px}
 #memberTable td{padding:10px 12px;border-bottom:1px solid rgba(229,228,226,0.1)}
 #memberTable tr:hover{background:rgba(212,175,55,0.05)}
+.modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(10,10,15,0.85);backdrop-filter:blur(10px);z-index:3000;align-items:center;justify-content:center}
+.modal-overlay.active{display:flex}
+.modal-box{width:90%;max-width:450px;background:rgba(229,228,226,0.03);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.3);border-radius:20px;padding:35px;box-shadow:0 8px 32px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.1);animation:modalIn 0.3s ease-out}
+@keyframes modalIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-box h2{font-family:'Orbitron';color:#D4AF37;margin-bottom:20px;font-size:24px;letter-spacing:2px}
+.modal-error{color:#ff4757;font-size:13px;margin-top:8px;height:18px}
 @media(max-width:768px){h1{font-size:40px;letter-spacing:4px}.form-grid{grid-template-columns:1fr}}
 </style>
 </head>
@@ -123,12 +129,28 @@ footer a:hover{color:#D4AF37}
 <div style="margin-top:15px">
 <a href="impressumUnity.html" data-i18n="link_impressum">Impressum</a>
 <a href="datenschutzUnity.html" data-i18n="link_privacy">Datenschutz</a>
-<a href="#" id="adminLink" onclick="showAdmin();return false" data-i18n="link_admin" style="display:none">Admin</a>
+<a href="#" onclick="showAdmin();return false" data-i18n="link_admin">Admin</a>
 </div>
 </footer>
 </div>
 
 <div class="we-are-chillaz" id="popup">WE ARE CHILLAZ</div>
+
+<!-- ADMIN LOGIN MODAL -->
+<div id="adminModal" class="modal-overlay">
+  <div class="modal-box">
+    <h2 data-i18n="admin_login_title">Admin Login</h2>
+    <div class="form-group">
+      <label data-i18n="admin_pass_label">Admin Passwort</label>
+      <input type="password" id="adminPassInput" placeholder="••••••••">
+      <div class="modal-error" id="adminError"></div>
+    </div>
+    <div style="display:flex;gap:15px;margin-top:25px">
+      <button class="btn" onclick="checkAdminPass()" data-i18n="btn_enter">Enter</button>
+      <button class="btn btn-secondary" onclick="closeAdminModal()" data-i18n="btn_cancel">Abbrechen</button>
+    </div>
+  </div>
+</div>
 
 <!-- EMAIL POPUP -->
 <div id="mailPopup" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;background:rgba(10,10,15,0.95);border:2px solid #D4AF37;border-radius:15px;padding:25px;z-index:2000">
@@ -147,13 +169,13 @@ footer a:hover{color:#D4AF37}
 <script>
 // ===== SPRACHSYSTEM =====
 const translations = {
-  de: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Registrieren","tab_login":"Login","label_name":"Name","label_email":"Email","label_pass":"Passwort","label_insta":"Instagram","label_nation":"Nation","select_choose":"Wählen...","btn_create":"Unitycard erstellen","btn_login":"Login","btn_insta":"Login mit Instagram","admin_title":"Admin: Member Kartei","search_placeholder":"Suche Name/Insta...","th_name":"Name","th_insta":"Instagram","th_email":"Email","th_donation":"Spende","btn_email":"Email an Markierte","label_amount":"Spendenbetrag €","btn_save":"Spende eintragen","footer_text":"Die NaturalBornChillaz Unitycard ist ein privates Kunst- und Spaßprojekt. Spenden freiwillig, ohne Gegenleistung.","link_impressum":"Impressum","link_privacy":"Datenschutz","link_admin":"Admin","mail_title":"Email versenden","mail_subject":"Betreff:","mail_body":"Nachricht:","btn_send":"Senden","btn_cancel":"Abbrechen"},
-  nl: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Registreren","tab_login":"Login","label_name":"Naam","label_email":"Email","label_pass":"Wachtwoord","label_insta":"Instagram","label_nation":"Land","select_choose":"Kiezen...","btn_create":"Unitycard maken","btn_login":"Login","btn_insta":"Login met Instagram","admin_title":"Admin: Ledenregister","search_placeholder":"Zoek Naam/Insta...","th_name":"Naam","th_insta":"Instagram","th_email":"Email","th_donation":"Donatie","btn_email":"Email naar Geselecteerden","label_amount":"Donatiebedrag €","btn_save":"Donatie opslaan","footer_text":"De NaturalBornChillaz Unitycard is een privé kunst- en plezierproject. Donaties vrijwillig, zonder tegenprestatie.","link_impressum":"Colofon","link_privacy":"Privacy","link_admin":"Admin","mail_title":"Email verzenden","mail_subject":"Onderwerp:","mail_body":"Bericht:","btn_send":"Verzenden","btn_cancel":"Annuleren"},
-  en: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Register","tab_login":"Login","label_name":"Name","label_email":"Email","label_pass":"Password","label_insta":"Instagram","label_nation":"Nation","select_choose":"Choose...","btn_create":"Create Unitycard","btn_login":"Login","btn_insta":"Login with Instagram","admin_title":"Admin: Member Registry","search_placeholder":"Search Name/Insta...","th_name":"Name","th_insta":"Instagram","th_email":"Email","th_donation":"Donation","btn_email":"Email Selected","label_amount":"Donation Amount €","btn_save":"Save Donation","footer_text":"The NaturalBornChillaz Unitycard is a private art and fun project. Donations voluntary, no consideration.","link_impressum":"Imprint","link_privacy":"Privacy","link_admin":"Admin","mail_title":"Send Email","mail_subject":"Subject:","mail_body":"Message:","btn_send":"Send","btn_cancel":"Cancel"},
-  fr: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"S'inscrire","tab_login":"Connexion","label_name":"Nom","label_email":"Email","label_pass":"Mot de passe","label_insta":"Instagram","label_nation":"Pays","select_choose":"Choisir...","btn_create":"Créer Unitycard","btn_login":"Connexion","btn_insta":"Connexion avec Instagram","admin_title":"Admin: Registre Membres","search_placeholder":"Rechercher Nom/Insta...","th_name":"Nom","th_insta":"Instagram","th_email":"Email","th_donation":"Don","btn_email":"Email aux Sélectionnés","label_amount":"Montant Don €","btn_save":"Enregistrer Don","footer_text":"La Unitycard NaturalBornChillaz est un projet privé d'art et de plaisir. Dons volontaires, sans contrepartie.","link_impressum":"Mentions légales","link_privacy":"Confidentialité","link_admin":"Admin","mail_title":"Envoyer Email","mail_subject":"Objet:","mail_body":"Message:","btn_send":"Envoyer","btn_cancel":"Annuler"},
-  es: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Registrarse","tab_login":"Iniciar sesión","label_name":"Nombre","label_email":"Email","label_pass":"Contraseña","label_insta":"Instagram","label_nation":"País","select_choose":"Elegir...","btn_create":"Crear Unitycard","btn_login":"Iniciar sesión","btn_insta":"Iniciar con Instagram","admin_title":"Admin: Registro Miembros","search_placeholder":"Buscar Nombre/Insta...","th_name":"Nombre","th_insta":"Instagram","th_email":"Email","th_donation":"Donación","btn_email":"Email a Seleccionados","label_amount":"Monto Donación €","btn_save":"Guardar Donación","footer_text":"La Unitycard NaturalBornChillaz es un proyecto privado de arte y diversión. Donaciones voluntarias, sin contraprestación.","link_impressum":"Aviso legal","link_privacy":"Privacidad","link_admin":"Admin","mail_title":"Enviar Email","mail_subject":"Asunto:","mail_body":"Mensaje:","btn_send":"Enviar","btn_cancel":"Cancelar"},
-  bg: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Регистрация","tab_login":"Вход","label_name":"Име","label_email":"Имейл","label_pass":"Парола","label_insta":"Instagram","label_nation":"Държава","select_choose":"Изберете...","btn_create":"Създай Unitycard","btn_login":"Вход","btn_insta":"Вход с Instagram","admin_title":"Админ: Регистър Членове","search_placeholder":"Търси Име/Insta...","th_name":"Име","th_insta":"Instagram","th_email":"Имейл","th_donation":"Дарение","btn_email":"Имейл до Избраните","label_amount":"Сума Дарение €","btn_save":"Запази Дарение","footer_text":"Unitycard NaturalBornChillaz е частен арт и забавен проект. Дарения доброволни, без насрещна престация.","link_impressum":"Импресум","link_privacy":"Поверителност","link_admin":"Админ","mail_title":"Изпрати Имейл","mail_subject":"Тема:","mail_body":"Съобщение:","btn_send":"Изпрати","btn_cancel":"Отказ"},
-  pl: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Rejestracja","tab_login":"Logowanie","label_name":"Imię","label_email":"Email","label_pass":"Hasło","label_insta":"Instagram","label_nation":"Kraj","select_choose":"Wybierz...","btn_create":"Stwórz Unitycard","btn_login":"Zaloguj","btn_insta":"Logowanie z Instagram","admin_title":"Admin: Rejestr Członków","search_placeholder":"Szukaj Imię/Insta...","th_name":"Imię","th_insta":"Instagram","th_email":"Email","th_donation":"Darowizna","btn_email":"Email do Zaznaczonych","label_amount":"Kwota Darowizny €","btn_save":"Zapisz Darowiznę","footer_text":"Unitycard NaturalBornChillaz to prywatny projekt artystyczny i rozrywkowy. Darowizny dobrowolne, bez świadczenia wzajemnego.","link_impressum":"Impressum","link_privacy":"Prywatność","link_admin":"Admin","mail_title":"Wyślij Email","mail_subject":"Temat:","mail_body":"Wiadomość:","btn_send":"Wyślij","btn_cancel":"Anuluj"}
+  de: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Registrieren","tab_login":"Login","label_name":"Name","label_email":"Email","label_pass":"Passwort","label_insta":"Instagram","label_nation":"Nation","select_choose":"Wählen...","btn_create":"Unitycard erstellen","btn_login":"Login","btn_insta":"Login mit Instagram","admin_title":"Admin: Member Kartei","search_placeholder":"Suche Name/Insta...","th_name":"Name","th_insta":"Instagram","th_email":"Email","th_donation":"Spende","btn_email":"Email an Markierte","label_amount":"Spendenbetrag €","btn_save":"Spende eintragen","footer_text":"Die NaturalBornChillaz Unitycard ist ein privates Kunst- und Spaßprojekt. Spenden freiwillig, ohne Gegenleistung.","link_impressum":"Impressum","link_privacy":"Datenschutz","link_admin":"Admin","mail_title":"Email versenden","mail_subject":"Betreff:","mail_body":"Nachricht:","btn_send":"Senden","btn_cancel":"Abbrechen","admin_login_title":"Admin Login","admin_pass_label":"Admin Passwort","btn_enter":"Enter"},
+  nl: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Registreren","tab_login":"Login","label_name":"Naam","label_email":"Email","label_pass":"Wachtwoord","label_insta":"Instagram","label_nation":"Land","select_choose":"Kiezen...","btn_create":"Unitycard maken","btn_login":"Login","btn_insta":"Login met Instagram","admin_title":"Admin: Ledenregister","search_placeholder":"Zoek Naam/Insta...","th_name":"Naam","th_insta":"Instagram","th_email":"Email","th_donation":"Donatie","btn_email":"Email naar Geselecteerden","label_amount":"Donatiebedrag €","btn_save":"Donatie opslaan","footer_text":"De NaturalBornChillaz Unitycard is een privé kunst- en plezierproject. Donaties vrijwillig, zonder tegenprestatie.","link_impressum":"Colofon","link_privacy":"Privacy","link_admin":"Admin","mail_title":"Email verzenden","mail_subject":"Onderwerp:","mail_body":"Bericht:","btn_send":"Verzenden","btn_cancel":"Annuleren","admin_login_title":"Admin Login","admin_pass_label":"Admin Wachtwoord","btn_enter":"Enter"},
+  en: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Register","tab_login":"Login","label_name":"Name","label_email":"Email","label_pass":"Password","label_insta":"Instagram","label_nation":"Nation","select_choose":"Choose...","btn_create":"Create Unitycard","btn_login":"Login","btn_insta":"Login with Instagram","admin_title":"Admin: Member Registry","search_placeholder":"Search Name/Insta...","th_name":"Name","th_insta":"Instagram","th_email":"Email","th_donation":"Donation","btn_email":"Email Selected","label_amount":"Donation Amount €","btn_save":"Save Donation","footer_text":"The NaturalBornChillaz Unitycard is a private art and fun project. Donations voluntary, no consideration.","link_impressum":"Imprint","link_privacy":"Privacy","link_admin":"Admin","mail_title":"Send Email","mail_subject":"Subject:","mail_body":"Message:","btn_send":"Send","btn_cancel":"Cancel","admin_login_title":"Admin Login","admin_pass_label":"Admin Password","btn_enter":"Enter"},
+  fr: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"S'inscrire","tab_login":"Connexion","label_name":"Nom","label_email":"Email","label_pass":"Mot de passe","label_insta":"Instagram","label_nation":"Pays","select_choose":"Choisir...","btn_create":"Créer Unitycard","btn_login":"Connexion","btn_insta":"Connexion avec Instagram","admin_title":"Admin: Registre Membres","search_placeholder":"Rechercher Nom/Insta...","th_name":"Nom","th_insta":"Instagram","th_email":"Email","th_donation":"Don","btn_email":"Email aux Sélectionnés","label_amount":"Montant Don €","btn_save":"Enregistrer Don","footer_text":"La Unitycard NaturalBornChillaz est un projet privé d'art et de plaisir. Dons volontaires, sans contrepartie.","link_impressum":"Mentions légales","link_privacy":"Confidentialité","link_admin":"Admin","mail_title":"Envoyer Email","mail_subject":"Objet:","mail_body":"Message:","btn_send":"Envoyer","btn_cancel":"Annuler","admin_login_title":"Connexion Admin","admin_pass_label":"Mot de passe Admin","btn_enter":"Entrer"},
+  es: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Registrarse","tab_login":"Iniciar sesión","label_name":"Nombre","label_email":"Email","label_pass":"Contraseña","label_insta":"Instagram","label_nation":"País","select_choose":"Elegir...","btn_create":"Crear Unitycard","btn_login":"Iniciar sesión","btn_insta":"Iniciar con Instagram","admin_title":"Admin: Registro Miembros","search_placeholder":"Buscar Nombre/Insta...","th_name":"Nombre","th_insta":"Instagram","th_email":"Email","th_donation":"Donación","btn_email":"Email a Seleccionados","label_amount":"Monto Donación €","btn_save":"Guardar Donación","footer_text":"La Unitycard NaturalBornChillaz es un proyecto privado de arte y diversión. Donaciones voluntarias, sin contraprestación.","link_impressum":"Aviso legal","link_privacy":"Privacidad","link_admin":"Admin","mail_title":"Enviar Email","mail_subject":"Asunto:","mail_body":"Mensaje:","btn_send":"Enviar","btn_cancel":"Cancelar","admin_login_title":"Login Admin","admin_pass_label":"Contraseña Admin","btn_enter":"Entrar"},
+  bg: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Регистрация","tab_login":"Вход","label_name":"Име","label_email":"Имейл","label_pass":"Парола","label_insta":"Instagram","label_nation":"Държава","select_choose":"Изберете...","btn_create":"Създай Unitycard","btn_login":"Вход","btn_insta":"Вход с Instagram","admin_title":"Админ: Регистър Членове","search_placeholder":"Търси Име/Insta...","th_name":"Име","th_insta":"Instagram","th_email":"Имейл","th_donation":"Дарение","btn_email":"Имейл до Избраните","label_amount":"Сума Дарение €","btn_save":"Запази Дарение","footer_text":"Unitycard NaturalBornChillaz е частен арт и забавен проект. Дарения доброволни, без насрещна престация.","link_impressum":"Импресум","link_privacy":"Поверителност","link_admin":"Админ","mail_title":"Изпрати Имейл","mail_subject":"Тема:","mail_body":"Съобщение:","btn_send":"Изпрати","btn_cancel":"Отказ","admin_login_title":"Админ Вход","admin_pass_label":"Админ Парола","btn_enter":"Вход"},
+  pl: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Rejestracja","tab_login":"Logowanie","label_name":"Imię","label_email":"Email","label_pass":"Hasło","label_insta":"Instagram","label_nation":"Kraj","select_choose":"Wybierz...","btn_create":"Stwórz Unitycard","btn_login":"Zaloguj","btn_insta":"Logowanie z Instagram","admin_title":"Admin: Rejestr Członków","search_placeholder":"Szukaj Imię/Insta...","th_name":"Imię","th_insta":"Instagram","th_email":"Email","th_donation":"Darowizna","btn_email":"Email do Zaznaczonych","label_amount":"Kwota Darowizny €","btn_save":"Zapisz Darowiznę","footer_text":"Unitycard NaturalBornChillaz to prywatny projekt artystyczny i rozrywkowy. Darowizny dobrowolne, bez świadczenia wzajemnego.","link_impressum":"Impressum","link_privacy":"Prywatność","link_admin":"Admin","mail_title":"Wyślij Email","mail_subject":"Temat:","mail_body":"Wiadomość:","btn_send":"Wyślij","btn_cancel":"Anuluj","admin_login_title":"Logowanie Admin","admin_pass_label":"Hasło Admin","btn_enter":"Wejdź"}
 };
 
 const flagUrls = {
@@ -247,7 +269,6 @@ let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
 users.push(user);
 localStorage.setItem('nbc_users',JSON.stringify(users));
 localStorage.setItem('nbc_current',JSON.stringify(user));
-checkAdminAccess();
 window.location.href='mailto:infotonbc@gmail.com?subject=Unitycard Member&body='+encodeURIComponent(JSON.stringify(user));
 document.getElementById('popup').classList.add('active');
 setTimeout(()=>location.href='unitycardclub.html',2000);
@@ -259,7 +280,6 @@ let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
 let user=users.find(u=>u.email===loginEmail.value&&u.pass===loginPass.value);
 if(user){
   localStorage.setItem('nbc_current',JSON.stringify(user));
-  checkAdminAccess();
   location.href='unitycardclub.html';
 }
 else alert('Chillaz, falsche Daten. Hast du schon dein Gehirn gegossen? 🧠💨');
@@ -271,40 +291,43 @@ let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
 let user=users.find(u=>u.insta===handle);
 if(user){
   localStorage.setItem('nbc_current',JSON.stringify(user));
-  checkAdminAccess();
   location.href='unitycardclub.html';
 }
 else alert('Noch nicht registriert, Chillaz!');
 }
 
-function checkAdminAccess(){
-  const current = JSON.parse(localStorage.getItem('nbc_current')||'null');
-  const adminLink = document.getElementById('adminLink');
-  
-  if(current && current.insta === '@infotonbc'){
-    adminLink.style.display = 'inline';
+function showAdmin(){
+  document.getElementById('adminModal').classList.add('active');
+  document.getElementById('adminPassInput').value = '';
+  document.getElementById('adminError').textContent = '';
+  setTimeout(()=>document.getElementById('adminPassInput').focus(),100);
+}
+
+function closeAdminModal(){
+  document.getElementById('adminModal').classList.remove('active');
+}
+
+function checkAdminPass(){
+  const pw = document.getElementById('adminPassInput').value;
+  if(pw === 'Slawo%123'){
+    closeAdminModal();
+    document.getElementById('adminPanel').style.display='block';
+    loadAdminUsers();
+    document.getElementById('adminPanel').scrollIntoView({behavior:'smooth'});
   } else {
-    adminLink.style.display = 'none';
-    document.getElementById('adminPanel').style.display = 'none';
+    document.getElementById('adminError').textContent = 'Falsches Passwort!';
+    document.getElementById('adminPassInput').value = '';
+    document.getElementById('adminPassInput').focus();
   }
 }
 
-function showAdmin(){
-  const current = JSON.parse(localStorage.getItem('nbc_current')||'null');
-  
-  if(!current || current.insta !== '@infotonbc'){
-    alert('Kein Admin-Zugriff für diesen Account!');
-    return;
-  }
-  
-  let pw = prompt('Admin Passwort:');
-  if(pw === 'Slawo%123'){
-    document.getElementById('adminPanel').style.display='block';
-    loadAdminUsers();
-  } else {
-    alert('Falsches Passwort, Chillaz!');
-  }
-}
+document.getElementById('adminPassInput').addEventListener('keypress', (e) => {
+  if(e.key === 'Enter') checkAdminPass();
+});
+
+document.getElementById('adminModal').addEventListener('click', (e) => {
+  if(e.target.id === 'adminModal') closeAdminModal();
+});
 
 function loadAdminUsers(){
 let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
@@ -368,7 +391,6 @@ loadAdminUsers();
 
 // Init
 setLang(getLang());
-checkAdminAccess();
 </script>
 </body>
 </html>
