@@ -718,19 +718,22 @@ window.spinSlots=()=>{
     }, 100);
 }
 
-// ===== CHILLAZ TV SYSTEM - GEFIXTE VERSION =====
-let netzkinoVideos = [];
-let currentVideoIndex = 0;
+// ===== CHILLAZ TV SYSTEM - BULLETPROOF VERSION =====
 let ytPlayer = null;
-const CACHE_KEY = 'chillaz_netzkino_cache';
-const CACHE_DURATION = 1000 * 60 * 30;
-
 let ytApiReady = false;
 let ytApiPromise = null;
 
+// Deine 2 Playlists
+const PLAYLISTS = {
+  playlist1: {id: 'PLfEblejE-l3kyjaHm0muCj8w47r9fk7K2', name: 'Playlist 1'},
+  playlist2: {id: 'PLfEblejE-l3lJF3o22quT1AiWSfLE7IBD', name: 'Playlist 2'}
+};
+let currentPlaylist = 'playlist1';
+
+// YouTube API sicher laden
 function loadYouTubeAPI() {
   if (ytApiPromise) return ytApiPromise;
-  ytApiPromise = new Promise(resolve => {
+  ytApiPromise = new Promise((resolve) => {
     if (window.YT && window.YT.Player) {
       ytApiReady = true;
       resolve();
@@ -743,169 +746,162 @@ function loadYouTubeAPI() {
     };
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
+    tag.onerror = () => {
+      console.error('YouTube API konnte nicht geladen werden');
+      resolve(); // Trotzdem resolven damit es nicht hängt
+    };
     document.head.appendChild(tag);
+
+    // Timeout Fallback nach 5s
+    setTimeout(() => {
+      if (!ytApiReady) {
+        console.warn('YouTube API Timeout');
+        resolve();
+      }
+    }, 5000);
   });
   return ytApiPromise;
 }
 
-async function loadNetzkinoVideos(forceRefresh = false) {
-  if (!forceRefresh) {
-    const cached = sessionStorage.getItem(CACHE_KEY);
-    if (cached) {
-      const { timestamp, videos } = JSON.parse(cached);
-      if (Date.now() - timestamp < CACHE_DURATION) {
-        netzkinoVideos = videos;
-        currentVideoIndex = 0;
-        return netzkinoVideos;
-      }
+// Player sicher zerstören
+function destroyPlayer() {
+  if (ytPlayer && typeof ytPlayer.destroy === 'function') {
+    try {
+      ytPlayer.destroy();
+    } catch(e) {
+      console.error('Destroy Error:', e);
     }
-  }
-
-  try {
-    const channelId = 'UC5uJfu-3gUHD1SdbZ1pXyvw';
-    const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
-    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(rssUrl);
-
-    const response = await fetch(proxyUrl);
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    const data = await response.json();
-    if (!data.contents) throw new Error('Leere Proxy-Antwort');
-
-    const parser = new DOMParser();
-    const xml = parser.parseFromString(data.contents, 'text/xml');
-    const entries = xml.querySelectorAll('entry');
-
-    netzkinoVideos = Array.from(entries)
-  .slice(0, 10)
-  .map(entry => {
-        const videoId = entry.getElementsByTagNameNS('http://www.youtube.com/xml/schemas/2015', 'videoId')[0]?.textContent;
-        const title = entry.querySelector('title')?.textContent || 'Ohne Titel';
-        return {
-          id: videoId,
-          title: title,
-          thumbnail: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`
-        };
-      })
-  .filter(v => v.id);
-
-    sessionStorage.setItem(CACHE_KEY, JSON.stringify({
-      timestamp: Date.now(),
-      videos: netzkinoVideos
-    }));
-
-    return netzkinoVideos;
-
-  } catch (e) {
-    console.error('Netzkino RSS Fehler:', e);
-    netzkinoVideos = [
-      {id: 'dQw4w9WgXcQ', title: 'Fallback 1'},
-      {id: 'jNQXAC9IVRw', title: 'Fallback 2'},
-      {id: '9bZkp7q19f0', title: 'Fallback 3'}
-    ];
-    return netzkinoVideos;
+    ytPlayer = null;
   }
 }
 
-function getCurrentVideo() {
-  return netzkinoVideos[currentVideoIndex] || null;
-}
-
-function playNextNetzkinoVideo() {
-  if (netzkinoVideos.length === 0) return null;
-  currentVideoIndex = (currentVideoIndex + 1) % netzkinoVideos.length;
-  return getCurrentVideo();
-}
-
+// Hauptfunktion - Öffnet TV
 window.openChillazTV = async () => {
   const overlay = document.getElementById('chillazTV');
   const playerDiv = document.getElementById('tvPlayer');
-  overlay.classList.add('active');
 
+  if (!overlay ||!playerDiv) {
+    console.error('TV Elemente nicht gefunden');
+    return;
+  }
+
+  overlay.classList.add('active');
   playerDiv.innerHTML = '<div style="color:#D4AF37;text-align:center;padding:50px;font-family:Orbitron">Lade CHILLAZ TV... 🎬</div>';
 
-  // 1. Warte auf YouTube API
-  await loadYouTubeAPI();
-  if (!window.YT ||!YT.Player) {
-    playerDiv.innerHTML = '<div style="color:#FF4757;text-align:center;padding:50px">YouTube lädt nicht. Refresh die Seite 🔄</div>';
-    return;
-  }
+  try {
+    await loadYouTubeAPI();
 
-  // 2. Lade Videos
-  await loadNetzkinoVideos();
-  const video = getCurrentVideo();
-
-  if (!video) {
-    playerDiv.innerHTML = '<div style="color:#D4AF37;text-align:center;padding:50px">Keine Videos gefunden 😴<br>Versuch es später nochmal</div>';
-    return;
-  }
-
-  // 3. Alten Player killen
-  if (ytPlayer) {
-    ytPlayer.destroy();
-    ytPlayer = null;
-  }
-
-  // 4. Neuen Player erstellen - MIT MUTE für Autoplay
-  ytPlayer = new YT.Player('tvPlayer', {
-    height: '100%',
-    width: '100%',
-    videoId: video.id,
-    playerVars: {
-      autoplay: 1,
-      mute: 1, // Wichtig: Browser erlaubt Autoplay nur muted
-      controls: 1,
-      modestbranding: 1,
-      rel: 0,
-      playsinline: 1 // Wichtig für Mobile
-    },
-    events: {
-      'onReady': (event) => {
-        console.log('Player ready, starte Video');
-        event.target.playVideo();
-      },
-      'onStateChange': onPlayerStateChange,
-      'onError': (e) => {
-        console.error('YouTube Error:', e.data);
-        playerDiv.innerHTML = '<div style="color:#FF4757;text-align:center;padding:50px">Video lädt nicht. Nächstes wird geladen... ⏭️</div>';
-        setTimeout(() => window.nextVideo(), 2000);
-      }
+    if (!window.YT ||!YT.Player) {
+      throw new Error('YouTube API nicht verfügbar');
     }
-  });
 
-  document.querySelector('.tv-title').textContent = `NETZKINO // ${video.title.slice(0,40)}`;
-  addActivityScore(5);
+    destroyPlayer();
+
+    ytPlayer = new YT.Player('tvPlayer', {
+      height: '100%',
+      width: '100%',
+      playerVars: {
+        listType: 'playlist',
+        list: PLAYLISTS[currentPlaylist].id,
+        autoplay: 1,
+        mute: 1, // Browser brauchen mute für Autoplay
+        controls: 1,
+        modestbranding: 1,
+        rel: 0,
+        playsinline: 1,
+        loop: 1,
+        iv_load_policy: 3 // Keine Annotations
+      },
+      events: {
+        'onReady': (event) => {
+          console.log('Playlist ready ✅');
+          try {
+            event.target.playVideo();
+            event.target.setShuffle(true);
+          } catch(e) {
+            console.error('Play Error:', e);
+          }
+        },
+        'onError': (e) => {
+          console.error('YouTube Error Code:', e.data);
+          let msg = 'Video-Fehler';
+          if (e.data === 100 || e.data === 101 || e.data === 150) {
+            msg = 'Playlist ist privat oder nicht verfügbar 🔒';
+          }
+          playerDiv.innerHTML = `<div style="color:#FF4757;text-align:center;padding:50px">${msg}<br><button class="btn" onclick="switchPlaylist()" style="margin-top:15px">Andere Playlist testen</button></div>`;
+        },
+        'onStateChange': (event) => {
+          if (event.data === YT.PlayerState.PLAYING) {
+            console.log('Video läuft ✅');
+          }
+        }
+      }
+    });
+
+    document.querySelector('.tv-title').textContent = `CHILLAZ TV // ${PLAYLISTS[currentPlaylist].name}`;
+    if (typeof addActivityScore === 'function') addActivityScore(5);
+
+  } catch (error) {
+    console.error('CHILLAZ TV Fehler:', error);
+    playerDiv.innerHTML = `<div style="color:#FF4757;text-align:center;padding:50px">
+      YouTube lädt nicht 🔧<br>
+      <small style="opacity:0.7">${error.message}</small><br>
+      <button class="btn" onclick="location.reload()" style="margin-top:15px">Seite neu laden</button>
+    </div>`;
+  }
 };
 
-function onPlayerStateChange(event) {
-  if (event.data === YT.PlayerState.ENDED) {
-    window.nextVideo();
-  }
-  if (event.data === YT.PlayerState.PLAYING) {
-    console.log('Video läuft ✅');
-  }
-}
-
+// Steuerung
 window.nextVideo = () => {
-  const video = playNextNetzkinoVideo();
-  if (video && ytPlayer) {
-    ytPlayer.loadVideoById(video.id);
-    document.querySelector('.tv-title').textContent = `NETZKINO // ${video.title.slice(0,40)}`;
-    addActivityScore(2);
+  if (ytPlayer && typeof ytPlayer.nextVideo === 'function') {
+    try {
+      ytPlayer.nextVideo();
+      if (typeof addActivityScore === 'function') addActivityScore(2);
+    } catch(e) {
+      console.error('Next Error:', e);
+    }
   }
 };
 
-window.closeChillazTV = () => {
-  document.getElementById('chillazTV').classList.remove('active');
-  if (ytPlayer) {
-    ytPlayer.stopVideo();
+window.prevVideo = () => {
+  if (ytPlayer && typeof ytPlayer.previousVideo === 'function') {
+    try {
+      ytPlayer.previousVideo();
+    } catch(e) {
+      console.error('Prev Error:', e);
+    }
   }
 };
 
-// UNMUTE BUTTON FUNKTION
+window.switchPlaylist = () => {
+  currentPlaylist = currentPlaylist === 'playlist1'? 'playlist2' : 'playlist1';
+  const newPlaylist = PLAYLISTS[currentPlaylist];
+
+  if (ytPlayer && typeof ytPlayer.loadPlaylist === 'function') {
+    try {
+      ytPlayer.loadPlaylist({
+        listType: 'playlist',
+        list: newPlaylist.id
+      });
+      document.querySelector('.tv-title').textContent = `CHILLAZ TV // ${newPlaylist.name}`;
+      if (typeof addActivityScore === 'function') addActivityScore(1);
+    } catch(e) {
+      console.error('Switch Error:', e);
+    }
+  } else {
+    // Falls Player noch nicht da ist, neu öffnen
+    window.openChillazTV();
+  }
+};
+
 window.unmuteTV = () => {
-  if (ytPlayer && ytPlayer.unMute) {
-    ytPlayer.unMute();
-    ytPlayer.setVolume(80);
+  if (ytPlayer && typeof ytPlayer.unMute === 'function') {
+    try {
+      ytPlayer.unMute();
+      ytPlayer.setVolume(80);
+    } catch(e) {
+      console.error('Unmute Error:', e);
+    }
   }
 };
 
@@ -1137,8 +1133,10 @@ window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.inn
     <button class="tv-close" onclick="closeChillazTV()">×</button>
   </div>
   <div class="tv-player" id="tvPlayer"></div>
-  <button class="tv-next-btn" onclick="nextVideo()">NÄCHSTES VIDEO →</button>
-  <button class="tv-next-btn" style="right:180px" onclick="unmuteTV()">🔊 TON AN</button>
+  <button class="tv-next-btn" style="right:420px" onclick="prevVideo()">← ZURÜCK</button>
+<button class="tv-next-btn" style="right:300px" onclick="switchPlaylist()">🔄 PLAYLIST</button>
+<button class="tv-next-btn" style="right:180px" onclick="unmuteTV()">🔊 TON AN</button>
+<button class="tv-next-btn" onclick="nextVideo()">NÄCHSTES →</button>
 </div>
   
 </body>
