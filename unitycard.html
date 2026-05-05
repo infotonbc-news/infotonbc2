@@ -123,7 +123,7 @@ footer a:hover{color:#D4AF37}
 <div style="margin-top:15px">
 <a href="impressumUnity.html" data-i18n="link_impressum">Impressum</a>
 <a href="datenschutzUnity.html" data-i18n="link_privacy">Datenschutz</a>
-<a href="#" onclick="showAdmin();return false" data-i18n="link_admin">Admin</a>
+<a href="#" id="adminLink" onclick="showAdmin();return false" data-i18n="link_admin" style="display:none">Admin</a>
 </div>
 </footer>
 </div>
@@ -145,16 +145,6 @@ footer a:hover{color:#D4AF37}
 </div>
 
 <script>
-// ===== ADMIN SECURITY: SHA-256 Hash von "Slawo%123" =====
-const ADMIN_HASH = '7f7a1f5f3a1e0e9c4f2a6d8b9c5e7f3a1d0b6c8e2f4a9d1b7c3e5f8a2d6b0c4e';
-
-async function sha256(message) {
-  const msgBuffer = new TextEncoder().encode(message);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-}
-
 // ===== SPRACHSYSTEM =====
 const translations = {
   de: {"title":"WE ARE CHILLAZ","subtitle":"Your Access to the Neo-Jungle","tab_register":"Registrieren","tab_login":"Login","label_name":"Name","label_email":"Email","label_pass":"Passwort","label_insta":"Instagram","label_nation":"Nation","select_choose":"Wählen...","btn_create":"Unitycard erstellen","btn_login":"Login","btn_insta":"Login mit Instagram","admin_title":"Admin: Member Kartei","search_placeholder":"Suche Name/Insta...","th_name":"Name","th_insta":"Instagram","th_email":"Email","th_donation":"Spende","btn_email":"Email an Markierte","label_amount":"Spendenbetrag €","btn_save":"Spende eintragen","footer_text":"Die NaturalBornChillaz Unitycard ist ein privates Kunst- und Spaßprojekt. Spenden freiwillig, ohne Gegenleistung.","link_impressum":"Impressum","link_privacy":"Datenschutz","link_admin":"Admin","mail_title":"Email versenden","mail_subject":"Betreff:","mail_body":"Nachricht:","btn_send":"Senden","btn_cancel":"Abbrechen"},
@@ -257,6 +247,7 @@ let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
 users.push(user);
 localStorage.setItem('nbc_users',JSON.stringify(users));
 localStorage.setItem('nbc_current',JSON.stringify(user));
+checkAdminAccess();
 window.location.href='mailto:infotonbc@gmail.com?subject=Unitycard Member&body='+encodeURIComponent(JSON.stringify(user));
 document.getElementById('popup').classList.add('active');
 setTimeout(()=>location.href='unitycardclub.html',2000);
@@ -266,7 +257,11 @@ document.getElementById('loginForm').onsubmit=(e)=>{
 e.preventDefault();
 let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
 let user=users.find(u=>u.email===loginEmail.value&&u.pass===loginPass.value);
-if(user){localStorage.setItem('nbc_current',JSON.stringify(user));location.href='unitycardclub.html';}
+if(user){
+  localStorage.setItem('nbc_current',JSON.stringify(user));
+  checkAdminAccess();
+  location.href='unitycardclub.html';
+}
 else alert('Chillaz, falsche Daten. Hast du schon dein Gehirn gegossen? 🧠💨');
 };
 
@@ -274,24 +269,41 @@ function instaLogin(){
 let handle=prompt('Instagram Handle:');
 let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
 let user=users.find(u=>u.insta===handle);
-if(user){localStorage.setItem('nbc_current',JSON.stringify(user));location.href='unitycardclub.html';}
+if(user){
+  localStorage.setItem('nbc_current',JSON.stringify(user));
+  checkAdminAccess();
+  location.href='unitycardclub.html';
+}
 else alert('Noch nicht registriert, Chillaz!');
 }
 
-async function showAdmin(){
-let pw=prompt('Admin Passwort:');
-const pwHash = await sha256(pw);
-if(pwHash===ADMIN_HASH){
-  const current = JSON.parse(localStorage.getItem('nbc_current')||'{}');
-  if(current.insta === '@NBC_Official'){
+function checkAdminAccess(){
+  const current = JSON.parse(localStorage.getItem('nbc_current')||'null');
+  const adminLink = document.getElementById('adminLink');
+  
+  if(current && current.insta === '@infotonbc'){
+    adminLink.style.display = 'inline';
+  } else {
+    adminLink.style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'none';
+  }
+}
+
+function showAdmin(){
+  const current = JSON.parse(localStorage.getItem('nbc_current')||'null');
+  
+  if(!current || current.insta !== '@infotonbc'){
+    alert('Kein Admin-Zugriff für diesen Account!');
+    return;
+  }
+  
+  let pw = prompt('Admin Passwort:');
+  if(pw === 'Slawo%123'){
     document.getElementById('adminPanel').style.display='block';
     loadAdminUsers();
   } else {
-    alert('Nur @NBC_Official hat Admin-Zugriff!');
+    alert('Falsches Passwort, Chillaz!');
   }
-} else {
-  alert('Falsches Passwort!');
-}
 }
 
 function loadAdminUsers(){
@@ -356,6 +368,7 @@ loadAdminUsers();
 
 // Init
 setLang(getLang());
+checkAdminAccess();
 </script>
 </body>
 </html>
