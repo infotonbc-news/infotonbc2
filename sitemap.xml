@@ -1,50 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
-  <!-- Startseite - Alle Sprachen -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://naturalbornchillaz.de/</loc>
-    <lastmod>2026-05-02</lastmod>
+    <loc>https://infotonbc-news.github.io/infotonbc2/</loc>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="de" href="https://naturalbornchillaz.de/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://naturalbornchillaz.de/?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="nl" href="https://naturalbornchillaz.de/?lang=nl"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://naturalbornchillaz.de/?lang=fr"/>
-    <xhtml:link rel="alternate" hreflang="bg" href="https://naturalbornchillaz.de/?lang=bg"/>
-    <xhtml:link rel="alternate" hreflang="pl" href="https://naturalbornchillaz.de/?lang=pl"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://naturalbornchillaz.de/?lang=es"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://naturalbornchillaz.de/"/>
   </url>
-
-  <!-- UNITYCARD Landing -->
   <url>
-    <loc>https://naturalbornchillaz.de/unitycard.html</loc>
-    <lastmod>2026-05-02</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- Rechtliche Seiten -->
-  <url>
-    <loc>https://naturalbornchillaz.de/Impressum.html</loc>
-    <lastmod>2026-05-02</lastmod>
+    <loc>https://infotonbc-news.github.io/infotonbc2/Datenschutz.html</loc>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
   <url>
-    <loc>https://naturalbornchillaz.de/Datenschutz.html</loc>
-    <lastmod>2026-05-02</lastmod>
+    <loc>https://infotonbc-news.github.io/infotonbc2/Impressum.html</loc>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
   <url>
-    <loc>https://naturalbornchillaz.de/disclaimer.html</loc>
-    <lastmod>2026-05-02</lastmod>
+    <loc>https://infotonbc-news.github.io/infotonbc2/Disclaimer.html</loc>
+    <lastmod>2026-05-06</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
-
+  <url>
+    <loc>https://infotonbc-news.github.io/infotonbc2/ImpressumG.html</loc>
+    <lastmod>2026-05-06</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.2</priority>
+  </url>
 </urlset>
