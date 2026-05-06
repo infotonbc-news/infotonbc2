@@ -68,7 +68,7 @@ body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;backg
 header{text-align:center;margin-bottom:60px}
 h1{font-family:'Orbitron',sans-serif;font-size:72px;font-weight:900;letter-spacing:8px;background:linear-gradient(135deg,#E5E4E2 0%,#D4AF37 50%,#E5E4E2 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;text-shadow:0 0 40px rgba(212,175,55,0.3);margin-bottom:10px}
 .subtitle{font-size:18px;color:#00D9FF;letter-spacing:4px;font-weight:300}
-.glass-panel{background:rgba(229,228,226,0.03);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.2);border-radius:20px;padding:40px;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.1);margin-bottom:30px}
+.glass-panel{background:rgba(229,228,226,0.03);backdrop-filter:blur(20px);border:1px solid rgba(212,175,55,0.2);border-radius:20px;padding:40px;box-shadow:0 8px 32px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,0.1);margin-bottom:30px}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-bottom:30px}
 .form-group{display:flex;flex-direction:column}
 label{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#D4AF37;margin-bottom:8px;font-weight:600}
@@ -103,12 +103,25 @@ footer a:hover{color:#D4AF37}
 .member-circle:active{cursor:grabbing}
 .back-link{position:fixed;top:20px;left:200px;z-index:100;font-family:'Orbitron',sans-serif;color:#D4AF37;text-decoration:none;padding:10px 20px;border:1px solid #D4AF37;border-radius:8px;background:rgba(10,10,15,0.8);backdrop-filter:blur(10px);transition:all 0.3s;font-size:14px;letter-spacing:1px}
 .back-link:hover{background:rgba(212,175,55,0.2);box-shadow:0 0 20px rgba(212,175,55,0.4)}
-@media(max-width:768px){
-  h1{font-size:40px;letter-spacing:4px}
-  .form-grid{grid-template-columns:1fr}
-  .back-link{left:20px;top:80px} /* Button rutscht unter die Uhr */
-  #datetime{top:10px} /* Uhr etwas höher */
-}
+/* ===== MEMBER BUCKET REAGENZGLAS ===== */
+.bucket-wrapper{position:fixed;left:30px;top:50%;transform:translateY(-50%);z-index:50;text-align:center}
+.bucket-title{font-family:'Orbitron';color:#00D9FF;font-size:14px;letter-spacing:2px;margin-bottom:15px;text-shadow:0 0 10px rgba(0,217,255,0.5)}
+.lab-tube{width:140px;height:320px;background:linear-gradient(180deg,rgba(255,255,255,0.05) 0%,rgba(255,255,255,0.02) 100%);border:3px solid rgba(0,217,255,0.4);border-radius:20px 20px 70px;position:relative;overflow:hidden;box-shadow:0 0 40px rgba(0,217,255,0.2),inset 0 0 30px rgba(0,217,255,0.1);backdrop-filter:blur(10px)}
+.lab-tube::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:60px;height:20px;background:rgba(0,217,255,0.3);border:3px solid rgba(0,217,255,0.6);border-radius:10px 10px 0 0}
+.liquid{position:absolute;bottom:0;left:0;width:100%;height:30%;background:linear-gradient(180deg,rgba(0,217,255,0.3) 0%,rgba(212,175,55,0.4) 100%);transition:height 0.5s ease;animation:slosh 3s ease-in-out infinite}
+@keyframes slosh{0%,100%{transform:translateX(0)}50%{transform:translateX(-2px)}}
+.bubbles{position:absolute;bottom:0;left:0;width:100%;height:100%;pointer-events:none}
+.bubbles::before,.bubbles::after{content:'';position:absolute;width:8px;height:8px;background:rgba(0,217,255,0.6);border-radius:50%;animation:bubble 4s ease-in infinite}
+.bubbles::before{left:30%;animation-delay:0s}
+.bubbles::after{left:60%;animation-delay:2s}
+@keyframes bubble{0%{bottom:10%;opacity:0}20%{opacity:1}100%{bottom:90%;opacity:0}}
+.bucket-members{position:absolute;bottom:15px;left:50%;transform:translateX(-50%);width:90%;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:flex-end;max-height:280px;overflow-y:auto;padding:5px}
+.bucket-members .member-circle{width:45px;height:45px;border-width:2px;animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.tube-label{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-90deg);font-family:'Orbitron';font-size:10px;color:rgba(0,217,255,0.3);letter-spacing:3px;white-space:nowrap}
+.bucket-hint{font-size:11px;color:rgba(0,217,255,0.6);margin-top:10px;letter-spacing:1px}
+@media(max-width:1200px){.bucket-wrapper{position:relative;left:auto;top:auto;transform:none;margin:30px auto;width:140px}}
+@media(max-width:768px){h1{font-size:40px;letter-spacing:4px}.form-grid{grid-template-columns:1fr}.back-link{left:20px;top:80px}#datetime{top:10px}}
 </style>
 </head>
 <body>
@@ -139,6 +152,18 @@ footer a:hover{color:#D4AF37}
 <h1 data-i18n="title">WE ARE CHILLAZ</h1>
 <p class="subtitle" data-i18n="subtitle">Your Access to the Neo-Jungle</p>
 </header>
+
+<!-- MEMBER BUCKET ALS REAGENZBEHÄLTER -->
+<div class="bucket-wrapper">
+  <h3 class="bucket-title">NBC Member Tank</h3>
+  <div class="lab-tube" id="memberBucket" ondrop="dropToBucket(event)" ondragover="allowDrop(event)">
+    <div class="liquid" id="bucketLiquid"></div>
+    <div class="bubbles"></div>
+    <div class="bucket-members" id="bucketMembers"></div>
+    <div class="tube-label">UNITY CONCENTRATE</div>
+  </div>
+  <p class="bucket-hint">Drag Member hier rein</p>
+</div>
 
 <div class="glass-panel">
 <div class="tabs">
@@ -373,7 +398,7 @@ footer a:hover{color:#D4AF37}
 <div class="glass-panel admin-panel" id="adminPanel">
 <h2 style="font-family:'Orbitron';color:#D4AF37;margin-bottom:20px" data-i18n="admin_title">Admin: Member Kartei</h2>
 
-<div style="background:linear-gradient(135deg,#D4AF37 0%,#E5E4E2 100%);color:#0A0A0F;padding:12px;border-radius:13px 13px 0 0;display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;gap:15px;margin-bottom:20px;flex-wrap:wrap">
   <button class="btn" onclick="openUserModal()">+ Member eintragen</button>
   <button class="btn btn-secondary" onclick="exportCSV()">CSV Export</button>
   <input type="text" id="memberSearch" data-i18n-placeholder="search_placeholder" placeholder="Suche Name/Insta..." style="flex:1;min-width:200px;padding:12px" onkeyup="filterMembers()">
@@ -401,15 +426,6 @@ footer a:hover{color:#D4AF37}
   <div class="form-group" style="margin:0"><label for="adminAmount" data-i18n="label_amount">Spendenbetrag €</label><input type="number" id="adminAmount" min="1" style="width:150px"></div>
   <button class="btn btn-secondary" onclick="saveDonation()" data-i18n="btn_save">Spende eintragen</button>
   <button class="btn" style="background:#ff4757" onclick="deleteSelected()">Markierte löschen</button>
-</div>
-
-<!-- MEMBER BUCKET -->
-<div style="margin-top:40px">
-  <h3 style="font-family:'Orbitron';color:#00D9FF;margin-bottom:15px">Member Bucket</h3>
-  <div id="memberBucket" ondrop="dropToBucket(event)" ondragover="allowDrop(event)"
-       style="min-height:120px;background:rgba(0,217,255,0.05);border:2px dashed rgba(0,217,255,0.3);border-radius:15px;padding:20px;display:flex;flex-wrap:wrap;gap:15px;align-items:center">
-    <p style="opacity:0.5;width:100%;text-align:center">Ziehe Member-Kreise hier rein</p>
-  </div>
 </div>
 </div>
 
@@ -702,7 +718,7 @@ footer a:hover{color:#D4AF37}
 
 <!-- DM EMPFÄNGER FENSTER - Das erscheint bei Membern -->
 <div id="dmInbox" style="display:none;position:fixed;bottom:30px;right:30px;z-index:5000;width:320px;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border:2px solid #D4AF37;border-radius:15px;box-shadow:0 0 40px rgba(212,175,55,0.4)">
-  <div style="background:linear-gradient(135deg,#D4AF37 0%,#E5E4E2 100%);color:#0A0F;padding:12px;border-radius:13px 13px 0 0;display:flex;justify-content:space-between;align-items:center">
+  <div style="background:linear-gradient(135deg,#D4AF37 0%,#E5E4E2 100%);color:#0A0A0F;padding:12px;border-radius:13px 13px 0 0;display:flex;justify-content:space-between;align-items:center">
     <span style="font-family:'Orbitron';font-weight:700;font-size:14px">NBC Direct Message</span>
     <button onclick="closeDMInbox()" style="background:none;border:none;font-size:20px;cursor:pointer">×</button>
   </div>
@@ -817,7 +833,7 @@ document.getElementById('registerForm').onsubmit=(e)=>{
     insta:regInsta.value,
     nation:regNation.value,
     donation:0,
-    avatar:`https://ui-avatars.com/api/?name=${encodeURIComponent(regName.value)}&background=D4AF37&color=0A0F`
+    avatar:`https://ui-avatars.com/api/?name=${encodeURIComponent(regName.value)}&background=D4AF37&color=0A0A0F`
   };
   let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
   if(users.find(u=>u.email===user.email)){alert('Email bereits registriert!');return;}
@@ -826,7 +842,7 @@ document.getElementById('registerForm').onsubmit=(e)=>{
   localStorage.setItem('nbc_current',JSON.stringify(user));
   window.location.href='mailto:infotonbc@gmail.com?subject=Unitycard Member&body='+encodeURIComponent(JSON.stringify(user));
   document.getElementById('popup').classList.add('active');
-   setTimeout(()=>location.href='unitycardclub.html',2000);
+  setTimeout(()=>location.href='unitycardclub.html',2000);
 };
 
 document.getElementById('loginForm').onsubmit=(e)=>{
@@ -888,6 +904,76 @@ document.getElementById('adminModal').addEventListener('click', (e) => {
   if(e.target.id === 'adminModal') closeAdminModal();
 });
 
+// ===== DEMO USER BEIM START LADEN =====
+function initDemoUsers(){
+  let users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
+
+  if(!users.find(u=>u.email==='slawo@nbc.com')){
+    const demoUsers = [
+      {
+        name:'Slawo',
+        email:'slawo@nbc.com',
+        pass:'Slawo%123',
+        insta:'@naturalbornchillaz',
+        nation:'CHILLAZ',
+        donation:999,
+        avatar:'https://ui-avatars.com/api/?name=Slawo&background=D4AF37&color=0A0A0F&bold=true',
+        rank:'Admin'
+      },
+      {
+        name:'JungleKid420',
+        email:'jungle@nbc.com',
+        pass:'test',
+        insta:'@junglekid420',
+        nation:'RASTA',
+        donation:88,
+        avatar:'https://ui-avatars.com/api/?name=JK420&background=00D9FF&color=0A0A0F'
+      },
+      {
+        name:'NeoShaman',
+        email:'shaman@nbc.com',
+        pass:'test',
+        insta:'@neoshaman',
+        nation:'DE',
+        donation:42,
+        avatar:'https://ui-avatars.com/api/?name=NS&background=D4AF37&color=0A0A0F'
+      },
+      {
+        name:'ChillazQueen',
+        email:'queen@nbc.com',
+        pass:'test',
+        insta:'@chillazqueen',
+        nation:'JM',
+        donation:66,
+        avatar:'https://ui-avatars.com/api/?name=CQ&background=E5E4E2&color=0A0A0F'
+      }
+    ];
+    users = [...demoUsers,...users];
+    localStorage.setItem('nbc_users',JSON.stringify(users));
+  }
+
+  loadBucketMembers();
+}
+
+function loadBucketMembers(){
+  let users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  let bucket = JSON.parse(localStorage.getItem('nbc_bucket')||'["slawo@nbc.com","jungle@nbc.com","shaman@nbc.com"]');
+
+  const bucketEl = document.getElementById('bucketMembers');
+  const liquidEl = document.getElementById('bucketLiquid');
+
+  if(!bucketEl ||!liquidEl) return;
+
+  bucketEl.innerHTML = bucket.map(email => {
+    const user = users.find(u => u.email === email);
+    if(!user) return '';
+    return `<div class="member-circle" draggable="true" data-email="${email}" ondragstart="drag(event)" onclick='showCardPopup(${JSON.stringify(user).replace(/'/g,"&apos;")})' style="background-image:url('${user.avatar}')" title="${user.name}"></div>`;
+  }).join('');
+
+  const level = Math.min(90, 30 + (bucket.length * 10));
+  liquidEl.style.height = level + '%';
+}
+
 // ===== USER MANAGEMENT =====
 function openUserModal(editIndex = null) {
   document.getElementById('userModal').classList.add('active');
@@ -920,7 +1006,7 @@ function saveUser() {
     email: modalEmail.value,
     pass: modalPass.value,
     insta: modalInsta.value,
-    avatar: modalAvatar.value || `https://ui-avatars.com/api/?name=${encodeURIComponent(modalName.value)}&background=D4AF37&color=0A0F`,
+    avatar: modalAvatar.value || `https://ui-avatars.com/api/?name=${encodeURIComponent(modalName.value)}&background=D4AF37&color=0A0A0F`,
     nation: modalNation.value,
     donation: 0
   };
@@ -970,19 +1056,12 @@ function dropToBucket(ev) {
   const user = users.find(u => u.email === email);
   if(!user) return;
 
-  const bucket = document.getElementById('memberBucket');
-  if(bucket.querySelector(`[data-email="${email}"]`)) return;
-  if(bucket.querySelector('p')) bucket.querySelector('p').remove();
+  let bucket = JSON.parse(localStorage.getItem('nbc_bucket')||'[]');
+  if(bucket.includes(email)) return;
 
-  const circle = document.createElement('div');
-  circle.className = 'member-circle';
-  circle.draggable = true;
-  circle.dataset.email = email;
-  circle.ondragstart = drag;
-  circle.onclick = () => showCardPopup(user);
-  circle.style.backgroundImage = `url('${user.avatar}')`;
-  circle.title = user.name;
-  bucket.appendChild(circle);
+  bucket.push(email);
+  localStorage.setItem('nbc_bucket',JSON.stringify(bucket));
+  loadBucketMembers();
 }
 
 function showCardPopup(user) {
@@ -1051,7 +1130,6 @@ function checkDMInbox() {
     `).join('');
     box.style.display = 'block';
 
-    // Als gelesen markieren
     userDMs.forEach(dm => dm.read = true);
     dms[currentUser.email] = userDMs;
     localStorage.setItem('nbc_dms', JSON.stringify(dms));
@@ -1062,7 +1140,6 @@ function closeDMInbox() {
   document.getElementById('dmInbox').style.display = 'none';
 }
 
-// Check alle 3 Sekunden auf neue DMs
 setInterval(checkDMInbox, 3000);
 checkDMInbox();
 
@@ -1072,7 +1149,7 @@ function loadAdminUsers(){
   document.getElementById('memberTableBody').innerHTML=users.map((u,i)=>`
   <tr>
   <td><input type="checkbox" class="memberCheck" data-email="${u.email}" data-name="${u.name}"></td>
-  <td><img src="${u.avatar||`https://ui-avatars.com/api/?name=${encodeURIComponent(u.name)}&background=D4AF37&color=0A0F`}"
+  <td><img src="${u.avatar||`https://ui-avatars.com/api/?name=${encodeURIComponent(u.name)}&background=D4AF37&color=0A0A0F`}"
            style="width:40px;height:40px;border-radius:50%;border:2px solid #D4AF37;cursor:grab"
            draggable="true" ondragstart="drag(event)" data-email="${u.email}" alt="${u.name}"></td>
   <td>${u.name}</td>
@@ -1134,6 +1211,7 @@ function saveDonation(){
 }
 
 // Init
+initDemoUsers();
 setLang(getLang());
 </script>
 </body>
