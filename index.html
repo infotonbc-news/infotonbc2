@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de" xml:lang="de">
+<html lang="de">
 <head>
 <meta charset="utf-8">
 <title>NaturalBornChillaz – Cannabis News 2026 | CanG, Legalisierung, Medizin weltweit</title>
@@ -33,7 +33,8 @@
 <link rel="preconnect" href="https://i.ytimg.com">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"NaturalBornChillaz","url":"https://naturalbornchillaz.de/","logo":"https://naturalbornchillaz.de/nbc262.webp","description":"Tägliche Cannabis Video-News 2026. CanG Updates Deutschland, USA Schedule III, Legalisierung weltweit.","sameAs":["https://instagram.com/infotonbc"]} 
+{"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"NaturalBornChillaz","url":"https://naturalbornchillaz.de/","logo":"https://naturalbornchillaz.de/nbc262.webp","description":"Tägliche Cannabis Video-News 2026. CanG Updates Deutschland, USA Schedule III, Legalisierung weltweit.","sameAs":["
+instagram.com/infotonbc%22]%7D 
 </script>
 <style>
 body{margin:0;background-image:url('nbc262.webp');background-size:cover;background-position:center;background-attachment:fixed;color:#eee;font-family:Arial,sans-serif}
@@ -93,23 +94,21 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 .unity-btn{position:static;margin-top:15px}
 .video-card{width:100%}
 }
-.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
 </head>
 <body class="age-lock">
-<a href="#main-content" class="sr-only" style="position:absolute;left:-9999px;" onfocus="this.style.left='20px';this.style.top='20px';this.style.background='#C9A227';this.style.color='#000';this.style.padding='8px';this.style.zIndex='10000'">Zum Inhalt springen</a>
-<div class="age-gate" id="ageGate" role="dialog" aria-modal="true" aria-labelledby="ageTitle" aria-describedby="ageDesc">
+<div class="age-gate" id="ageGate">
   <div class="age-box">
-    <h2 data-i18n="age_title" id="ageTitle">Altersprüfung 18+</h2>
-    <p data-i18n="age_text" id="ageDesc">Diese Website enthält Informationen zu Cannabis nach CanG. Der Zugang ist nur für volljährige Personen gestattet. Bist du mindestens 18 Jahre alt?</p>
+    <h2 data-i18n="age_title">Altersprüfung 18+</h2>
+    <p data-i18n="age_text">Diese Website enthält Informationen zu Cannabis nach CanG. Der Zugang ist nur für volljährige Personen gestattet. Bist du mindestens 18 Jahre alt?</p>
     <div class="buttons">
-      <button type="button" class="age-yes" onclick="acceptAge()" data-i18n="age_yes">Ja, ich bin 18+</button>
-      <button type="button" class="age-no" onclick="denyAge()" data-i18n="age_no">Nein</button>
+      <button class="age-yes" onclick="acceptAge()" data-i18n="age_yes">Ja, ich bin 18+</button>
+      <button class="age-no" onclick="denyAge()" data-i18n="age_no">Nein</button>
     </div>
     <p style="font-size:11px;color:#666;margin-top:15px" data-i18n="age_disclaimer">Aufklärung nach Art. 5 GG. Keine Werbung, keine Abgabe.</p>
   </div>
 </div>
-<header class="top" role="banner">
+<div class="top">
   <div class="lang-switch">
     <span data-i18n="lang_hint">Sprache wählen:</span>
     <select onchange="setLang(this.value)" id="langSelect" aria-label="Sprache auswählen">
@@ -127,8 +126,8 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
   </div>
   <h1 class="logo" data-i18n="logo">NaturalBornChillaz</h1>
   <div class="tag" data-i18n="tag">WORLDWIDE CANNABIS NEWS • 2026</div>
-</header>
-<main id="main-content" class="wrap" role="main">
+</div>
+<div class="wrap">
   <h2 data-i18n="highlights">Aktuelle Highlights</h2>
   <div class="grid" id="newsGrid"></div>
   <div class="banner-row">
@@ -154,7 +153,8 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
       <iframe id="videoFeed1" src="" title="YouTube Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
     <div class="qr">
-      <a href="https://instagram.com/infotonbc" target="_blank" rel="noopener"><img src="qr_card.png" width="180" height="180" alt="NaturalBornChillaz Instagram QR Code" loading="lazy"></a>
+      <a href="
+instagram.com/infotonbc%22 target="_blank" rel="noopener"><img src="qr_card.png" width="180" height="180" alt="NaturalBornChillaz Instagram QR Code" loading="lazy"></a>
       <div style="color:#aaa;font-size:12px;margin-top:5px">@infotonbc</div>
     </div>
     <div class="video-card">
@@ -163,8 +163,8 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
       <iframe id="videoFeed2" src="" title="YouTube Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
   </div>
-</main>
-<footer role="contentinfo">
+</div>
+<footer>
   <a href="Impressum.html" data-i18n="imprint">Impressum</a>
   <a href="Datenschutz.html" data-i18n="privacy">Datenschutz</a>
   <a href="disclaimer.html" data-i18n="disclaimer">Disclaimer 18+</a>
@@ -174,42 +174,115 @@ Aufklärung 18+ | CanG-konform
 Keine Werbung. Keine Abgabe.
 Kunst & Info nach Art. 5 GG</div>
 </footer>
-<div class="ticker" role="region" aria-label="News Ticker"><span id="tickerContent"></span></div>
-<script>const translations = {de:{lang_hint:"Sprache wählen:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WORLDWIDE CANNABIS NEWS • 2026",highlights:"Aktuelle Highlights",age_title:"Altersprüfung 18+",age_text:"Diese Website enthält Informationen zu Cannabis nach CanG. Der Zugang ist nur für volljährige Personen gestattet. Bist du mindestens 18 Jahre alt?",age_yes:"Ja, ich bin 18+",age_no:"Nein",age_disclaimer:"Aufklärung nach Art. 5 GG. Keine Werbung, keine Abgabe.",country_de:"Deutschland",country_us:"USA",country_th:"Thailand",country_mt:"Malta",country_ch:"Schweiz",country_ca:"Kanada",ad1_t:"Höher als deine Toleranz? Dein Spot hier!",ad1_d:"Seeds • Shops • CBD • Lass die Chiller dich finden",ad2_t:"Günstiger als Amsterdam, näher als dein Dealer",ad2_d:"Werbung die kleben bleibt – ganz legal",ad3_t:"Hier könnte dein Gras… äh, deine Brand wachsen",ad3_d:"18+ Aufklärung | CanG-konform | High-Reichweite",ad_btn:"Jetzt buchen",imprint:"Impressum",privacy:"Datenschutz",disclaimer:"Disclaimer 18+",contact:"Kontakt",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz klärt auf
-Aufklärung 18+ | CanG-konform
-Keine Werbung. Keine Abgabe.
-Kunst & Info nach Art. 5 GG"},en:{lang_hint:"Choose language:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WORLDWIDE CANNABIS NEWS • 2026",highlights:"Latest Highlights",age_title:"Age Verification 18+",age_text:"This website contains information about cannabis under CanG. Access is only permitted for adults. Are you at least 18 years old?",age_yes:"Yes, I'm 18+",age_no:"No",age_disclaimer:"Education under Art. 5 GG. No advertising, no distribution.",country_de:"Germany",country_us:"USA",country_th:"Thailand",country_mt:"Malta",country_ch:"Switzerland",country_ca:"Canada",ad1_t:"Higher than your tolerance? Your spot here!",ad1_d:"Seeds • Shops • CBD • Let the chillers find you",ad2_t:"Cheaper than Amsterdam, closer than your dealer",ad2_d:"Advertising that sticks – totally legal",ad3_t:"Your grass… uh, your brand could grow here",ad3_d:"18+ Education | CanG-compliant | High-reach",ad_btn:"Book now",imprint:"Imprint",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz educates
-Education 18+ | CanG-compliant
-No advertising. No distribution.
-Art & Info under Art. 5 GG"},nl:{lang_hint:"Kies taal:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WERELDWIJD CANNABIS NIEUWS • 2026",highlights:"Actuele Highlights",age_title:"Leeftijdscontrole 18+",age_text:"Deze website bevat informatie over cannabis volgens CanG. Toegang is alleen toegestaan voor volwassenen. Ben je minstens 18 jaar oud?",age_yes:"Ja, ik ben 18+",age_no:"Nee",age_disclaimer:"Voorlichting volgens Art. 5 GG. Geen reclame, geen verstrekking.",country_de:"Duitsland",country_us:"VS",country_th:"Thailand",country_mt:"Malta",country_ch:"Zwitserland",country_ca:"Canada",ad1_t:"Hoger dan je tolerantie? Jouw spot hier!",ad1_d:"Zaden • Shops • CBD • Laat de chille mensen je vinden",ad2_t:"Goedkoper dan Amsterdam, dichterbij dan je dealer",ad2_d:"Reclame die blijft plakken – helemaal legaal",ad3_t:"Hier kan je gras… uh, je merk groeien",ad3_d:"18+ Voorlichting | CanG-conform | High-bereik",ad_btn:"Nu boeken",imprint:"Colofon",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informeert
-Voorlichting 18+ | CanG-conform
-Geen reclame. Geen verstrekking.
-Kunst & Info volgens Art. 5 GG"},fr:{lang_hint:"Choisir la langue:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ACTUALITÉS CANNABIS MONDIALES • 2026",highlights:"À la Une",age_title:"Vérification d'âge 18+",age_text:"Ce site contient des informations sur le cannabis selon CanG. L'accès est réservé aux adultes. Avez-vous au moins 18 ans?",age_yes:"Oui, j'ai 18+",age_no:"Non",age_disclaimer:"Information selon Art. 5 GG. Pas de pub, pas de cession.",country_de:"Allemagne",country_us:"États-Unis",country_th:"Thaïlande",country_mt:"Malte",country_ch:"Suisse",country_ca:"Canada",ad1_t:"Plus haut que ta tolérance? Ton spot ici!",ad1_d:"Graines • Shops • CBD • Laisse les chillers te trouver",ad2_t:"Moins cher qu’Amsterdam, plus près que ton dealer",ad2_d:"Pub qui colle – 100% légale",ad3_t:"Ici ton herbe… euh, ta marque pourrait pousser",ad3_d:"18+ Sensibilisation | Conforme CanG | Haute portée",ad_btn:"Réserver",imprint:"Mentions légales",privacy:"Confidentialité",disclaimer:"Avertissement 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informe
-Sensibilisation 18+ | Conforme CanG
-Pas de pub. Pas de cession.
-Art & Info selon Art. 5 GG"},bg:{lang_hint:"Избери език:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"СВЕТОВНИ НОВИНИ ЗА КАНАБИС • 2026",highlights:"Актуални акценти",age_title:"Проверка на възраст 18+",age_text:"Този уебсайт съдържа информация за канабис според CanG. Достъпът е разрешен само за пълнолетни. Навършили ли сте 18 години?",age_yes:"Да, на 18+",age_no:"Не",age_disclaimer:"Просвета по чл. 5 GG. Без реклама, без предоставяне.",country_de:"Германия",country_us:"САЩ",country_th:"Тайланд",country_mt:"Малта",country_ch:"Швейцария",country_ca:"Канада",ad1_t:"По-високо от толеранса ти? Твоето място тук!",ad1_d:"Семена • Магазини • CBD • Нека чилърите те намерят",ad2_t:"По-евтино от Амстердам, по-близо от дилъра ти",ad2_d:"Реклама, която залепва – напълно легално",ad3_t:"Тук може да расте твоята трева… ах, твоята марка",ad3_d:"18+ Просвета | Съобразено с CanG | Висок обхват",ad_btn:"Резервирай",imprint:"Импресум",privacy:"Поверителност",disclaimer:"Отказ 18+",contact:"Контакт",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz информира
-Просвета 18+ | Съобразено с CanG
-Без реклама. Без предоставяне.
-Изкуство & инфо по чл. 5 GG"},pl:{lang_hint:"Wybierz język:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ŚWIATOWE WIADOMOŚCI O KONOPIACH • 2026",highlights:"Aktualne wydarzenia",age_title:"Weryfikacja wieku 18+",age_text:"Ta strona zawiera informacje o konopiach wg CanG. Dostęp tylko dla pełnoletnich. Czy masz ukończone 18 lat?",age_yes:"Tak, mam 18+",age_no:"Nie",age_disclaimer:"Edukacja wg Art. 5 GG. Brak reklamy, brak wydawania.",country_de:"Niemcy",country_us:"USA",country_th:"Tajlandia",country_mt:"Malta",country_ch:"Szwajcaria",country_ca:"Kanada",ad1_t:"Wyżej niż twoja tolerancja? Twój spot tutaj!",ad1_d:"Nasiona • Sklepy • CBD • Niech chillersi cię znajdą",ad2_t:"Taniej niż Amsterdam, bliżej niż twój diler",ad2_d:"Reklama, która się klei – w pełni legalna",ad3_t:"Tutaj może rosnąć twoja trawa… tzn. marka",ad3_d:"18+ Edukacja | Zgodne z CanG | High-zasięg",ad_btn:"Rezerwuj",imprint:"Impressum",privacy:"Prywatność",disclaimer:"Oświadczenie 18+",contact:"Kontakt",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz edukuje
-Edukacja 18+ | Zgodne z CanG
-Brak reklamy. Brak wydawania.
-Sztuka i info wg Art. 5 GG"},es:{lang_hint:"Elegir idioma:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"NOTICIAS MUNDIALES DE CANNABIS • 2026",highlights:"Destacados Actuales",age_title:"Verificación de edad 18+",age_text:"Este sitio contiene información sobre cannabis según CanG. Acceso solo para adultos. ¿Tienes al menos 18 años?",age_yes:"Sí, tengo 18+",age_no:"No",age_disclaimer:"Educación según Art. 5 GG. Sin publicidad, sin cesión.",country_de:"Alemania",country_us:"EE.UU.",country_th:"Tailandia",country_mt:"Malta",country_ch:"Suiza",country_ca:"Canadá",ad1_t:"¿Más alto que tu tolerancia? ¡Tu spot aquí!",ad1_d:"Semillas • Tiendas • CBD • Deja que los chillers te encuentren",ad2_t:"Más barato que Ámsterdam, más cerca que tu dealer",ad2_d:"Publicidad que se pega – 100% legal",ad3_t:"Aquí podría crecer tu hierba… digo, tu marca",ad3_d:"18+ Educación | Conforme a CanG | Alto alcance",ad_btn:"Reservar",imprint:"Aviso legal",privacy:"Privacidad",disclaimer:"Aviso 18+",contact:"Contacto",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informa
-Educación 18+ | Conforme a CanG
-Sin publicidad. Sin cesión.
-Arte e Info según Art. 5 GG"}};
-const newsData = {de:[[{country:"Deutschland",title:"Social Clubs Ausbau 2026",desc:"Erweiterung nach CanG – erste Lizenzen vergeben.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"Schedule III seit 28.04.2026",desc:"DEA stuft Cannabis herab – historischer Schritt.",url:"https://www.reuters.com"},{country:"Thailand",title:"Zurück zu Medical-Only",desc:"Neue Lizenz stoppt Freizeit-Shops ab 2025.",url:"https://www.bangkokpost.com"},{country:"Malta",title:"Erste Clubs öffnen",desc:"Non-Profit Abgabe offiziell gestartet.",url:"https://timesofmalta.com"},{country:"Schweiz",title:"Zürich Pilot stabil",desc:"Über 2.100 Teilnehmer im Modellversuch.",url:"https://www.bag.admin.ch"},{country:"Kanada",title:"72 Tonnen nach Deutschland",desc:"Exportrekord hält 2026 weiter an.",url:"https://www.canada.ca"}]],en:[[{country:"Germany",title:"Social Clubs Expansion 2026",desc:"Expansion under CanG – first licenses issued.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"Schedule III since 04/28/2026",desc:"DEA downgrades cannabis – historic step.",url:"https://www.reuters.com"},{country:"Thailand",title:"Back to Medical-Only",desc:"New license stops recreational shops from 2025.",url:"https://www.bangkokpost.com"},{country:"Malta",title:"First Clubs Open",desc:"Non-profit distribution officially started.",url:"https://timesofmalta.com"},{country:"Switzerland",title:"Zurich Pilot Stable",desc:"Over 2,100 participants in the trial.",url:"https://www.bag.admin.ch"},{country:"Canada",title:"72 Tons to Germany",desc:"Export record continues in 2026.",url:"https://www.canada.ca"}]]};
-const videoFeeds = {de:{feed1:{title:"Medical Cannabis DE",playlist:"PLnq4f1LUqbYj9FFKGDnY-BOZy79WUKMGe"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},en:{feed1:{title:"Canna Legalization News",playlist:"PLeAIUVGqrqOtZkZxXohKcEtA5W6QdMHVd"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},nl:{feed1:{title:"Cannabis News NL",playlist:"PL6culvOP2rJshlcJAGBP4KrF2aKtQ32QW"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},fr:{feed1:{title:"Cannabis France",playlist:"PLjSNx6BBM7OHved88WcwVQTnw6taNvXxl"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},bg:{feed1:{title:"Canna Roots BG",playlist:"PLnyQXwjoPEnWCNC53tuDPUgFFuxVW1X6r"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},pl:{feed1:{title:"Cannabis News PL",playlist:"PLI_rj-Rv8ftMGfj9HZHIqbAq95sQxGZlI"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},es:{feed1:{title:"Fundation Cana España",playlist:"PLDujEKEpaOdTAGp0sl79sM9xT3SzjACqn"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}}};
+<div class="ticker"><span id="tickerContent"></span></div>
+<script>const translations = {
+  de:{lang_hint:"Sprache wählen:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WORLDWIDE CANNABIS NEWS • 2026",highlights:"Aktuelle Highlights",age_title:"Altersprüfung 18+",age_text:"Diese Website enthält Informationen zu Cannabis nach CanG. Der Zugang ist nur für volljährige Personen gestattet. Bist du mindestens 18 Jahre alt?",age_yes:"Ja, ich bin 18+",age_no:"Nein",age_disclaimer:"Aufklärung nach Art. 5 GG. Keine Werbung, keine Abgabe.",country_de:"Deutschland",country_us:"USA",country_th:"Thailand",country_mt:"Malta",country_ch:"Schweiz",country_ca:"Kanada",ad1_t:"Höher als deine Toleranz? Dein Spot hier!",ad1_d:"Seeds • Shops • CBD • Lass die Chiller dich finden",ad2_t:"Günstiger als Amsterdam, näher als dein Dealer",ad2_d:"Werbung die kleben bleibt – ganz legal",ad3_t:"Hier könnte dein Gras… äh, deine Brand wachsen",ad3_d:"18+ Aufklärung | CanG-konform | High-Reichweite",ad_btn:"Jetzt buchen",imprint:"Impressum",privacy:"Datenschutz",disclaimer:"Disclaimer 18+",contact:"Kontakt",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz klärt auf\nAufklärung 18+ | CanG-konform\nKeine Werbung. Keine Abgabe.\nKunst & Info nach Art. 5 GG"},
+  en:{lang_hint:"Choose language:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WORLDWIDE CANNABIS NEWS • 2026",highlights:"Latest Highlights",age_title:"Age Verification 18+",age_text:"This website contains information about cannabis under CanG. Access is only permitted for adults. Are you at least 18 years old?",age_yes:"Yes, I'm 18+",age_no:"No",age_disclaimer:"Education under Art. 5 GG. No advertising, no distribution.",country_de:"Germany",country_us:"USA",country_th:"Thailand",country_mt:"Malta",country_ch:"Switzerland",country_ca:"Canada",ad1_t:"Higher than your tolerance? Your spot here!",ad1_d:"Seeds • Shops • CBD • Let the chillers find you",ad2_t:"Cheaper than Amsterdam, closer than your dealer",ad2_d:"Advertising that sticks – totally legal",ad3_t:"Your grass… uh, your brand could grow here",ad3_d:"18+ Education | CanG-compliant | High-reach",ad_btn:"Book now",imprint:"Imprint",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz educates\nEducation 18+ | CanG-compliant\nNo advertising. No distribution.\nArt & Info under Art. 5 GG"},
+  nl:{lang_hint:"Kies taal:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WERELDWIJD CANNABIS NIEUWS • 2026",highlights:"Actuele Highlights",age_title:"Leeftijdscontrole 18+",age_text:"Deze website bevat informatie over cannabis volgens CanG. Toegang is alleen toegestaan voor volwassenen. Ben je minstens 18 jaar oud?",age_yes:"Ja, ik ben 18+",age_no:"Nee",age_disclaimer:"Voorlichting volgens Art. 5 GG. Geen reclame, geen verstrekking.",country_de:"Duitsland",country_us:"VS",country_th:"Thailand",country_mt:"Malta",country_ch:"Zwitserland",country_ca:"Canada",ad1_t:"Hoger dan je tolerantie? Jouw spot hier!",ad1_d:"Zaden • Shops • CBD • Laat de chille mensen je vinden",ad2_t:"Goedkoper dan Amsterdam, dichterbij dan je dealer",ad2_d:"Reclame die blijft plakken – helemaal legaal",ad3_t:"Hier kan je gras… uh, je merk groeien",ad3_d:"18+ Voorlichting | CanG-conform | High-bereik",ad_btn:"Nu boeken",imprint:"Colofon",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informeert\nVoorlichting 18+ | CanG-conform\nGeen reclame. Geen verstrekking.\nKunst & Info volgens Art. 5 GG"},
+  fr:{lang_hint:"Choisir la langue:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ACTUALITÉS CANNABIS MONDIALES • 2026",highlights:"À la Une",age_title:"Vérification d'âge 18+",age_text:"Ce site contient des informations sur le cannabis selon CanG. L'accès est réservé aux adultes. Avez-vous au moins 18 ans?",age_yes:"Oui, j'ai 18+",age_no:"Non",age_disclaimer:"Information selon Art. 5 GG. Pas de pub, pas de cession.",country_de:"Allemagne",country_us:"États-Unis",country_th:"Thaïlande",country_mt:"Malte",country_ch:"Suisse",country_ca:"Canada",ad1_t:"Plus haut que ta tolérance? Ton spot ici!",ad1_d:"Graines • Shops • CBD • Laisse les chillers te trouver",ad2_t:"Moins cher qu’Amsterdam, plus près que ton dealer",ad2_d:"Pub qui colle – 100% légale",ad3_t:"Ici ton herbe… euh, ta marque pourrait pousser",ad3_d:"18+ Sensibilisation | Conforme CanG | Haute portée",ad_btn:"Réserver",imprint:"Mentions légales",privacy:"Confidentialité",disclaimer:"Avertissement 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informe\nSensibilisation 18+ | Conforme CanG\nPas de pub. Pas de cession.\nArt & Info selon Art. 5 GG"},
+  bg:{lang_hint:"Избери език:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"СВЕТОВНИ НОВИНИ ЗА КАНАБИС • 2026",highlights:"Актуални акценти",age_title:"Проверка на възраст 18+",age_text:"Този уебсайт съдържа информация за канабис според CanG. Достъпът е разрешен само за пълнолетни. Навършили ли сте 18 години?",age_yes:"Да, на 18+",age_no:"Не",age_disclaimer:"Просвета по чл. 5 GG. Без реклама, без предоставяне.",country_de:"Германия",country_us:"САЩ",country_th:"Тайланд",country_mt:"Малта",country_ch:"Швейцария",country_ca:"Канада",ad1_t:"По-високо от толеранса ти? Твоето място тук!",ad1_d:"Семена • Магазини • CBD • Нека чилърите те намерят",ad2_t:"По-евтино от Амстердам, по-близо от дилъра ти",ad2_d:"Реклама, която залепва – напълно легално",ad3_t:"Тук може да расте твоята трева… ах, твоята марка",ad3_d:"18+ Просвета | Съобразено с CanG | Висок обхват",ad_btn:"Резервирай",imprint:"Импресум",privacy:"Поверителност",disclaimer:"Отказ 18+",contact:"Контакт",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz информира\nПросвета 18+ | Съобразено с CanG\nБез реклама. Без предоставяне.\nИзкуство & инфо по чл. 5 GG"},
+  pl:{lang_hint:"Wybierz język:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ŚWIATOWE WIADOMOŚCI O KONOPIACH • 2026",highlights:"Aktualne wydarzenia",age_title:"Weryfikacja wieku 18+",age_text:"Ta strona zawiera informacje o konopiach wg CanG. Dostęp tylko dla pełnoletnich. Czy masz ukończone 18 lat?",age_yes:"Tak, mam 18+",age_no:"Nie",age_disclaimer:"Edukacja wg Art. 5 GG. Brak reklamy, brak wydawania.",country_de:"Niemcy",country_us:"USA",country_th:"Tajlandia",country_mt:"Malta",country_ch:"Szwajcaria",country_ca:"Kanada",ad1_t:"Wyżej niż twoja tolerancja? Twój spot tutaj!",ad1_d:"Nasiona • Sklepy • CBD • Niech chillersi cię znajdą",ad2_t:"Taniej niż Amsterdam, bliżej niż twój diler",ad2_d:"Reklama, która się klei – w pełni legalna",ad3_t:"Tutaj może rosnąć twoja trawa… tzn. marka",ad3_d:"18+ Edukacja | Zgodne z CanG | High-zasięg",ad_btn:"Rezerwuj",imprint:"Impressum",privacy:"Prywatność",disclaimer:"Oświadczenie 18+",contact:"Kontakt",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz edukuje\nEdukacja 18+ | Zgodne z CanG\nBrak reklamy. Brak wydawania.\nSztuka i info wg Art. 5 GG"},
+  es:{lang_hint:"Elegir idioma:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"NOTICIAS MUNDIALES DE CANNABIS • 2026",highlights:"Destacados Actuales",age_title:"Verificación de edad 18+",age_text:"Este sitio contiene información sobre cannabis según CanG. Acceso solo para adultos. ¿Tienes al menos 18 años?",age_yes:"Sí, tengo 18+",age_no:"No",age_disclaimer:"Educación según Art. 5 GG. Sin publicidad, sin cesión.",country_de:"Alemania",country_us:"EE.UU.",country_th:"Tailandia",country_mt:"Malta",country_ch:"Suiza",country_ca:"Canadá",ad1_t:"¿Más alto que tu tolerancia? ¡Tu spot aquí!",ad1_d:"Semillas • Tiendas • CBD • Deja que los chillers te encuentren",ad2_t:"Más barato que Ámsterdam, más cerca que tu dealer",ad2_d:"Publicidad que se pega – 100% legal",ad3_t:"Aquí podría crecer tu hierba… digo, tu marca",ad3_d:"18+ Educación | Conforme a CanG | Alto alcance",ad_btn:"Reservar",imprint:"Aviso legal",privacy:"Privacidad",disclaimer:"Aviso 18+",contact:"Contacto",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informa\nEducación 18+ | Conforme a CanG\nSin publicidad. Sin cesión.\nArte e Info según Art. 5 GG"}
+};
+const newsData = {
+  de: [
+    [{country:"Deutschland",title:"Social Clubs Ausbau 2026",desc:"Erweiterung nach CanG – erste Lizenzen vergeben.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"Schedule III seit 28.04.2026",desc:"DEA stuft Cannabis herab – historischer Schritt.",url:"https://www.reuters.com"},{country:"Thailand",title:"Zurück zu Medical-Only",desc:"Neue Lizenz stoppt Freizeit-Shops ab 2025.",url:"https://www.bangkokpost.com"},{country:"Malta",title:"Erste Clubs öffnen",desc:"Non-Profit Abgabe offiziell gestartet.",url:"https://timesofmalta.com"},{country:"Schweiz",title:"Zürich Pilot stabil",desc:"Über 2.100 Teilnehmer im Modellversuch.",url:"https://www.bag.admin.ch"},{country:"Kanada",title:"72 Tonnen nach Deutschland",desc:"Exportrekord hält 2026 weiter an.",url:"https://www.canada.ca"}],
+    [{country:"Deutschland",title:"CanG Bußgeld-Katalog Update",desc:"Neue Regeln für Besitz & Anbau seit Q2/2026.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"Banking Act Fortschritt",desc:"Cannabis-Firmen bekommen Kontozugang.",url:"https://www.reuters.com"},{country:"Schweiz",title:"Basel Studie Phase 3",desc:"Apotheken-Abgabe läuft erfolgreich.",url:"https://www.bag.admin.ch"},{country:"Kanada",title:"THC-Grenzwerte diskutiert",desc:"Health Canada prüft 10mg-Regel.",url:"https://www.canada.ca"},{country:"Malta",title:"Tourismus & Clubs",desc:"Urlauber dürfen nicht konsumieren.",url:"https://timesofmalta.com"},{country:"Thailand",title:"Export-Lizenz Boom",desc:"Medical CBD für EU stark nachgefragt.",url:"https://www.bangkokpost.com"}],
+    [{country:"Deutschland",title:"Eigenanbau: 3 Pflanzen",desc:"Gerichte bestätigen CanG Auslegung.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"Kalifornien Steuersenkung",desc:"Legal Market soll gestärkt werden.",url:"https://www.reuters.com"},{country:"Schweiz",title:"Genf startet 2026",desc:"Zweites Pilotprojekt mit 1.000 Personen.",url:"https://www.bag.admin.ch"},{country:"Kanada",title:"CBD-Getränke Trend",desc:"Markt wächst um 40% YoY.",url:"https://www.canada.ca"},{country:"Malta",title:"HRZA Kontrollen",desc:"Behörde prüft Clubs unangekündigt.",url:"https://timesofmalta.com"},{country:"Thailand",title:"Tourismus-Warnung",desc:"Freizeitkonsum bleibt illegal.",url:"https://www.bangkokpost.com"}],
+    [{country:"Deutschland",title:"Führerschein & THC",desc:"Neue Grenzwerte nach CanG beschlossen.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"NYC Lizenzen",desc:"500 neue Shops für Social Equity.",url:"https://www.reuters.com"},{country:"Schweiz",title:"Lausanne Cannabis",desc:"Stadt plant eigenes Pilotprojekt.",url:"https://www.bag.admin.ch"},{country:"Kanada",title:"Ontario Umsatz",desc:"2,1 Mrd CAD im Q1 2026.",url:"https://www.canada.ca"},{country:"Malta",title:"Werbung verboten",desc:"Clubs dürfen nicht öffentlich inserieren.",url:"https://timesofmalta.com"},{country:"Thailand",title:"Krankenhaus-Programm",desc:"Gratis Medical Cannabis für Patienten.",url:"https://www.bangkokpost.com"}]
+  ],
+  en: [
+    [{country:"Germany",title:"Social Clubs Expansion 2026",desc:"Expansion under CanG – first licenses issued.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"Schedule III since 04/28/2026",desc:"DEA downgrades cannabis – historic step.",url:"https://www.reuters.com"},{country:"Thailand",title:"Back to Medical-Only",desc:"New license stops recreational shops from 2025.",url:"https://www.bangkokpost.com"},{country:"Malta",title:"First Clubs Open",desc:"Non-profit distribution officially started.",url:"https://timesofmalta.com"},{country:"Switzerland",title:"Zurich Pilot Stable",desc:"Over 2,100 participants in the trial.",url:"https://www.bag.admin.ch"},{country:"Canada",title:"72 Tons to Germany",desc:"Export record continues in 2026.",url:"https://www.canada.ca"}]
+  ]
+};
+const videoFeeds = {
+  de: {feed1:{title:"Medical Cannabis DE",playlist:"PLnq4f1LUqbYj9FFKGDnY-BOZy79WUKMGe"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  en: {feed1:{title:"Canna Legalization News",playlist:"PLeAIUVGqrqOtZkZxXohKcEtA5W6QdMHVd"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  nl: {feed1:{title:"Cannabis News NL",playlist:"PL6culvOP2rJshlcJAGBP4KrF2aKtQ32QW"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  fr: {feed1:{title:"Cannabis France",playlist:"PLjSNx6BBM7OHved88WcwVQTnw6taNvXxl"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  bg: {feed1:{title:"Canna Roots BG",playlist:"PLnyQXwjoPEnWCNC53tuDPUgFFuxVW1X6r"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  pl: {feed1:{title:"Cannabis News PL",playlist:"PLI_rj-Rv8ftMGfj9HZHIqbAq95sQxGZlI"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  es: {feed1:{title:"Fundation Cana España",playlist:"PLDujEKEpaOdTAGp0sl79sM9xT3SzjACqn"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}}
+};
 let tickerMinuteCounter = 0;
 let currentNewsSet = [];
-function acceptAge(){localStorage.setItem('nbc_age_verified','true');document.getElementById('ageGate').style.display='none';document.body.classList.remove('age-lock');initPage();}
-function denyAge(){window.location.href='https://www.google.com';}
-function checkAge(){if(localStorage.getItem('nbc_age_verified')==='true'){document.getElementById('ageGate').style.display='none';document.body.classList.remove('age-lock');return true;}return false;}
-function renderNews(lang){const sets=newsData[lang]||newsData['de'];const hourIndex=new Date().getHours()%sets.length;currentNewsSet=sets[hourIndex];const grid=document.getElementById('newsGrid');grid.innerHTML='';currentNewsSet.forEach(n=>{const card=document.createElement('div');card.className='card';card.innerHTML=`<a href="${n.url}" target="_blank" rel="noopener"><div class="kicker">${n.country}</div><h3>${n.title}</h3><p>${n.desc}</p></a>`;grid.appendChild(card);});}
-function updateTicker(lang){if(!currentNewsSet.length){const sets=newsData[lang]||newsData['de'];currentNewsSet=sets[new Date().getHours()%sets.length];}let tickerHTML=currentNewsSet.map(n=>`<a href="${n.url}" target="_blank" rel="noopener">${n.country.toUpperCase()}: ${n.title}</a>`).join(' ••• ');document.getElementById('tickerContent').innerHTML=tickerHTML;}
-function updateVideos(lang){const feeds=videoFeeds[lang]||videoFeeds['de'];document.getElementById('feed1Title').textContent=feeds.feed1.title;document.getElementById('feed2Title').textContent=feeds.feed2.title;document.getElementById('videoFeed1').src=`https://www.youtube.com/embed/videoseries?list=${feeds.feed1.playlist}&autoplay=0&mute=1`;document.getElementById('videoFeed2').src=`https://www.youtube.com/embed/videoseries?list=${feeds.feed2.playlist}&autoplay=0&mute=1`;}
-function setLang(lang){localStorage.setItem('nbc_lang',lang);document.documentElement.lang=lang;document.documentElement.setAttribute('xml:lang',lang);document.getElementById('langSelect').value=lang;const t=translations[lang];document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.getAttribute('data-i18n');if(t[key])el.textContent=t[key];});renderNews(lang);updateTicker(lang);updateVideos(lang);}
-function initPage(){const savedLang=localStorage.getItem('nbc_lang')||'de';setLang(savedLang);setInterval(()=>{tickerMinuteCounter++;if(tickerMinuteCounter%5===0){const lang=localStorage.getItem('nbc_lang')||'de';renderNews(lang);updateTicker(lang);}},60000);}
-window.onload=function(){if(checkAge()){initPage();}};
+function acceptAge(){
+  localStorage.setItem('nbc_age_verified','true');
+  document.getElementById('ageGate').style.display='none';
+  document.body.classList.remove('age-lock');
+  initPage();
+}
+function denyAge(){
+  window.location.href='https://www.google.com';
+}
+function checkAge(){
+  if(localStorage.getItem('nbc_age_verified')==='true'){
+    document.getElementById('ageGate').style.display='none';
+    document.body.classList.remove('age-lock');
+    return true;
+  }
+  return false;
+}
+function renderNews(lang) {
+  const sets = newsData[lang] || newsData['de'];
+  const hourIndex = new Date().getHours() % sets.length;
+  currentNewsSet = sets[hourIndex];
+  const grid = document.getElementById('newsGrid');
+  grid.innerHTML = '';
+  currentNewsSet.forEach(n => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<a href="${n.url}" target="_blank" rel="noopener"><div class="kicker">${n.country}</div><h3>${n.title}</h3><p>${n.desc}</p></a>`;
+    grid.appendChild(card);
+  });
+}
+function updateTicker(lang) {
+  if (!currentNewsSet.length) {
+    const sets = newsData[lang] || newsData['de'];
+    currentNewsSet = sets[new Date().getHours() % sets.length];
+  }
+  let tickerHTML = currentNewsSet.map(n =>
+    `<a href="${n.url}" target="_blank" rel="noopener">${n.country.toUpperCase()}: ${n.title}</a>`
+  ).join(' ••• ');
+  document.getElementById('tickerContent').innerHTML = tickerHTML;
+}
+function updateVideos(lang) {
+  const feeds = videoFeeds[lang] || videoFeeds['de'];
+  document.getElementById('feed1Title').textContent = feeds.feed1.title;
+  document.getElementById('feed2Title').textContent = feeds.feed2.title;
+  document.getElementById('videoFeed1').src = `https://www.youtube.com/embed/videoseries?list=${feeds.feed1.playlist}&autoplay=0&mute=1`;
+  document.getElementById('videoFeed2').src = `https://www.youtube.com/embed/videoseries?list=${feeds.feed2.playlist}&autoplay=0&mute=1`;
+}
+function setLang(lang) {
+  localStorage.setItem('nbc_lang', lang);
+  document.documentElement.lang = lang;
+  document.getElementById('langSelect').value = lang;
+  const t = translations[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[key]) el.textContent = t[key];
+  });
+  renderNews(lang);
+  updateTicker(lang);
+  updateVideos(lang);
+}
+function initPage() {
+  const savedLang = localStorage.getItem('nbc_lang') || 'de';
+  setLang(savedLang);
+  setInterval(() => {
+    tickerMinuteCounter++;
+    if (tickerMinuteCounter % 5 === 0) {
+      const lang = localStorage.getItem('nbc_lang') || 'de';
+      renderNews(lang);
+      updateTicker(lang);
+    }
+  }, 60000);
+}
+window.onload = function() {
+  if (checkAge()) {
+    initPage();
+  }
+};
 </script>
 </body>
 </html>
