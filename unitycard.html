@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" xml:lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -102,6 +102,9 @@ footer a:hover{color:#D4AF37}
 </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Zum Inhalt springen</a>
+<a href="#main-content" class="skip-link" onfocus="this.style.left='20px';this.style.top='20px';this.style.width='auto';this.style.height='auto';this.style.padding='10px';this.style.background='#D4AF37';this.style.color='#0A0A0F';this.style.zIndex='10000';this.style.textDecoration='none';">Zum Inhalt springen</a>
+
 
 <!-- UHRZEIT + DATUM -->
 <div id="datetime" style="position:fixed;top:20px;left:20px;z-index:100;font-family:'Orbitron',sans-serif;color:#D4AF37;text-shadow:0 0 15px rgba(212,175,55,0.6);pointer-events:none">
@@ -110,8 +113,8 @@ footer a:hover{color:#D4AF37}
 </div>
 
 <!-- LANGUAGE SWITCHER -->
-<div id="langSwitcher" style="position:fixed;top:20px;right:20px;z-index:100">
-  <div id="langCurrent" onclick="toggleLangMenu()" style="width:45px;height:30px;border:2px solid #D4AF37;border-radius:6px;cursor:pointer;box-shadow:0 0 15px rgba(212,175,55,0.4);overflow:hidden;background-size:cover;background-position:center"></div>
+<div id="langSwitcher" aria-label="Sprache wählen" style="position:fixed;top:20px;right:20px;z-index:100">
+  <div id="langCurrent" onclick="toggleLangMenu()" role="button" aria-haspopup="true" aria-expanded="false" aria-label="Aktuelle Sprache" tabindex="0" style="width:45px;height:30px;border:2px solid #D4AF37;border-radius:6px;cursor:pointer;box-shadow:0 0 15px rgba(212,175,55,0.4);overflow:hidden;background-size:cover;background-position:center"></div>
   <div id="langMenu" style="display:none;position:absolute;top:38px;right:0;background:rgba(10,10,15,0.95);border:1px solid rgba(212,175,55,0.3);border-radius:10px;padding:8px;backdrop-filter:blur(20px)">
     <div class="lang-option" data-lang="de" style="width:40px;height:25px;margin:4px;cursor:pointer;border-radius:4px;background:url('https://flagcdn.com/w40/de.png') center/cover;border:1px solid rgba(229,228,226,0.2)" onclick="setLang('de')" title="Deutsch"></div>
     <div class="lang-option" data-lang="nl" style="width:40px;height:25px;margin:4px;cursor:pointer;border-radius:4px;background:url('https://flagcdn.com/w40/nl.png') center/cover;border:1px solid rgba(229,228,226,0.2)" onclick="setLang('nl')" title="Nederlands"></div>
@@ -123,26 +126,26 @@ footer a:hover{color:#D4AF37}
   </div>
 </div>
 
-<div class="container">
-<header>
+<main id="main-content" class="container" role="main">
+<header role="banner">
 <h1 data-i18n="title">WE ARE CHILLAZ</h1>
 <p class="subtitle" data-i18n="subtitle">Your Access to the Neo-Jungle</p>
 </header>
 
 <div class="glass-panel">
 <div class="tabs">
-<button class="tab active" onclick="showTab('register')" data-i18n="tab_register">Registrieren</button>
-<button class="tab" onclick="showTab('login')" data-i18n="tab_login">Login</button>
+<button type="button" class="tab active" onclick="showTab('register')" data-i18n="tab_register">Registrieren</button>
+<button type="button" class="tab" onclick="showTab('login')" data-i18n="tab_login">Login</button>
 </div>
 
 <div id="registerTab">
 <form id="registerForm">
 <div class="form-grid">
-<div class="form-group"><label data-i18n="label_name">Name</label><input type="text" id="regName" required></div>
-<div class="form-group"><label data-i18n="label_email">Email</label><input type="email" id="regEmail" required></div>
-<div class="form-group"><label data-i18n="label_pass">Passwort</label><input type="password" id="regPass" required></div>
-<div class="form-group"><label data-i18n="label_insta">Instagram</label><input type="text" id="regInsta" placeholder="@handle" required></div>
-<div class="form-group"><label data-i18n="label_nation">Nation</label><select id="regNation" required>
+<div class="form-group"><label for="regName" data-i18n="label_name">Name</label><input type="text" id="regName" required></div>
+<div class="form-group"><label for="regEmail" data-i18n="label_email">Email</label><input type="email" id="regEmail" required></div>
+<div class="form-group"><label for="regPass" data-i18n="label_pass">Passwort</label><input type="password" id="regPass" required></div>
+<div class="form-group"><label for="regInsta" data-i18n="label_insta">Instagram</label><input type="text" id="regInsta" placeholder="@handle" required></div>
+<div class="form-group"><label for="regNation" data-i18n="label_nation">Nation</label><select id="regNation" required>
 <option value="" data-i18n="select_choose">Wählen...</option><option value="DE">🇩🇪 Deutschland</option><option value="AT">🇦🇹 Österreich</option><option value="CH">🇨🇭 Schweiz</option><option value="NL">🇳🇱 Niederlande</option><option value="ES">🇪🇸 Spanien</option></select></div>
 </div>
 <button type="submit" class="btn" data-i18n="btn_create">Unitycard erstellen</button>
@@ -152,8 +155,8 @@ footer a:hover{color:#D4AF37}
 <div id="loginTab" style="display:none">
 <form id="loginForm">
 <div class="form-grid">
-<div class="form-group"><label data-i18n="label_email">Email</label><input type="email" id="loginEmail" required></div>
-<div class="form-group"><label data-i18n="label_pass">Passwort</label><input type="password" id="loginPass" required></div>
+<div class="form-group"><label for="loginEmail" data-i18n="label_email">Email</label><input type="email" id="loginEmail" required></div>
+<div class="form-group"><label for="loginPass" data-i18n="label_pass">Passwort</label><input type="password" id="loginPass" required></div>
 </div>
 <button type="submit" class="btn" data-i18n="btn_login">Login</button>
 <button type="button" class="btn btn-secondary" onclick="instaLogin()" data-i18n="btn_insta">Login mit Instagram</button>
@@ -166,7 +169,8 @@ footer a:hover{color:#D4AF37}
 <div style="margin-bottom:20px">
 <input type="text" id="memberSearch" data-i18n-placeholder="search_placeholder" placeholder="Suche Name/Insta..." style="width:100%;padding:12px" onkeyup="filterMembers()">
 </div>
-<table id="memberTable">
+<table id="memberTable" aria-label="Member Kartei">
+<caption style="position:absolute;left:-9999px;">Liste der registrierten Mitglieder</caption>
 <thead>
 <tr><th><input type="checkbox" id="selectAll" onchange="toggleAll(this)"></th><th data-i18n="th_name">Name</th><th data-i18n="th_insta">Instagram</th><th data-i18n="th_email">Email</th><th data-i18n="th_donation">Spende</th></tr>
 </thead>
@@ -174,12 +178,12 @@ footer a:hover{color:#D4AF37}
 </table>
 <div style="display:flex;gap:15px;margin-top:20px">
 <button class="btn" onclick="openMailPopup()" data-i18n="btn_email">Email an Markierte</button>
-<div class="form-group" style="margin:0"><label data-i18n="label_amount">Spendenbetrag €</label><input type="number" id="adminAmount" min="1" style="width:150px"></div>
+<div class="form-group" style="margin:0"><label for="adminAmount" data-i18n="label_amount">Spendenbetrag €</label><input type="number" id="adminAmount" min="1" style="width:150px"></div>
 <button class="btn btn-secondary" onclick="saveDonation()" data-i18n="btn_save">Spende eintragen</button>
 </div>
 </div>
 
-<footer>
+<footer role="contentinfo">
 <p data-i18n="footer_text">Die NaturalBornChillaz Unitycard ist ein privates Kunst- und Spaßprojekt. Spenden freiwillig, ohne Gegenleistung.</p>
 <div style="margin-top:15px">
 <a href="impressumUnity.html" data-i18n="link_impressum">Impressum</a>
@@ -187,16 +191,16 @@ footer a:hover{color:#D4AF37}
 <a href="#" onclick="showAdmin();return false" data-i18n="link_admin">Admin</a>
 </div>
 </footer>
-</div>
+</main>
 
 <div class="we-are-chillaz" id="popup">WE ARE CHILLAZ</div>
 
 <!-- ADMIN LOGIN MODAL -->
-<div id="adminModal" class="modal-overlay">
+<div id="adminModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="adminModalTitle" aria-hidden="true">
   <div class="modal-box">
-    <h2 data-i18n="admin_login_title">Admin Login</h2>
+    <h2 id="adminModalTitle" data-i18n="admin_login_title">Admin Login</h2>
     <div class="form-group">
-      <label data-i18n="admin_pass_label">Admin Passwort</label>
+      <label for="adminPassInput" data-i18n="admin_pass_label">Admin Passwort</label>
       <input type="password" id="adminPassInput" placeholder="••••••••">
       <div class="modal-error" id="adminError"></div>
     </div>
@@ -208,11 +212,11 @@ footer a:hover{color:#D4AF37}
 </div>
 
 <!-- EMAIL POPUP -->
-<div id="mailPopup" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;background:rgba(10,10,15,0.95);border:2px solid #D4AF37;border-radius:15px;padding:25px;z-index:2000">
-<h2 style="margin-bottom:15px;font-family:'Orbitron';color:#D4AF37" data-i18n="mail_title">Email versenden</h2>
-<label style="font-size:12px;color:#00D9FF" data-i18n="mail_subject">Betreff:</label>
+<div id="mailPopup" role="dialog" aria-modal="true" aria-labelledby="mailPopupTitle" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:500px;background:rgba(10,10,15,0.95);border:2px solid #D4AF37;border-radius:15px;padding:25px;z-index:2000">
+<h2 id="mailPopupTitle" style="margin-bottom:15px;font-family:'Orbitron';color:#D4AF37" data-i18n="mail_title">Email versenden</h2>
+<label for="mailSubject" style="font-size:12px;color:#00D9FF" data-i18n="mail_subject">Betreff:</label>
 <input type="text" id="mailSubject" value="NBC NaturalBornChillaz informiert..." style="width:100%;padding:10px;margin:8px 0">
-<label style="font-size:12px;color:#00D9FF" data-i18n="mail_body">Nachricht:</label>
+<label for="mailBody" style="font-size:12px;color:#00D9FF" data-i18n="mail_body">Nachricht:</label>
 <textarea id="mailBody" rows="8" style="width:100%;padding:10px;margin:8px 0"></textarea>
 <div style="font-size:11px;opacity:0.6;margin:5px 0" id="mailRecipients"></div>
 <div style="display:flex;gap:10px;margin-top:15px">
@@ -250,9 +254,11 @@ function getLang() {
 function setLang(lang) {
   localStorage.setItem('nbc_lang', lang);
   document.documentElement.lang = lang;
+document.documentElement.setAttribute('xml:lang', lang);
   applyTranslations(lang);
   document.getElementById('langCurrent').style.backgroundImage = `url('${flagUrls[lang]}')`;
   document.getElementById('langMenu').style.display = 'none';
+document.getElementById('langCurrent').setAttribute('aria-expanded','false');
   updateDateTime();
 }
 
@@ -270,12 +276,15 @@ function applyTranslations(lang) {
 
 function toggleLangMenu() {
   const menu = document.getElementById('langMenu');
-  menu.style.display = menu.style.display === 'none'? 'block' : 'none';
+  const isOpen = menu.style.display === 'none';
+menu.style.display = isOpen ? 'block' : 'none';
+document.getElementById('langCurrent').setAttribute('aria-expanded', isOpen ? 'true' : 'false');
 }
 
 document.addEventListener('click', (e) => {
   if(!e.target.closest('#langSwitcher')) {
     document.getElementById('langMenu').style.display = 'none';
+document.getElementById('langCurrent').setAttribute('aria-expanded','false');
   }
 });
 
@@ -352,14 +361,18 @@ else alert('Noch nicht registriert, Chillaz!');
 }
 
 function showAdmin(){
-  document.getElementById('adminModal').classList.add('active');
+  const modal = document.getElementById('adminModal');
+modal.classList.add('active');
+modal.setAttribute('aria-hidden','false');
   document.getElementById('adminPassInput').value = '';
   document.getElementById('adminError').textContent = '';
   setTimeout(()=>document.getElementById('adminPassInput').focus(),100);
 }
 
 function closeAdminModal(){
-  document.getElementById('adminModal').classList.remove('active');
+  const modal = document.getElementById('adminModal');
+modal.classList.remove('active');
+modal.setAttribute('aria-hidden','true');
 }
 
 function checkAdminPass(){
