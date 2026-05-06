@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" xml:lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -287,6 +287,7 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .chillaz-tv-overlay{width:95vw;height:70vh}
 .chillaz-tv-btn{bottom:20px;right:20px;padding:12px 20px;font-size:12px}
 }
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
 
 <script>
@@ -328,14 +329,16 @@ function applyTranslations(lang) {
 document.addEventListener('DOMContentLoaded', () => {
   const lang = detectLang();
   document.documentElement.lang = lang;
+  document.documentElement.setAttribute('xml:lang', lang);
   applyTranslations(lang);
 });
 </script>
 
 </head>
 <body>
-<canvas id="canvas"></canvas>
-<div class="ui-overlay">
+<a href="#main-content" class="sr-only" onfocus="this.style.position='absolute';this.style.left='20px';this.style.top='20px';this.style.padding='8px';this.style.background='#D4AF37';this.style.color='#000';this.style.zIndex='10000'">Zum Inhalt springen</a>
+<canvas id="canvas" aria-hidden="true"></canvas>
+<main id="main-content" class="ui-overlay" role="main">
 <div class="panel">
 <h2>Top Chillaz Supporter</h2>
 <div id="topList"></div>
@@ -349,17 +352,18 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="chat-msg bot">Chillaz, hast du heute schon dein Gehirn gegossen? 🧠💨 Tipp: /help für Grow-Wissen</div>
 </div>
 <div class="chat-input">
+<label for="chatInput" class="sr-only">Nachricht</label>
 <input type="text" id="chatInput" placeholder="Frag SuaveBot... /help" onkeypress="if(event.key==='Enter')sendChat()">
-<button class="btn" onclick="sendChat()">Send</button>
+<button type="button" class="btn" onclick="sendChat()">Send</button>
 </div>
-<button class="btn" style="width:100%;margin-top:15px" onclick="window.open('https://paypal.me/DeinLink','_blank')" onmouseover="this.textContent='Fütter den Grow 🌱'" onmouseout="this.textContent='Chillaz Support 💰'">Chillaz Support 💰</button>
+<button type="button" class="btn" style="width:100%;margin-top:15px" onclick="window.open('https://paypal.me/DeinLink','_blank')" onmouseover="this.textContent='Fütter den Grow 🌱'" onmouseout="this.textContent='Chillaz Support 💰'">Chillaz Support 💰</button>
 
 <h2 style="margin-top:20px" data-i18n="spiele_title">Spiel gegen Den Chillaz Bot</h2>
 <div class="game-select">
-  <button class="game-btn" onclick="selectGame('21er')">21er Duell</button>
-  <button class="game-btn" onclick="selectGame('reaction')">Reaktion</button>
-  <button class="game-btn" onclick="selectGame('quiz')">Kiffer-Quiz</button>
-  <button class="game-btn" onclick="selectGame('slots')">Weed-Slots</button>
+  <button type="button" class="game-btn" onclick="selectGame('21er')">21er Duell</button>
+  <button type="button" class="game-btn" onclick="selectGame('reaction')">Reaktion</button>
+  <button type="button" class="game-btn" onclick="selectGame('quiz')">Kiffer-Quiz</button>
+  <button type="button" class="game-btn" onclick="selectGame('slots')">Weed-Slots</button>
 </div>
 <div id="game-area">
   <div style="text-align:center;opacity:0.6;font-size:12px">Wähle ein Spiel 👆</div>
@@ -371,14 +375,14 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 
 </div>
-</div>
+</main>
 
-<div class="unitycard-popup" id="cardPopup">
+<div class="unitycard-popup" id="cardPopup" role="dialog" aria-modal="true" aria-labelledby="cardTitle" aria-hidden="true">
   <div class="card-bg-effect"></div>
   <div class="card-neon-lines"></div>
   <div class="card-holo-stripe"></div>
   <div class="card-glow-edge"></div>
-  <button class="card-close" onclick="closeCard()">×</button>
+  <button type="button" class="card-close" aria-label="Karte schließen" onclick="closeCard()">×</button>
   <div class="card-content">
     <img class="card-insta-avatar" id="cardAvatar" src="" alt="Instagram" onclick="openInstagram()">
     <div class="card-leaf">
@@ -393,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </svg>
     </div>
     <div class="card-nbc-badge"><span>@NBC</span></div>
-    <div class="card-title">NBC Unitycard</div>
+    <div class="card-title" id="cardTitle">NBC Unitycard</div>
     <div class="card-rank-badge" id="cardRankBadge">
       <div class="card-rank-text" id="cardRankText">MEMBER</div>
       <div class="card-rank-donation" id="cardRankDonation">0€</div>
@@ -408,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </div>
 
-<div class="footer-links">
+<footer class="footer-links" role="contentinfo">
 <a href="impressumUnity.html">Impressum</a>
 <a href="datenschutzUnity.html">Datenschutz</a>
 <a href="unitycard.html">Logout</a>
@@ -526,7 +530,7 @@ window.showCard=(insta)=>{
 
 window.openInstagram=()=>{
   if(currentCardUser){
-    window.open(`https://instagram.com/${currentCardUser.insta.replace('@','')}`,'_blank');
+    window.open(`https://instagram.com/${currentCardUser.insta.replace('@','')}`,'_blank'); 
     addActivityScore(2);
   }
 };
@@ -1127,12 +1131,12 @@ window.closeChillazTV = function() {
 }
 </script>
 
-<button class="chillaz-tv-btn" onclick="openChillazTV()">📺 CHILLAZ TV</button>
+<button type="button" class="chillaz-tv-btn" aria-label="Chillaz TV öffnen" onclick="openChillazTV()">📺 CHILLAZ TV</button>
 
-<div class="chillaz-tv-overlay" id="chillazTV">
+<div class="chillaz-tv-overlay" id="chillazTV" role="dialog" aria-modal="true" aria-labelledby="tvTitle" aria-hidden="true">
   <div class="tv-header">
-    <div class="tv-title">NETZKINO // CHILLAZ TV</div>
-    <button class="tv-close" onclick="closeChillazTV()">×</button>
+    <div class="tv-title" id="tvTitle">NETZKINO // CHILLAZ TV</div>
+    <button type="button" class="tv-close" aria-label="TV schließen" onclick="closeChillazTV()">×</button>
   </div>
   <div class="tv-player" id="tvPlayer"></div>
   <button class="tv-next-btn" style="right:420px" onclick="prevVideo()">← ZURÜCK</button>
