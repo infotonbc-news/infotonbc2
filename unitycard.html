@@ -101,9 +101,14 @@ footer a:hover{color:#D4AF37}
 .member-circle{width:60px;height:60px;border-radius:50%;border:3px solid #D4AF37;cursor:grab;background-size:cover;background-position:center;box-shadow:0 0 15px rgba(212,175,55,0.4);transition:all 0.3s}
 .member-circle:hover{transform:scale(1.1);box-shadow:0 0 25px rgba(212,175,55,0.6)}
 .member-circle:active{cursor:grabbing}
-.back-link{position:fixed;top:20px;left:100px;z-index:100;font-family:'Orbitron',sans-serif;color:#D4AF37;text-decoration:none;padding:10px 20px;border:1px solid #D4AF37;border-radius:8px;background:rgba(10,10,15,0.8);backdrop-filter:blur(10px);transition:all 0.3s;font-size:14px;letter-spacing:1px}
+.back-link{position:fixed;top:20px;left:200px;z-index:100;font-family:'Orbitron',sans-serif;color:#D4AF37;text-decoration:none;padding:10px 20px;border:1px solid #D4AF37;border-radius:8px;background:rgba(10,10,15,0.8);backdrop-filter:blur(10px);transition:all 0.3s;font-size:14px;letter-spacing:1px}
 .back-link:hover{background:rgba(212,175,55,0.2);box-shadow:0 0 20px rgba(212,175,55,0.4)}
-@media(max-width:768px){h1{font-size:40px;letter-spacing:4px}.form-grid{grid-template-columns:1fr}.back-link{left:20px;top:80px}}
+@media(max-width:768px){
+  h1{font-size:40px;letter-spacing:4px}
+  .form-grid{grid-template-columns:1fr}
+  .back-link{left:20px;top:80px} /* Button rutscht unter die Uhr */
+  #datetime{top:10px} /* Uhr etwas höher */
+}
 </style>
 </head>
 <body>
