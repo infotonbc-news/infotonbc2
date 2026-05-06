@@ -1,3 +1,5 @@
+HTML
+
 <!DOCTYPE html>
 <html lang="de" xml:lang="de">
 <head>
@@ -98,13 +100,15 @@ footer a:hover{color:#D4AF37}
 @keyframes modalIn{from{transform:scale(0.9);opacity:0}to{transform:scale(1);opacity:1}}
 .modal-box h2{font-family:'Orbitron';color:#D4AF37;margin-bottom:20px;font-size:24px;letter-spacing:2px}
 .modal-error{color:#ff4757;font-size:13px;margin-top:8px;height:18px}
+.member-circle{width:60px;height:60px;border-radius:50%;border:3px solid #D4AF37;cursor:grab;background-size:cover;background-position:center;box-shadow:0 0 15px rgba(212,175,55,0.4);transition:all 0.3s}
+.member-circle:hover{transform:scale(1.1);box-shadow:0 0 25px rgba(212,175,55,0.6)}
+.member-circle:active{cursor:grabbing}
 @media(max-width:768px){h1{font-size:40px;letter-spacing:4px}.form-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <a href="#main-content" class="skip-link" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;">Zum Inhalt springen</a>
 <a href="#main-content" class="skip-link" onfocus="this.style.left='20px';this.style.top='20px';this.style.width='auto';this.style.height='auto';this.style.padding='10px';this.style.background='#D4AF37';this.style.color='#0A0A0F';this.style.zIndex='10000';this.style.textDecoration='none';">Zum Inhalt springen</a>
-
 
 <!-- UHRZEIT + DATUM -->
 <div id="datetime" style="position:fixed;top:20px;left:20px;z-index:100;font-family:'Orbitron',sans-serif;color:#D4AF37;text-shadow:0 0 15px rgba(212,175,55,0.6);pointer-events:none">
@@ -164,22 +168,47 @@ footer a:hover{color:#D4AF37}
 </div>
 </div>
 
+<!-- ADMIN PANEL ERWEITERT -->
 <div class="glass-panel admin-panel" id="adminPanel">
 <h2 style="font-family:'Orbitron';color:#D4AF37;margin-bottom:20px" data-i18n="admin_title">Admin: Member Kartei</h2>
-<div style="margin-bottom:20px">
-<input type="text" id="memberSearch" data-i18n-placeholder="search_placeholder" placeholder="Suche Name/Insta..." style="width:100%;padding:12px" onkeyup="filterMembers()">
+
+<div style="display:flex;gap:15px;margin-bottom:20px;flex-wrap:wrap">
+  <button class="btn" onclick="openUserModal()">+ Member eintragen</button>
+  <button class="btn btn-secondary" onclick="exportCSV()">CSV Export</button>
+  <input type="text" id="memberSearch" data-i18n-placeholder="search_placeholder" placeholder="Suche Name/Insta..." style="flex:1;min-width:200px;padding:12px" onkeyup="filterMembers()">
 </div>
+
 <table id="memberTable" aria-label="Member Kartei">
 <caption style="position:absolute;left:-9999px;">Liste der registrierten Mitglieder</caption>
 <thead>
-<tr><th><input type="checkbox" id="selectAll" onchange="toggleAll(this)"></th><th data-i18n="th_name">Name</th><th data-i18n="th_insta">Instagram</th><th data-i18n="th_email">Email</th><th data-i18n="th_donation">Spende</th></tr>
+<tr>
+  <th><input type="checkbox" id="selectAll" onchange="toggleAll(this)"></th>
+  <th>Avatar</th>
+  <th data-i18n="th_name">Name</th>
+  <th data-i18n="th_insta">Instagram</th>
+  <th data-i18n="th_email">Email</th>
+  <th data-i18n="th_donation">Spende</th>
+  <th>Aktionen</th>
+</tr>
 </thead>
 <tbody id="memberTableBody"></tbody>
 </table>
-<div style="display:flex;gap:15px;margin-top:20px">
-<button class="btn" onclick="openMailPopup()" data-i18n="btn_email">Email an Markierte</button>
-<div class="form-group" style="margin:0"><label for="adminAmount" data-i18n="label_amount">Spendenbetrag €</label><input type="number" id="adminAmount" min="1" style="width:150px"></div>
-<button class="btn btn-secondary" onclick="saveDonation()" data-i18n="btn_save">Spende eintragen</button>
+
+<div style="display:flex;gap:15px;margin-top:20px;flex-wrap:wrap">
+  <button class="btn" onclick="openMailPopup()" data-i18n="btn_email">Email an Markierte</button>
+  <button class="btn" onclick="openDMModal()">DM an Markierte</button>
+  <div class="form-group" style="margin:0"><label for="adminAmount" data-i18n="label_amount">Spendenbetrag €</label><input type="number" id="adminAmount" min="1" style="width:150px"></div>
+  <button class="btn btn-secondary" onclick="saveDonation()" data-i18n="btn_save">Spende eintragen</button>
+  <button class="btn" style="background:#ff4757" onclick="deleteSelected()">Markierte löschen</button>
+</div>
+
+<!-- MEMBER BUCKET -->
+<div style="margin-top:40px">
+  <h3 style="font-family:'Orbitron';color:#00D9FF;margin-bottom:15px">Member Bucket</h3>
+  <div id="memberBucket" ondrop="dropToBucket(event)" ondragover="allowDrop(event)"
+       style="min-height:120px;background:rgba(0,217,255,0.05);border:2px dashed rgba(0,217,255,0.3);border-radius:15px;padding:20px;display:flex;flex-wrap:wrap;gap:15px;align-items:center">
+    <p style="opacity:0.5;width:100%;text-align:center">Ziehe Member-Kreise hier rein</p>
+  </div>
 </div>
 </div>
 
@@ -225,6 +254,67 @@ footer a:hover{color:#D4AF37}
 </div>
 </div>
 
+<!-- USER EINTRAGEN/BEARBEITEN MODAL -->
+<div id="userModal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-box">
+    <h2 id="userModalTitle">Member eintragen</h2>
+    <input type="hidden" id="editUserIndex">
+    <div class="form-group"><label>Name</label><input type="text" id="modalName" required></div>
+    <div class="form-group"><label>Email</label><input type="email" id="modalEmail" required></div>
+    <div class="form-group"><label>Passwort</label><input type="text" id="modalPass" required></div>
+    <div class="form-group"><label>Instagram</label><input type="text" id="modalInsta" placeholder="@handle" required></div>
+    <div class="form-group"><label>Avatar URL</label><input type="url" id="modalAvatar" placeholder="https://...jpg"></div>
+    <div class="form-group"><label>Nation</label><select id="modalNation">
+      <option value="DE">🇩🇪 Deutschland</option><option value="AT">🇦🇹 Österreich</option>
+      <option value="CH">🇨🇭 Schweiz</option><option value="NL">🇳🇱 Niederlande</option>
+      <option value="ES">🇪🇸 Spanien</option></select>
+    </div>
+    <div style="display:flex;gap:15px;margin-top:25px">
+      <button class="btn" onclick="saveUser()">Speichern</button>
+      <button class="btn btn-secondary" onclick="closeUserModal()">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<!-- DM MODAL -->
+<div id="dmModal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="modal-box">
+    <h2>Direct Message von NaturalBornChillaz</h2>
+    <div class="form-group">
+      <label>Nachricht an <span id="dmRecipients" style="color:#00D9FF"></span></label>
+      <textarea id="dmMessage" rows="6" placeholder="WE ARE CHILLAZ..."></textarea>
+    </div>
+    <div style="display:flex;gap:15px;margin-top:25px">
+      <button class="btn" onclick="sendDM()">Senden</button>
+      <button class="btn btn-secondary" onclick="closeDMModal()">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<!-- UNITYCARD POPUP FÜR DRAG & DROP -->
+<div id="cardPopup" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:4000;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border:2px solid #D4AF37;border-radius:20px;padding:30px;min-width:350px">
+  <button onclick="closeCardPopup()" style="position:absolute;top:10px;right:15px;background:none;border:none;color:#D4AF37;font-size:24px;cursor:pointer">×</button>
+  <h3 style="font-family:'Orbitron';color:#D4AF37;margin-bottom:20px">Unitycard</h3>
+  <div style="display:flex;gap:20px;align-items:center">
+    <img id="popupAvatar" style="width:80px;height:80px;border-radius:50%;border:2px solid #D4AF37">
+    <div>
+      <p><strong id="popupName"></strong></p>
+      <p style="color:#00D9FF" id="popupInsta"></p>
+      <p style="font-size:12px;opacity:0.7">NBC-ID: <span id="popupId"></span></p>
+      <p>Rang: <span id="popupRank">Chillaz</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- DM EMPFÄNGER FENSTER - Das erscheint bei Membern -->
+<div id="dmInbox" style="display:none;position:fixed;bottom:30px;right:30px;z-index:5000;width:320px;background:rgba(10,10,15,0.95);backdrop-filter:blur(20px);border:2px solid #D4AF37;border-radius:15px;box-shadow:0 0 40px rgba(212,175,55,0.4)">
+  <div style="background:linear-gradient(135deg,#D4AF37 0%,#E5E4E2 100%);color:#0A0A0F;padding:12px;border-radius:13px 13px 0 0;display:flex;justify-content:space-between;align-items:center">
+    <span style="font-family:'Orbitron';font-weight:700;font-size:14px">NBC Direct Message</span>
+    <button onclick="closeDMInbox()" style="background:none;border:none;font-size:20px;cursor:pointer">×</button>
+  </div>
+  <div id="dmInboxContent" style="padding:20px;max-height:300px;overflow-y:auto"></div>
+</div>
+
 <script>
 // ===== SPRACHSYSTEM =====
 const translations = {
@@ -254,11 +344,11 @@ function getLang() {
 function setLang(lang) {
   localStorage.setItem('nbc_lang', lang);
   document.documentElement.lang = lang;
-document.documentElement.setAttribute('xml:lang', lang);
+  document.documentElement.setAttribute('xml:lang', lang);
   applyTranslations(lang);
   document.getElementById('langCurrent').style.backgroundImage = `url('${flagUrls[lang]}')`;
   document.getElementById('langMenu').style.display = 'none';
-document.getElementById('langCurrent').setAttribute('aria-expanded','false');
+  document.getElementById('langCurrent').setAttribute('aria-expanded','false');
   updateDateTime();
 }
 
@@ -277,14 +367,14 @@ function applyTranslations(lang) {
 function toggleLangMenu() {
   const menu = document.getElementById('langMenu');
   const isOpen = menu.style.display === 'none';
-menu.style.display = isOpen ? 'block' : 'none';
-document.getElementById('langCurrent').setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  menu.style.display = isOpen? 'block' : 'none';
+  document.getElementById('langCurrent').setAttribute('aria-expanded', isOpen? 'true' : 'false');
 }
 
 document.addEventListener('click', (e) => {
   if(!e.target.closest('#langSwitcher')) {
     document.getElementById('langMenu').style.display = 'none';
-document.getElementById('langCurrent').setAttribute('aria-expanded','false');
+    document.getElementById('langCurrent').setAttribute('aria-expanded','false');
   }
 });
 
@@ -303,10 +393,8 @@ function updateDateTime(){
   const lang = getLang();
   const locale = locales[lang] || 'de-DE';
   const now = new Date();
-
   const timeOptions = {hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false};
   const dateOptions = {weekday:'short',year:'numeric',month:'2-digit',day:'2-digit'};
-
   document.getElementById('time').textContent = now.toLocaleTimeString(locale, timeOptions);
   document.getElementById('date').textContent = now.toLocaleDateString(locale, dateOptions);
 }
@@ -319,51 +407,60 @@ let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
 let currentUser=JSON.parse(localStorage.getItem('nbc_current')||'null');
 
 function showTab(tab){
-document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-document.getElementById('registerTab').style.display='none';
-document.getElementById('loginTab').style.display='none';
-if(tab==='register'){document.querySelectorAll('.tab')[0].classList.add('active');document.getElementById('registerTab').style.display='block';}
-else{document.querySelectorAll('.tab')[1].classList.add('active');document.getElementById('loginTab').style.display='block';}
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('registerTab').style.display='none';
+  document.getElementById('loginTab').style.display='none';
+  if(tab==='register'){document.querySelectorAll('.tab')[0].classList.add('active');document.getElementById('registerTab').style.display='block';}
+  else{document.querySelectorAll('.tab')[1].classList.add('active');document.getElementById('loginTab').style.display='block';}
 }
 
 document.getElementById('registerForm').onsubmit=(e)=>{
-e.preventDefault();
-const user={name:regName.value,email:regEmail.value,pass:regPass.value,insta:regInsta.value,nation:regNation.value,donation:0};
-let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
-users.push(user);
-localStorage.setItem('nbc_users',JSON.stringify(users));
-localStorage.setItem('nbc_current',JSON.stringify(user));
-window.location.href='mailto:infotonbc@gmail.com?subject=Unitycard Member&body='+encodeURIComponent(JSON.stringify(user));
-document.getElementById('popup').classList.add('active');
-setTimeout(()=>location.href='unitycardclub.html',2000);
+  e.preventDefault();
+  const user={
+    name:regName.value,
+    email:regEmail.value,
+    pass:regPass.value,
+    insta:regInsta.value,
+    nation:regNation.value,
+    donation:0,
+    avatar:`https://ui-avatars.com/api/?name=${encodeURIComponent(regName.value)}&background=D4AF37&color=0A0A0F`
+  };
+  let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  if(users.find(u=>u.email===user.email)){alert('Email bereits registriert!');return;}
+  users.push(user);
+  localStorage.setItem('nbc_users',JSON.stringify(users));
+  localStorage.setItem('nbc_current',JSON.stringify(user));
+  window.location.href='mailto:infotonbc@gmail.com?subject=Unitycard Member&body='+encodeURIComponent(JSON.stringify(user));
+  document.getElementById('popup').classList.add('active');
+  setTimeout(()=>location.href='unitycardclub.html',2000);
 };
 
 document.getElementById('loginForm').onsubmit=(e)=>{
-e.preventDefault();
-let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
-let user=users.find(u=>u.email===loginEmail.value&&u.pass===loginPass.value);
-if(user){
-  localStorage.setItem('nbc_current',JSON.stringify(user));
-  location.href='unitycardclub.html';
-}
-else alert('Chillaz, falsche Daten. Hast du schon dein Gehirn gegossen? 🧠💨');
+  e.preventDefault();
+  let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  let user=users.find(u=>u.email===loginEmail.value&&u.pass===loginPass.value);
+  if(user){
+    localStorage.setItem('nbc_current',JSON.stringify(user));
+    location.href='unitycardclub.html';
+  }
+  else alert('Chillaz, falsche Daten. Hast du schon dein Gehirn gegossen? 🧠💨');
 };
 
 function instaLogin(){
-let handle=prompt('Instagram Handle:');
-let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
-let user=users.find(u=>u.insta===handle);
-if(user){
-  localStorage.setItem('nbc_current',JSON.stringify(user));
-  location.href='unitycardclub.html';
-}
-else alert('Noch nicht registriert, Chillaz!');
+  let handle=prompt('Instagram Handle:');
+  let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  let user=users.find(u=>u.insta===handle);
+  if(user){
+    localStorage.setItem('nbc_current',JSON.stringify(user));
+    location.href='unitycardclub.html';
+  }
+  else alert('Noch nicht registriert, Chillaz!');
 }
 
 function showAdmin(){
   const modal = document.getElementById('adminModal');
-modal.classList.add('active');
-modal.setAttribute('aria-hidden','false');
+  modal.classList.add('active');
+  modal.setAttribute('aria-hidden','false');
   document.getElementById('adminPassInput').value = '';
   document.getElementById('adminError').textContent = '';
   setTimeout(()=>document.getElementById('adminPassInput').focus(),100);
@@ -371,8 +468,8 @@ modal.setAttribute('aria-hidden','false');
 
 function closeAdminModal(){
   const modal = document.getElementById('adminModal');
-modal.classList.remove('active');
-modal.setAttribute('aria-hidden','true');
+  modal.classList.remove('active');
+  modal.setAttribute('aria-hidden','true');
 }
 
 function checkAdminPass(){
@@ -397,64 +494,249 @@ document.getElementById('adminModal').addEventListener('click', (e) => {
   if(e.target.id === 'adminModal') closeAdminModal();
 });
 
+// ===== USER MANAGEMENT =====
+function openUserModal(editIndex = null) {
+  document.getElementById('userModal').classList.add('active');
+  if(editIndex!== null) {
+    let users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
+    let u = users[editIndex];
+    document.getElementById('userModalTitle').textContent = 'Member bearbeiten';
+    document.getElementById('editUserIndex').value = editIndex;
+    document.getElementById('modalName').value = u.name;
+    document.getElementById('modalEmail').value = u.email;
+    document.getElementById('modalPass').value = u.pass;
+    document.getElementById('modalInsta').value = u.insta;
+    document.getElementById('modalAvatar').value = u.avatar || '';
+    document.getElementById('modalNation').value = u.nation;
+  } else {
+    document.getElementById('userModalTitle').textContent = 'Member eintragen';
+    document.getElementById('editUserIndex').value = '';
+    document.querySelector('#userModal').querySelectorAll('input').forEach(i => i.value = '');
+  }
+}
+
+function closeUserModal() {
+  document.getElementById('userModal').classList.remove('active');
+}
+
+function saveUser() {
+  let users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  const user = {
+    name: modalName.value,
+    email: modalEmail.value,
+    pass: modalPass.value,
+    insta: modalInsta.value,
+    avatar: modalAvatar.value || `https://ui-avatars.com/api/?name=${encodeURIComponent(modalName.value)}&background=D4AF37&color=0A0A0F`,
+    nation: modalNation.value,
+    donation: 0
+  };
+  const editIdx = document.getElementById('editUserIndex').value;
+  if(editIdx!== '') {
+    user.donation = users[editIdx].donation || 0;
+    users[editIdx] = {...users[editIdx],...user};
+  } else {
+    if(users.find(u=>u.email===user.email)){alert('Email bereits vorhanden!');return;}
+    users.push(user);
+  }
+  localStorage.setItem('nbc_users',JSON.stringify(users));
+  closeUserModal();
+  loadAdminUsers();
+}
+
+function deleteSelected() {
+  if(!confirm('Markierte Member wirklich löschen?')) return;
+  let users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  const checked = Array.from(document.querySelectorAll('.memberCheck:checked')).map(cb => cb.dataset.email);
+  users = users.filter(u =>!checked.includes(u.email));
+  localStorage.setItem('nbc_users',JSON.stringify(users));
+  loadAdminUsers();
+}
+
+function exportCSV() {
+  let users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  let csv = 'Name,Instagram,Email,Nation,Spende\n';
+  users.forEach(u => csv += `"${u.name}","${u.insta}","${u.email}","${u.nation}",${u.donation||0}\n`);
+  const blob = new Blob([csv], {type:'text/csv'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'nbc_members.csv'; a.click();
+}
+
+// ===== DRAG & DROP BUCKET =====
+function allowDrop(ev) { ev.preventDefault(); }
+
+function drag(ev) {
+  ev.dataTransfer.setData("email", ev.target.dataset.email);
+}
+
+function dropToBucket(ev) {
+  ev.preventDefault();
+  const email = ev.dataTransfer.getData("email");
+  let users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  const user = users.find(u => u.email === email);
+  if(!user) return;
+
+  const bucket = document.getElementById('memberBucket');
+  if(bucket.querySelector(`[data-email="${email}"]`)) return;
+  if(bucket.querySelector('p')) bucket.querySelector('p').remove();
+
+  const circle = document.createElement('div');
+  circle.className = 'member-circle';
+  circle.draggable = true;
+  circle.dataset.email = email;
+  circle.ondragstart = drag;
+  circle.onclick = () => showCardPopup(user);
+  circle.style.backgroundImage = `url('${user.avatar}')`;
+  circle.title = user.name;
+  bucket.appendChild(circle);
+}
+
+function showCardPopup(user) {
+  document.getElementById('popupAvatar').src = user.avatar;
+  document.getElementById('popupName').textContent = user.name;
+  document.getElementById('popupInsta').textContent = user.insta;
+  document.getElementById('popupId').textContent = 'NBC-' + btoa(user.email).substr(0,8).toUpperCase();
+  document.getElementById('popupRank').textContent = user.donation > 50? 'Neo-Chillaz' : 'Chillaz';
+  document.getElementById('cardPopup').style.display = 'block';
+}
+
+function closeCardPopup() {
+  document.getElementById('cardPopup').style.display = 'none';
+}
+
+// ===== DIRECT MESSAGES =====
+function openDMModal() {
+  const checked = Array.from(document.querySelectorAll('.memberCheck:checked'));
+  if(checked.length === 0) {alert('Bitte Member markieren!'); return;}
+  document.getElementById('dmRecipients').textContent = checked.map(cb => cb.dataset.name).join(', ');
+  document.getElementById('dmModal').classList.add('active');
+}
+
+function closeDMModal() {
+  document.getElementById('dmModal').classList.remove('active');
+  document.getElementById('dmMessage').value = '';
+}
+
+function sendDM() {
+  const checked = Array.from(document.querySelectorAll('.memberCheck:checked'));
+  const emails = checked.map(cb => cb.dataset.email);
+  const message = document.getElementById('dmMessage').value;
+  if(!message) return;
+
+  let dms = JSON.parse(localStorage.getItem('nbc_dms')||'{}');
+  emails.forEach(email => {
+    if(!dms[email]) dms[email] = [];
+    dms[email].push({
+      text: message,
+      time: new Date().toLocaleString('de-DE'),
+      read: false
+    });
+  });
+  localStorage.setItem('nbc_dms', JSON.stringify(dms));
+  alert('DM versendet! Erscheint bei den Membern als Pop-up.');
+  closeDMModal();
+}
+
+// ===== DM INBOX FÜR MEMBER - Läuft auf allen Seiten =====
+function checkDMInbox() {
+  const currentUser = JSON.parse(localStorage.getItem('nbc_current')||'null');
+  if(!currentUser) return;
+
+  let dms = JSON.parse(localStorage.getItem('nbc_dms')||'{}');
+  const userDMs = dms[currentUser.email] || [];
+  const unread = userDMs.filter(dm =>!dm.read);
+
+  if(unread.length > 0) {
+    const box = document.getElementById('dmInbox');
+    const content = document.getElementById('dmInboxContent');
+    content.innerHTML = unread.map(dm => `
+      <div style="background:rgba(212,175,55,0.1);padding:12px;border-radius:8px;margin-bottom:10px;border-left:3px solid #D4AF37">
+        <p style="font-size:13px;margin-bottom:5px">${dm.text}</p>
+        <p style="font-size:10px;opacity:0.6">${dm.time}</p>
+      </div>
+    `).join('');
+    box.style.display = 'block';
+
+    // Als gelesen markieren
+    userDMs.forEach(dm => dm.read = true);
+    dms[currentUser.email] = userDMs;
+    localStorage.setItem('nbc_dms', JSON.stringify(dms));
+  }
+}
+
+function closeDMInbox() {
+  document.getElementById('dmInbox').style.display = 'none';
+}
+
+// Check alle 3 Sekunden auf neue DMs
+setInterval(checkDMInbox, 3000);
+checkDMInbox();
+
+// ===== ADMIN TABLE =====
 function loadAdminUsers(){
-let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
-document.getElementById('memberTableBody').innerHTML=users.map(u=>`
-<tr>
-<td><input type="checkbox" class="memberCheck" data-email="${u.email}" data-name="${u.name}"></td>
-<td>${u.name}</td>
-<td>${u.insta}</td>
-<td>${u.email}</td>
-<td>${u.donation||0}€</td>
-</tr>`).join('');
+  let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  document.getElementById('memberTableBody').innerHTML=users.map((u,i)=>`
+  <tr>
+  <td><input type="checkbox" class="memberCheck" data-email="${u.email}" data-name="${u.name}"></td>
+  <td><img src="${u.avatar||`https://ui-avatars.com/api/?name=${encodeURIComponent(u.name)}&background=D4AF37&color=0A0A0F`}"
+           style="width:40px;height:40px;border-radius:50%;border:2px solid #D4AF37;cursor:grab"
+           draggable="true" ondragstart="drag(event)" data-email="${u.email}" alt="${u.name}"></td>
+  <td>${u.name}</td>
+  <td>${u.insta}</td>
+  <td>${u.email}</td>
+  <td>${u.donation||0}€</td>
+  <td>
+    <button onclick="openUserModal(${i})" style="background:none;border:1px solid #00D9FF;color:#00D9FF;padding:5px 10px;border-radius:5px;cursor:pointer;font-size:11px">Edit</button>
+  </td>
+  </tr>`).join('');
 }
 
 function filterMembers(){
-const search = document.getElementById('memberSearch').value.toLowerCase();
-document.querySelectorAll('#memberTableBody tr').forEach(row => {
-  const text = row.textContent.toLowerCase();
-  row.style.display = text.includes(search) ? '' : 'none';
-});
+  const search = document.getElementById('memberSearch').value.toLowerCase();
+  document.querySelectorAll('#memberTableBody tr').forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = text.includes(search)? '' : 'none';
+  });
 }
 
 function toggleAll(checkbox){
-document.querySelectorAll('.memberCheck').forEach(cb => cb.checked = checkbox.checked);
+  document.querySelectorAll('.memberCheck').forEach(cb => cb.checked = checkbox.checked);
 }
 
 function openMailPopup(){
-const checked = Array.from(document.querySelectorAll('.memberCheck:checked'));
-if(checked.length === 0){alert('Bitte mindestens einen Member markieren!');return;}
-const emails = checked.map(cb => cb.dataset.email);
-document.getElementById('mailRecipients').textContent = `Empfänger: ${emails.join(', ')}`;
-document.getElementById('mailPopup').style.display='block';
+  const checked = Array.from(document.querySelectorAll('.memberCheck:checked'));
+  if(checked.length === 0){alert('Bitte mindestens einen Member markieren!');return;}
+  const emails = checked.map(cb => cb.dataset.email);
+  document.getElementById('mailRecipients').textContent = `Empfänger: ${emails.join(', ')}`;
+  document.getElementById('mailPopup').style.display='block';
 }
 
 function closeMailPopup(){
-document.getElementById('mailPopup').style.display='none';
+  document.getElementById('mailPopup').style.display='none';
 }
 
 function sendAdminMail(){
-const checked = Array.from(document.querySelectorAll('.memberCheck:checked'));
-const emails = checked.map(cb => cb.dataset.email);
-const subject = document.getElementById('mailSubject').value;
-const body = document.getElementById('mailBody').value;
-window.location.href = `mailto:infotonbc@gmail.com?bcc=${emails.join(',')}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-closeMailPopup();
+  const checked = Array.from(document.querySelectorAll('.memberCheck:checked'));
+  const emails = checked.map(cb => cb.dataset.email);
+  const subject = document.getElementById('mailSubject').value;
+  const body = document.getElementById('mailBody').value;
+  window.location.href = `mailto:infotonbc@gmail.com?bcc=${emails.join(',')}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  closeMailPopup();
 }
 
 function saveDonation(){
-let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
-const selected = Array.from(document.querySelectorAll('.memberCheck:checked'));
-if(selected.length === 0){alert('Bitte Member auswählen!');return;}
-const amount = parseInt(adminAmount.value);
-if(!amount || amount < 1){alert('Bitte gültigen Betrag eingeben!');return;}
-selected.forEach(cb => {
-  let user = users.find(u=>u.email===cb.dataset.email);
-  user.donation = (user.donation||0) + amount;
-});
-localStorage.setItem('nbc_users',JSON.stringify(users));
-alert('Spende eingetragen! Titel wird vergeben 🌱');
-loadAdminUsers();
+  let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
+  const selected = Array.from(document.querySelectorAll('.memberCheck:checked'));
+  if(selected.length === 0){alert('Bitte Member auswählen!');return;}
+  const amount = parseInt(adminAmount.value);
+  if(!amount || amount < 1){alert('Bitte gültigen Betrag eingeben!');return;}
+  selected.forEach(cb => {
+    let user = users.find(u=>u.email===cb.dataset.email);
+    user.donation = (user.donation||0) + amount;
+  });
+  localStorage.setItem('nbc_users',JSON.stringify(users));
+  alert('Spende eingetragen! Titel wird vergeben 🌱');
+  loadAdminUsers();
 }
 
 // Init
