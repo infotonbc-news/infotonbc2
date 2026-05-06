@@ -904,19 +904,19 @@ document.getElementById('adminModal').addEventListener('click', (e) => {
   if(e.target.id === 'adminModal') closeAdminModal();
 });
 
-// ===== DEMO USER BEIM START LADEN =====
 function initDemoUsers(){
   let users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
-
-  if(!users.find(u=>u.email==='slawo@nbc.com')){
+  
+  // Demo-User nur beim ERSTEN Start hinzufügen
+  if(users.length === 0){
     const demoUsers = [
       {
-        name:'Slawo',
-        email:'slawo@nbc.com',
+        name:'Suave',
+        email:'infotonbc@gmail.com',
         pass:'Slawo%123',
-        insta:'@naturalbornchillaz',
+        insta:'@infotonbc',
         nation:'CHILLAZ',
-        donation:999,
+        donation:200,
         avatar:'https://ui-avatars.com/api/?name=Slawo&background=D4AF37&color=0A0A0F&bold=true',
         rank:'Admin'
       },
@@ -948,32 +948,34 @@ function initDemoUsers(){
         avatar:'https://ui-avatars.com/api/?name=CQ&background=E5E4E2&color=0A0A0F'
       }
     ];
-    users = [...demoUsers,...users];
+    users = demoUsers;
     localStorage.setItem('nbc_users',JSON.stringify(users));
+    
+    // Bucket nur beim ersten Mal vorbefüllen
+    localStorage.setItem('nbc_bucket',JSON.stringify(['slawo@nbc.com','jungle@nbc.com','shaman@nbc.com']));
   }
-
+  
   loadBucketMembers();
 }
 
 function loadBucketMembers(){
   let users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
-  let bucket = JSON.parse(localStorage.getItem('nbc_bucket')||'["slawo@nbc.com","jungle@nbc.com","shaman@nbc.com"]');
-
+  let bucket = JSON.parse(localStorage.getItem('nbc_bucket')||'[]');
+  
   const bucketEl = document.getElementById('bucketMembers');
   const liquidEl = document.getElementById('bucketLiquid');
-
+  
   if(!bucketEl ||!liquidEl) return;
-
+  
   bucketEl.innerHTML = bucket.map(email => {
     const user = users.find(u => u.email === email);
     if(!user) return '';
     return `<div class="member-circle" draggable="true" data-email="${email}" ondragstart="drag(event)" onclick='showCardPopup(${JSON.stringify(user).replace(/'/g,"&apos;")})' style="background-image:url('${user.avatar}')" title="${user.name}"></div>`;
   }).join('');
-
+  
   const level = Math.min(90, 30 + (bucket.length * 10));
   liquidEl.style.height = level + '%';
 }
-
 // ===== USER MANAGEMENT =====
 function openUserModal(editIndex = null) {
   document.getElementById('userModal').classList.add('active');
