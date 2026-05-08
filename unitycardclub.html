@@ -199,34 +199,52 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .footer-links a{color:#00D9FF;text-decoration:none;margin-right:15px}
 .footer-links a:hover{color:#D4AF37}
 
-.chillaz-tv-btn{
-  position:fixed;bottom:30px;right:30px;z-index:999;
-  padding:15px 25px;
-  background:linear-gradient(135deg,#FF0000,#CC0000);
-  border:2px solid #D4AF37;border-radius:50px;
-  font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;
-  color:#FFF;letter-spacing:2px;cursor:pointer;
-  box-shadow:0 0 30px rgba(255,0,0,0.6),0 5px 20px rgba(0,0,0,0.5);
-  transition:all 0.3s;pointer-events:all;
-}
-.chillaz-tv-btn:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 40px rgba(255,0,0,0.8),0 8px 30px rgba(0,0,0,0.7);
+/* NEU: Container für beide Buttons mittig unten */
+.bottom-button-bar {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+  display: flex;
+  gap: 30px;
+  pointer-events: none;
 }
 
-.strain-db-btn{
-  position:fixed;bottom:30px;right:200px;z-index:999;
-  padding:15px 25px;
-  background:linear-gradient(135deg,#00AA44,#007722);
-  border:2px solid #D4AF37;border-radius:50px;
-  font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;
-  color:#FFF;letter-spacing:2px;cursor:pointer;
-  box-shadow:0 0 30px rgba(0,170,68,0.6),0 5px 20px rgba(0,0,0,0.5);
-  transition:all 0.3s;pointer-events:all;
+.chillaz-tv-btn,
+.strain-db-btn {
+  position: relative;
+  padding: 15px 25px;
+  border: 2px solid #D4AF37;
+  border-radius: 50px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #FFF;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+  pointer-events: all;
 }
-.strain-db-btn:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 40px rgba(0,170,68,0.8),0 8px 30px rgba(0,0,0,0.7);
+
+.chillaz-tv-btn {
+  background: linear-gradient(135deg, #FF0000, #CC0000);
+  box-shadow: 0 0 30px rgba(255, 0, 0, 0.6), 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.chillaz-tv-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(255, 0, 0, 0.8), 0 8px 30px rgba(0, 0, 0, 0.7);
+}
+
+.strain-db-btn {
+  background: linear-gradient(135deg, #00AA44, #007722);
+  box-shadow: 0 0 30px rgba(0, 170, 68, 0.6), 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+
+.strain-db-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(0, 170, 68, 0.8), 0 8px 30px rgba(0, 0, 0, 0.7);
 }
 
 .chillaz-tv-overlay{
@@ -298,11 +316,19 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .tv-next-btn:hover{background:rgba(212,175,55,0.4)}
 
 @media(max-width:1024px){
-.ui-overlay{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}
-.unitycard-popup{width:90%;height:auto;min-height:300px}
-.chillaz-tv-overlay{width:95vw;height:70vh}
-.chillaz-tv-btn{bottom:20px;right:20px;padding:12px 20px;font-size:12px}
-.strain-db-btn{bottom:20px;right:160px;padding:12px 18px;font-size:12px}
+ .ui-overlay{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}
+ .unitycard-popup{width:90%;height:auto;min-height:300px}
+ .chillaz-tv-overlay{width:95vw;height:70vh}
+ .bottom-button-bar {
+    bottom: 20px;
+    gap: 15px;
+    flex-direction: column;
+  }
+ .chillaz-tv-btn,
+ .strain-db-btn {
+    padding: 12px 20px;
+    font-size: 12px;
+  }
 }
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
@@ -491,7 +517,7 @@ document.getElementById('topList').innerHTML=topUsers.length?topUsers.map(u=>`
 <div class="member-item" onclick="showCard('${u.insta}')">
 <div class="member-name">${u.name} <span class="badge">${getTitle(u.donation)}</span></div>
 <div class="member-title">${u.donation}€ gespendet</div>
-</div>`).join(''):'<p style="font-size:12px;opacity:0.6">Noch keine Chillaz online... sind wohl alle kiffen 😴🌿</p>';
+}).join(''):'<p style="font-size:12px;opacity:0.6">Noch keine Chillaz online... sind wohl alle kiffen 😴🌿</p>';
 
 document.getElementById('memberList').innerHTML=allUsers.map(u=>`
 <div class="member-item" onclick="showCard('${u.insta}')">
@@ -547,7 +573,7 @@ window.showCard=(insta)=>{
 
 window.openInstagram=()=>{
   if(currentCardUser){
-    window.open(`https://instagram.com/${currentCardUser.insta.replace('@','')}`,'_blank'); 
+    window.open(`https://instagram.com/${currentCardUser.insta.replace('@','')}`,'_blank');
     addActivityScore(2);
   }
 };
@@ -751,7 +777,7 @@ window.spinSlots=()=>{
     }, 100);
 }
 
-// ===== CHILLAZ TV SYSTEM - BULLETPROOF VERSION =====
+// ===== CHILLAZ TV SYSTEM =====
 let ytPlayer = null;
 let ytApiReady = false;
 let ytApiPromise = null;
@@ -1130,7 +1156,7 @@ function animate(){
 animate();
 window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
 
-// CLOSE FUNKTION - NUR EINMAL DEFINIEREN!
+// CLOSE FUNKTION
 window.closeChillazTV = function() {
   const overlay = document.getElementById('chillazTV');
   if (overlay) {
@@ -1148,9 +1174,10 @@ window.closeChillazTV = function() {
 }
 </script>
 
-<button type="button" class="strain-db-btn" aria-label="Strain DB öffnen" onclick="window.location.href='straindb.html'">🌿 STRAIN DB</button>
-
-<button type="button" class="chillaz-tv-btn" aria-label="Chillaz TV öffnen" onclick="openChillazTV()">📺 CHILLAZ TV</button>
+<div class="bottom-button-bar">
+  <button type="button" class="strain-db-btn" aria-label="Strain DB öffnen" onclick="window.location.href='straindb.html'">🌿 STRAIN DB</button>
+  <button type="button" class="chillaz-tv-btn" aria-label="Chillaz TV öffnen" onclick="openChillazTV()">📺 CHILLAZ TV</button>
+</div>
 
 <div class="chillaz-tv-overlay" id="chillazTV" role="dialog" aria-modal="true" aria-labelledby="tvTitle" aria-hidden="true">
   <div class="tv-header">
