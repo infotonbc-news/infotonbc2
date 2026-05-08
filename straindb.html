@@ -1228,36 +1228,36 @@
         document.body.style.overflow = 'auto';
     }
 
-    function startPayPalRedirect() {
-        document.getElementById('donateContent').classList.add('hidden');
-        document.getElementById('countdownContent').classList.remove('hidden');
-        
-        let count = 3;
-        const countdownEl = document.getElementById('countdownText');
-        
-        const interval = setInterval(() => {
-            count--;
-            if (count > 0) {
-                countdownEl.textContent = count + '...';
-            } else {
-                clearInterval(interval);
-                countdownEl.textContent = '1...';
-                
-                // Trigger confetti
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 },
-                    colors: ['#FFD700', '#00FFFF', '#FF1493', '#39FF14']
-                });
-                
-                setTimeout(() => {
-                    window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN, '_blank');
-                    closeDonateModal();
-                }, 500);
-            }
-        }, 1000);
-    }
+function startPayPalRedirect() {
+    document.getElementById('donateContent').classList.add('hidden');
+    document.getElementById('countdownContent').classList.remove('hidden');
+    
+    let count = 3;
+    const countdownEl = document.getElementById('countdownText');
+    
+    const interval = setInterval(() => {
+        count--;
+        if (count > 0) {
+            countdownEl.textContent = count + '...';
+        } else {
+            clearInterval(interval);
+            countdownEl.textContent = '1...';
+            
+            // Trigger confetti
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#FFD700', '#00FFFF', '#FF1493', '#39FF14']
+            });
+            
+            setTimeout(() => {
+                window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN', '_blank');
+                closeDonateModal();
+            }, 500);
+        }
+    }, 1000);
+}
 
     // Submit Modal
     function openSubmitModal() {
