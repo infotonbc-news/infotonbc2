@@ -516,7 +516,7 @@ document.getElementById('topList').innerHTML=topUsers.length?topUsers.map(u=>`
 <div class="member-item" onclick="showCard('${u.insta}')">
 <div class="member-name">${u.name} <span class="badge">${getTitle(u.donation)}</span></div>
 <div class="member-title">${u.donation}€ gespendet</div>
-}).join(''):'<p style="font-size:12px;opacity:0.6">Noch keine Chillaz online... sind wohl alle kiffen 😴🌿</p>';
+</div>`).join(''):'<p style="font-size:12px;opacity:0.6">Noch keine Chillaz online... sind wohl alle kiffen 😴🌿</p>';
 
 document.getElementById('memberList').innerHTML=allUsers.map(u=>`
 <div class="member-item" onclick="showCard('${u.insta}')">
@@ -1033,7 +1033,7 @@ const earthTexture = textureLoader.load('https://unpkg.com/three-globe/example/i
 const earthBump = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-topology.png');
 
 const earthGlobe = new THREE.Mesh(
-  new THREE.SphereGeometry(1.98, 64, 64),
+  new THREE.SphereGeometry(1.98, 64),
   new THREE.MeshPhongMaterial({
     map: earthTexture,
     bumpMap: earthBump,
