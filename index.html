@@ -33,8 +33,7 @@
 <link rel="preconnect" href="https://i.ytimg.com">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"NaturalBornChillaz","url":"https://naturalbornchillaz.de/","logo":"https://naturalbornchillaz.de/nbc262.webp","description":"Tägliche Cannabis Video-News 2026. CanG Updates Deutschland, USA Schedule III, Legalisierung weltweit.","sameAs":["
-instagram.com/infotonbc%22]%7D 
+{"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"NaturalBornChillaz","url":"https://naturalbornchillaz.de/","logo":"https://naturalbornchillaz.de/nbc262.webp","description":"Tägliche Cannabis Video-News 2026. CanG Updates Deutschland, USA Schedule III, Legalisierung weltweit.","sameAs":["https://www.instagram.com/infotonbc"]}
 </script>
 <style>
 body{margin:0;background-image:url('nbc262.webp');background-size:cover;background-position:center;background-attachment:fixed;color:#eee;font-family:Arial,sans-serif}
@@ -88,6 +87,21 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 .ticker a{color:#C9A227;text-decoration:none;font-weight:bold;margin:0 8px}
 .ticker a:hover{text-decoration:underline}
 @keyframes move{to{transform:translateX(-100%)}}
+
+/* ===== DONATE SECTION ===== */
+.donate-section{text-align:center;margin:50px 0 30px;padding:30px 20px}
+.donate-title{color:#C9A227;font-size:22px;margin:0 0 6px;font-weight:bold}
+.donate-subtitle{color:#aaa;font-size:14px;margin:0 0 24px}
+.donate-btn{display:inline-block;text-decoration:none;cursor:pointer;transition:transform .2s,filter .2s;position:relative}
+.donate-btn:hover{transform:scale(1.08);filter:brightness(1.15)}
+.donate-btn:active{transform:scale(0.97)}
+.donate-btn svg{display:block;margin:0 auto}
+.donate-label{color:#C9A227;font-size:15px;font-weight:bold;margin-top:10px;text-shadow:0 0 8px rgba(201,162,39,.5)}
+.donate-legal{background:#0a0a0a;border:1px solid #2a2a2a;border-radius:10px;max-width:560px;margin:20px auto 0;padding:16px 20px;text-align:left}
+.donate-legal p{color:#666;font-size:11px;line-height:1.6;margin:0 0 6px}
+.donate-legal p:last-child{margin:0}
+.donate-legal strong{color:#888}
+
 @media (max-width: 768px){
 .logo{font-size:36px}
 .lang-switch{position:static;justify-content:center;margin-bottom:15px}
@@ -130,6 +144,7 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 <div class="wrap">
   <h2 data-i18n="highlights">Aktuelle Highlights</h2>
   <div class="grid" id="newsGrid"></div>
+
   <div class="banner-row">
     <div class="ad">
       <h3 data-i18n="ad1_t">Höher als deine Toleranz? Dein Spot hier!</h3>
@@ -146,6 +161,8 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
       <p data-i18n="ad3_d">18+ Aufklärung | CanG-konform | High-Reichweite</p>
       <p><a href="mailto:infotonbc@gmail.com" data-i18n="ad_btn">Anfragen</a></p>
     </div>
+  </div>
+
   <div class="video-row">
     <div class="video-card">
       <div class="kicker">VIDEO NEWS</div>
@@ -153,8 +170,7 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
       <iframe id="videoFeed1" src="" title="YouTube Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
     <div class="qr">
-      <a href="
-instagram.com/infotonbc%22 target="_blank" rel="noopener"><img src="qr_card.png" width="180" height="180" alt="NaturalBornChillaz Instagram QR Code" loading="lazy"></a>
+      <a href="https://www.instagram.com/infotonbc" target="_blank" rel="noopener"><img src="qr_card.png" width="180" height="180" alt="NaturalBornChillaz Instagram QR Code" loading="lazy"></a>
       <div style="color:#aaa;font-size:12px;margin-top:5px">@infotonbc</div>
     </div>
     <div class="video-card">
@@ -163,6 +179,74 @@ instagram.com/infotonbc%22 target="_blank" rel="noopener"><img src="qr_card.png"
       <iframe id="videoFeed2" src="" title="YouTube Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
   </div>
+
+  <!-- ===== SPENDENBEREICH ===== -->
+  <div class="donate-section">
+    <h2 class="donate-title">🌿 Unterstütze NaturalBornChillaz</h2>
+    <p class="donate-subtitle">Gefällt dir unser Content? Wirf eine Münze in den Topf!</p>
+
+    <a href="https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN" target="_blank" rel="noopener noreferrer" class="donate-btn" aria-label="Jetzt via PayPal spenden">
+      <!-- Goldtopf SVG -->
+      <svg width="140" height="160" viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Schatten -->
+        <ellipse cx="70" cy="152" rx="52" ry="8" fill="#7a5500" opacity="0.35"/>
+        <!-- Topf Körper -->
+        <path d="M22 88 Q18 148 70 150 Q122 148 118 88 Z" fill="#2a1800"/>
+        <path d="M20 86 Q16 146 70 148 Q124 146 120 86 Z" fill="#3d2200"/>
+        <path d="M22 88 Q18 146 70 148 Q122 146 118 88 Z" fill="#4d2e00"/>
+        <!-- Topf Rand oben -->
+        <ellipse cx="70" cy="88" rx="52" ry="14" fill="#5c3600"/>
+        <ellipse cx="70" cy="88" rx="48" ry="11" fill="#7a4e00"/>
+        <ellipse cx="70" cy="88" rx="44" ry="9" fill="#8B6914"/>
+        <!-- Goldmünzen Stapel -->
+        <!-- Hintere Reihe -->
+        <circle cx="40" cy="78" r="12" fill="#C9A227" stroke="#a07d10" stroke-width="1"/>
+        <circle cx="40" cy="78" r="10" fill="#F0C040"/>
+        <text x="40" y="83" text-anchor="middle" font-size="12" font-family="Arial" font-weight="bold" fill="#7a5000">$</text>
+        <circle cx="70" cy="74" r="13" fill="#C9A227" stroke="#a07d10" stroke-width="1"/>
+        <circle cx="70" cy="74" r="11" fill="#F0C040"/>
+        <text x="70" y="79" text-anchor="middle" font-size="12" font-family="Arial" font-weight="bold" fill="#7a5000">$</text>
+        <circle cx="100" cy="78" r="12" fill="#C9A227" stroke="#a07d10" stroke-width="1"/>
+        <circle cx="100" cy="78" r="10" fill="#F0C040"/>
+        <text x="100" y="83" text-anchor="middle" font-size="12" font-family="Arial" font-weight="bold" fill="#7a5000">$</text>
+        <!-- Mittlere Reihe -->
+        <circle cx="55" cy="67" r="11" fill="#DAA520" stroke="#a07d10" stroke-width="1"/>
+        <circle cx="55" cy="67" r="9" fill="#F5D060"/>
+        <text x="55" y="72" text-anchor="middle" font-size="11" font-family="Arial" font-weight="bold" fill="#7a5000">$</text>
+        <circle cx="85" cy="65" r="11" fill="#DAA520" stroke="#a07d10" stroke-width="1"/>
+        <circle cx="85" cy="65" r="9" fill="#F5D060"/>
+        <text x="85" y="70" text-anchor="middle" font-size="11" font-family="Arial" font-weight="bold" fill="#7a5000">$</text>
+        <!-- Vordere / oberste -->
+        <circle cx="70" cy="58" r="12" fill="#C9A227" stroke="#a07d10" stroke-width="1"/>
+        <circle cx="70" cy="58" r="10" fill="#FFD700"/>
+        <text x="70" y="63" text-anchor="middle" font-size="12" font-family="Arial" font-weight="bold" fill="#7a5000">$</text>
+        <!-- Glanz-Effekt auf Münze oben -->
+        <ellipse cx="66" cy="54" rx="4" ry="2" fill="#fff" opacity="0.35" transform="rotate(-20 66 54)"/>
+        <!-- Topf Henkel links -->
+        <path d="M22 100 Q4 100 4 116 Q4 130 22 130" fill="none" stroke="#5c3600" stroke-width="8" stroke-linecap="round"/>
+        <path d="M22 100 Q6 100 6 116 Q6 128 22 128" fill="none" stroke="#8B6914" stroke-width="5" stroke-linecap="round"/>
+        <!-- Topf Henkel rechts -->
+        <path d="M118 100 Q136 100 136 116 Q136 130 118 130" fill="none" stroke="#5c3600" stroke-width="8" stroke-linecap="round"/>
+        <path d="M118 100 Q134 100 134 116 Q134 128 118 128" fill="none" stroke="#8B6914" stroke-width="5" stroke-linecap="round"/>
+        <!-- Glanzstreifen am Topf -->
+        <path d="M32 95 Q36 140 42 145" fill="none" stroke="#7a5500" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
+      </svg>
+      <div class="donate-label">🪙 Jetzt spenden via PayPal</div>
+    </a>
+
+    <!-- Rechtliche Hinweise -->
+    <div class="donate-legal">
+      <p><strong>Rechtlicher Hinweis zur Spende:</strong></p>
+      <p>Diese Schaltfläche führt zu einer freiwilligen Spende an eine <strong>Privatperson</strong> (NaturalBornChillaz / Betreiber dieser Website). Es handelt sich <strong>nicht</strong> um eine Spende an einen gemeinnützigen Verein oder eine steuerbegünstigte Organisation.</p>
+      <p>⚠️ <strong>Keine Steuerabzugsfähigkeit:</strong> Für diese Spende kann <strong>keine Spendenquittung</strong> ausgestellt werden. Der Betrag ist steuerlich nicht absetzbar (§ 10b EStG gilt nur für gemeinnützige Einrichtungen).</p>
+      <p>💶 <strong>Schenkungssteuer:</strong> Spenden an Privatpersonen können ab einem Betrag von <strong>20.000 € innerhalb von 10 Jahren</strong> schenkungssteuerpflichtig sein (§ 16 ErbStG). Kleinbeträge sind in aller Regel steuerlich irrelevant.</p>
+      <p>🔒 <strong>Freiwilligkeit:</strong> Jede Zahlung ist vollkommen freiwillig. Es besteht keinerlei Verpflichtung. Eine Spende begründet keinen Anspruch auf Gegenleistungen, Inhalte oder Vorteile.</p>
+      <p>📋 <strong>Zahlungsabwicklung:</strong> Die Zahlung wird über PayPal (PayPal (Europe) S.à r.l. et Cie, S.C.A.) abgewickelt. Es gelten die <a href="https://www.paypal.com/de/webapps/mpp/ua/useragreement-full" target="_blank" rel="noopener" style="color:#C9A227">PayPal-Nutzungsbedingungen</a>. Rückbuchungen sind gemäß PayPal-Richtlinien möglich.</p>
+      <p>📬 Bei Fragen: <a href="mailto:infotonbc@gmail.com" style="color:#C9A227">infotonbc@gmail.com</a></p>
+    </div>
+  </div>
+  <!-- ===== ENDE SPENDENBEREICH ===== -->
+
 </div>
 <footer>
   <a href="Impressum.html" data-i18n="imprint">Impressum</a>
@@ -179,7 +263,7 @@ Kunst & Info nach Art. 5 GG</div>
   de:{lang_hint:"Sprache wählen:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WORLDWIDE CANNABIS NEWS • 2026",highlights:"Aktuelle Highlights",age_title:"Altersprüfung 18+",age_text:"Diese Website enthält Informationen zu Cannabis nach CanG. Der Zugang ist nur für volljährige Personen gestattet. Bist du mindestens 18 Jahre alt?",age_yes:"Ja, ich bin 18+",age_no:"Nein",age_disclaimer:"Aufklärung nach Art. 5 GG. Keine Werbung, keine Abgabe.",country_de:"Deutschland",country_us:"USA",country_th:"Thailand",country_mt:"Malta",country_ch:"Schweiz",country_ca:"Kanada",ad1_t:"Höher als deine Toleranz? Dein Spot hier!",ad1_d:"Seeds • Shops • CBD • Lass die Chiller dich finden",ad2_t:"Günstiger als Amsterdam, näher als dein Dealer",ad2_d:"Werbung die kleben bleibt – ganz legal",ad3_t:"Hier könnte dein Gras… äh, deine Brand wachsen",ad3_d:"18+ Aufklärung | CanG-konform | High-Reichweite",ad_btn:"Jetzt buchen",imprint:"Impressum",privacy:"Datenschutz",disclaimer:"Disclaimer 18+",contact:"Kontakt",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz klärt auf\nAufklärung 18+ | CanG-konform\nKeine Werbung. Keine Abgabe.\nKunst & Info nach Art. 5 GG"},
   en:{lang_hint:"Choose language:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WORLDWIDE CANNABIS NEWS • 2026",highlights:"Latest Highlights",age_title:"Age Verification 18+",age_text:"This website contains information about cannabis under CanG. Access is only permitted for adults. Are you at least 18 years old?",age_yes:"Yes, I'm 18+",age_no:"No",age_disclaimer:"Education under Art. 5 GG. No advertising, no distribution.",country_de:"Germany",country_us:"USA",country_th:"Thailand",country_mt:"Malta",country_ch:"Switzerland",country_ca:"Canada",ad1_t:"Higher than your tolerance? Your spot here!",ad1_d:"Seeds • Shops • CBD • Let the chillers find you",ad2_t:"Cheaper than Amsterdam, closer than your dealer",ad2_d:"Advertising that sticks – totally legal",ad3_t:"Your grass… uh, your brand could grow here",ad3_d:"18+ Education | CanG-compliant | High-reach",ad_btn:"Book now",imprint:"Imprint",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz educates\nEducation 18+ | CanG-compliant\nNo advertising. No distribution.\nArt & Info under Art. 5 GG"},
   nl:{lang_hint:"Kies taal:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WERELDWIJD CANNABIS NIEUWS • 2026",highlights:"Actuele Highlights",age_title:"Leeftijdscontrole 18+",age_text:"Deze website bevat informatie over cannabis volgens CanG. Toegang is alleen toegestaan voor volwassenen. Ben je minstens 18 jaar oud?",age_yes:"Ja, ik ben 18+",age_no:"Nee",age_disclaimer:"Voorlichting volgens Art. 5 GG. Geen reclame, geen verstrekking.",country_de:"Duitsland",country_us:"VS",country_th:"Thailand",country_mt:"Malta",country_ch:"Zwitserland",country_ca:"Canada",ad1_t:"Hoger dan je tolerantie? Jouw spot hier!",ad1_d:"Zaden • Shops • CBD • Laat de chille mensen je vinden",ad2_t:"Goedkoper dan Amsterdam, dichterbij dan je dealer",ad2_d:"Reclame die blijft plakken – helemaal legaal",ad3_t:"Hier kan je gras… uh, je merk groeien",ad3_d:"18+ Voorlichting | CanG-conform | High-bereik",ad_btn:"Nu boeken",imprint:"Colofon",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informeert\nVoorlichting 18+ | CanG-conform\nGeen reclame. Geen verstrekking.\nKunst & Info volgens Art. 5 GG"},
-  fr:{lang_hint:"Choisir la langue:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ACTUALITÉS CANNABIS MONDIALES • 2026",highlights:"À la Une",age_title:"Vérification d'âge 18+",age_text:"Ce site contient des informations sur le cannabis selon CanG. L'accès est réservé aux adultes. Avez-vous au moins 18 ans?",age_yes:"Oui, j'ai 18+",age_no:"Non",age_disclaimer:"Information selon Art. 5 GG. Pas de pub, pas de cession.",country_de:"Allemagne",country_us:"États-Unis",country_th:"Thaïlande",country_mt:"Malte",country_ch:"Suisse",country_ca:"Canada",ad1_t:"Plus haut que ta tolérance? Ton spot ici!",ad1_d:"Graines • Shops • CBD • Laisse les chillers te trouver",ad2_t:"Moins cher qu’Amsterdam, plus près que ton dealer",ad2_d:"Pub qui colle – 100% légale",ad3_t:"Ici ton herbe… euh, ta marque pourrait pousser",ad3_d:"18+ Sensibilisation | Conforme CanG | Haute portée",ad_btn:"Réserver",imprint:"Mentions légales",privacy:"Confidentialité",disclaimer:"Avertissement 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informe\nSensibilisation 18+ | Conforme CanG\nPas de pub. Pas de cession.\nArt & Info selon Art. 5 GG"},
+  fr:{lang_hint:"Choisir la langue:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ACTUALITÉS CANNABIS MONDIALES • 2026",highlights:"À la Une",age_title:"Vérification d'âge 18+",age_text:"Ce site contient des informations sur le cannabis selon CanG. L'accès est réservé aux adultes. Avez-vous au moins 18 ans?",age_yes:"Oui, j'ai 18+",age_no:"Non",age_disclaimer:"Information selon Art. 5 GG. Pas de pub, pas de cession.",country_de:"Allemagne",country_us:"États-Unis",country_th:"Thaïlande",country_mt:"Malte",country_ch:"Suisse",country_ca:"Canada",ad1_t:"Plus haut que ta tolérance? Ton spot ici!",ad1_d:"Graines • Shops • CBD • Laisse les chillers te trouver",ad2_t:"Moins cher qu'Amsterdam, plus près que ton dealer",ad2_d:"Pub qui colle – 100% légale",ad3_t:"Ici ton herbe… euh, ta marque pourrait pousser",ad3_d:"18+ Sensibilisation | Conforme CanG | Haute portée",ad_btn:"Réserver",imprint:"Mentions légales",privacy:"Confidentialité",disclaimer:"Avertissement 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informe\nSensibilisation 18+ | Conforme CanG\nPas de pub. Pas de cession.\nArt & Info selon Art. 5 GG"},
   bg:{lang_hint:"Избери език:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"СВЕТОВНИ НОВИНИ ЗА КАНАБИС • 2026",highlights:"Актуални акценти",age_title:"Проверка на възраст 18+",age_text:"Този уебсайт съдържа информация за канабис според CanG. Достъпът е разрешен само за пълнолетни. Навършили ли сте 18 години?",age_yes:"Да, на 18+",age_no:"Не",age_disclaimer:"Просвета по чл. 5 GG. Без реклама, без предоставяне.",country_de:"Германия",country_us:"САЩ",country_th:"Тайланд",country_mt:"Малта",country_ch:"Швейцария",country_ca:"Канада",ad1_t:"По-високо от толеранса ти? Твоето място тук!",ad1_d:"Семена • Магазини • CBD • Нека чилърите те намерят",ad2_t:"По-евтино от Амстердам, по-близо от дилъра ти",ad2_d:"Реклама, която залепва – напълно легално",ad3_t:"Тук може да расте твоята трева… ах, твоята марка",ad3_d:"18+ Просвета | Съобразено с CanG | Висок обхват",ad_btn:"Резервирай",imprint:"Импресум",privacy:"Поверителност",disclaimer:"Отказ 18+",contact:"Контакт",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz информира\nПросвета 18+ | Съобразено с CanG\nБез реклама. Без предоставяне.\nИзкуство & инфо по чл. 5 GG"},
   pl:{lang_hint:"Wybierz język:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ŚWIATOWE WIADOMOŚCI O KONOPIACH • 2026",highlights:"Aktualne wydarzenia",age_title:"Weryfikacja wieku 18+",age_text:"Ta strona zawiera informacje o konopiach wg CanG. Dostęp tylko dla pełnoletnich. Czy masz ukończone 18 lat?",age_yes:"Tak, mam 18+",age_no:"Nie",age_disclaimer:"Edukacja wg Art. 5 GG. Brak reklamy, brak wydawania.",country_de:"Niemcy",country_us:"USA",country_th:"Tajlandia",country_mt:"Malta",country_ch:"Szwajcaria",country_ca:"Kanada",ad1_t:"Wyżej niż twoja tolerancja? Twój spot tutaj!",ad1_d:"Nasiona • Sklepy • CBD • Niech chillersi cię znajdą",ad2_t:"Taniej niż Amsterdam, bliżej niż twój diler",ad2_d:"Reklama, która się klei – w pełni legalna",ad3_t:"Tutaj może rosnąć twoja trawa… tzn. marka",ad3_d:"18+ Edukacja | Zgodne z CanG | High-zasięg",ad_btn:"Rezerwuj",imprint:"Impressum",privacy:"Prywatność",disclaimer:"Oświadczenie 18+",contact:"Kontakt",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz edukuje\nEdukacja 18+ | Zgodne z CanG\nBrak reklamy. Brak wydawania.\nSztuka i info wg Art. 5 GG"},
   es:{lang_hint:"Elegir idioma:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"NOTICIAS MUNDIALES DE CANNABIS • 2026",highlights:"Destacados Actuales",age_title:"Verificación de edad 18+",age_text:"Este sitio contiene información sobre cannabis según CanG. Acceso solo para adultos. ¿Tienes al menos 18 años?",age_yes:"Sí, tengo 18+",age_no:"No",age_disclaimer:"Educación según Art. 5 GG. Sin publicidad, sin cesión.",country_de:"Alemania",country_us:"EE.UU.",country_th:"Tailandia",country_mt:"Malta",country_ch:"Suiza",country_ca:"Canadá",ad1_t:"¿Más alto que tu tolerancia? ¡Tu spot aquí!",ad1_d:"Semillas • Tiendas • CBD • Deja que los chillers te encuentren",ad2_t:"Más barato que Ámsterdam, más cerca que tu dealer",ad2_d:"Publicidad que se pega – 100% legal",ad3_t:"Aquí podría crecer tu hierba… digo, tu marca",ad3_d:"18+ Educación | Conforme a CanG | Alto alcance",ad_btn:"Reservar",imprint:"Aviso legal",privacy:"Privacidad",disclaimer:"Aviso 18+",contact:"Contacto",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informa\nEducación 18+ | Conforme a CanG\nSin publicidad. Sin cesión.\nArte e Info según Art. 5 GG"}
