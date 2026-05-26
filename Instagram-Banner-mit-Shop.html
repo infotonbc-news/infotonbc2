@@ -29,18 +29,10 @@
         repeating-linear-gradient(90deg, #0C0A09, #0C0A09 2px, #1A1411 2px, #1A1411 4px),
         radial-gradient(ellipse at 30% 20%, rgba(196,245,224,0.04) 0%, transparent 50%);
       background-attachment: fixed;
-      font-size: 16px;
     }
    .vines { position: fixed; inset: 0; pointer-events: none; opacity: 0.06; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M10,50 Q30,20 50,50 T90,50' stroke='%23C4F5E0' stroke-width='0.5' fill='none'/%3E%3C/svg%3E"); }
 
-   .wrap {
-      position: relative;
-      z-index: 2;
-      max-width: 540px;
-      margin: 0 auto;
-      padding: 50px 18px 80px;
-      width: 100%;
-    }
+   .wrap { position: relative; z-index: 2; max-width: 540px; margin: 0 auto; padding: 50px 18px 80px; width: 100%; }
 
    .glass-plate {
       background: var(--glass);
@@ -100,15 +92,58 @@
    .btn:hover::before { left:100%; }
    .btn:hover { background: rgba(199,125,255,0.11); border-color: rgba(212,175,55,0.55); box-shadow: 0 0 26px rgba(199,125,255,0.22); transform: translateY(-3px); }
 
+    /* SPENDEN BUTTON - Das hat gefehlt */
+   .donate-btn {
+      background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(199,125,255,0.15));
+      border: 2px solid var(--gold);
+      font-weight: 500;
+      font-size: 1.05rem;
+    }
+   .donate-btn:hover {
+      background: linear-gradient(135deg, rgba(212,175,55,0.25), rgba(199,125,255,0.25));
+      box-shadow: 0 0 35px rgba(212,175,55,0.4);
+    }
+
    .shop { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
-   .item { background: rgba(12,10,9,0.52); border: 1px solid rgba(157,180,166,0.12); border-radius: 18px; padding: 20px 16px; text-align: center; transition: all 0.4s ease; cursor: pointer; }
+   .item {
+      background: rgba(12,10,9,0.52);
+      border: 1px solid rgba(157,180,166,0.12);
+      border-radius: 18px;
+      padding: 20px 16px;
+      text-align: center;
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative; /* Wichtig für Sticker */
+    }
    .item:hover { border-color: rgba(212,175,55,0.34); background: rgba(12,10,9,0.72); box-shadow: 0 12px 32px rgba(0,0,0,0.35); transform: translateY(-2px); }
+
+    /* LOGO STICKER - Das hat auch gefehlt */
+   .item-sticker {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      width: 42px;
+      height: 42px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--wood-dark);
+      box-shadow: 0 4px 12px rgba(212,175,55,0.5);
+      border: 2px solid var(--wood-dark);
+      z-index: 5;
+    }
+
    .item-img { width: 100%; aspect-ratio: 1; border-radius: 14px; background: var(--jungle); margin-bottom: 14px; object-fit: cover; border: 1px solid rgba(196,245,224,0.12); }
    .item h3 { font-size: 1.02rem; color: var(--glow-green); font-weight: 400; margin-bottom: 6px; font-family: 'Marcellus', serif; }
    .item.price { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; font-weight: 300; }
    .item.subtext { font-size: 0.82rem; color: var(--sage); margin-bottom: 14px; line-height: 1.45; }
    .item.btn { padding: 11px; font-size: 0.86rem; margin: 0; }
-   .item.construction { opacity: 0.62; cursor: not-allowed; }.item.construction:hover { transform: none; }
+   .item.construction { opacity: 0.62; cursor: not-allowed; }
+   .item.construction:hover { transform: none; }
 
    .footer { text-align: center; margin-top: 48px; font-size: 0.76rem; color: var(--sage); opacity: 0.55; line-height: 1.75; }
 
@@ -135,12 +170,9 @@
    .close-modal:hover { background:rgba(199,125,255,0.28); transform:rotate(90deg); }
 
     @media (max-width: 640px) {
-     .shop { grid-template-columns: 1fr; }
-     .lang-switch { top: 10px; right: 10px; flex-wrap: wrap; max-width: 180px; }
-     .wrap { padding: 30px 12px 60px; }
-     .hero { padding: 32px 22px 28px; }
-     .logo-img { width: 92px; height: 92px; }
-     .section-block h2 { font-size: 1.35rem; }
+    .shop { grid-template-columns: 1fr; }
+    .lang-switch { top: 10px; right: 10px; flex-wrap: wrap; max-width: 180px; }
+    .wrap { padding: 30px 12px 60px; }
     }
   </style>
 </head>
@@ -150,76 +182,61 @@
   <div class="lang-switch">
     <button onclick="switchLang('de')" data-lang="de">DE</button>
     <button onclick="switchLang('en')" data-lang="en">EN</button>
-    <button onclick="switchLang('fr')" data-lang="fr">FR</button>
-    <button onclick="switchLang('es')" data-lang="es">ES</button>
-    <button onclick="switchLang('bg')" data-lang="bg">BG</button>
-    <button onclick="switchLang('pl')" data-lang="pl">PL</button>
-    <button onclick="switchLang('ja')" data-lang="ja">JA</button>
   </div>
 
   <div class="wrap">
     <div class="glass-plate">
       <div class="hero">
         <img src="logo.png" alt="NBC Logo" class="logo-img">
-        <svg class="nbc-title" viewBox="0 0 400 60">
-          <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" fill="url(#goldGrad)" font-family="Marcellus" font-size="42" letter-spacing="8">NBC</text>
-          <defs>
-            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
-              <stop offset="50%" style="stop-color:#F5E7A3;stop-opacity:1" />
-              <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:1" />
-            </linearGradient>
-          </defs>
-        </svg>
+        <h1 class="nbc-title" data-i18n="title">NaturalBornChillaz</h1>
         <p class="tagline" data-i18n="tagline">We are from Earth, not Mars</p>
       </div>
 
       <div class="inner-section">
         <div class="section-block">
-          <h2 data-i18n="about">Über NBC</h2>
-          <p data-i18n="intro1">NaturalBornChillaz ist ein Kollektiv für bewusstes Leben, Kunst und Community. Wir glauben an Qualität vor Quantität.</p>
-          <div class="quote" data-i18n="quote">„Chill ist kein Zustand. Chill ist eine Entscheidung.“</div>
-        </div>
-
-        <div class="section-block">
-          <h2 data-i18n="manifesto">Manifest</h2>
+          <h2 data-i18n="manifestoTitle">Manifesto</h2>
+          <p data-i18n="intro1">NaturalBornChillaz ist ein Kollektiv aus Freidenkern, Naturliebhabern und Community-Buildern.</p>
           <ul class="manifesto-list">
-            <li data-i18n="manifesto1"><strong>Qualität</strong> über Quantität</li>
-            <li data-i18n="manifesto2"><strong>Community</strong> über Kommerz</li>
-            <li data-i18n="manifesto3"><strong>Kunst</strong> über Algorithmus</li>
+            <li data-i18n="manifesto1"><strong>Freiheit:</strong> Wir glauben an Selbstbestimmung und natürliche Lebensweise.</li>
+            <li data-i18n="manifesto2"><strong>Community:</strong> Gemeinsam sind wir stärker als allein.</li>
+            <li data-i18n="manifesto3"><strong>Natur:</strong> Zurück zu den Wurzeln, im Einklang mit der Erde.</li>
           </ul>
+          <div class="quote" data-i18n="quote">„Die Natur braucht uns nicht, aber wir brauchen die Natur.“</div>
         </div>
 
         <div class="section-block">
-          <h2 data-i18n="shop">Shop</h2>
+          <h2 data-i18n="shopTitle">Shop</h2>
           <div class="shop">
             <div class="item" onclick="openModal('seed')">
+              <div class="item-sticker">NBC</div>
               <img src="seed.jpg" alt="Seeds" class="item-img">
-              <h3 data-i18n="item1title">NBC Tee</h3>
-              <div class="price">39€</div>
-              <p class="subtext" data-i18n="item1desc">Organic Cotton, Fair Trade</p>
-              <button class="btn" data-i18n="buy">Kaufen</button>
+              <h3 data-i18n="seedTitle">Seeds</h3>
+              <p class="price" data-i18n="seedPrice">ab 15€</p>
+              <p class="subtext" data-i18n="seedDesc">Premium Genetics</p>
+              <button class="btn" data-i18n="viewBtn">Ansehen</button>
             </div>
             <div class="item construction">
-              <img src="item2.jpg" alt="Product" class="item-img">
-              <h3 data-i18n="item2title">Coming Soon</h3>
-              <div class="price">--</div>
-              <p class="subtext" data-i18n="item2desc">Neue Kollektion in Arbeit</p>
-              <button class="btn" disabled data-i18n="soon">Bald</button>
+              <div class="item-sticker">NBC</div>
+              <img src="merch.jpg" alt="Merch" class="item-img">
+              <h3 data-i18n="merchTitle">Merch</h3>
+              <p class="price" data-i18n="comingSoon">Coming Soon</p>
+              <p class="subtext" data-i18n="merchDesc">NBC Wear</p>
+              <button class="btn" disabled data-i18n="soonBtn">Bald</button>
             </div>
           </div>
+
+          <!-- SPENDEN BUTTON - Hier war er -->
+          <a href="https://paypal.me/naturalbornchillaz" target="_blank" class="btn donate-btn" data-i18n="donateBtn">💚 Support NBC</a>
         </div>
       </div>
 
-      <div class="footer">
-        <p data-i18n="footer">© 2026 NaturalBornChillaz. Alle Rechte vorbehalten.</p>
-      </div>
+      <div class="footer" data-i18n="footer">© 2026 NaturalBornChillaz. Alle Rechte vorbehalten.</div>
     </div>
   </div>
 
   <!-- MODAL -->
-  <div id="modal" class="modal">
-    <div class="pokemon-card">
+  <div id="modal" class="modal" onclick="closeModal()">
+    <div class="pokemon-card" onclick="event.stopPropagation()">
       <button class="close-modal" onclick="closeModal()">&times;</button>
       <div class="card-inner">
         <div class="card-header">
@@ -249,219 +266,107 @@
     </div>
   </div>
 
-  <script>
-    const translations = {
-      de: {
-        title: "NaturalBornChillaz | NBC News",
-        tagline: "We are from Earth, not Mars",
-        about: "Über NBC",
-        intro1: "NaturalBornChillaz ist ein Kollektiv für bewusstes Leben, Kunst und Community. Wir glauben an Qualität vor Quantität.",
-        quote: "„Chill ist kein Zustand. Chill ist eine Entscheidung.“",
-        manifesto: "Manifest",
-        manifesto1: "Qualität über Quantität",
-        manifesto2: "Community über Kommerz",
-        manifesto3: "Kunst über Algorithmus",
-        shop: "Shop",
-        item1title: "NBC Tee",
-        item1desc: "Organic Cotton, Fair Trade",
-        item2title: "Coming Soon",
-        item2desc: "Neue Kollektion in Arbeit",
-        buy: "Kaufen",
-        soon: "Bald",
-        thc: "THC",
-        type: "Typ",
-        price: "Preis",
-        orderBtn: "Bestellen",
-        footer: "© 2026 NaturalBornChillaz. Alle Rechte vorbehalten."
-      },
-      en: {
-        title: "NaturalBornChillaz | NBC News",
-        tagline: "We are from Earth, not Mars",
-        about: "About NBC",
-        intro1: "NaturalBornChillaz is a collective for conscious living, art and community. We believe in quality over quantity.",
-        quote: "“Chill is not a state. Chill is a decision.”",
-        manifesto: "Manifesto",
-        manifesto1: "Quality over quantity",
-        manifesto2: "Community over commerce",
-        manifesto3: "Art over algorithm",
-        shop: "Shop",
-        item1title: "NBC Tee",
-        item1desc: "Organic Cotton, Fair Trade",
-        item2title: "Coming Soon",
-        item2desc: "New collection in progress",
-        buy: "Buy",
-        soon: "Soon",
-        thc: "THC",
-        type: "Type",
-        price: "Price",
-        orderBtn: "Order",
-        footer: "© 2026 NaturalBornChillaz. All rights reserved."
-      },
-      fr: {
-        title: "NaturalBornChillaz | NBC News",
-        tagline: "Nous venons de la Terre, pas de Mars",
-        about: "À propos de NBC",
-        intro1: "NaturalBornChillaz est un collectif pour une vie consciente, l'art et la communauté. Nous croyons en la qualité plutôt qu'en la quantité.",
-        quote: "« Le chill n'est pas un état. Le chill est une décision. »",
-        manifesto: "Manifeste",
-        manifesto1: "La qualité avant la quantité",
-        manifesto2: "La communauté avant le commerce",
-        manifesto3: "L'art avant l'algorithme",
-        shop: "Boutique",
-        item1title: "T-shirt NBC",
-        item1desc: "Coton bio, commerce équitable",
-        item2title: "Bientôt disponible",
-        item2desc: "Nouvelle collection en cours",
-        buy: "Acheter",
-        soon: "Bientôt",
-        thc: "THC",
-        type: "Type",
-        price: "Prix",
-        orderBtn: "Commander",
-        footer: "© 2026 NaturalBornChillaz. Tous droits réservés."
-      },
-      es: {
-        title: "NaturalBornChillaz | NBC News",
-        tagline: "Somos de la Tierra, no de Marte",
-        about: "Sobre NBC",
-        intro1: "NaturalBornChillaz es un colectivo para la vida consciente, el arte y la comunidad. Creemos en la calidad sobre la cantidad.",
-        quote: "«El chill no es un estado. El chill es una decisión.»",
-        manifesto: "Manifiesto",
-        manifesto1: "Calidad sobre cantidad",
-        manifesto2: "Comunidad sobre comercio",
-        manifesto3: "Arte sobre algoritmo",
-        shop: "Tienda",
-        item1title: "Camiseta NBC",
-        item1desc: "Algodón orgánico, comercio justo",
-        item2title: "Próximamente",
-        item2desc: "Nueva colección en progreso",
-        buy: "Comprar",
-        soon: "Pronto",
-        thc: "THC",
-        type: "Tipo",
-        price: "Precio",
-        orderBtn: "Pedir",
-        footer: "© 2026 NaturalBornChillaz. Todos los derechos reservados."
-      },
-      bg: {
-        title: "NaturalBornChillaz | NBC News",
-        tagline: "Ние сме от Земята, не от Марс",
-        about: "За NBC",
-        intro1: "NaturalBornChillaz е колектив за съзнателен живот, изкуство и общност. Вярваме в качеството пред количеството.",
-        quote: "«Чилът не е състояние. Чилът е решение.»",
-        manifesto: "Манифест",
-        manifesto1: "Качество пред количество",
-        manifesto2: "Общност пред търговия",
-        manifesto3: "Изкуство пред алгоритъм",
-        shop: "Магазин",
-        item1title: "Тениска NBC",
-        item1desc: "Органичен памук, справедлива търговия",
-        item2title: "Очаквайте скоро",
-        item2desc: "Нова колекция в процес",
-        buy: "Купи",
-        soon: "Скоро",
-        thc: "THC",
-        type: "Тип",
-        price: "Цена",
-        orderBtn: "Поръчай",
-        footer: "© 2026 NaturalBornChillaz. Всички права запазени."
-      },
-      pl: {
-        title: "NaturalBornChillaz | NBC News",
-        tagline: "Jesteśmy z Ziemi, nie z Marsa",
-        about: "O NBC",
-        intro1: "NaturalBornChillaz to kolektyw na rzecz świadomego życia, sztuki i społeczności. Wierzymy w jakość ponad ilość.",
-        quote: "„Chill to nie stan. Chill to decyzja.”",
-        manifesto: "Manifest",
-        manifesto1: "Jakość ponad ilość",
-        manifesto2: "Społeczność ponad handel",
-        manifesto3: "Sztuka ponad algorytm",
-        shop: "Sklep",
-        item1title: "Koszulka NBC",
-        item1desc: "Bawełna organiczna, sprawiedliwy handel",
-        item2title: "Wkrótce",
-        item2desc: "Nowa kolekcja w przygotowaniu",
-        buy: "Kup",
-        soon: "Wkrótce",
-        thc: "THC",
-        type: "Typ",
-        price: "Cena",
-        orderBtn: "Zamów",
-        footer: "© 2026 NaturalBornChillaz. Wszelkie prawa zastrzeżone."
-      },
-      ja: {
-        title: "NaturalBornChillaz | NBC News",
-        tagline: "私たちは火星からではなく地球から来た",
-        about: "NBCについて",
-        intro1: "NaturalBornChillazは、意識的な生活、アート、コミュニティのためのコレクティブです。量より質を信じています。",
-        quote: "「チルは状態ではない。チルは決断だ。」",
-        manifesto: "マニフェスト",
-        manifesto1: "量より質",
-        manifesto2: "商業よりコミュニティ",
-        manifesto3: "アルゴリズムよりアート",
-        shop: "ショップ",
-        item1title: "NBC Tシャツ",
-        item1desc: "オーガニックコットン、フェアトレード",
-        item2title: "近日公開",
-        item2desc: "新コレクション準備中",
-        buy: "購入",
-        soon: "近日",
-        thc: "THC",
-        type: "タイプ",
-        price: "価格",
-        orderBtn: "注文",
-        footer: "© 2026 NaturalBornChillaz. 無断転載を禁じます。"
-      }
-    };
-
-    const countryToLang = { DE: 'de', AT: 'de', CH: 'de', US: 'en', GB: 'en', CA: 'en', AU: 'en', FR: 'fr', BE: 'fr', ES: 'es', MX: 'es', AR: 'es', CO: 'es', BG: 'bg', PL: 'pl', JP: 'ja' };
-    const supported = ['de','en','fr','es','bg','pl','ja'];
-    let currentLang = 'de';
-
-    function setLanguage(lang) {
-      const dict = translations[lang] || translations['de'];
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (dict[key]) el.textContent = dict[key];
-      });
-      document.documentElement.lang = lang;
-      document.title = dict.title;
-      currentLang = lang;
-      document.querySelectorAll('.lang-switch button').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.lang === lang);
-      });
-      localStorage.setItem('preferred_lang', lang);
+<script>
+  const translations = {
+    de: {
+      title: "NaturalBornChillaz | NBC News",
+      tagline: "We are from Earth, not Mars",
+      manifestoTitle: "Manifesto",
+      intro1: "NaturalBornChillaz ist ein Kollektiv aus Freidenkern, Naturliebhabern und Community-Buildern.",
+      manifesto1: "Freiheit: Wir glauben an Selbstbestimmung und natürliche Lebensweise.",
+      manifesto2: "Community: Gemeinsam sind wir stärker als allein.",
+      manifesto3: "Natur: Zurück zu den Wurzeln, im Einklang mit der Erde.",
+      quote: "„Die Natur braucht uns nicht, aber wir brauchen die Natur.“",
+      shopTitle: "Shop",
+      seedTitle: "Seeds",
+      seedPrice: "ab 15€",
+      seedDesc: "Premium Genetics",
+      merchTitle: "Merch",
+      comingSoon: "Coming Soon",
+      merchDesc: "NBC Wear",
+      viewBtn: "Ansehen",
+      soonBtn: "Bald",
+      donateBtn: "💚 Support NBC",
+      thc: "THC",
+      type: "Typ",
+      price: "Preis",
+      orderBtn: "Bestellen",
+      footer: "© 2026 NaturalBornChillaz. Alle Rechte vorbehalten."
+    },
+    en: {
+      title: "NaturalBornChillaz | NBC News",
+      tagline: "We are from Earth, not Mars",
+      manifestoTitle: "Manifesto",
+      intro1: "NaturalBornChillaz is a collective of free thinkers, nature lovers and community builders.",
+      manifesto1: "Freedom: We believe in self-determination and natural lifestyle.",
+      manifesto2: "Community: Together we are stronger than alone.",
+      manifesto3: "Nature: Back to the roots, in harmony with earth.",
+      quote: "\"Nature doesn't need us, but we need nature.\"",
+      shopTitle: "Shop",
+      seedTitle: "Seeds",
+      seedPrice: "from 15€",
+      seedDesc: "Premium Genetics",
+      merchTitle: "Merch",
+      comingSoon: "Coming Soon",
+      merchDesc: "NBC Wear",
+      viewBtn: "View",
+      soonBtn: "Soon",
+      donateBtn: "💚 Support NBC",
+      thc: "THC",
+      type: "Type",
+      price: "Price",
+      orderBtn: "Order",
+      footer: "© 2026 NaturalBornChillaz. All rights reserved."
     }
-    window.switchLang = setLanguage;
+  };
 
-    function openModal(type) {
-      document.getElementById('modal').classList.add('active');
-    }
+  let currentLang = 'de';
 
-    function closeModal() {
-      document.getElementById('modal').classList.remove('active');
-    }
+  function setLanguage(lang) {
+    const dict = translations[lang] || translations['de'];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key]) el.textContent = dict[key];
+    });
+    document.documentElement.lang = lang;
+    document.title = dict.title;
+    currentLang = lang;
+    document.querySelectorAll('.lang-switch button').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    localStorage.setItem('preferred_lang', lang);
+  }
+  window.switchLang = setLanguage;
 
-    async function detectLanguage() {
-      const saved = localStorage.getItem('preferred_lang');
-      if (saved && supported.includes(saved)) { setLanguage(saved); return; }
-      try {
-        const res = await fetch('https://ipapi.co/json/');
-        const data = await res.json();
-        const countryLang = countryToLang[data.country_code];
-        if (countryLang && supported.includes(countryLang)) { setLanguage(countryLang); return; }
-      } catch(e) {
-        console.log('Geo-IP failed, using browser language');
-      }
-      const browserLang = (navigator.language || navigator.userLanguage).slice(0,2).toLowerCase();
-      if (supported.includes(browserLang)) {
-        setLanguage(browserLang);
-        return;
-      }
-      setLanguage('en');
+  function openModal(type) {
+    document.getElementById('modal').classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('modal').classList.remove('active');
+  }
+
+  async function detectLanguage() {
+    const saved = localStorage.getItem('preferred_lang');
+    if (saved && ['de','en'].includes(saved)) { setLanguage(saved); return; }
+    try {
+      const res = await fetch('https://ipapi.co/json/');
+      const data = await res.json();
+      const countryLang = { DE: 'de', AT: 'de', CH: 'de', US: 'en', GB: 'en' }[data.country_code];
+      if (countryLang) { setLanguage(countryLang); return; }
+    } catch(e) {
+      console.log('Geo-IP failed, using browser language');
     }
-    detectLanguage();
-  </script>
+    const browserLang = (navigator.language || navigator.userLanguage).slice(0,2).toLowerCase();
+    if (['de','en'].includes(browserLang)) {
+      setLanguage(browserLang);
+      return;
+    }
+    setLanguage('en');
+  }
+
+  detectLanguage();
+</script>
 
 </body>
 </html>
