@@ -1,5 +1,18 @@
 User-agent: *
 Allow: /
 
+# Hauptseiten für Google
+Allow: /$
+Allow: /straindb.html$
+Allow: /unitycard.html$
+Allow: /unitycardclub.html$
+Allow: /Disclaimer.html$
+Allow: /Datenschutz.html$
+Allow: /Impressum.html$
+
+# Duplikate / alte Versionen nicht indexieren
+Disallow: /index.html
+Disallow: /ImpressumG.html
+Disallow: /impressumUnity.html
+
 Sitemap: https://infotonbc-news.github.io/infotonbc2/sitemap.xml
-Sitemap: https://naturalbornchillaz.de/sitemap.xml
