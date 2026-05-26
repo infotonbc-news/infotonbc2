@@ -3,105 +3,64 @@
 <head>
 <!-- Playables SDK -->
 <script>// Playables SDK v1.0.0
-// Game lifecycle bridge: rAF-based game-ready detection + event communication
 (function() {
   'use strict';
-
-  // Idempotency: skip if already initialized (e.g., server-side injection
-  // followed by client-side inject-javascript via the Bloks webview component).
   if (window.playablesSDK) return;
-
   var HANDLER_NAME = 'playablesGameEventHandler';
   var ANDROID_BRIDGE_NAME = '_MetaPlayablesBridge';
   var RAF_FRAME_THRESHOLD = 3;
-
   var gameReadySent = false;
   var firstInteractionSent = false;
   var errorSent = false;
   var frameCount = 0;
   var originalRAF = window.requestAnimationFrame;
-
-  // --- Transport Layer ---
-
   function hasIOSBridge() {
-    return !!(window.webkit &&
-              window.webkit.messageHandlers &&
-              window.webkit.messageHandlers[HANDLER_NAME]);
+    return!!(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers[HANDLER_NAME]);
   }
-
   function hasAndroidBridge() {
-    return !!(window[ANDROID_BRIDGE_NAME] &&
-              typeof window[ANDROID_BRIDGE_NAME].postEvent === 'function');
+    return!!(window[ANDROID_BRIDGE_NAME] && typeof window[ANDROID_BRIDGE_NAME].postEvent === 'function');
   }
-
   function isInIframe() {
-    return !!(window.parent && window.parent !== window);
+    return!!(window.parent && window.parent!== window);
   }
-
   function sendEvent(eventName, payload) {
-    var message = {
-      type: eventName,
-      payload: payload || {},
-      timestamp: Date.now()
-    };
-
+    var message = { type: eventName, payload: payload || {}, timestamp: Date.now() };
     if (hasIOSBridge()) {
-      try {
-        window.webkit.messageHandlers[HANDLER_NAME].postMessage(message);
-      } catch (e) { /* ignore */ }
+      try { window.webkit.messageHandlers[HANDLER_NAME].postMessage(message); } catch (e) {}
       return;
     }
-
     if (hasAndroidBridge()) {
-    try {
-      var p = payload || {};
-      p.__secureToken = window.__fbAndroidBridgeAuthToken || '';
-      p.timestamp = message.timestamp;
-      window[ANDROID_BRIDGE_NAME].postEvent(
-        eventName,
-        JSON.stringify(p)
-      );
-    } catch (e) { /* ignore */ }
-    return;
-  }
-
-    if (isInIframe()) {
       try {
-        window.parent.postMessage(message, '*');
-      } catch (e) { /* ignore */ }
+        var p = payload || {};
+        p.__secureToken = window.__fbAndroidBridgeAuthToken || '';
+        p.timestamp = message.timestamp;
+        window[ANDROID_BRIDGE_NAME].postEvent(eventName, JSON.stringify(p));
+      } catch (e) {}
+      return;
+    }
+    if (isInIframe()) {
+      try { window.parent.postMessage(message, '*'); } catch (e) {}
       return;
     }
   }
-
-  // --- rAF Game-Ready Detection ---
-
   function onFrame() {
     if (gameReadySent) return;
-
     frameCount++;
     if (frameCount >= RAF_FRAME_THRESHOLD) {
       gameReadySent = true;
-      sendEvent('game_ready', {
-        frame_count: frameCount,
-        detected_at: Date.now()
-      });
+      sendEvent('game_ready', { frame_count: frameCount, detected_at: Date.now() });
       return;
     }
-
     originalRAF.call(window, onFrame);
   }
-
   if (originalRAF) {
     window.requestAnimationFrame = function(callback) {
       if (!gameReadySent) {
         return originalRAF.call(window, function(timestamp) {
           frameCount++;
-          if (frameCount >= RAF_FRAME_THRESHOLD && !gameReadySent) {
+          if (frameCount >= RAF_FRAME_THRESHOLD &&!gameReadySent) {
             gameReadySent = true;
-            sendEvent('game_ready', {
-              frame_count: frameCount,
-              detected_at: Date.now()
-            });
+            sendEvent('game_ready', { frame_count: frameCount, detected_at: Date.now() });
           }
           callback(timestamp);
         });
@@ -109,35 +68,25 @@
       return originalRAF.call(window, callback);
     };
   }
-
-  // --- First User Interaction Detection ---
-
   function setupFirstInteractionDetection() {
     var events = ['touchstart', 'mousedown', 'keydown'];
-
     function onFirstInteraction() {
       if (firstInteractionSent) return;
       firstInteractionSent = true;
       sendEvent('user_interaction_start', null);
-
       for (var i = 0; i < events.length; i++) {
         document.removeEventListener(events[i], onFirstInteraction, true);
       }
     }
-
     for (var i = 0; i < events.length; i++) {
       document.addEventListener(events[i], onFirstInteraction, true);
     }
   }
-
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', setupFirstInteractionDetection);
   } else {
     setupFirstInteractionDetection();
   }
-
-  // --- Auto Error Capture ---
-
   window.addEventListener('error', function(event) {
     if (errorSent) return;
     errorSent = true;
@@ -149,49 +98,185 @@
       auto_captured: true
     });
   });
-
   window.addEventListener('unhandledrejection', function(event) {
     if (errorSent) return;
     errorSent = true;
     var reason = event.reason;
     sendEvent('error', {
-      message: (reason instanceof Error) ? reason.message : String(reason),
+      message: (reason instanceof Error)? reason.message : String(reason),
       type: 'unhandled_promise_rejection',
       auto_captured: true
     });
   });
-
-  // --- Public API ---
-
   window.playablesSDK = {
-    complete: function(score) {
-      sendEvent('game_ended', {
-        score: score,
-        completed: true
-      });
-    },
-
+    complete: function(score) { sendEvent('game_ended', { score: score, completed: true }); },
     error: function(message) {
       if (errorSent) return;
       errorSent = true;
-      sendEvent('error', {
-        message: message || 'Unknown error',
-        auto_captured: false
-      });
+      sendEvent('error', { message: message || 'Unknown error', auto_captured: false });
     },
-
     sendEvent: function(eventName, payload) {
-      if (!eventName || typeof eventName !== 'string') return;
+      if (!eventName || typeof eventName!== 'string') return;
       sendEvent(eventName, payload);
     }
   };
-
-  // Kick off rAF detection in case no game code calls rAF immediately
-  if (originalRAF) {
-    originalRAF.call(window, onFrame);
-  }
+  if (originalRAF) { originalRAF.call(window, onFrame); }
 })();</script>
-<script>window.Intl=window.Intl||{};Intl.t=function(s){return(Intl._locale&&Intl._locale[s])||s;};</script>
+
+<!-- i18n Language System -->
+<script>
+const translations = {
+    'de': {
+        'STRAIN DATENBANK': 'STRAIN DATENBANK',
+        'STRAINS': 'STRAINS',
+        'STRAIN EINREICHEN': 'STRAIN EINREICHEN',
+        'FEATURED STRAINS': '🔥 FEATURED STRAINS 🔥',
+        'Alle Types': 'Alle Types',
+        'Alle Strains': '🌿 Alle Strains',
+        'Beliebt': '🔥 Beliebt',
+        'Neu': '✨ Neu',
+        'High THC': '💪 High THC',
+        'Strains gefunden': 'Strains gefunden',
+        'Klick für Details': 'Klick für Details 💚',
+        'Strain suchen...': '🔍 Strain suchen... Amnesia, OG Kush, Gelato...',
+        'Indica': 'Indica',
+        'Sativa': 'Sativa',
+        'Hybrid': 'Hybrid',
+        'THC Gehalt': 'THC Gehalt',
+        'CBD Gehalt': 'CBD Gehalt',
+        'Effekte': '🧠 Effekte',
+        'Geschmack': '👅 Geschmack',
+        'Beschreibung': '📖 Beschreibung',
+        'DRUCKEN': '🖨 DRUCKEN',
+        'Ey Bruder, Chillaz brauchen mehr als Gras zum Leben': 'Ey Bruder, Chillaz brauchen mehr als Gras zum Leben 😂🌿💸',
+        'Sicher daß du chillig bist damit?': 'Sicher daß du chillig bist damit?',
+        'CHILLIG SPENDEN VIA PAYPAL': 'CHILLIG SPENDEN VIA PAYPAL',
+        'SCHLIESSEN': 'SCHLIESSEN',
+        'Weiterleitung zu PayPal...': 'Weiterleitung zu PayPal...',
+        'Keine Strains gefunden': 'Keine Strains gefunden, Bratan!',
+        'Check deine Filter': 'Check deine Filter oder such was anderes',
+        'STRAIN EINREICHEN': '🌟 STRAIN EINREICHEN',
+        'Strain Name': 'Strain Name *',
+        'Type': 'Type *',
+        'Wählen...': 'Wählen...',
+        'THC %': 'THC % *',
+        'CBD %': 'CBD % *',
+        'Effekte': 'Effekte *',
+        'Geschmack': 'Geschmack *',
+        'Beschreibung': 'Beschreibung *',
+        'Dein Name': 'Dein Name (Optional)',
+        'STRAIN ABSENDEN': '🚀 STRAIN ABSENDEN',
+        'ABBRECHEN': 'ABBRECHEN',
+        'DANKE BRATAN!': 'DANKE BRATAN!',
+        'COOL, WEITER CHILLEN': 'COOL, WEITER CHILLEN'
+    },
+    'en': {
+        'STRAIN DATENBANK': 'STRAIN DATABASE',
+        'STRAINS': 'STRAINS',
+        'STRAIN EINREICHEN': 'SUBMIT STRAIN',
+        'FEATURED STRAINS': '🔥 FEATURED STRAINS 🔥',
+        'Alle Types': 'All Types',
+        'Alle Strains': '🌿 All Strains',
+        'Beliebt': '🔥 Popular',
+        'Neu': '✨ New',
+        'High THC': '💪 High THC',
+        'Strains gefunden': 'strains found',
+        'Klick für Details': 'Click for details 💚',
+        'Strain suchen...': '🔍 Search strain... Amnesia, OG Kush, Gelato...',
+        'Indica': 'Indica',
+        'Sativa': 'Sativa',
+        'Hybrid': 'Hybrid',
+        'THC Gehalt': 'THC Content',
+        'CBD Gehalt': 'CBD Content',
+        'Effekte': '🧠 Effects',
+        'Geschmack': '👅 Flavor',
+        'Beschreibung': '📖 Description',
+        'DRUCKEN': '🖨 PRINT',
+        'Ey Bruder, Chillaz brauchen mehr als Gras zum Leben': 'Yo bro, Chillaz need more than weed to survive 😂🌿💸',
+        'Sicher daß du chillig bist damit?': 'You sure you\'re cool with that?',
+        'CHILLIG SPENDEN VIA PAYPAL': 'DONATE VIA PAYPAL',
+        'SCHLIESSEN': 'CLOSE',
+        'Weiterleitung zu PayPal...': 'Redirecting to PayPal...',
+        'Keine Strains gefunden': 'No strains found, bro!',
+        'Check deine Filter': 'Check your filters or search something else',
+        'STRAIN EINREICHEN': '🌟 SUBMIT STRAIN',
+        'Strain Name': 'Strain Name *',
+        'Type': 'Type *',
+        'Wählen...': 'Select...',
+        'THC %': 'THC % *',
+        'CBD %': 'CBD % *',
+        'Effekte': 'Effects *',
+        'Geschmack': 'Flavor *',
+        'Beschreibung': 'Description *',
+        'Dein Name': 'Your Name (Optional)',
+        'STRAIN ABSENDEN': '🚀 SUBMIT STRAIN',
+        'ABBRECHEN': 'CANCEL',
+        'DANKE BRATAN!': 'THANKS BRO!',
+        'COOL, WEITER CHILLEN': 'COOL, KEEP CHILLING'
+    },
+    'es': {
+        'STRAIN DATENBANK': 'BASE DE DATOS',
+        'STRAINS': 'CEPAS',
+        'STRAIN EINREICHEN': 'ENVIAR CEPA',
+        'FEATURED STRAINS': '🔥 CEPAS DESTACADAS 🔥',
+        'Alle Types': 'Todos los tipos',
+        'Alle Strains': '🌿 Todas las cepas',
+        'Beliebt': '🔥 Popular',
+        'Neu': '✨ Nuevo',
+        'High THC': '💪 Alto THC',
+        'Strains gefunden': 'cepas encontradas',
+        'Klick für Details': 'Click para detalles 💚',
+        'Strain suchen...': '🔍 Buscar cepa... Amnesia, OG Kush, Gelato...',
+        'Indica': 'Indica',
+        'Sativa': 'Sativa',
+        'Hybrid': 'Híbrido',
+        'THC Gehalt': 'Contenido THC',
+        'CBD Gehalt': 'Contenido CBD',
+        'Effekte': '🧠 Efectos',
+        'Geschmack': '👅 Sabor',
+        'Beschreibung': '📖 Descripción',
+        'DRUCKEN': '🖨 IMPRIMIR',
+        'Ey Bruder, Chillaz brauchen mehr als Gras zum Leben': 'Ey bro, los Chillaz necesitan más que hierba para vivir 😂🌿💸',
+        'Sicher daß du chillig bist damit?': '¿Seguro que estás chill con eso?',
+        'CHILLIG SPENDEN VIA PAYPAL': 'DONAR VIA PAYPAL',
+        'SCHLIESSEN': 'CERRAR',
+        'Weiterleitung zu PayPal...': 'Redirigiendo a PayPal...',
+        'Keine Strains gefunden': '¡No se encontraron cepas, bro!',
+        'Check deine Filter': 'Revisa tus filtros o busca otra cosa',
+        'STRAIN EINREICHEN': '🌟 ENVIAR CEPA',
+        'Strain Name': 'Nombre de Cepa *',
+        'Type': 'Tipo *',
+        'Wählen...': 'Elegir...',
+        'THC %': 'THC % *',
+        'CBD %': 'CBD % *',
+        'Effekte': 'Efectos *',
+        'Geschmack': 'Sabor *',
+        'Beschreibung': 'Descripción *',
+        'Dein Name': 'Tu Nombre (Opcional)',
+        'STRAIN ABSENDEN': '🚀 ENVIAR CEPA',
+        'ABBRECHEN': 'CANCELAR',
+        'DANKE BRATAN!': '¡GRACIAS BRO!',
+        'COOL, WEITER CHILLEN': 'COOL, SIGUE CHILL'
+    }
+};
+
+function getUserLang() {
+    const browserLang = navigator.language || navigator.userLanguage;
+    const langCode = browserLang.split('-')[0];
+    return translations[langCode]? langCode : 'en';
+}
+
+const userLang = getUserLang();
+document.documentElement.lang = userLang;
+
+function t(key) {
+    return translations[userLang]?.[key] || translations['en']?.[key] || key;
+}
+
+window.Intl = window.Intl || {};
+Intl.t = t;
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NaturalBornChillaz Strain DB PayPal Chill Check Edition</title>
@@ -204,7 +289,7 @@
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Quicksand:wght@300;400;500;600;700&display=swap');
-    
+
     :root {
         --nbc-gold: #FFD700;
         --nbc-cyan: #00FFFF;
@@ -215,14 +300,12 @@
         --darker-jungle: #051005;
     }
 
-    * {
-        box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
         font-family: 'Quicksand', sans-serif;
         background: var(--darker-jungle);
-        background-image: 
+        background-image:
             radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
             radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
             radial-gradient(circle at 40% 20%, rgba(255, 20, 147, 0.05) 0%, transparent 50%);
@@ -233,11 +316,8 @@
         -webkit-user-select: none;
     }
 
-    h1, h2, h3, .font-orbitron {
-        font-family: 'Orbitron', sans-serif;
-    }
+    h1, h2, h3,.font-orbitron { font-family: 'Orbitron', sans-serif; }
 
-    /* Screenshot Protection Overlay */
     body::after {
         content: '';
         position: fixed;
@@ -257,8 +337,7 @@
         opacity: 0.3;
     }
 
-    /* Falling Leaves */
-    .leaf {
+   .leaf {
         position: fixed;
         top: -10%;
         z-index: 1;
@@ -270,99 +349,115 @@
     }
 
     @keyframes fall {
-        to {
-            transform: translateY(110vh) rotate(360deg);
-        }
+        to { transform: translateY(110vh) rotate(360deg); }
     }
 
-    /* Neon Glow Effects */
-    .neon-gold {
+   .neon-gold {
         text-shadow: 0 0 10px var(--nbc-gold), 0 0 20px var(--nbc-gold), 0 0 30px var(--nbc-gold);
     }
 
-    .neon-cyan {
+   .neon-cyan {
         text-shadow: 0 0 10px var(--nbc-cyan), 0 0 20px var(--nbc-cyan);
     }
 
-    .border-neo {
+   .border-neo {
         border: 2px solid var(--nbc-gold);
-        box-shadow: 
+        box-shadow:
             0 0 10px var(--nbc-gold),
             0 0 20px var(--nbc-cyan),
             inset 0 0 15px rgba(255, 215, 0, 0.1);
     }
 
-    /* Pokemon Card Holo Effect */
-    .strain-card {
+    /* 3D HOLO CARD SYSTEM */
+   .strain-card {
         position: relative;
         background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
         border-radius: 20px;
         overflow: hidden;
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        transition: transform 0.1s ease, box-shadow 0.3s ease;
         transform-style: preserve-3d;
+        transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
         cursor: pointer;
+        will-change: transform;
     }
 
-    .strain-card::before {
-        content: '';
+   .strain-card-image {
+        position: relative;
+        width: 100%;
+        height: 220px;
+        overflow: hidden;
+        border-radius: 20px 20px 0 0;
+        transform: translateZ(20px);
+    }
+
+   .strain-card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+
+   .strain-card:hover.strain-card-image img {
+        transform: scale(1.1);
+    }
+
+   .strain-card-glare {
         position: absolute;
-        top: -50%;
-        left: -50%;
-        width: 200%;
-        height: 200%;
-        background: linear-gradient(
-            45deg,
-            transparent 30%,
-            rgba(255, 255, 255, 0.1) 50%,
-            transparent 70%
-        );
-        transform: rotate(45deg);
-        animation: holo-shine 3s infinite;
-        pointer-events: none;
-    }
-
-    @keyframes holo-shine {
-        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-    }
-
-    .strain-card::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-            125deg,
-            transparent 40%,
-            rgba(255, 215, 0, 0.1) 45%,
-            rgba(0, 255, 255, 0.1) 50%,
-            rgba(255, 20, 147, 0.1) 55%,
-            transparent 60%
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+            circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(255, 255, 255, 0.4) 0%,
+            rgba(255, 255, 255, 0.1) 30%,
+            rgba(255, 255, 255, 0) 60%
         );
         opacity: 0;
         transition: opacity 0.3s;
         pointer-events: none;
         mix-blend-mode: overlay;
+        transform: translateZ(40px);
     }
 
-    .strain-card:hover::after {
+   .strain-card:hover.strain-card-glare {
         opacity: 1;
-        animation: holo-shift 0.6s ease-in-out;
     }
 
-    @keyframes holo-shift {
-        0%, 100% { transform: translateX(0) translateY(0); }
-        50% { transform: translateX(10px) translateY(-10px); }
+   .strain-card-holo {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+            125deg,
+            transparent 40%,
+            rgba(255, 215, 0, 0.2) 45%,
+            rgba(0, 255, 255, 0.2) 50%,
+            rgba(255, 20, 147, 0.2) 55%,
+            transparent 60%
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+        pointer-events: none;
+        mix-blend-mode: color-dodge;
+        transform: translateZ(50px);
     }
 
-    .strain-card:hover {
-        transform: translateY(-10px) scale(1.02) rotateX(2deg);
-        box-shadow: 
-            0 20px 40px rgba(255, 215, 0, 0.3),
-            0 0 60px rgba(0, 255, 255, 0.2);
+   .strain-card:hover.strain-card-holo {
+        opacity: 1;
+        animation: holo-move 3s ease-in-out infinite;
     }
 
-    /* NBC Foil Stamp */
-    .nbc-stamp {
+    @keyframes holo-move {
+        0%, 100% { transform: translateX(-100%) translateZ(50px); }
+        50% { transform: translateX(100%) translateZ(50px); }
+    }
+
+   .strain-card-content {
+        position: relative;
+        transform: translateZ(30px);
+    }
+
+   .nbc-stamp {
         position: absolute;
         top: 10px;
         right: 10px;
@@ -373,34 +468,32 @@
         font-size: 0.6rem;
         padding: 4px 8px;
         border-radius: 6px;
-        transform: rotate(15deg);
+        transform: rotate(15deg) translateZ(60px);
         box-shadow: 0 2px 10px rgba(255, 215, 0, 0.8);
         z-index: 10;
         letter-spacing: 1px;
     }
 
-    /* Type Badge Colors */
-    .type-indica {
+   .type-indica {
         background: linear-gradient(135deg, #6B0E9F, #9D00FF);
         box-shadow: 0 0 15px rgba(157, 0, 255, 0.6);
     }
-    .type-sativa {
+   .type-sativa {
         background: linear-gradient(135deg, #FF6B00, #FF1493);
         box-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
     }
-    .type-hybrid {
+   .type-hybrid {
         background: linear-gradient(135deg, #00C9FF, #00FF88);
         box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
     }
 
-    /* Tab Styles */
-    .tab-btn {
+   .tab-btn {
         position: relative;
         overflow: hidden;
         transition: all 0.3s;
     }
 
-    .tab-btn::before {
+   .tab-btn::before {
         content: '';
         position: absolute;
         bottom: 0;
@@ -411,17 +504,13 @@
         transition: width 0.3s;
     }
 
-    .tab-btn.active::before {
-        width: 100%;
-    }
-
-    .tab-btn.active {
+   .tab-btn.active::before { width: 100%; }
+   .tab-btn.active {
         background: rgba(255, 215, 0, 0.1);
         border-color: var(--nbc-gold);
     }
 
-    /* Modal Backdrop */
-    .modal-backdrop {
+   .modal-backdrop {
         backdrop-filter: blur(10px);
         background: rgba(0, 0, 0, 0.8);
         animation: fadeIn 0.3s;
@@ -432,44 +521,34 @@
         to { opacity: 1; }
     }
 
-    .modal-content {
+   .modal-content {
         animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
     @keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(50px) scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+        from { opacity: 0; transform: translateY(50px) scale(0.9); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-    /* Auto Slideshow */
-    .slideshow-container {
+   .slideshow-container {
         position: relative;
         overflow: hidden;
         border-radius: 20px;
     }
 
-    .slide {
+   .slide {
         display: none;
         animation: slideAnimation 1s;
     }
 
-    .slide.active {
-        display: block;
-    }
+   .slide.active { display: block; }
 
     @keyframes slideAnimation {
         from { opacity: 0; transform: scale(0.95); }
         to { opacity: 1; transform: scale(1); }
     }
 
-    /* Button Glow */
-    .btn-neon {
+   .btn-neon {
         position: relative;
         background: linear-gradient(135deg, var(--nbc-gold), #FFA500);
         color: #000;
@@ -478,7 +557,7 @@
         overflow: hidden;
     }
 
-    .btn-neon::before {
+   .btn-neon::before {
         content: '';
         position: absolute;
         top: 50%;
@@ -491,17 +570,17 @@
         transition: width 0.6s, height 0.6s;
     }
 
-    .btn-neon:hover::before {
+   .btn-neon:hover::before {
         width: 300px;
         height: 300px;
     }
 
-    .btn-neon:hover {
+   .btn-neon:hover {
         transform: translateY(-2px);
         box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
     }
 
-    .btn-paypal {
+   .btn-paypal {
         background: linear-gradient(135deg, #0070ba, #003087);
         color: #fff;
         font-weight: 700;
@@ -514,30 +593,26 @@
         50% { box-shadow: 0 0 40px rgba(0, 112, 186, 0.9); }
     }
 
-    .btn-paypal:hover {
+   .btn-paypal:hover {
         transform: scale(1.05);
         box-shadow: 0 0 50px rgba(0, 112, 186, 1);
     }
 
-    /* Search Input */
-    .search-neo {
+   .search-neo {
         background: rgba(10, 26, 10, 0.8);
         border: 2px solid rgba(255, 215, 0, 0.3);
         transition: all 0.3s;
     }
 
-    .search-neo:focus {
+   .search-neo:focus {
         border-color: var(--nbc-gold);
         box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
         outline: none;
     }
 
-    /* Tooltip */
-    .tooltip {
-        position: relative;
-    }
+   .tooltip { position: relative; }
 
-    .tooltip-text {
+   .tooltip-text {
         visibility: hidden;
         opacity: 0;
         position: absolute;
@@ -555,27 +630,25 @@
         z-index: 100;
     }
 
-    .tooltip:hover .tooltip-text {
+   .tooltip:hover.tooltip-text {
         visibility: visible;
         opacity: 1;
     }
 
-    /* Strain Card Grid */
-    .strain-grid {
+   .strain-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 1.5rem;
     }
 
     @media (max-width: 768px) {
-        .strain-grid {
+       .strain-grid {
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 1rem;
         }
     }
 
-    /* Loading Animation */
-    .loader {
+   .loader {
         border: 3px solid rgba(255, 215, 0, 0.3);
         border-top: 3px solid var(--nbc-gold);
         border-radius: 50%;
@@ -589,16 +662,14 @@
         100% { transform: rotate(360deg); }
     }
 
-    /* Stats Counter */
-    .stat-number {
+   .stat-number {
         background: linear-gradient(135deg, var(--nbc-gold), var(--nbc-cyan));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
 
-    /* Potency Bar */
-    .potency-bar {
+   .potency-bar {
         height: 8px;
         background: rgba(255, 255, 255, 0.1);
         border-radius: 10px;
@@ -606,7 +677,7 @@
         position: relative;
     }
 
-    .potency-fill {
+   .potency-fill {
         height: 100%;
         background: linear-gradient(90deg, #00FF00, #FFD700, #FF1493);
         border-radius: 10px;
@@ -614,21 +685,16 @@
         box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
     }
 
-    /* Disable print */
-    @media print {
-        body { display: none; }
-    }
+    @media print { body { display: none; } }
 
-    /* Mobile Optimizations */
     @media (max-width: 640px) {
-        .nbc-stamp {
+       .nbc-stamp {
             font-size: 0.5rem;
             padding: 2px 6px;
         }
     }
 
-    /* Meme Image Animation */
-    .meme-bounce {
+   .meme-bounce {
         animation: memeBounce 2s ease-in-out infinite;
     }
 
@@ -637,8 +703,7 @@
         50% { transform: translateY(-10px) rotate(5deg); }
     }
 
-    /* Countdown Pulse */
-    .countdown-pulse {
+   .countdown-pulse {
         animation: countdownPulse 1s ease-in-out infinite;
     }
 
@@ -650,10 +715,8 @@
 </head>
 <body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
 
-<!-- Falling Leaves Container -->
 <div id="leaves-container"></div>
 
-<!-- Header -->
 <header class="sticky top-0 z-50 backdrop-blur-lg bg-black/40 border-b-2 border-neo">
     <div class="container mx-auto px-4 py-4">
         <div class="flex flex-col md:flex-row items-center justify-between gap-4">
@@ -663,16 +726,16 @@
                     <h1 class="text-2xl md:text-3xl font-orbitron font-black neon-gold">
                         NaturalBornChillaz
                     </h1>
-                    <p class="text-xs text-cyan-400 font-orbitron tracking-widest">STRAIN DATABASE</p>
+                    <p class="text-xs text-cyan-400 font-orbitron tracking-widest" data-i18n="STRAIN DATENBANK">STRAIN DATENBANK</p>
                 </div>
             </div>
-            
+
             <div class="flex flex-wrap items-center gap-3">
                 <div class="text-center px-4 py-2 bg-black/40 rounded-lg border border-yellow-500/30">
                     <div class="text-2xl font-orbitron font-black stat-number" id="strainCount">120+</div>
-                    <div class="text-xs text-gray-400">STRAINS</div>
+                    <div class="text-xs text-gray-400" data-i18n="STRAINS">STRAINS</div>
                 </div>
-                <button onclick="openSubmitModal()" class="btn-neon px-6 py-3 rounded-xl text-sm">
+                <button onclick="openSubmitModal()" class="btn-neon px-6 py-3 rounded-xl text-sm" data-i18n="STRAIN EINREICHEN">
                     + STRAIN EINREICHEN
                 </button>
             </div>
@@ -680,102 +743,95 @@
     </div>
 </header>
 
-<!-- Main Content -->
 <main class="container mx-auto px-4 py-8 relative z-10">
-    
-    <!-- Auto Slideshow Featured Strains -->
+
     <section class="mb-12">
-        <h2 class="text-3xl font-orbitron font-bold mb-6 neon-cyan text-center">🔥 FEATURED STRAINS 🔥</h2>
+        <h2 class="text-3xl font-orbitron font-bold mb-6 neon-cyan text-center" data-i18n="FEATURED STRAINS">🔥 FEATURED STRAINS 🔥</h2>
         <div class="slideshow-container border-neo p-1 bg-black/60">
             <div id="slideshow"></div>
         </div>
     </section>
 
-    <!-- Search & Filter Section -->
     <section class="mb-8">
         <div class="bg-black/40 backdrop-blur-md rounded-2xl p-6 border-neo">
             <div class="flex flex-col md:flex-row gap-4 mb-6">
                 <div class="flex-1 relative">
-                    <input 
-                        type="text" 
-                        id="searchInput" 
-                        placeholder="🔍 Strain suchen... Amnesia, OG Kush, Gelato..." 
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="🔍 Strain suchen... Amnesia, OG Kush, Gelato..."
                         class="search-neo w-full px-6 py-4 rounded-xl text-white placeholder-gray-500"
                     >
                 </div>
                 <select id="typeFilter" class="search-neo px-6 py-4 rounded-xl text-white">
-                    <option value="all">Alle Types</option>
+                    <option value="all" data-i18n="Alle Types">Alle Types</option>
                     <option value="Indica">🍃 Indica</option>
-                    <option value="Sativa">☀️ Sativa</option>
+                    <option value="Sativa">☀ Sativa</option>
                     <option value="Hybrid">⚡ Hybrid</option>
                 </select>
             </div>
 
-            <!-- Tabs -->
             <div class="flex flex-wrap gap-2">
-                <button class="tab-btn active px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="all">
+                <button class="tab-btn active px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="all" data-i18n="Alle Strains">
                     🌿 Alle Strains
                 </button>
-                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="popular">
+                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="popular" data-i18n="Beliebt">
                     🔥 Beliebt
                 </button>
-                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="new">
+                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="new" data-i18n="Neu">
                     ✨ Neu
                 </button>
-                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="high-thc">
+                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="high-thc" data-i18n="High THC">
                     💪 High THC
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Strain Grid -->
     <section>
         <div class="flex items-center justify-between mb-6">
             <h3 class="text-xl font-orbitron font-bold text-cyan-400">
-                <span id="resultCount">120</span> Strains gefunden
+                <span id="resultCount">120</span> <span data-i18n="Strains gefunden">Strains gefunden</span>
             </h3>
-            <div class="text-sm text-gray-400">
+            <div class="text-sm text-gray-400" data-i18n="Klick für Details">
                 Klick für Details 💚
             </div>
         </div>
-        
+
         <div id="strainGrid" class="strain-grid"></div>
     </section>
 
 </main>
 
-<!-- Strain Detail Modal -->
 <div id="strainModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
-    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-2xl w-full max-h- overflow-y-auto">
         <div id="modalContent"></div>
     </div>
 </div>
 
-<!-- Drucken/Donate Modal -->
 <div id="donateModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
     <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-3xl max-w-md w-full p-8 relative" style="border: 3px solid var(--nbc-gold); box-shadow: 0 0 40px var(--nbc-gold), 0 0 80px var(--nbc-cyan), inset 0 0 30px rgba(255,215,0,0.1);">
         <div class="nbc-stamp">NBC™</div>
-        
+
         <div class="text-center mb-6">
             <div class="meme-bounce text-8xl mb-4">🌿😎</div>
-            <h3 class="text-2xl font-orbitron font-black neon-gold mb-4">
+            <h3 class="text-2xl font-orbitron font-black neon-gold mb-4" data-i18n="Ey Bruder, Chillaz brauchen mehr als Gras zum Leben">
                 Ey Bruder, Chillaz brauchen mehr als Gras zum Leben 😂🌿💸
             </h3>
-            <p class="text-lg text-cyan-300 mb-6">
+            <p class="text-lg text-cyan-300 mb-6" data-i18n="Sicher daß du chillig bist damit?">
                 Sicher daß du chillig bist damit?
             </p>
         </div>
 
-        <div id="donateContent">
+     <div id="donateContent">
             <button onclick="startPayPalRedirect()" class="btn-paypal w-full py-4 rounded-xl text-lg mb-4 flex items-center justify-center gap-3">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M7.076 21.337H2.47a.641.641 0 1-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 4.643-5.738 4.643h-2.19c-.24 0-.446.17-.482.405L9.978 18.8h4.607a.613.613 0 0 0 .604-.512l.532-3.381c.037-.235.24-.405.482-.405h1.54c3.283 0 5.856-1.333 6.565-5.19.098-.501.17-1.004.17-1.395z"/>
+                    <path d="M7.076 21.337H2.47a.641.641 0 0 0-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 4.643-5.738 4.643h-2.19c-.24 0-.446.17-.482.405L9.978 18.8h4.607a.613.613 0 0 0.604-.512l.532-3.381c.037-.235.24-.405.482-.405h1.54c3.283 0 5.856-1.333 6.565-5.19.098-.501.17-1.004.17-1.395z"/>
                 </svg>
-                <span>CHILLIG SPENDEN VIA PAYPAL</span>
+                <span data-i18n="CHILLIG SPENDEN VIA PAYPAL">CHILLIG SPENDEN VIA PAYPAL</span>
             </button>
-            
-            <button onclick="closeDonateModal()" class="w-full py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition">
+
+            <button onclick="closeDonateModal()" class="w-full py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition" data-i18n="SCHLIESSEN">
                 SCHLIESSEN
             </button>
         </div>
@@ -784,29 +840,28 @@
             <div class="countdown-pulse text-6xl font-orbitron font-black neon-gold mb-4" id="countdownText">
                 3...
             </div>
-            <p class="text-cyan-400 text-lg">Weiterleitung zu PayPal...</p>
+            <p class="text-cyan-400 text-lg" data-i18n="Weiterleitung zu PayPal...">Weiterleitung zu PayPal...</p>
         </div>
     </div>
 </div>
 
-<!-- Submit Strain Modal -->
 <div id="submitModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
-    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-8">
+    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-3xl w-full max-h- overflow-y-auto p-8">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-3xl font-orbitron font-black neon-gold">🌟 STRAIN EINREICHEN</h3>
+            <h3 class="text-3xl font-orbitron font-black neon-gold" data-i18n="STRAIN EINREICHEN">🌟 STRAIN EINREICHEN</h3>
             <button onclick="closeSubmitModal()" class="text-4xl hover:text-yellow-400 transition">&times;</button>
         </div>
 
         <form id="submitForm" class="space-y-6">
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm text-cyan-400 mb-2 font-bold">Strain Name *</label>
+                    <label class="block text-sm text-cyan-400 mb-2 font-bold" data-i18n="Strain Name">Strain Name *</label>
                     <input type="text" id="submitName" required class="search-neo w-full px-4 py-3 rounded-lg">
                 </div>
                 <div>
-                    <label class="block text-sm text-cyan-400 mb-2 font-bold">Type *</label>
+                    <label class="block text-sm text-cyan-400 mb-2 font-bold" data-i18n="Type">Type *</label>
                     <select id="submitType" required class="search-neo w-full px-4 py-3 rounded-lg">
-                        <option value="">Wählen...</option>
+                        <option value="" data-i18n="Wählen...">Wählen...</option>
                         <option value="Indica">Indica</option>
                         <option value="Sativa">Sativa</option>
                         <option value="Hybrid">Hybrid</option>
@@ -817,14 +872,14 @@
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm text-cyan-400 mb-2 font-bold tooltip">
-                        THC % *
+                        <span data-i18n="THC %">THC % *</span>
                         <span class="tooltip-text">0-35% - Sei ehrlich, Bruder!</span>
                     </label>
                     <input type="number" id="submitTHC" min="0" max="100" step="0.1" required class="search-neo w-full px-4 py-3 rounded-lg">
                 </div>
                 <div>
                     <label class="block text-sm text-cyan-400 mb-2 font-bold tooltip">
-                        CBD % *
+                        <span data-i18n="CBD %">CBD % *</span>
                         <span class="tooltip-text">0-20% - Medical Vibes</span>
                     </label>
                     <input type="number" id="submitCBD" min="0" max="100" step="0.1" required class="search-neo w-full px-4 py-3 rounded-lg">
@@ -833,7 +888,7 @@
 
             <div>
                 <label class="block text-sm text-cyan-400 mb-2 font-bold tooltip">
-                    Effekte *
+                    <span data-i18n="Effekte">Effekte *</span>
                     <span class="tooltip-text">Z.B. Relaxed, Euphoric, Creative</span>
                 </label>
                 <input type="text" id="submitEffects" required placeholder="Relaxed, Happy, Creative..." class="search-neo w-full px-4 py-3 rounded-lg">
@@ -841,27 +896,27 @@
 
             <div>
                 <label class="block text-sm text-cyan-400 mb-2 font-bold tooltip">
-                    Geschmack *
+                    <span data-i18n="Geschmack">Geschmack *</span>
                     <span class="tooltip-text">Z.B. Sweet, Earthy, Citrus</span>
                 </label>
                 <input type="text" id="submitFlavor" required placeholder="Sweet, Earthy, Diesel..." class="search-neo w-full px-4 py-3 rounded-lg">
             </div>
 
             <div>
-                <label class="block text-sm text-cyan-400 mb-2 font-bold">Beschreibung *</label>
+                <label class="block text-sm text-cyan-400 mb-2 font-bold" data-i18n="Beschreibung">Beschreibung *</label>
                 <textarea id="submitDesc" required rows="4" placeholder="Erzähl uns von diesem Strain... Was macht ihn besonders?" class="search-neo w-full px-4 py-3 rounded-lg"></textarea>
             </div>
 
             <div>
-                <label class="block text-sm text-cyan-400 mb-2 font-bold">Dein Name (Optional)</label>
+                <label class="block text-sm text-cyan-400 mb-2 font-bold" data-i18n="Dein Name">Dein Name (Optional)</label>
                 <input type="text" id="submitUser" placeholder="Chillaz Bratan" class="search-neo w-full px-4 py-3 rounded-lg">
             </div>
 
             <div class="flex gap-4">
-                <button type="submit" class="btn-neon flex-1 py-4 rounded-xl text-lg">
+                <button type="submit" class="btn-neon flex-1 py-4 rounded-xl text-lg" data-i18n="STRAIN ABSENDEN">
                     🚀 STRAIN ABSENDEN
                 </button>
-                <button type="button" onclick="closeSubmitModal()" class="flex-1 py-4 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition">
+                <button type="button" onclick="closeSubmitModal()" class="flex-1 py-4 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition" data-i18n="ABBRECHEN">
                     ABBRECHEN
                 </button>
             </div>
@@ -869,30 +924,28 @@
     </div>
 </div>
 
-<!-- Thank You Modal -->
 <div id="thankYouModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
     <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-md w-full p-8 text-center">
         <div class="text-8xl mb-4">🎉</div>
-        <h3 class="text-3xl font-orbitron font-black neon-gold mb-4">
+        <h3 class="text-3xl font-orbitron font-black neon-gold mb-4" data-i18n="DANKE BRATAN!">
             DANKE BRATAN!
         </h3>
         <p class="text-cyan-300 mb-6">
             Dein Strain wurde erfolgreich eingereicht! Wir checken das und adden ihn bald zur DB. Stay chillig! 🌿💚
         </p>
-        <button onclick="closeThankYouModal()" class="btn-neon px-8 py-3 rounded-xl">
+        <button onclick="closeThankYouModal()" class="btn-neon px-8 py-3 rounded-xl" data-i18n="COOL, WEITER CHILLEN">
             COOL, WEITER CHILLEN
         </button>
     </div>
 </div>
 
-<!-- Footer -->
 <footer class="mt-16 border-t-2 border-yellow-500/30 bg-black/40 backdrop-blur-md">
     <div class="container mx-auto px-4 py-8 text-center">
         <p class="text-gray-400 text-sm mb-2">
             © 2025 NaturalBornChillaz Strain DB PayPal Chill Check Edition
         </p>
         <p class="text-xs text-gray-600">
-            Nur für Bildungszwecke. 18+ Nur. Stay chillig, stay safe. 🌿✌️
+            Nur für Bildungszwecke. 18+ Nur. Stay chillig, stay safe. 🌿✌
         </p>
         <div class="mt-4 flex justify-center gap-6 text-2xl">
             <span>🌿</span>
@@ -972,7 +1025,7 @@
         { id: 63, name: "Mochi Gelato", type: "Hybrid", thc: 26, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Berry", "Sweet", "Vanilla"], desc: "Sunset Sherbet x Thin Mint GSC. Mochi Ice Cream Vibe. Sweet Terps.", popular: false, new: true },
         { id: 64, name: "Raspberry Kush", type: "Indica", thc: 21, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Raspberry", "Berry", "Sweet"], desc: "California Medicine. Himbeer-Kush. Fruity & medizinisch.", popular: false, new: false },
         { id: 65, name: "Agent Orange", type: "Sativa", thc: 19, cbd: 0.2, effects: ["Uplifted", "Creative", "Energetic"], flavor: ["Orange", "Citrus", "Cheese"], desc: "Orange Velvet x Jack the Ripper. Cheese & Orange. Funky Fusion.", popular: false, new: false },
-        { id: 66, name: "LA Confidential", type: "Indica", thc: 22, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Earthy", "Pine", "Skunk"], desc: "OG LA Affie x Afghani. High Times Cannabis Cup. LA Kush Legend.", popular: false, new: false },
+     { id: 66, name: "LA Confidential", type: "Indica", thc: 22, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Earthy", "Pine", "Skunk"], desc: "OG LA Affie x Afghani. High Times Cannabis Cup. LA Kush Legend.", popular: false, new: false },
         { id: 67, name: "Grape Ape", type: "Indica", thc: 19, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Grape", "Sweet", "Berry"], desc: "Afghani x Skunk x Mendocino Purps. Trauben-Affe. Pain Relief.", popular: false, new: false },
         { id: 68, name: "Cereal Milk", type: "Hybrid", thc: 25, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Creative"], flavor: ["Sweet", "Creamy", "Berry"], desc: "Y Life x Snowman. Milch vom Frühstück. Cookies Fam Banger.", popular: false, new: true },
         { id: 69, name: "Peanut Butter Breath", type: "Hybrid", thc: 28, cbd: 0.3, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Nutty", "Earthy", "Sweet"], desc: "Do-Si-Dos x Mendo Breath. Erdnussbutter Terps. ThugPug Legend.", popular: false, new: true },
@@ -1033,16 +1086,15 @@
     let currentTypeFilter = 'all';
     let currentSearch = '';
 
-    // Initialize
     document.addEventListener('DOMContentLoaded', function() {
         createFallingLeaves();
+        applyTranslations();
         renderStrains();
         initSlideshow();
         setupEventListeners();
         preventScreenshot();
     });
 
-    // Falling Leaves Animation
     function createFallingLeaves() {
         const container = document.getElementById('leaves-container');
         const leaves = ['🍃', '🌿', '🍀'];
@@ -1058,19 +1110,60 @@
         }
     }
 
-    // Render Strains
-    function renderStrains() {
+    function applyTranslations() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+                el.placeholder = t(key);
+            } else if (el.tagName === 'OPTION') {
+                el.textContent = t(key);
+            } else {
+                el.textContent = t(key);
+            }
+        });
+        document.getElementById('searchInput').placeholder = t('Strain suchen...');
+    }
+
+    function getStrainImageUrl(strainName) {
+        const query = encodeURIComponent(strainName + ' cannabis bud');
+        return `https://source.unsplash.com/400x400/?${query},marijuana`;
+    }
+
+    function setup3DHoloEffect() {
+        document.querySelectorAll('.strain-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
+                card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
+                card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        });
+    }
+
+    async function renderStrains() {
         const grid = document.getElementById('strainGrid');
         const filtered = filterStrains();
-        
+
         document.getElementById('resultCount').textContent = filtered.length;
-        
+        document.getElementById('strainCount').textContent = strainDatabase.length + '+';
+
         if (filtered.length === 0) {
             grid.innerHTML = `
                 <div class="col-span-full text-center py-20">
                     <div class="text-6xl mb-4">😢</div>
-                    <p class="text-2xl text-gray-400">Keine Strains gefunden, Bratan!</p>
-                    <p class="text-gray-600 mt-2">Check deine Filter oder such was anderes</p>
+                    <p class="text-2xl text-gray-400">${t('Keine Strains gefunden')}</p>
+                    <p class="text-gray-600 mt-2">${t('Check deine Filter')}</p>
                 </div>
             `;
             return;
@@ -1078,15 +1171,23 @@
 
         grid.innerHTML = filtered.map(strain => `
             <div class="strain-card border-neo" onclick="showStrainDetail(${strain.id})">
+                <div class="strain-card-image">
+                    <img src="${getStrainImageUrl(strain.name)}"
+                         alt="${strain.name}"
+                         loading="lazy"
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400/0A1A0A/FFD700?text=${encodeURIComponent(strain.name)}'">
+                    <div class="strain-card-glare"></div>
+                    <div class="strain-card-holo"></div>
+                </div>
                 <div class="nbc-stamp">NBC™</div>
-                <div class="p-5">
+                <div class="p-5 strain-card-content">
                     <div class="flex justify-between items-start mb-3">
                         <h3 class="text-lg font-orbitron font-bold text-white pr-8">${strain.name}</h3>
                         <span class="px-3 py-1 rounded-full text-xs font-bold text-white type-${strain.type.toLowerCase()}">
-                            ${getTypeEmoji(strain.type)} ${strain.type}
+                            ${getTypeEmoji(strain.type)} ${t(strain.type)}
                         </span>
                     </div>
-                    
+
                     <div class="mb-3">
                         <div class="flex justify-between text-xs text-gray-400 mb-1">
                             <span>THC</span>
@@ -1098,7 +1199,7 @@
                     </div>
 
                     <div class="flex flex-wrap gap-1 mb-3">
-                        ${strain.effects.slice(0, 2).map(effect => 
+                        ${strain.effects.slice(0, 2).map(effect =>
                             `<span class="text-xs px-2 py-1 bg-cyan-500/20 text-cyan-300 rounded">${effect}</span>`
                         ).join('')}
                     </div>
@@ -1107,104 +1208,108 @@
                         🍃 ${strain.flavor.join(', ')}
                     </div>
 
-                    ${strain.popular ? '<div class="absolute top-14 right-2 text-xl">🔥</div>' : ''}
-                    ${strain.new ? '<div class="absolute top-14 right-2 text-xl">✨</div>' : ''}
+                    ${strain.popular? '<div class="absolute top-2 right-2 text-xl" style="transform: translateZ(70px);">🔥</div>' : ''}
+                    ${strain.new? '<div class="absolute top-2 right-2 text-xl" style="transform: translateZ(70px);">✨</div>' : ''}
                 </div>
             </div>
         `).join('');
+
+        setTimeout(setup3DHoloEffect, 100);
     }
 
     function getTypeEmoji(type) {
-        const emojis = { 'Indica': '🍃', 'Sativa': '☀️', 'Hybrid': '⚡' };
+        const emojis = { 'Indica': '🍃', 'Sativa': '☀', 'Hybrid': '⚡' };
         return emojis[type] || '🌿';
     }
 
-    // Filter Strains
     function filterStrains() {
         return strainDatabase.filter(strain => {
             const matchSearch = strain.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
                               strain.flavor.some(f => f.toLowerCase().includes(currentSearch.toLowerCase())) ||
                               strain.effects.some(e => e.toLowerCase().includes(currentSearch.toLowerCase()));
-            
+
             const matchType = currentTypeFilter === 'all' || strain.type === currentTypeFilter;
-            
+
             const matchTab = currentFilter === 'all' ||
                            (currentFilter === 'popular' && strain.popular) ||
                            (currentFilter === 'new' && strain.new) ||
                            (currentFilter === 'high-thc' && strain.thc >= 25);
-            
+
             return matchSearch && matchType && matchTab;
         });
     }
 
-    // Show Strain Detail
     function showStrainDetail(id) {
         const strain = strainDatabase.find(s => s.id === id);
         if (!strain) return;
 
         const modal = document.getElementById('strainModal');
         const content = document.getElementById('modalContent');
-        
+
         content.innerHTML = `
             <div class="relative p-8">
-                <button onclick="closeStrainModal()" class="absolute top-4 right-4 text-4xl hover:text-yellow-400 transition">&times;</button>
+                <button onclick="closeStrainModal()" class="absolute top-4 right-4 text-4xl hover:text-yellow-400 transition z-20">&times;</button>
                 <div class="nbc-stamp">NBC™</div>
-                
+
                 <div class="mb-6">
+                    <img src="${getStrainImageUrl(strain.name)}"
+                         alt="${strain.name}"
+                         class="w-full h-64 object-cover rounded-xl mb-4 border-2 border-yellow-500/30"
+                         onerror="this.src='https://via.placeholder.com/800x400/0A1A0A/FFD700?text=${encodeURIComponent(strain.name)}'">
                     <h2 class="text-4xl font-orbitron font-black neon-gold mb-2">${strain.name}</h2>
                     <span class="inline-block px-4 py-2 rounded-full text-sm font-bold text-white type-${strain.type.toLowerCase()}">
-                        ${getTypeEmoji(strain.type)} ${strain.type}
+                        ${getTypeEmoji(strain.type)} ${t(strain.type)}
                     </span>
                 </div>
 
                 <div class="grid md:grid-cols-2 gap-6 mb-6">
                     <div class="bg-black/40 p-4 rounded-xl border border-yellow-500/30">
-                        <div class="text-sm text-gray-400 mb-1">THC Gehalt</div>
+                        <div class="text-sm text-gray-400 mb-1" data-i18n="THC Gehalt">THC Gehalt</div>
                         <div class="text-3xl font-orbitron font-black text-yellow-400">${strain.thc}%</div>
                         <div class="potency-bar mt-2">
                             <div class="potency-fill" style="width: ${(strain.thc / 35) * 100}%"></div>
                         </div>
                     </div>
                     <div class="bg-black/40 p-4 rounded-xl border border-cyan-500/30">
-                        <div class="text-sm text-gray-400 mb-1">CBD Gehalt</div>
+                        <div class="text-sm text-gray-400 mb-1" data-i18n="CBD Gehalt">CBD Gehalt</div>
                         <div class="text-3xl font-orbitron font-black text-cyan-400">${strain.cbd}%</div>
                     </div>
                 </div>
 
                 <div class="mb-6">
-                    <h4 class="text-lg font-orbitron font-bold text-cyan-400 mb-3">🧠 Effekte</h4>
+                    <h4 class="text-lg font-orbitron font-bold text-cyan-400 mb-3" data-i18n="Effekte">🧠 Effekte</h4>
                     <div class="flex flex-wrap gap-2">
-                        ${strain.effects.map(effect => 
+                        ${strain.effects.map(effect =>
                             `<span class="px-4 py-2 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-lg border border-pink-500/50 text-white font-semibold">${effect}</span>`
                         ).join('')}
                     </div>
                 </div>
 
                 <div class="mb-6">
-                    <h4 class="text-lg font-orbitron font-bold text-cyan-400 mb-3">👅 Geschmack</h4>
+                    <h4 class="text-lg font-orbitron font-bold text-cyan-400 mb-3" data-i18n="Geschmack">👅 Geschmack</h4>
                     <div class="flex flex-wrap gap-2">
-                        ${strain.flavor.map(flav => 
+                        ${strain.flavor.map(flav =>
                             `<span class="px-4 py-2 bg-gradient-to-r from-green-500/30 to-cyan-500/30 rounded-lg border border-cyan-500/50 text-white font-semibold">${flav}</span>`
                         ).join('')}
                     </div>
                 </div>
 
                 <div class="mb-8">
-                    <h4 class="text-lg font-orbitron font-bold text-cyan-400 mb-3">📖 Beschreibung</h4>
+                    <h4 class="text-lg font-orbitron font-bold text-cyan-400 mb-3" data-i18n="Beschreibung">📖 Beschreibung</h4>
                     <p class="text-gray-300 leading-relaxed">${strain.desc}</p>
                 </div>
 
                 <div class="flex gap-4">
-                    <button onclick="openDonateModal()" class="btn-neon flex-1 py-4 rounded-xl text-lg font-bold">
-                        🖨️ DRUCKEN
+                    <button onclick="openDonateModal()" class="btn-neon flex-1 py-4 rounded-xl text-lg font-bold" data-i18n="DRUCKEN">
+                        🖨 DRUCKEN
                     </button>
-                    <button onclick="closeStrainModal()" class="flex-1 py-4 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition">
+                    <button onclick="closeStrainModal()" class="flex-1 py-4 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition" data-i18n="SCHLIESSEN">
                         SCHLIESSEN
                     </button>
                 </div>
             </div>
         `;
-        
+
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
     }
@@ -1214,7 +1319,6 @@
         document.body.style.overflow = 'auto';
     }
 
-    // Donate Modal - Updated for PayPal Chill Check
     function openDonateModal() {
         const modal = document.getElementById('donateModal');
         document.getElementById('donateContent').classList.remove('hidden');
@@ -1228,38 +1332,36 @@
         document.body.style.overflow = 'auto';
     }
 
-function startPayPalRedirect() {
-    document.getElementById('donateContent').classList.add('hidden');
-    document.getElementById('countdownContent').classList.remove('hidden');
-    
-    let count = 3;
-    const countdownEl = document.getElementById('countdownText');
-    
-    const interval = setInterval(() => {
-        count--;
-        if (count > 0) {
-            countdownEl.textContent = count + '...';
-        } else {
-            clearInterval(interval);
-            countdownEl.textContent = '1...';
-            
-            // Trigger confetti
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#FFD700', '#00FFFF', '#FF1493', '#39FF14']
-            });
-            
-            setTimeout(() => {
-                window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN', '_blank');
-                closeDonateModal();
-            }, 500);
-        }
-    }, 1000);
-}
+    function startPayPalRedirect() {
+        document.getElementById('donateContent').classList.add('hidden');
+        document.getElementById('countdownContent').classList.remove('hidden');
 
-    // Submit Modal
+        let count = 3;
+        const countdownEl = document.getElementById('countdownText');
+
+        const interval = setInterval(() => {
+            count--;
+            if (count > 0) {
+                countdownEl.textContent = count + '...';
+            } else {
+                clearInterval(interval);
+                countdownEl.textContent = '1...';
+
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#FFD700', '#00FFFF', '#FF1493', '#39FF14']
+                });
+
+                setTimeout(() => {
+                    window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN', '_blank');
+                    closeDonateModal();
+                }, 500);
+            }
+        }, 1000);
+    }
+
     function openSubmitModal() {
         document.getElementById('submitModal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
@@ -1271,7 +1373,6 @@ function startPayPalRedirect() {
         document.getElementById('submitForm').reset();
     }
 
-    // Thank You Modal
     function showThankYouModal() {
         document.getElementById('thankYouModal').classList.remove('hidden');
         confetti({
@@ -1286,10 +1387,9 @@ function startPayPalRedirect() {
         document.getElementById('thankYouModal').classList.add('hidden');
     }
 
-    // Form Submit
     document.getElementById('submitForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        
+
         const name = document.getElementById('submitName').value;
         const type = document.getElementById('submitType').value;
         const thc = document.getElementById('submitTHC').value;
@@ -1299,36 +1399,32 @@ function startPayPalRedirect() {
         const desc = document.getElementById('submitDesc').value;
         const user = document.getElementById('submitUser').value || 'Anonymer Chillaz';
 
-        // Validation
         if (thc < 0 || thc > 100 || cbd < 0 || cbd > 100) {
             alert('Ey Bratan, check deine THC/CBD Werte! 0-100% nur 😂');
             return;
         }
 
-        // Fake mailto - in real app would send to backend
         const subject = `Neuer Strain: ${name} von ${user}`;
         const body = `Name: ${name}%0D%0AType: ${type}%0D%0ATHC: ${thc}%25%0D%0ACBD: ${cbd}%25%0D%0AEffekte: ${effects}%0D%0AGeschmack: ${flavor}%0D%0ABeschreibung: ${desc}%0D%0A%0D%0AEingereicht von: ${user}`;
-        
-        // Simulate email send
+
         console.log('Strain submitted:', { name, type, thc, cbd, effects, flavor, desc, user });
-        
+
         closeSubmitModal();
         showThankYouModal();
     });
 
-    // Slideshow
     function initSlideshow() {
         const featured = strainDatabase.filter(s => s.popular).slice(0, 5);
         const container = document.getElementById('slideshow');
-        
+
         container.innerHTML = featured.map((strain, idx) => `
-            <div class="slide ${idx === 0 ? 'active' : ''} p-8 bg-gradient-to-br from-purple-900/40 via-black to-cyan-900/40">
+            <div class="slide ${idx === 0? 'active' : ''} p-8 bg-gradient-to-br from-purple-900/40 via-black to-cyan-900/40">
                 <div class="flex flex-col md:flex-row items-center gap-6">
                     <div class="text-8xl">🌿</div>
                     <div class="flex-1 text-center md:text-left">
                         <div class="text-sm text-yellow-400 font-orbitron mb-2">FEATURED STRAIN</div>
                         <h3 class="text-4xl font-orbitron font-black neon-gold mb-2">${strain.name}</h3>
-                        <p class="text-cyan-300 mb-4">${getTypeEmoji(strain.type)} ${strain.type} • THC ${strain.thc}%</p>
+                        <p class="text-cyan-300 mb-4">${getTypeEmoji(strain.type)} ${t(strain.type)} • THC ${strain.thc}%</p>
                         <p class="text-gray-300 mb-4">${strain.desc}</p>
                         <button onclick="showStrainDetail(${strain.id})" class="btn-neon px-8 py-3 rounded-xl">
                             DETAILS ANSEHEN →
@@ -1347,21 +1443,17 @@ function startPayPalRedirect() {
         }, 5000);
     }
 
-    // Event Listeners
     function setupEventListeners() {
-        // Search
         document.getElementById('searchInput').addEventListener('input', (e) => {
             currentSearch = e.target.value;
             renderStrains();
         });
 
-        // Type Filter
         document.getElementById('typeFilter').addEventListener('change', (e) => {
             currentTypeFilter = e.target.value;
             renderStrains();
         });
 
-        // Tabs
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1371,7 +1463,6 @@ function startPayPalRedirect() {
             });
         });
 
-        // Close modals on backdrop click
         ['strainModal', 'donateModal', 'submitModal', 'thankYouModal'].forEach(id => {
             document.getElementById(id).addEventListener('click', (e) => {
                 if (e.target.id === id) {
@@ -1382,7 +1473,6 @@ function startPayPalRedirect() {
         });
     }
 
-    // Screenshot Protection
     function preventScreenshot() {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'PrintScreen') {
@@ -1395,7 +1485,6 @@ function startPayPalRedirect() {
         });
     }
 
-    // Make functions globally available
     window.showStrainDetail = showStrainDetail;
     window.closeStrainModal = closeStrainModal;
     window.openDonateModal = openDonateModal;
