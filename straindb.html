@@ -307,7 +307,7 @@ Intl.t = t;
         background: var(--darker-jungle);
         background-image:
             radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(0, 255, 0.05) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
             radial-gradient(circle at 40% 20%, rgba(255, 20, 147, 0.05) 0%, transparent 50%);
         min-height: 100vh;
         color: #fff;
@@ -337,7 +337,7 @@ Intl.t = t;
         opacity: 0.3;
     }
 
-  .leaf {
+ .leaf {
         position: fixed;
         top: -10%;
         z-index: 1;
@@ -352,15 +352,15 @@ Intl.t = t;
         to { transform: translateY(110vh) rotate(360deg); }
     }
 
-  .neon-gold {
-        text-shadow: 0 10px var(--nbc-gold), 0 0 20px var(--nbc-gold), 0 0 30px var(--nbc-gold);
+ .neon-gold {
+        text-shadow: 0 0 10px var(--nbc-gold), 0 0 20px var(--nbc-gold), 0 0 30px var(--nbc-gold);
     }
 
-  .neon-cyan {
+ .neon-cyan {
         text-shadow: 0 0 10px var(--nbc-cyan), 0 0 20px var(--nbc-cyan);
     }
 
-  .border-neo {
+ .border-neo {
         border: 2px solid var(--nbc-gold);
         box-shadow:
             0 0 10px var(--nbc-gold),
@@ -369,7 +369,7 @@ Intl.t = t;
     }
 
     /* 3D HOLO CARD SYSTEM */
-  .strain-card {
+ .strain-card {
         position: relative;
         background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
         border-radius: 20px;
@@ -381,7 +381,7 @@ Intl.t = t;
         will-change: transform;
     }
 
-  .strain-card-image {
+ .strain-card-image {
         position: relative;
         width: 100%;
         height: 220px;
@@ -390,18 +390,18 @@ Intl.t = t;
         transform: translateZ(20px);
     }
 
-  .strain-card-image img {
+ .strain-card-image img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: transform 0.6s ease;
     }
 
-  .strain-card:hover.strain-card-image img {
+ .strain-card:hover.strain-card-image img {
         transform: scale(1.1);
     }
 
-  .strain-card-glare {
+ .strain-card-glare {
         position: absolute;
         top: 0;
         left: 0;
@@ -420,11 +420,11 @@ Intl.t = t;
         transform: translateZ(40px);
     }
 
-  .strain-card:hover.strain-card-glare {
+ .strain-card:hover.strain-card-glare {
         opacity: 1;
     }
 
-  .strain-card-holo {
+ .strain-card-holo {
         position: absolute;
         inset: 0;
         background: linear-gradient(
@@ -442,7 +442,7 @@ Intl.t = t;
         transform: translateZ(50px);
     }
 
-  .strain-card:hover.strain-card-holo {
+ .strain-card:hover.strain-card-holo {
         opacity: 1;
         animation: holo-move 3s ease-in-out infinite;
     }
@@ -452,12 +452,12 @@ Intl.t = t;
         50% { transform: translateX(100%) translateZ(50px); }
     }
 
-  .strain-card-content {
+ .strain-card-content {
         position: relative;
         transform: translateZ(30px);
     }
 
-  .nbc-stamp {
+ .nbc-stamp {
         position: absolute;
         top: 10px;
         right: 10px;
@@ -474,26 +474,26 @@ Intl.t = t;
         letter-spacing: 1px;
     }
 
-  .type-indica {
+ .type-indica {
         background: linear-gradient(135deg, #6B0E9F, #9D00FF);
         box-shadow: 0 0 15px rgba(157, 0, 255, 0.6);
     }
-  .type-sativa {
+ .type-sativa {
         background: linear-gradient(135deg, #FF6B00, #FF1493);
         box-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
     }
-  .type-hybrid {
+ .type-hybrid {
         background: linear-gradient(135deg, #00C9FF, #00FF88);
         box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
     }
 
-  .tab-btn {
+ .tab-btn {
         position: relative;
         overflow: hidden;
         transition: all 0.3s;
     }
 
-  .tab-btn::before {
+ .tab-btn::before {
         content: '';
         position: absolute;
         bottom: 0;
@@ -504,13 +504,13 @@ Intl.t = t;
         transition: width 0.3s;
     }
 
-  .tab-btn.active::before { width: 100%; }
-  .tab-btn.active {
+ .tab-btn.active::before { width: 100%; }
+ .tab-btn.active {
         background: rgba(255, 215, 0, 0.1);
         border-color: var(--nbc-gold);
     }
 
-  .modal-backdrop {
+ .modal-backdrop {
         backdrop-filter: blur(10px);
         background: rgba(0, 0, 0, 0.8);
         animation: fadeIn 0.3s;
@@ -521,7 +521,7 @@ Intl.t = t;
         to { opacity: 1; }
     }
 
-  .modal-content {
+ .modal-content {
         animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
@@ -530,25 +530,25 @@ Intl.t = t;
         to { opacity: 1; transform: translateY(0) scale(1); }
     }
 
-  .slideshow-container {
+ .slideshow-container {
         position: relative;
         overflow: hidden;
         border-radius: 20px;
     }
 
-  .slide {
+ .slide {
         display: none;
         animation: slideAnimation 1s;
     }
 
-  .slide.active { display: block; }
+ .slide.active { display: block; }
 
     @keyframes slideAnimation {
         from { opacity: 0; transform: scale(0.95); }
         to { opacity: 1; transform: scale(1); }
     }
 
-  .btn-neon {
+ .btn-neon {
         position: relative;
         background: linear-gradient(135deg, var(--nbc-gold), #FFA500);
         color: #000;
@@ -557,7 +557,7 @@ Intl.t = t;
         overflow: hidden;
     }
 
-  .btn-neon::before {
+ .btn-neon::before {
         content: '';
         position: absolute;
         top: 50%;
@@ -570,17 +570,17 @@ Intl.t = t;
         transition: width 0.6s, height 0.6s;
     }
 
-  .btn-neon:hover::before {
+ .btn-neon:hover::before {
         width: 300px;
         height: 300px;
     }
 
-  .btn-neon:hover {
+ .btn-neon:hover {
         transform: translateY(-2px);
         box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
     }
 
-  .btn-paypal {
+ .btn-paypal {
         background: linear-gradient(135deg, #0070ba, #003087);
         color: #fff;
         font-weight: 700;
@@ -593,26 +593,26 @@ Intl.t = t;
         50% { box-shadow: 0 0 40px rgba(0, 112, 186, 0.9); }
     }
 
-  .btn-paypal:hover {
+ .btn-paypal:hover {
         transform: scale(1.05);
         box-shadow: 0 0 50px rgba(0, 112, 186, 1);
     }
 
-  .search-neo {
+ .search-neo {
         background: rgba(10, 26, 10, 0.8);
         border: 2px solid rgba(255, 215, 0, 0.3);
         transition: all 0.3s;
     }
 
-  .search-neo:focus {
+ .search-neo:focus {
         border-color: var(--nbc-gold);
         box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
         outline: none;
     }
 
-  .tooltip { position: relative; }
+ .tooltip { position: relative; }
 
-  .tooltip-text {
+ .tooltip-text {
         visibility: hidden;
         opacity: 0;
         position: absolute;
@@ -630,25 +630,25 @@ Intl.t = t;
         z-index: 100;
     }
 
-  .tooltip:hover.tooltip-text {
+ .tooltip:hover.tooltip-text {
         visibility: visible;
         opacity: 1;
     }
 
-  .strain-grid {
+ .strain-grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 1.5rem;
     }
 
     @media (max-width: 768px) {
-      .strain-grid {
+    .strain-grid {
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 1rem;
         }
     }
 
-  .loader {
+ .loader {
         border: 3px solid rgba(255, 215, 0, 0.3);
         border-top: 3px solid var(--nbc-gold);
         border-radius: 50%;
@@ -662,22 +662,22 @@ Intl.t = t;
         100% { transform: rotate(360deg); }
     }
 
-  .stat-number {
+ .stat-number {
         background: linear-gradient(135deg, var(--nbc-gold), var(--nbc-cyan));
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
     }
 
-  .potency-bar {
+ .potency-bar {
         height: 8px;
-        background: rgba(255, 255, 0.1);
+        background: rgba(255, 255, 255, 0.1);
         border-radius: 10px;
         overflow: hidden;
         position: relative;
     }
 
-  .potency-fill {
+ .potency-fill {
         height: 100%;
         background: linear-gradient(90deg, #00FF00, #FFD700, #FF1493);
         border-radius: 10px;
@@ -688,13 +688,13 @@ Intl.t = t;
     @media print { body { display: none; } }
 
     @media (max-width: 640px) {
-      .nbc-stamp {
+    .nbc-stamp {
             font-size: 0.5rem;
             padding: 2px 6px;
         }
     }
 
-  .meme-bounce {
+ .meme-bounce {
         animation: memeBounce 2s ease-in-out infinite;
     }
 
@@ -703,7 +703,7 @@ Intl.t = t;
         50% { transform: translateY(-10px) rotate(5deg); }
     }
 
-  .countdown-pulse {
+ .countdown-pulse {
         animation: countdownPulse 1s ease-in-out infinite;
     }
 
@@ -731,7 +731,7 @@ Intl.t = t;
             </div>
 
             <div class="flex flex-wrap items-center gap-3">
-                <div class="text-center px-4 py-2 bg-black/40 rounded-lg border border-yellow-500/30">
+                <div class="text-center px-4 py-2 bg-black/40 rounded-lg border-yellow-500/30">
                     <div class="text-2xl font-orbitron font-black stat-number" id="strainCount">120+</div>
                     <div class="text-xs text-gray-400" data-i18n="STRAINS">STRAINS</div>
                 </div>
@@ -804,7 +804,7 @@ Intl.t = t;
 </main>
 
 <div id="strainModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
-    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-2xl w-full max-h- overflow-y-auto">
         <div id="modalContent"></div>
     </div>
 </div>
@@ -823,10 +823,10 @@ Intl.t = t;
             </p>
         </div>
 
-     <div id="donateContent">
+      <div id="donateContent">
             <button onclick="startPayPalRedirect()" class="btn-paypal w-full py-4 rounded-xl text-lg mb-4 flex items-center justify-center gap-3">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M7.076 21.337H2.47a.641.641 0 0 0-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 4.643-5.738 4.643h-2.19c-.24 0-.446.17-.482.405L9.978 18.8h4.607a.613 0 0 0.604-.512l.532-3.381c.037-.235.24-.405.482-.405h1.54c3.283 0 5.856-1.333 6.565-5.19.098-.501.17-1.004.17-1.395z"/>
+                    <path d="M7.076 21.337H2.47a.641 0 0 0-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 4.643-5.738 4.643h-2.19c-.24 0-.446.17-.482.405L9.978 18.8h4.607a.613.613 0 0 0.604-.512l.532-3.381c.037-.235.24-.405.482-.405h1.54c3.283 0 5.856-1.333 6.565-5.19.098-.501.17-1.004.17-1.395z"/>
                 </svg>
                 <span data-i18n="CHILLIG SPENDEN VIA PAYPAL">CHILLIG SPENDEN VIA PAYPAL</span>
             </button>
@@ -846,7 +846,7 @@ Intl.t = t;
 </div>
 
 <div id="submitModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
-    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-8">
+    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-3xl w-full max-h- overflow-y-auto p-8">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-3xl font-orbitron font-black neon-gold" data-i18n="STRAIN EINREICHEN">🌟 STRAIN EINREICHEN</h3>
             <button onclick="closeSubmitModal()" class="text-4xl hover:text-yellow-400 transition">&times;</button>
@@ -990,7 +990,7 @@ Intl.t = t;
         { id: 28, name: "Tangie", type: "Sativa", thc: 22, cbd: 0.1, effects: ["Uplifted", "Creative", "Energetic"], flavor: ["Orange", "Tangerine", "Citrus"], desc: "Cali-O x Skunk. Re-Make des 90er Tangie. Pure Citrus-Explosion.", popular: false, new: false },
         { id: 29, name: "MAC (Miracle Alien Cookies)", type: "Hybrid", thc: 23, cbd: 0.4, effects: ["Euphoric", "Relaxed", "Creative"], flavor: ["Citrus", "Sour", "Earthy"], desc: "Alien Cookies x Colombian x Starfighter. Balanced High, funky Terps.", popular: false, new: false },
         { id: 30, name: "Slurricane", type: "Indica", thc: 28, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Berry", "Grape", "Sweet"], desc: "Do-Si-Dos x Purple Punch. Hurrikane-Schlaf. Super fruchtig & stark.", popular: false, new: true },
-              { id: 31, name: "Acapulco Gold", type: "Sativa", thc: 19, cbd: 0.1, effects: ["Uplifted", "Happy", "Creative"], flavor: ["Earthy", "Citrus", "Woody"], desc: "Mexican Landrace Legende seit den 60ern. Golden Buds, klassischer High.", popular: false, new: false },
+        { id: 31, name: "Acapulco Gold", type: "Sativa", thc: 19, cbd: 0.1, effects: ["Uplifted", "Happy", "Creative"], flavor: ["Earthy", "Citrus", "Woody"], desc: "Mexican Landrace Legende seit den 60ern. Golden Buds, klassischer High.", popular: false, new: false },
         { id: 32, name: "Maui Wowie", type: "Sativa", thc: 18, cbd: 0.1, effects: ["Energetic", "Creative", "Happy"], flavor: ["Pineapple", "Tropical", "Sweet"], desc: "Hawaiianischer Strand-Strain. Light & breezy High. Urlaubs-Vibes pur.", popular: false, new: false },
         { id: 33, name: "Blackberry Kush", type: "Indica", thc: 22, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Berry", "Blackberry", "Sweet"], desc: "Afghani x Blackberry. Dark Purple Buds. Medizinisch für Schmerzen.", popular: false, new: false },
         { id: 34, name: "Lava Cake", type: "Indica", thc: 24, cbd: 0.3, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Chocolate", "Sweet", "Vanilla"], desc: "Thin Mint GSC x Grape Pie. Dessert-Strain. Schmilzt wie Lava im Mund.", popular: false, new: true },
@@ -1025,7 +1025,7 @@ Intl.t = t;
         { id: 63, name: "Mochi Gelato", type: "Hybrid", thc: 26, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Berry", "Sweet", "Vanilla"], desc: "Sunset Sherbet x Thin Mint GSC. Mochi Ice Cream Vibe. Sweet Terps.", popular: false, new: true },
         { id: 64, name: "Raspberry Kush", type: "Indica", thc: 21, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Raspberry", "Berry", "Sweet"], desc: "California Medicine. Himbeer-Kush. Fruity & medizinisch.", popular: false, new: false },
         { id: 65, name: "Agent Orange", type: "Sativa", thc: 19, cbd: 0.2, effects: ["Uplifted", "Creative", "Energetic"], flavor: ["Orange", "Citrus", "Cheese"], desc: "Orange Velvet x Jack the Ripper. Cheese & Orange. Funky Fusion.", popular: false, new: false },
-        { id: 66, name: "LA Confidential", type: "Indica", thc: 22, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Earthy", "Pine", "Skunk"], desc: "OG LA Affie x Afghani. High Times Cannabis Cup. LA Kush Legend.", popular: false, new: false },
+                { id: 66, name: "LA Confidential", type: "Indica", thc: 22, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Earthy", "Pine", "Skunk"], desc: "OG LA Affie x Afghani. High Times Cannabis Cup. LA Kush Legend.", popular: false, new: false },
         { id: 67, name: "Grape Ape", type: "Indica", thc: 19, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Grape", "Sweet", "Berry"], desc: "Afghani x Skunk x Mendocino Purps. Trauben-Affe. Pain Relief.", popular: false, new: false },
         { id: 68, name: "Cereal Milk", type: "Hybrid", thc: 25, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Creative"], flavor: ["Sweet", "Creamy", "Berry"], desc: "Y Life x Snowman. Milch vom Frühstück. Cookies Fam Banger.", popular: false, new: true },
         { id: 69, name: "Peanut Butter Breath", type: "Hybrid", thc: 28, cbd: 0.3, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Nutty", "Earthy", "Sweet"], desc: "Do-Si-Dos x Mendo Breath. Erdnussbutter Terps. ThugPug Legend.", popular: false, new: true },
@@ -1082,7 +1082,7 @@ Intl.t = t;
         { id: 120, name: "Zoap Doja Cut", type: "Hybrid", thc: 30, cbd: 0.1, effects: ["Euphoric", "Creative", "Relaxed"], flavor: ["Soap", "Zest", "Candy"], desc: "Rainbow Sherbet x Pink Guava. Doja Exclusive Cut. Hypest Exotic.", popular: true, new: true }
     ];
 
-       // 20 Cannabis-Bilder - rotieren durch
+    // 20 Cannabis-Bilder - rotieren durch
     const cannabisImages = [
         "https://images.unsplash.com/photo-1603909223429-69bb7101f420?w=400&h=400&fit=crop&q=80",
         "https://images.unsplash.com/photo-1589149098258-3e9102cd63d3?w=400&h=400&fit=crop&q=80",
@@ -1294,6 +1294,7 @@ Intl.t = t;
                         <div class="potency-bar mt-2">
                             <div class="potency-fill" style="width: ${(strain.thc / 35) * 100}%"></div>
                         </div>
+                    </div>
                     <div class="bg-black/40 p-4 rounded-xl border border-cyan-500/30">
                         <div class="text-sm text-gray-400 mb-1" data-i18n="CBD Gehalt">CBD Gehalt</div>
                         <div class="text-3xl font-orbitron font-black text-cyan-400">${strain.cbd}%</div>
@@ -1304,7 +1305,7 @@ Intl.t = t;
                     <h4 class="text-lg font-orbitron font-bold text-cyan-400 mb-3" data-i18n="Effekte">🧠 Effekte</h4>
                     <div class="flex flex-wrap gap-2">
                         ${strain.effects.map(effect =>
-                            `<span class="px-4 py-2 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-lg border border-pink-500/50 text-white font-semibold">${effect}</span>`
+                            `<span class="px-4 py-2 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-lg border-pink-500/50 text-white font-semibold">${effect}</span>`
                         ).join('')}
                     </div>
                 </div>
@@ -1318,7 +1319,7 @@ Intl.t = t;
                     </div>
                 </div>
 
-                <div class="mb-8">
+               <div class="mb-8">
                     <h4 class="text-lg font-orbitron font-bold text-cyan-400 mb-3" data-i18n="Beschreibung">📖 Beschreibung</h4>
                     <p class="text-gray-300 leading-relaxed">${strain.desc}</p>
                 </div>
@@ -1441,7 +1442,7 @@ Intl.t = t;
         container.innerHTML = featured.map((strain, idx) => `
             <div class="slide ${idx === 0? 'active' : ''} p-8 bg-gradient-to-br from-purple-900/40 via-black to-cyan-900/40">
                 <div class="flex flex-col md:flex-row items-center gap-6">
-                    <div class="text-8xl">🌿</div>
+                    <img src="${getStrainImageUrl(strain.name)}" alt="${strain.name}" class="w-32 h-32 rounded-xl object-cover border-2 border-yellow-500/50">
                     <div class="flex-1 text-center md:text-left">
                         <div class="text-sm text-yellow-400 font-orbitron mb-2">FEATURED STRAIN</div>
                         <h3 class="text-4xl font-orbitron font-black neon-gold mb-2">${strain.name}</h3>
