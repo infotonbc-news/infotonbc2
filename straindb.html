@@ -1081,7 +1081,21 @@ Intl.t = t;
         { id: 119, name: "The Soap", type: "Hybrid", thc: 27, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Soap", "Floral", "Zest"], desc: "Animal Mints x Kush Mints. Saubere Terps. Exotic Clean.", popular: false, new: true },
         { id: 120, name: "Zoap Doja Cut", type: "Hybrid", thc: 30, cbd: 0.1, effects: ["Euphoric", "Creative", "Relaxed"], flavor: ["Soap", "Zest", "Candy"], desc: "Rainbow Sherbet x Pink Guava. Doja Exclusive Cut. Hypest Exotic.", popular: true, new: true }
     ];
+const cannabisImages = [
+    "https://images.unsplash.com/photo-1603909223429-69bb7101f420?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1589149098258-3e9102cd63d3?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1536819114556-1e10f967fb7c?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1503262028195-93c528f03218?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1567113463300-8362abde5a5b?w=400&h=400&fit=crop"
+];
 
+function getStrainImageUrl(strainName) {
+    const index = strainName.length % cannabisImages.length;
+    return cannabisImages[index];
+}
     let currentFilter = 'all';
     let currentTypeFilter = 'all';
     let currentSearch = '';
@@ -1124,10 +1138,21 @@ Intl.t = t;
         document.getElementById('searchInput').placeholder = t('Strain suchen...');
     }
 
-    function getStrainImageUrl(strainName) {
-    // Nutzt den Hash vom Namen damit jeder Strain ein anderes Bild hat
-    const seed = strainName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return `https://picsum.photos/seed/${seed}/400/400`;
+    // Ersetze deine alte getStrainImageUrl Funktion damit:
+const cannabisImages = [
+    "https://images.unsplash.com/photo-1603909223429-69bb7101f420?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1589149098258-3e9102cd63d3?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1536819114556-1e10f967fb7c?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1503262028195-93c528f03218?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1603386329225-868f9b1ee6c9?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1509347528160-9a9e33742cdb?w=400&h=400&fit=crop",
+    "https://images.unsplash.com/photo-1567113463300-8362abde5a5b?w=400&h=400&fit=crop"
+];
+
+function getStrainImageUrl(strainName) {
+    const index = strainName.length % cannabisImages.length;
+    return cannabisImages[index];
 }
     function setup3DHoloEffect() {
         document.querySelectorAll('.strain-card').forEach(card => {
