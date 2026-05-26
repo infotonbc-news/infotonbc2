@@ -1125,10 +1125,10 @@ Intl.t = t;
     }
 
     function getStrainImageUrl(strainName) {
-        const query = encodeURIComponent(strainName + ' cannabis bud');
-        return `https://source.unsplash.com/400x400/?${query},marijuana`;
-    }
-
+    // Nutzt den Hash vom Namen damit jeder Strain ein anderes Bild hat
+    const seed = strainName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return `https://picsum.photos/seed/${seed}/400/400`;
+}
     function setup3DHoloEffect() {
         document.querySelectorAll('.strain-card').forEach(card => {
             card.addEventListener('mousemove', (e) => {
