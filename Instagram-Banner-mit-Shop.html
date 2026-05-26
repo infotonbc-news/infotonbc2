@@ -1,261 +1,368 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title data-i18n="title">NaturalBornChillaz | NBC News</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Marcellus&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --wood-dark: #0C0A09;
-    --jungle: #0B2A1F;
-    --glass: rgba(12, 25, 20, 0.42);
-    --sage: #9DB4A6;
-    --glow-green: #C4F5E0;
-    --neon-purple: #C77DFF;
-    --gold: #D4AF37;
-    --smoke: #F8FAF9;
-  }
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NaturalBornChillaz | NBC News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Marcellus&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --neon-purple: #C77DFF;
+      --glow-green: #C4F5E0;
+      --gold: #D4AF37;
+      --wood-dark: #1A1411;
+      --jungle: #0C0A09;
+      --glass: rgba(20, 14, 12, 0.75);
+      --sage: #9DB4A6;
+      --smoke: #F8FAF9;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--wood-dark);
+      font-family: 'Outfit', sans-serif;
+      color: var(--smoke);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image:
+        linear-gradient(90deg, rgba(20,14,12,0.85) 0%, transparent 50%, rgba(20,14,12,0.85) 100%),
+        repeating-linear-gradient(90deg, #0C0A09, #0C0A09 2px, #1A1411 2px, #1A1411 4px),
+        radial-gradient(ellipse at 30% 20%, rgba(196,245,224,0.04) 0%, transparent 50%);
+      background-attachment: fixed;
+      font-size: 16px;
+    }
+   .vines { position: fixed; inset: 0; pointer-events: none; opacity: 0.06; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M10,50 Q30,20 50,50 T90,50' stroke='%23C4F5E0' stroke-width='0.5' fill='none'/%3E%3C/svg%3E"); }
 
-  body {
-    background: var(--wood-dark);
-    color: var(--smoke);
-    font-family: 'Outfit', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-    background-image:
-      linear-gradient(90deg, rgba(20,14,12,0.85) 0%, transparent 50%, rgba(20,14,12,0.85) 100%),
-      repeating-linear-gradient(90deg, #0C0A09, #0C0A09 2px, #1A1411 2px, #1A1411 4px),
-      radial-gradient(ellipse at 30% 20%, rgba(196,245,224,0.04) 0%, transparent 50%);
-    background-attachment: fixed;
-    font-size: 16px;
-  }
+   .wrap {
+      position: relative;
+      z-index: 2;
+      max-width: 540px;
+      margin: 0 auto;
+      padding: 50px 18px 80px;
+      width: 100%;
+    }
 
-  #smoke-canvas {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 1; opacity: 0.65;
-  }
+   .glass-plate {
+      background: var(--glass);
+      backdrop-filter: blur(20px) saturate(150%);
+      border-radius: 26px;
+      box-shadow: 0 0 85px rgba(199,125,255,0.12), inset 0 0 45px rgba(12,10,9,0.65);
+      position: relative;
+      overflow: hidden;
+    }
 
- .wrap {
-    position: relative;
-    z-index: 2;
-    max-width: 540px;
-    margin: 0 auto;
-    padding: 50px 18px 80px;
-    width: 100%;
-  }
+   .glass-plate::before {
+      content: ''; position: absolute; inset: 0; border-radius: 26px; padding: 1.2px;
+      background: linear-gradient(135deg, var(--neon-purple), var(--gold), var(--glow-green));
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+      opacity: 0.65; animation: borderGlow 7s ease-in-out infinite alternate;
+    }
+    @keyframes borderGlow { 0% { opacity: 0.45; } 100% { opacity: 0.85; } }
 
- .glass-plate {
-    background: var(--glass);
-    backdrop-filter: blur(20px) saturate(150%);
-    -webkit-backdrop-filter: blur(20px) saturate(150%);
-    border-radius: 26px;
-    position: relative;
-    box-shadow: 0 35px 70px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05);
-  }
+   .hero { text-align: center; padding: 42px 28px 36px; }
+   .logo-img {
+      width: 112px; height: 112px; margin: 0 auto 18px; border-radius: 50%;
+      object-fit: cover; border: 2px solid rgba(212,175,55,0.45);
+      box-shadow: 0 0 45px rgba(199,125,255,0.22), inset 0 0 22px rgba(0,0,0,0.5);
+    }
+   .nbc-title { width: 100%; max-width: 400px; height: auto; margin: 0 auto 10px; display: block; filter: drop-shadow(0 0 18px rgba(196,245,224,0.18)); }
+   .tagline { font-weight: 300; color: var(--sage); font-size: 0.95rem; letter-spacing: 2.2px; text-transform: uppercase; }
 
- .glass-plate::before {
-    content: ''; position: absolute; inset: 0; border-radius: 26px; padding: 1.2px;
-    background: linear-gradient(135deg, var(--neon-purple), var(--gold), var(--glow-green));
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor; mask-composite: exclude;
-    pointer-events: none;
-  }
+   .lang-switch { position: fixed; top: 15px; right: 15px; z-index: 999; display: flex; gap: 6px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 6px; border-radius: 12px; border: 1px solid rgba(212,175,55,0.2); }
+   .lang-switch button { background: transparent; border: 1px solid rgba(212,175,55,0.2); color: var(--sage); padding: 4px 8px; border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 12px; transition: all.2s; }
+   .lang-switch button:hover,.lang-switch button.active { background: var(--gold); color: var(--wood-dark); border-color: var(--gold); }
 
-  /* --- Responsive --- */
-  @media (max-width: 768px) {
-   .wrap { padding: 30px 14px 60px; }
-   .glass-plate { border-radius: 18px; }
-  }
-  @media (max-width: 480px) {
-    body { font-size: 15px; }
-   .wrap { padding: 20px 12px 50px; }
-  }
+   .inner-section { padding: 0 28px 32px; }
+   .section-block { margin-bottom: 38px; padding-bottom: 36px; border-bottom: 1px solid rgba(196,245,224,0.09); }
+   .section-block:last-child { border: none; margin: 0; padding: 0; }
+   .section-block h2 {
+      font-family: 'Marcellus', serif; font-size: 1.55rem; color: var(--glow-green);
+      margin-bottom: 16px; font-weight: 400; display: flex; align-items: center; gap: 10px;
+    }
+   .section-block h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(212,175,55,0.45), transparent); }
+   .section-block p { color: var(--sage); font-weight: 300; line-height: 1.85; margin-bottom: 20px; font-size: 0.97rem; }
+   .quote { font-style: italic; color: var(--glow-green); padding: 16px 0 16px 20px; border-left: 2px solid var(--gold); margin: 22px 0; background: rgba(212,175,55,0.035); }
 
-  /* --- Language Switcher --- */
- .lang-switch {
-    position: fixed;
-    top: 15px;
-    right: 15px;
-    z-index: 999;
-    display: flex;
-    gap: 6px;
-    background: var(--glass);
-    backdrop-filter: blur(10px);
-    padding: 6px;
-    border-radius: 12px;
-  }
- .lang-switch button {
-    background: transparent;
-    border: 1px solid var(--sage);
-    color: var(--smoke);
-    padding: 4px 8px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-family: 'Outfit', sans-serif;
-    font-size: 12px;
-    transition: all.2s;
-  }
- .lang-switch button:hover,
- .lang-switch button.active {
-    background: var(--glow-green);
-    color: var(--wood-dark);
-    border-color: var(--glow-green);
-  }
-</style>
+   .manifesto-list { list-style: none; margin: 18px 0; }
+   .manifesto-list li { margin: 14px 0; padding-left: 26px; position: relative; color: var(--sage); line-height: 1.7; }
+   .manifesto-list li::before { content: '•'; position: absolute; left: 0; color: var(--gold); font-size: 1.2rem; }
+   .manifesto-list strong { color: var(--glow-green); font-weight: 500; }
+
+   .btn {
+      display: block; width: 100%; padding: 17px; margin: 12px 0;
+      background: rgba(196,245,224,0.045); color: var(--smoke); text-align: center; text-decoration: none;
+      border-radius: 14px; border: 1px solid rgba(199,125,255,0.28);
+      transition: all 0.5s cubic-bezier(0.23,1,0.32,1); font-weight: 400; letter-spacing: 0.8px;
+      position: relative; overflow: hidden; cursor: pointer;
+    }
+   .btn::before { content: ''; position: absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.12), transparent); transition: left 0.6s; }
+   .btn:hover::before { left:100%; }
+   .btn:hover { background: rgba(199,125,255,0.11); border-color: rgba(212,175,55,0.55); box-shadow: 0 0 26px rgba(199,125,255,0.22); transform: translateY(-3px); }
+
+   .shop { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
+   .item { background: rgba(12,10,9,0.52); border: 1px solid rgba(157,180,166,0.12); border-radius: 18px; padding: 20px 16px; text-align: center; transition: all 0.4s ease; cursor: pointer; }
+   .item:hover { border-color: rgba(212,175,55,0.34); background: rgba(12,10,9,0.72); box-shadow: 0 12px 32px rgba(0,0,0,0.35); transform: translateY(-2px); }
+   .item-img { width: 100%; aspect-ratio: 1; border-radius: 14px; background: var(--jungle); margin-bottom: 14px; object-fit: cover; border: 1px solid rgba(196,245,224,0.12); }
+   .item h3 { font-size: 1.02rem; color: var(--glow-green); font-weight: 400; margin-bottom: 6px; font-family: 'Marcellus', serif; }
+   .item.price { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; font-weight: 300; }
+   .item.subtext { font-size: 0.82rem; color: var(--sage); margin-bottom: 14px; line-height: 1.45; }
+   .item.btn { padding: 11px; font-size: 0.86rem; margin: 0; }
+   .item.construction { opacity: 0.62; cursor: not-allowed; }
+   .item.construction:hover { transform: none; }
+
+   .footer { text-align: center; margin-top: 48px; font-size: 0.76rem; color: var(--sage); opacity: 0.55; line-height: 1.75; }
+
+    @media (max-width: 640px) {
+     .shop { grid-template-columns: 1fr; }
+     .lang-switch { top: 10px; right: 10px; flex-wrap: wrap; max-width: 180px; }
+     .wrap { padding: 30px 12px 60px; }
+    }
+  </style>
 </head>
 <body>
+  <div class="vines"></div>
 
-<div class="lang-switch">
-  <button onclick="switchLang('de')">DE</button>
-  <button onclick="switchLang('en')">EN</button>
-  <button onclick="switchLang('fr')">FR</button>
-  <button onclick="switchLang('es')">ES</button>
-  <button onclick="switchLang('bg')">BG</button>
-  <button onclick="switchLang('pl')">PL</button>
-  <button onclick="switchLang('ja')">JA</button>
-</div>
+  <div class="lang-switch">
+    <button onclick="switchLang('de')" data-lang="de">DE</button>
+    <button onclick="switchLang('en')" data-lang="en">EN</button>
+    <button onclick="switchLang('fr')" data-lang="fr">FR</button>
+    <button onclick="switchLang('es')" data-lang="es">ES</button>
+    <button onclick="switchLang('bg')" data-lang="bg">BG</button>
+    <button onclick="switchLang('pl')" data-lang="pl">PL</button>
+    <button onclick="switchLang('ja')" data-lang="ja">JA</button>
+  </div>
 
-<canvas id="smoke-canvas"></canvas>
+  <div class="wrap">
+    <div class="glass-plate">
+      <div class="hero">
+        <img src="logo.png" alt="NBC Logo" class="logo-img">
+        <svg class="nbc-title" viewBox="0 0 400 60">
+          <text x="50%" y="50%" text-anchor="middle" dominant-baseline="middle" fill="url(#goldGrad)" font-family="Marcellus" font-size="42" letter-spacing="8">NBC</text>
+          <defs>
+            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#D4AF37;stop-opacity:1" />
+              <stop offset="50%" style="stop-color:#F5E7A3;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#D4AF37;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <p class="tagline" data-i18n="tagline">We are from Earth, not Mars</p>
+      </div>
 
-<div class="wrap">
-  <div class="glass-plate">
-    <!-- Beispiel: Nutze data-i18n für alle Texte die übersetzt werden sollen -->
-    <h1 data-i18n="title" style="text-align:center;padding:40px 20px 20px;">NaturalBornChillaz | NBC News</h1>
-    <p data-i18n="subtitle" style="text-align:center;padding:0 20px 30px;color:var(--sage);">Dschungel-Vibes & Chill</p>
+      <div class="inner-section">
+        <div class="section-block">
+          <h2 data-i18n="about">Über NBC</h2>
+          <p data-i18n="intro1">NaturalBornChillaz ist ein Kollektiv für bewusstes Leben, Kunst und Community. Wir glauben an Qualität vor Quantität.</p>
+          <div class="quote" data-i18n="quote">„Chill ist kein Zustand. Chill ist eine Entscheidung.“</div>
+        </div>
 
-    <div style="display:flex;justify-content:center;gap:12px;padding-bottom:40px;flex-wrap:wrap;">
-      <button data-i18n="shop">Shop</button>
-      <button data-i18n="news">News</button>
-      <button data-i18n="contact">Kontakt</button>
-      <button data-i18n="follow">Folgen</button>
+        <div class="section-block">
+          <h2 data-i18n="manifesto">Manifest</h2>
+          <ul class="manifesto-list">
+            <li data-i18n="manifesto1"><strong>Qualität</strong> über Quantität</li>
+            <li data-i18n="manifesto2"><strong>Community</strong> über Kommerz</li>
+            <li data-i18n="manifesto3"><strong>Kunst</strong> über Algorithmus</li>
+          </ul>
+        </div>
+
+        <div class="section-block">
+          <h2 data-i18n="shop">Shop</h2>
+          <div class="shop">
+            <div class="item">
+              <img src="item1.jpg" alt="Product" class="item-img">
+              <h3 data-i18n="item1title">NBC Tee</h3>
+              <div class="price">39€</div>
+              <p class="subtext" data-i18n="item1desc">Organic Cotton, Fair Trade</p>
+              <a href="#" class="btn" data-i18n="buy">Kaufen</a>
+            </div>
+            <div class="item construction">
+              <img src="item2.jpg" alt="Product" class="item-img">
+              <h3 data-i18n="item2title">Coming Soon</h3>
+              <div class="price">--</div>
+              <p class="subtext" data-i18n="item2desc">Neue Kollektion in Arbeit</p>
+              <a class="btn" data-i18n="soon">Bald</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p data-i18n="footer">© 2026 NaturalBornChillaz. Alle Rechte vorbehalten.</p>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-  // --- 1. Übersetzungen ---
-  const translations = {
-    de: {
-      title: "NaturalBornChillaz | NBC News",
-      subtitle: "Dschungel-Vibes & Chill",
-      shop: "Shop",
-      news: "News",
-      contact: "Kontakt",
-      follow: "Folgen"
-    },
-    en: {
-      title: "NaturalBornChillaz | NBC News",
-      subtitle: "Jungle Vibes & Chill",
-      shop: "Shop",
-      news: "News",
-      contact: "Contact",
-      follow: "Follow"
-    },
-    fr: {
-      title: "NaturalBornChillaz | NBC News",
-      subtitle: "Vibes Jungle & Chill",
-      shop: "Boutique",
-      news: "Actualités",
-      contact: "Contact",
-      follow: "Suivre"
-    },
-    es: {
-      title: "NaturalBornChillaz | NBC News",
-      subtitle: "Vibras de Selva y Chill",
-      shop: "Tienda",
-      news: "Noticias",
-      contact: "Contacto",
-      follow: "Seguir"
-    },
-    bg: {
-      title: "NaturalBornChillaz | NBC News",
-      subtitle: "Джунгла Вайбс & Чил",
-      shop: "Магазин",
-      news: "Новини",
-      contact: "Контакт",
-      follow: "Следвай"
-    },
-    pl: {
-      title: "NaturalBornChillaz | NBC News",
-      subtitle: "Dżungla Vibes & Chill",
-      shop: "Sklep",
-      news: "Aktualności",
-      contact: "Kontakt",
-      follow: "Obserwuj"
-    },
-    ja: {
-      title: "NaturalBornChillaz | NBC News",
-      subtitle: "ジャングルバイブス＆チル",
-      shop: "ショップ",
-      news: "ニュース",
-      contact: "お問い合わせ",
-      follow: "フォロー"
-    }
-  };
-
-  // --- 2. Ländercodes zu Sprachen mappen für Geo-IP ---
-  const countryToLang = {
-    DE: 'de', AT: 'de', CH: 'de',
-    US: 'en', GB: 'en', CA: 'en', AU: 'en',
-    FR: 'fr', BE: 'fr',
-    ES: 'es', MX: 'es', AR: 'es',
-    BG: 'bg',
-    PL: 'pl',
-    JP: 'ja'
-  };
-
-  const supported = ['de','en','fr','es','bg','pl','ja'];
-  let currentLang = 'en';
-
-  // --- 3. Sprache setzen + UI updaten ---
-  function setLanguage(lang) {
-    const dict = translations[lang] || translations['en'];
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (dict[key]) el.textContent = dict[key];
-    });
-    document.documentElement.lang = lang;
-    currentLang = lang;
-
-    // Aktiven Button markieren
-    document.querySelectorAll('.lang-switch button').forEach(btn => {
-      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
-    });
-  }
-  window.switchLang = setLanguage;
-
-  // --- 4. Geo-IP Erkennung + Fallbacks ---
-  async function detectLanguage() {
-    // Priorität 1: Geo-IP über ipapi.co - kostenlos, kein Key nötig
-    try {
-      const res = await fetch('https://ipapi.co/json/');
-      const data = await res.json();
-      const countryLang = countryToLang[data.country_code];
-      if (countryLang && supported.includes(countryLang)) {
-        setLanguage(countryLang);
-        return;
+  <script>
+    const translations = {
+      de: {
+        title: "NaturalBornChillaz | NBC News",
+        tagline: "We are from Earth, not Mars",
+        about: "Über NBC",
+        intro1: "NaturalBornChillaz ist ein Kollektiv für bewusstes Leben, Kunst und Community. Wir glauben an Qualität vor Quantität.",
+        quote: "„Chill ist kein Zustand. Chill ist eine Entscheidung.“",
+        manifesto: "Manifest",
+        manifesto1: "Qualität über Quantität",
+        manifesto2: "Community über Kommerz",
+        manifesto3: "Kunst über Algorithmus",
+        shop: "Shop",
+        item1title: "NBC Tee",
+        item1desc: "Organic Cotton, Fair Trade",
+        item2title: "Coming Soon",
+        item2desc: "Neue Kollektion in Arbeit",
+        buy: "Kaufen",
+        soon: "Bald",
+        footer: "© 2026 NaturalBornChillaz. Alle Rechte vorbehalten."
+      },
+      en: {
+        title: "NaturalBornChillaz | NBC News",
+        tagline: "We are from Earth, not Mars",
+        about: "About NBC",
+        intro1: "NaturalBornChillaz is a collective for conscious living, art and community. We believe in quality over quantity.",
+        quote: "“Chill is not a state. Chill is a decision.”",
+        manifesto: "Manifesto",
+        manifesto1: "Quality over quantity",
+        manifesto2: "Community over commerce",
+        manifesto3: "Art over algorithm",
+        shop: "Shop",
+        item1title: "NBC Tee",
+        item1desc: "Organic Cotton, Fair Trade",
+        item2title: "Coming Soon",
+        item2desc: "New collection in progress",
+        buy: "Buy",
+        soon: "Soon",
+        footer: "© 2026 NaturalBornChillaz. All rights reserved."
+      },
+      fr: {
+        title: "NaturalBornChillaz | NBC News",
+        tagline: "Nous venons de la Terre, pas de Mars",
+        about: "À propos de NBC",
+        intro1: "NaturalBornChillaz est un collectif pour une vie consciente, l'art et la communauté. Nous croyons en la qualité plutôt qu'en la quantité.",
+        quote: "« Le chill n'est pas un état. Le chill est une décision. »",
+        manifesto: "Manifeste",
+        manifesto1: "La qualité avant la quantité",
+        manifesto2: "La communauté avant le commerce",
+        manifesto3: "L'art avant l'algorithme",
+        shop: "Boutique",
+        item1title: "T-shirt NBC",
+        item1desc: "Coton bio, commerce équitable",
+        item2title: "Bientôt disponible",
+        item2desc: "Nouvelle collection en cours",
+        buy: "Acheter",
+        soon: "Bientôt",
+        footer: "© 2026 NaturalBornChillaz. Tous droits réservés."
+      },
+      es: {
+        title: "NaturalBornChillaz | NBC News",
+        tagline: "Somos de la Tierra, no de Marte",
+        about: "Sobre NBC",
+        intro1: "NaturalBornChillaz es un colectivo para la vida consciente, el arte y la comunidad. Creemos en la calidad sobre la cantidad.",
+        quote: "«El chill no es un estado. El chill es una decisión.»",
+        manifesto: "Manifiesto",
+        manifesto1: "Calidad sobre cantidad",
+        manifesto2: "Comunidad sobre comercio",
+        manifesto3: "Arte sobre algoritmo",
+        shop: "Tienda",
+        item1title: "Camiseta NBC",
+        item1desc: "Algodón orgánico, comercio justo",
+        item2title: "Próximamente",
+        item2desc: "Nueva colección en progreso",
+        buy: "Comprar",
+        soon: "Pronto",
+        footer: "© 2026 NaturalBornChillaz. Todos los derechos reservados."
+      },
+      bg: {
+        title: "NaturalBornChillaz | NBC News",
+        tagline: "Ние сме от Земята, не от Марс",
+        about: "За NBC",
+        intro1: "NaturalBornChillaz е колектив за съзнателен живот, изкуство и общност. Вярваме в качеството пред количеството.",
+        quote: "«Чилът не е състояние. Чилът е решение.»",
+        manifesto: "Манифест",
+        manifesto1: "Качество пред количество",
+        manifesto2: "Общност пред търговия",
+        manifesto3: "Изкуство пред алгоритъм",
+        shop: "Магазин",
+        item1title: "Тениска NBC",
+        item1desc: "Органичен памук, справедлива търговия",
+        item2title: "Очаквайте скоро",
+        item2desc: "Нова колекция в процес",
+        buy: "Купи",
+        soon: "Скоро",
+        footer: "© 2026 NaturalBornChillaz. Всички права запазени."
+      },
+      pl: {
+        title: "NaturalBornChillaz | NBC News",
+        tagline: "Jesteśmy z Ziemi, nie z Marsa",
+        about: "O NBC",
+        intro1: "NaturalBornChillaz to kolektyw na rzecz świadomego życia, sztuki i społeczności. Wierzymy w jakość ponad ilość.",
+        quote: "„Chill to nie stan. Chill to decyzja.”",
+        manifesto: "Manifest",
+        manifesto1: "Jakość ponad ilość",
+        manifesto2: "Społeczność ponad handel",
+        manifesto3: "Sztuka ponad algorytm",
+        shop: "Sklep",
+        item1title: "Koszulka NBC",
+        item1desc: "Bawełna organiczna, sprawiedliwy handel",
+        item2title: "Wkrótce",
+        item2desc: "Nowa kolekcja w przygotowaniu",
+        buy: "Kup",
+        soon: "Wkrótce",
+        footer: "© 2026 NaturalBornChillaz. Wszelkie prawa zastrzeżone."
+      },
+      ja: {
+        title: "NaturalBornChillaz | NBC News",
+        tagline: "私たちは火星からではなく地球から来た",
+        about: "NBCについて",
+        intro1: "NaturalBornChillazは、意識的な生活、アート、コミュニティのためのコレクティブです。量より質を信じています。",
+        quote: "「チルは状態ではない。チルは決断だ。」",
+        manifesto: "マニフェスト",
+        manifesto1: "量より質",
+        manifesto2: "商業よりコミュニティ",
+        manifesto3: "アルゴリズムよりアート",
+        shop: "ショップ",
+        item1title: "NBC Tシャツ",
+        item1desc: "オーガニックコットン、フェアトレード",
+        item2title: "近日公開",
+        item2desc: "新コレクション準備中",
+        buy: "購入",
+        soon: "近日",
+        footer: "© 2026 NaturalBornChillaz. 無断転載を禁じます。"
       }
-    } catch(e) {
-      console.log('Geo-IP failed, using browser language');
+    }; // <-- Das war der Fehler: Diese Klammer + Semikolon fehlte
+
+    const countryToLang = { DE: 'de', AT: 'de', CH: 'de', US: 'en', GB: 'en', CA: 'en', AU: 'en', FR: 'fr', BE: 'fr', ES: 'es', MX: 'es', AR: 'es', CO: 'es', BG: 'bg', PL: 'pl', JP: 'ja' };
+    const supported = ['de','en','fr','es','bg','pl','ja'];
+    let currentLang = 'de';
+
+    function setLanguage(lang) {
+      const dict = translations[lang] || translations['de'];
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) el.textContent = dict[key];
+      });
+      document.documentElement.lang = lang;
+      document.title = dict.title; // <-- Fix: Titel wird jetzt auch übersetzt
+      currentLang = lang;
+      document.querySelectorAll('.lang-switch button').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+      });
+      localStorage.setItem('preferred_lang', lang);
     }
+    window.switchLang = setLanguage;
 
-    // Priorität 2: Browser-Sprache
-    const browserLang = (navigator.language || navigator.userLanguage).slice(0,2).toLowerCase();
-    if (supported.includes(browserLang)) {
-      setLanguage(browserLang);
-      return;
+    async function detectLanguage() {
+      const saved = localStorage.getItem('preferred_lang');
+      if (saved && supported.includes(saved)) { setLanguage(saved); return; }
+      try {
+        const res = await fetch('https://ipapi.co/json/');
+        const data = await res.json();
+        const countryLang = countryToLang[data.country_code];
+        if (countryLang && supported.includes(countryLang)) { setLanguage(countryLang); return; }
+      } catch(e) {}
+      const browserLang = (navigator.language || navigator.userLanguage).slice(0,2).toLowerCase();
+      setLanguage(supported.includes(browserLang)? browserLang : 'de');
     }
-
-    // Priorität 3: Fallback Englisch
-    setLanguage('en');
-  }
-
-  detectLanguage();
-</script>
-
+    detectLanguage();
+  </script>
 </body>
 </html>
