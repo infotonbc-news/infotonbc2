@@ -108,15 +108,39 @@
    .item.price { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; font-weight: 300; }
    .item.subtext { font-size: 0.82rem; color: var(--sage); margin-bottom: 14px; line-height: 1.45; }
    .item.btn { padding: 11px; font-size: 0.86rem; margin: 0; }
-   .item.construction { opacity: 0.62; cursor: not-allowed; }
-   .item.construction:hover { transform: none; }
+   .item.construction { opacity: 0.62; cursor: not-allowed; }.item.construction:hover { transform: none; }
 
    .footer { text-align: center; margin-top: 48px; font-size: 0.76rem; color: var(--sage); opacity: 0.55; line-height: 1.75; }
+
+    /* MODAL */
+   .modal { display: none; position: fixed; z-index: 999; left:0; top:0; width:100%; height:100%; background: rgba(12,10,9,0.92); backdrop-filter: blur(12px); animation: fadeIn 0.3s ease; }
+   .modal.active { display: flex; align-items: center; justify-content: center; }
+    @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+   .pokemon-card { width: 90%; max-width: 390px; background: linear-gradient(135deg,#1a1a2e 0%,#16213e 100%); border-radius: 22px; padding: 3px; position: relative; box-shadow: 0 0 65px rgba(199,125,255,0.45); animation: cardPop 0.42s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes cardPop { from { transform: scale(0.85); opacity:0 } to { transform: scale(1); opacity:1 } }
+   .pokemon-card::before { content:''; position:absolute; inset:0; border-radius:22px; padding:3px; background: linear-gradient(135deg,var(--gold),var(--neon-purple),var(--glow-green)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+   .card-inner { background: linear-gradient(135deg,#0f1729 0%,#1a1a2e 100%); border-radius: 19px; padding: 22px; }
+   .card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
+   .card-title { font-family:'Marcellus',serif; font-size:1.32rem; color:var(--gold); }
+   .card-hp { color:var(--glow-green); font-weight:500; font-size:0.92rem; }
+   .card-image { width:100%; aspect-ratio:4/3; background:var(--jungle); border-radius:12px; margin-bottom:15px; border:3px solid rgba(212,175,55,0.32); object-fit:cover; }
+   .card-desc { background: rgba(196,245,224,0.055); padding:15px; border-radius:10px; margin-bottom:15px; font-size:0.87rem; line-height:1.62; color:var(--sage); }
+   .card-stats { display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid rgba(212,175,55,0.22); border-bottom:1px solid rgba(212,175,55,0.22); margin-bottom:15px; }
+   .stat { text-align:center; }
+   .stat-label { font-size:0.7rem; color:var(--sage); text-transform:uppercase; letter-spacing:1px; }
+   .stat-value { font-size:1.05rem; color:var(--gold); font-weight:500; margin-top:3px; }
+   .card-action { display:flex; gap:12px; margin-top:15px; }
+   .card-action.btn { flex:1; margin:0; padding:13px; font-size:0.9rem; }
+   .close-modal { position:absolute; top:12px; right:12px; width:34px; height:34px; background:rgba(199,125,255,0.15); border:1px solid rgba(212,175,55,0.32); border-radius:50%; color:var(--gold); font-size:1.45rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s ease; }
+   .close-modal:hover { background:rgba(199,125,255,0.28); transform:rotate(90deg); }
 
     @media (max-width: 640px) {
      .shop { grid-template-columns: 1fr; }
      .lang-switch { top: 10px; right: 10px; flex-wrap: wrap; max-width: 180px; }
      .wrap { padding: 30px 12px 60px; }
+     .hero { padding: 32px 22px 28px; }
+     .logo-img { width: 92px; height: 92px; }
+     .section-block h2 { font-size: 1.35rem; }
     }
   </style>
 </head>
@@ -169,19 +193,19 @@
         <div class="section-block">
           <h2 data-i18n="shop">Shop</h2>
           <div class="shop">
-            <div class="item">
-              <img src="item1.jpg" alt="Product" class="item-img">
+            <div class="item" onclick="openModal('seed')">
+              <img src="seed.jpg" alt="Seeds" class="item-img">
               <h3 data-i18n="item1title">NBC Tee</h3>
               <div class="price">39€</div>
               <p class="subtext" data-i18n="item1desc">Organic Cotton, Fair Trade</p>
-              <a href="#" class="btn" data-i18n="buy">Kaufen</a>
+              <button class="btn" data-i18n="buy">Kaufen</button>
             </div>
             <div class="item construction">
               <img src="item2.jpg" alt="Product" class="item-img">
               <h3 data-i18n="item2title">Coming Soon</h3>
               <div class="price">--</div>
               <p class="subtext" data-i18n="item2desc">Neue Kollektion in Arbeit</p>
-              <a class="btn" data-i18n="soon">Bald</a>
+              <button class="btn" disabled data-i18n="soon">Bald</button>
             </div>
           </div>
         </div>
@@ -189,6 +213,38 @@
 
       <div class="footer">
         <p data-i18n="footer">© 2026 NaturalBornChillaz. Alle Rechte vorbehalten.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div id="modal" class="modal">
+    <div class="pokemon-card">
+      <button class="close-modal" onclick="closeModal()">&times;</button>
+      <div class="card-inner">
+        <div class="card-header">
+          <h3 class="card-title" id="modalTitle">NBC Seed</h3>
+          <span class="card-hp">HP 420</span>
+        </div>
+        <img id="modalImg" src="" alt="" class="card-image">
+        <div class="card-desc" id="modalDesc">Beschreibung...</div>
+        <div class="card-stats">
+          <div class="stat">
+            <div class="stat-label" data-i18n="thc">THC</div>
+            <div class="stat-value" id="modalThc">22%</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label" data-i18n="type">Type</div>
+            <div class="stat-value" id="modalType">Hybrid</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label" data-i18n="price">Preis</div>
+            <div class="stat-value" id="modalPrice">15€</div>
+          </div>
+        </div>
+        <div class="card-action">
+          <button class="btn" data-i18n="orderBtn">Bestellen</button>
+        </div>
       </div>
     </div>
   </div>
@@ -212,6 +268,10 @@
         item2desc: "Neue Kollektion in Arbeit",
         buy: "Kaufen",
         soon: "Bald",
+        thc: "THC",
+        type: "Typ",
+        price: "Preis",
+        orderBtn: "Bestellen",
         footer: "© 2026 NaturalBornChillaz. Alle Rechte vorbehalten."
       },
       en: {
@@ -231,6 +291,10 @@
         item2desc: "New collection in progress",
         buy: "Buy",
         soon: "Soon",
+        thc: "THC",
+        type: "Type",
+        price: "Price",
+        orderBtn: "Order",
         footer: "© 2026 NaturalBornChillaz. All rights reserved."
       },
       fr: {
@@ -250,6 +314,10 @@
         item2desc: "Nouvelle collection en cours",
         buy: "Acheter",
         soon: "Bientôt",
+        thc: "THC",
+        type: "Type",
+        price: "Prix",
+        orderBtn: "Commander",
         footer: "© 2026 NaturalBornChillaz. Tous droits réservés."
       },
       es: {
@@ -269,6 +337,10 @@
         item2desc: "Nueva colección en progreso",
         buy: "Comprar",
         soon: "Pronto",
+        thc: "THC",
+        type: "Tipo",
+        price: "Precio",
+        orderBtn: "Pedir",
         footer: "© 2026 NaturalBornChillaz. Todos los derechos reservados."
       },
       bg: {
@@ -288,6 +360,10 @@
         item2desc: "Нова колекция в процес",
         buy: "Купи",
         soon: "Скоро",
+        thc: "THC",
+        type: "Тип",
+        price: "Цена",
+        orderBtn: "Поръчай",
         footer: "© 2026 NaturalBornChillaz. Всички права запазени."
       },
       pl: {
@@ -307,6 +383,10 @@
         item2desc: "Nowa kolekcja w przygotowaniu",
         buy: "Kup",
         soon: "Wkrótce",
+        thc: "THC",
+        type: "Typ",
+        price: "Cena",
+        orderBtn: "Zamów",
         footer: "© 2026 NaturalBornChillaz. Wszelkie prawa zastrzeżone."
       },
       ja: {
@@ -326,9 +406,13 @@
         item2desc: "新コレクション準備中",
         buy: "購入",
         soon: "近日",
+        thc: "THC",
+        type: "タイプ",
+        price: "価格",
+        orderBtn: "注文",
         footer: "© 2026 NaturalBornChillaz. 無断転載を禁じます。"
       }
-    }; // <-- Das war der Fehler: Diese Klammer + Semikolon fehlte
+    };
 
     const countryToLang = { DE: 'de', AT: 'de', CH: 'de', US: 'en', GB: 'en', CA: 'en', AU: 'en', FR: 'fr', BE: 'fr', ES: 'es', MX: 'es', AR: 'es', CO: 'es', BG: 'bg', PL: 'pl', JP: 'ja' };
     const supported = ['de','en','fr','es','bg','pl','ja'];
@@ -341,7 +425,7 @@
         if (dict[key]) el.textContent = dict[key];
       });
       document.documentElement.lang = lang;
-      document.title = dict.title; // <-- Fix: Titel wird jetzt auch übersetzt
+      document.title = dict.title;
       currentLang = lang;
       document.querySelectorAll('.lang-switch button').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === lang);
@@ -349,6 +433,14 @@
       localStorage.setItem('preferred_lang', lang);
     }
     window.switchLang = setLanguage;
+
+    function openModal(type) {
+      document.getElementById('modal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+    }
 
     async function detectLanguage() {
       const saved = localStorage.getItem('preferred_lang');
@@ -358,11 +450,18 @@
         const data = await res.json();
         const countryLang = countryToLang[data.country_code];
         if (countryLang && supported.includes(countryLang)) { setLanguage(countryLang); return; }
-      } catch(e) {}
+      } catch(e) {
+        console.log('Geo-IP failed, using browser language');
+      }
       const browserLang = (navigator.language || navigator.userLanguage).slice(0,2).toLowerCase();
-      setLanguage(supported.includes(browserLang)? browserLang : 'de');
+      if (supported.includes(browserLang)) {
+        setLanguage(browserLang);
+        return;
+      }
+      setLanguage('en');
     }
     detectLanguage();
   </script>
+
 </body>
 </html>
