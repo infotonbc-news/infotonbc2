@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Impressum - Natural Chillaz</title>
+    <title data-i18n="pageTitle">Impressum - Natural Chillaz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,23 +28,23 @@
             color: var(--gold);
             letter-spacing: 0.02em;
         }
-        .gold-gradient {
+       .gold-gradient {
             background: linear-gradient(135deg, #C9A227 0%, #E6C45A 50%, #C9A227 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-        .bg-grid {
+       .bg-grid {
             background-image: radial-gradient(circle at 1px 1px, rgba(201,162,39,0.07) 1px, transparent 0);
             background-size: 28px 28px;
         }
-        .glass {
+       .glass {
             background: rgba(12, 12, 10, 0.6);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(201, 162, 39, 0.15);
         }
-        .placeholder {
+       .placeholder {
             display: inline-block;
             background: rgba(201, 162, 39, 0.1);
             border: 1px dashed rgba(201, 162, 39, 0.4);
@@ -55,43 +55,89 @@
             font-size: 0.9em;
             transition: all 0.3s ease;
         }
-        .placeholder:hover {
+       .placeholder:hover {
             background: rgba(201, 162, 39, 0.15);
             border-color: rgba(201, 162, 39, 0.6);
         }
-        .glow {
+       .glow {
             box-shadow: 0 0 80px rgba(201, 162, 39, 0.08), inset 0 1px 0 rgba(255,255,255,0.05);
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .fade-in {
+       .fade-in {
             animation: fadeIn 0.8s ease-out forwards;
+        }
+       .lang-switch {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            z-index: 999;
+            display: flex;
+            gap: 6px;
+            background: rgba(12, 12, 10, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid rgba(201, 162, 39, 0.15);
+        }
+       .lang-switch button {
+            background: transparent;
+            border: 1px solid rgba(201, 162, 39, 0.3);
+            color: #E5E5E5;
+            padding: 4px 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            transition: all.2s;
+        }
+       .lang-switch button:hover,
+       .lang-switch button.active {
+            background: var(--gold);
+            color: #070807;
+            border-color: var(--gold);
         }
         ::-webkit-scrollbar { width: 8px; }
         ::-webkit-scrollbar-track { background: #070807; }
         ::-webkit-scrollbar-thumb { background: #C9A22755; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #C9A22799; }
+        @media (max-width: 640px) {
+           .lang-switch { top: 10px; right: 10px; flex-wrap: wrap; max-width: 180px; }
+            h1 { font-size: 2rem!important; }
+            h2 { font-size: 1.5rem!important; }
+        }
     </style>
 </head>
 <body class="min-h-screen relative overflow-x-hidden">
+    <!-- Language Switcher -->
+    <div class="lang-switch no-print">
+        <button onclick="switchLang('de')" data-lang="de">DE</button>
+        <button onclick="switchLang('en')" data-lang="en">EN</button>
+        <button onclick="switchLang('fr')" data-lang="fr">FR</button>
+        <button onclick="switchLang('es')" data-lang="es">ES</button>
+        <button onclick="switchLang('bg')" data-lang="bg">BG</button>
+        <button onclick="switchLang('pl')" data-lang="pl">PL</button>
+        <button onclick="switchLang('ja')" data-lang="ja">JA</button>
+    </div>
+
     <!-- Background Effects -->
     <div class="fixed inset-0 z-0">
         <div class="absolute inset-0 bg-[#070807]"></div>
         <div class="absolute inset-0 bg-grid opacity-40"></div>
-        <div class="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-[#C9A227]/[0.08] rounded-full blur-[120px]"></div>
-        <div class="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-[#C9A227]/[0.06] rounded-full blur-[140px]"></div>
+        <div class="absolute top-[-20%] left-[-10%] w- h- bg-[#C9A227]/[0.08] rounded-full blur-"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w- h- bg-[#C9A227]/[0.06] rounded-full blur-"></div>
     </div>
 
     <!-- Header -->
     <header class="relative z-40 border-b border-[#C9A227]/10">
-        <div class="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
-            <a href="#" class="flex items-center gap-3 group">
-                <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-[#C9A227] to-[#8B7318] flex items-center justify-center shadow-lg shadow-[#C9A227]/20 group-hover:shadow-[#C9A227]/30 transition-all">
-                    <span class="font-bold text-black text-lg" style="font-family: 'Cinzel', serif;">N</span>
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-2 sm:gap-3 group">
+                <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-br from-[#C9A227] to-[#8B7318] flex items-center justify-center shadow-lg shadow-[#C9A227]/20 group-hover:shadow-[#C9A227]/30 transition-all">
+                    <span class="font-bold text-black text-base sm:text-lg" style="font-family: 'Cinzel', serif;">N</span>
                 </div>
-                <span class="text-xl tracking-wider" style="font-family: 'Cinzel', serif;">
+                <span class="text-lg sm:text-xl tracking-wider" style="font-family: 'Cinzel', serif;">
                     <span class="text-white/90">NATURAL</span> <span class="gold-gradient">CHILLAZ</span>
                 </span>
             </a>
@@ -99,161 +145,160 @@
                 <svg class="w-4 h-4 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                 </svg>
-                Zurück zur Startseite
+                <span data-i18n="backHome">Zurück zur Startseite</span>
             </a>
         </div>
     </header>
 
-    <main class="relative z-30 max-w-4xl mx-auto px-6 py-12 md:py-20">
+    <main class="relative z-30 max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-20">
         <div class="fade-in">
             <!-- Title -->
-            <div class="text-center mb-12">
-                <h1 class="text-4xl md:text-5xl font-semibold mb-4 gold-gradient">Impressum</h1>
-                <p class="text-white/50 text-sm tracking-wide uppercase">Angaben gemäß § 5 TMG</p>
+            <div class="text-center mb-8 sm:mb-12">
+                <h1 class="text-3xl sm:text-4xl md:text-5xl font-semibold mb-4 gold-gradient" data-i18n="title">Impressum</h1>
+                <p class="text-white/50 text-sm tracking-wide uppercase" data-i18n="subtitle">Angaben gemäß § 5 TMG</p>
                 <div class="w-24 h-px bg-gradient-to-r from-transparent via-[#C9A227]/50 to-transparent mx-auto mt-6"></div>
             </div>
 
             <!-- Main Card -->
-            <div class="glass glow rounded-[24px] p-8 md:p-12 shadow-2xl">
-                
+            <div class="glass glow rounded- p-6 sm:p-8 md:p-12 shadow-2xl">
+
                 <!-- Anbieter -->
-                <section class="mb-12">
-                    <h2 class="text-2xl mb-6 flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-lg bg-[#C9A227]/10 border border-[#C9A227]/20 flex items-center justify-center">
-                            <svg class="w-4 h-4 text-[#C9A227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <section class="mb-8 sm:mb-12">
+                    <h2 class="text-xl sm:text-2xl mb-4 sm:mb-6 flex items-center gap-3">
+                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#C9A227]/10 border border-[#C9A227]/20 flex items-center justify-center">
+                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C9A227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
                         </span>
-                        Diensteanbieter
+                        <span data-i18n="provider">Diensteanbieter</span>
                     </h2>
-                    <div class="space-y-3 text-[15px] leading-relaxed text-white/80 pl-11">
+                    <div class="space-y-2 sm:space-y-3 text-sm sm:text- leading-relaxed text-white/80 pl-10 sm:pl-11">
                         <p>Slawomir Wisniewski</p>
                         <p>Dionysiuskirchplatz 2a</p>
                         <p>45355 Essen</p>
-                        <p>Deutschland</p>
-                        
+                        <p data-i18n="country">Deutschland</p>
+
                         <div class="pt-4 mt-4 border-t border-[#C9A227]/10">
-                            <p class="text-white/60 text-sm mb-2">Rechtsform / Vertretung:</p>
-                            <p>Privatperson</p>
+                            <p class="text-white/60 text-sm mb-2" data-i18n="legalForm">Rechtsform / Vertretung:</p>
+                            <p data-i18n="privatePerson">Privatperson</p>
                         </div>
                     </div>
                 </section>
 
                 <!-- Kontakt -->
-                <section class="mb-12">
-                    <h2 class="text-2xl mb-6 flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-lg bg-[#C9A227]/10 border border-[#C9A227]/20 flex items-center justify-center">
-                            <svg class="w-4 h-4 text-[#C9A227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <section class="mb-8 sm:mb-12">
+                    <h2 class="text-xl sm:text-2xl mb-4 sm:mb-6 flex items-center gap-3">
+                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#C9A227]/10 border border-[#C9A227]/20 flex items-center justify-center">
+                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C9A227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                             </svg>
                         </span>
-                        Kontakt
+                        <span data-i18n="contact">Kontakt</span>
                     </h2>
-                    <div class="pl-11 space-y-3 text-[15px]">
-                        <div class="flex items-center gap-3">
-                            <span class="text-white/60 w-20">E-Mail:</span>
-                            <a href="mailto:infotonbc@gmail.com" id="emailLink" class="text-[#E6C45A] hover:text-white transition-colors font-medium">infotonbc@gmail.com</a>
-                            <button onclick="copyEmail()" class="ml-2 p-1.5 rounded-md bg-[#C9A227]/10 hover:bg-[#C9A227]/20 border border-[#C9A227]/20 transition-all group" title="E-Mail kopieren">
+                    <div class="pl-10 sm:pl-11 space-y-3 text-sm sm:text-">
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <span class="text-white/60 w-16 sm:w-20">E-Mail:</span>
+                            <a href="mailto:infotonbc@gmail.com" id="emailLink" class="text-[#E6C45A] hover:text-white transition-colors font-medium break-all">infotonbc@gmail.com</a>
+                            <button onclick="copyEmail()" class="ml-0 sm:ml-2 p-1.5 rounded-md bg-[#C9A227]/10 hover:bg-[#C9A227]/20 border border-[#C9A227]/20 transition-all group" title="E-Mail kopieren">
                                 <svg class="w-3.5 h-3.5 text-[#C9A227] group-hover:text-[#E6C45A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
                                 </svg>
                             </button>
                         </div>
-                        
-                        <div class="flex items-center gap-3">
-                            <span class="text-white/60 w-20">Website:</span>
-                            <span class="text-white/80">https://github.com/infotonbc-news/infotonbc2</span>
+
+                        <div class="flex items-center gap-3 flex-wrap">
+                            <span class="text-white/60 w-16 sm:w-20">Website:</span>
+                            <span class="text-white/80 break-all">https://github.com/infotonbc-news/infotonbc2</span>
                         </div>
                     </div>
                 </section>
 
                 <!-- Verantwortlich -->
-                <section class="mb-12">
-                    <h2 class="text-2xl mb-6 flex items-center gap-3">
-                        <span class="w-8 h-8 rounded-lg bg-[#C9A227]/10 border border-[#C9A227]/20 flex items-center justify-center">
-                            <svg class="w-4 h-4 text-[#C9A227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <section class="mb-8 sm:mb-12">
+                    <h2 class="text-xl sm:text-2xl mb-4 sm:mb-6 flex items-center gap-3">
+                        <span class="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-[#C9A227]/10 border border-[#C9A227]/20 flex items-center justify-center">
+                            <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C9A227]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                             </svg>
                         </span>
-                        Verantwortlich nach § 18 Abs. 2 MStV
+                        <span data-i18n="responsible">Verantwortlich nach § 18 Abs. 2 MStV</span>
                     </h2>
-                    <div class="pl-11 text-[15px] text-white/80">
-                        <p>Slawomir Wisniewski, Anschrift wie oben.</p>
+                    <div class="pl-10 sm:pl-11 text-sm sm:text- text-white/80">
+                        <p data-i18n="responsibleText">Slawomir Wisniewski, Anschrift wie oben.</p>
                     </div>
                 </section>
 
                 <!-- Rechtliche Hinweise -->
-                <div class="space-y-10 pt-8 border-t border-[#C9A227]/15">
-                    
-                    <section>
-<h3 class="text-xl mb-4 text-[#E6C45A]">Registereintrag</h3>
-<div class="text-[14px] leading-relaxed text-white/70 pl-4 border-l-2 border-[#C9A227]/20">
-<p>Kein Eintrag vorhanden (Privatperson, kein Handelsregistereintrag erforderlich).</p>
-</div>
-</section>
+                <div class="space-y-8 sm:space-y-10 pt-8 border-t border-[#C9A227]/15">
 
                     <section>
-                        <h3 class="text-xl mb-4 text-[#E6C45A]">Umsatzsteuer-ID</h3>
-                        <p class="text-[14px] text-white/70 pl-4 border-l-2 border-[#C9A227]/20">
-                            Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG: 
+                        <h3 class="text-lg sm:text-xl mb-3 sm:mb-4 text-[#E6C45A]" data-i18n="registerTitle">Registereintrag</h3>
+                        <div class="text- sm:text- leading-relaxed text-white/70 pl-4 border-l-2 border-[#C9A227]/20">
+                            <p data-i18n="registerText">Kein Eintrag vorhanden (Privatperson, kein Handelsregistereintrag erforderlich).</p>
+                        </div>
+                    </section>
+
+                    <section>
+                        <h3 class="text-lg sm:text-xl mb-3 sm:mb-4 text-[#E6C45A]" data-i18n="vatTitle">Umsatzsteuer-ID</h3>
+                        <p class="text- sm:text- text-white/70 pl-4 border-l-2 border-[#C9A227]/20" data-i18n="vatText">
+                            Umsatzsteuer-Identifikationsnummer gemäß § 27a UStG:
                         </p>
                     </section>
 
                     <section>
-                        <h3 class="text-xl mb-4 text-[#E6C45A]">Haftung für Inhalte</h3>
-                        <p class="text-[14px] leading-relaxed text-white/65">
-                            Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
+                        <h3 class="text-lg sm:text-xl mb-3 sm:mb-4 text-[#E6C45A]" data-i18n="liabilityContentTitle">Haftung für Inhalte</h3>
+                        <p class="text- sm:text- leading-relaxed text-white/65" data-i18n="liabilityContentText">
+                            Als Diensteanbieter sind wir gemäß <a href="https://www.gesetze-im-internet.de/tmg/__7.html" target="_blank" class="text-[#C9A227] hover:text-[#E6C45A] underline">§ 7 Abs.1 TMG</a> für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt. Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen werden wir diese Inhalte umgehend entfernen.
                         </p>
                     </section>
 
                     <section>
-                        <h3 class="text-xl mb-4 text-[#E6C45A]">Haftung für Links</h3>
-                        <p class="text-[14px] leading-relaxed text-white/65">
+                        <h3 class="text-lg sm:text-xl mb-3 sm:mb-4 text-[#E6C45A]" data-i18n="liabilityLinksTitle">Haftung für Links</h3>
+                        <p class="text- sm:text- leading-relaxed text-white/65" data-i18n="liabilityLinksText">
                             Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf mögliche Rechtsverstöße überprüft. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Eine permanente inhaltliche Kontrolle der verlinkten Seiten ist jedoch ohne konkrete Anhaltspunkte einer Rechtsverletzung nicht zumutbar. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.
                         </p>
                     </section>
 
                     <section>
-                        <h3 class="text-xl mb-4 text-[#E6C45A]">Urheberrecht</h3>
-                        <p class="text-[14px] leading-relaxed text-white/65">
+                        <h3 class="text-lg sm:text-xl mb-3 sm:mb-4 text-[#E6C45A]" data-i18n="copyrightTitle">Urheberrecht</h3>
+                        <p class="text- sm:text- leading-relaxed text-white/65" data-i18n="copyrightText">
                             Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers. Downloads und Kopien dieser Seite sind nur für den privaten, nicht kommerziellen Gebrauch gestattet. Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Insbesondere werden Inhalte Dritter als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Inhalte umgehend entfernen.
                         </p>
                     </section>
 
                     <section>
-                        <h3 class="text-xl mb-4 text-[#E6C45A]">EU-Streitschlichtung</h3>
-                        <p class="text-[14px] leading-relaxed text-white/65">
+                        <h3 class="text-lg sm:text-xl mb-3 sm:mb-4 text-[#E6C45A]" data-i18n="odrTitle">EU-Streitschlichtung</h3>
+                        <p class="text- sm:text- leading-relaxed text-white/65" data-i18n="odrText">
                             Die Europäische Kommission stellt eine Plattform zur Online-Streitbeilegung (OS) bereit: <a href="https://ec.europa.eu/consumers/odr" target="_blank" rel="noopener" class="text-[#C9A227] hover:text-[#E6C45A] underline decoration-[#C9A227]/30 underline-offset-2">https://ec.europa.eu/consumers/odr</a>. Unsere E-Mail-Adresse finden Sie oben im Impressum.
                         </p>
                     </section>
 
                     <section>
-                        <h3 class="text-xl mb-4 text-[#E6C45A]">Verbraucherstreitbeilegung / Universalschlichtungsstelle</h3>
-                        <p class="text-[14px] leading-relaxed text-white/65">
+                        <h3 class="text-lg sm:text-xl mb-3 sm:mb-4 text-[#E6C45A]" data-i18n="adrTitle">Verbraucherstreitbeilegung / Universalschlichtungsstelle</h3>
+                        <p class="text- sm:text- leading-relaxed text-white/65" data-i18n="adrText">
                             Wir sind nicht bereit oder verpflichtet, an Streitbeilegungsverfahren vor einer Verbraucherschlichtungsstelle teilzunehmen.
                         </p>
                     </section>
 
                 </div>
 
-                <!-- Additional Info -->
-                </div>
+            </div>
 
             <!-- Footer Note -->
-            <div class="text-center mt-12">
-                <p class="text-white/40 text-xs">Stand: <span id="date"></span> • Natural Chillaz</p>
+            <div class="text-center mt-8 sm:mt-12">
+                <p class="text-white/40 text-xs"><span data-i18n="asOf">Stand</span>: <span id="date"></span> • Natural Chillaz</p>
             </div>
         </div>
     </main>
 
     <!-- Footer -->
-    <footer class="relative z-30 border-t border-[#C9A227]/10 mt-16">
-        <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
-            <p class="text-white/40">© <span id="year"></span> Natural Chillaz. Alle Rechte vorbehalten.</p>
-            <div class="flex items-center gap-6 text-white/50">
-                <a href="#" class="hover:text-[#C9A227] transition-colors">Datenschutz</a>
-                <a href="#" class="hover:text-[#C9A227] transition-colors">AGB</a>
-                <a href="#" class="text-[#C9A227]">Impressum</a>
+    <footer class="relative z-30 border-t border-[#C9A227]/10 mt-12 sm:mt-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+            <p class="text-white/40 text-center md:text-left">© <span id="year"></span> Natural Chillaz. <span data-i18n="rights">Alle Rechte vorbehalten.</span></p>
+            <div class="flex items-center gap-4 sm:gap-6 text-white/50 flex-wrap justify-center">
+                <a href="#" class="hover:text-[#C9A227] transition-colors" data-i18n="privacy">Datenschutz</a>
+                <a href="#" class="hover:text-[#C9A227] transition-colors" data-i18n="terms">AGB</a>
+                <a href="#" class="text-[#C9A227]" data-i18n="imprint">Impressum</a>
             </div>
         </div>
     </footer>
@@ -265,7 +310,7 @@
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                 </svg>
-                E-Mail kopiert
+                <span data-i18n="emailCopied">E-Mail kopiert</span>
             </p>
         </div>
     </div>
@@ -287,7 +332,6 @@
                     toast.classList.remove('opacity-100');
                 }, 2000);
             }).catch(() => {
-                // Fallback
                 const input = document.createElement('input');
                 input.value = email;
                 document.body.appendChild(input);
@@ -299,7 +343,7 @@
 
         // Subtle parallax for glow orbs
         document.addEventListener('mousemove', (e) => {
-            const orbs = document.querySelectorAll('.fixed .blur-\\[120px\\], .fixed .blur-\\[140px\\]');
+            const orbs = document.querySelectorAll('.fixed.blur-\\[120px\\],.fixed.blur-\\[140px\\]');
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
             orbs.forEach((orb, i) => {
@@ -307,6 +351,383 @@
                 orb.style.transform = `translate(${x * factor}px, ${y * factor}px)`;
             });
         });
-    </script>
+
+        // === i18n System ===
+        const translations = {
+  de: {
+    pageTitle: "Disclaimer & Rechtliche Hinweise | Cannabis Content",
+    headerTitle: "Rechtlicher Disclaimer",
+    headerSubtitle: "Cannabis Content & Kunstfreiheit",
+    print: "Drucken",
+    ageTitle: "Altersbeschränkung 18+",
+    ageText: "Diese Website enthält Inhalte zum Thema Cannabis. Der Zugang ist gemäß §6 Cannabisgesetz (CanG) und Jugendschutzgesetz (JuSchG) ausschließlich volljährigen Personen ab 18 Jahren gestattet. Mit dem Verbleib auf dieser Seite bestätigen Sie, dass Sie mindestens 18 Jahre alt sind.",
+    sec1Title: "Geltungsbereich & Zweck",
+    sec1p1: "Diese Website dient der Information, Dokumentation und künstlerischen Auseinandersetzung mit dem Thema Cannabis innerhalb des in Deutschland geltenden Rechtsrahmens. Die hier dargestellten Inhalte stellen keine Aufforderung, Anleitung oder Werbung zum Konsum, Anbau oder Erwerb von Cannabis dar.",
+    sec1p2: "Betreiber dieser Website distanzieren sich ausdrücklich von jeglicher illegalen Nutzung. Die Inhalte unterliegen der Kunstfreiheit nach Art. 5 Abs. 3 Grundgesetz (GG) sowie der Meinungs- und Informationsfreiheit nach Art. 5 Abs. 1 GG.",
+    sec2Title: "Rechtliche Bedingungen",
+    sec2h1: "Kein Vertrieb und keine Weitergabe",
+    sec2p1: "Diese Seite bietet keinen Verkauf, keine Vermittlung und keine Abgabe von Cannabis oder anderen Betäubungsmitteln an. Es werden keine Bezugsquellen genannt oder verlinkt.",
+    sec2h2: "Keine Konsumaufforderung",
+    sec2p2: "Die Inhalte dienen nicht der Verharmlosung, Verherrlichung oder Propagierung des Cannabiskonsums. Gemäß §6 CanG ist Werbung und Sponsoring für Cannabis verboten.",
+    sec2h3: "Jugendschutz",
+    sec2p3: "Der Zugang für Minderjährige ist untersagt. Wir kommen den Vorgaben des Jugendschutzgesetzes (JuSchG) sowie §6 Abs. 2 CanG nach. Technische Schutzmaßnahmen sind implementiert.",
+    sec2h4: "Kunstfreiheit, Art. 5 Abs. 3 GG",
+    sec2p4: "Künstlerische, dokumentarische und journalistische Inhalte sind durch die Kunstfreiheit geschützt. Die Abgrenzung zwischen Kunst und verbotener Werbung erfolgt gemäß geltender Rechtsprechung des Bundesverfassungsgerichts.",
+    sec3Title: "Haftungsausschluss",
+    sec3p1: "3.1 Inhalte: Die Inhalte dieser Website wurden mit größtmöglicher Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß §7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.",
+    sec3p2: "3.2 Externe Links: Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber verantwortlich.",
+    sec3p3: "3.3 Keine Rechts- oder Gesundheitsberatung: Die bereitgestellten Informationen stellen keine Rechtsberatung, medizinische Beratung oder Handlungsempfehlung dar. Konsultieren Sie bei Fragen stets qualifiziertes Fachpersonal.",
+    sec4Title: "Addendum: Relevante Gesetze",
+    law1: "Cannabisgesetz (CanG)",
+    law1p1: "Zweck: Gesetz zum kontrollierten Umgang mit Cannabis und zur Änderung weiterer Vorschriften. In Kraft seit 01.04.2024.",
+    law1list: "<li>(1) Es ist verboten, für Cannabis und Cannabisprodukte zu werben.</li><li>(2) Es ist verboten, Cannabisprodukten dienende Sponsoringaktivitäten durchzuführen.</li><li>(3) Das Verbot gilt auch für audiovisuelle kommerzielle Kommunikation.</li>",
+    lawNote: "Hinweis: Dieser Absatz stellt eine Zusammenfassung dar. Maßgeblich ist der vollständige Gesetzestext.",
+    law2: "Jugendschutzgesetz (JuSchG)",
+    law2p1: "Ordnungswidrig handelt, wer als Anbieter Telemedien für Kinder oder Jugendliche zugänglich macht, die geeignet sind, sie sittlich zu gefährden.",
+    law2p2: "Anwendung: Inhalte zum Thema Cannabis sind als jugendgefährdend einzustufen. Der Zugang ist durch Altersverifikationssysteme zu beschränken.",
+    law3: "Telemediengesetz (TMG/DDG)",
+    law3p1: "Diensteanbieter haben für geschäftsmäßige Telemedien bestimmte Informationen leicht erkennbar, unmittelbar erreichbar und ständig verfügbar zu halten.",
+    law3p2: "Diensteanbieter sind für eigene Informationen nach den allgemeinen Gesetzen verantwortlich.",
+    law4: "Grundgesetz (GG) Art. 5",
+    law4p1: "Jeder hat das Recht, seine Meinung in Wort, Schrift und Bild frei zu äußern und sich aus allgemein zugänglichen Quellen ungehindert zu unterrichten.",
+    law4p2: "Kunst und Wissenschaft, Forschung und Lehre sind frei. Die Freiheit der Lehre entbindet nicht von der Treue zur Verfassung.",
+    law5: "DSGVO & TTDSG",
+    law5p1: "Bei Erhebung personenbezogener Daten sind betroffene Personen umfassend zu informieren.",
+    law5p2: "Die Speicherung von Informationen in der Endeinrichtung des Endnutzers ist nur mit Einwilligung zulässig, soweit nicht unbedingt erforderlich.",
+    footer: "© 2024 | Stand: Mai 2026 | Alle Angaben ohne Gewähr",
+    footerLegal: "Diese Seite ersetzt keine Rechtsberatung. Bei konkreten Rechtsfragen wenden Sie sich an einen Fachanwalt."
+  },
+  en: {
+    pageTitle: "Disclaimer & Legal Notice | Cannabis Content",
+    headerTitle: "Legal Disclaimer",
+    headerSubtitle: "Cannabis Content & Artistic Freedom",
+    print: "Print",
+    ageTitle: "Age Restriction 18+",
+    ageText: "This website contains content about cannabis. Access is restricted to adults 18+ per §6 Cannabis Act (CanG) and Youth Protection Act (JuSchG). By remaining on this page, you confirm you are at least 18 years old.",
+    sec1Title: "Scope & Purpose",
+    sec1p1: "This website serves information, documentation, and artistic engagement with cannabis within the German legal framework. Content shown does not constitute solicitation, instruction, or advertising for cannabis consumption, cultivation, or purchase.",
+    sec1p2: "Operators expressly distance themselves from any illegal use. Content is subject to artistic freedom under Art. 5(3) German Basic Law (GG) and freedom of expression under Art. 5(1) GG.",
+    sec2Title: "Legal Conditions",
+    sec2h1: "No Distribution or Transfer",
+    sec2p1: "This site offers no sale, brokerage, or distribution of cannabis or other narcotics. No sources are named or linked.",
+    sec2h2: "No Consumption Solicitation",
+    sec2p2: "Content does not trivialize, glorify, or promote cannabis consumption. Per §6 CanG, advertising and sponsorship for cannabis is prohibited.",
+    sec2h3: "Youth Protection",
+    sec2p3: "Access by minors is prohibited. We comply with Youth Protection Act (JuSchG) and §6(2) CanG. Technical protection measures are implemented.",
+    sec2h4: "Artistic Freedom, Art. 5(3) GG",
+    sec2p4: "Artistic, documentary, and journalistic content is protected by artistic freedom. Distinction between art and prohibited advertising follows Federal Constitutional Court case law.",
+    sec3Title: "Disclaimer of Liability",
+    sec3p1: "3.1 Content: Content was created with utmost care. However, we cannot guarantee accuracy, completeness, or timeliness. As service providers, we are responsible for our own content under §7(1) TMG per general laws.",
+    sec3p2: "3.2 External Links: Our site contains links to third-party websites over whose content we have no control. We cannot accept liability for external content. Providers of linked pages are always responsible.",
+    sec3p3: "3.3 No Legal or Health Advice: Information provided is not legal, medical, or actionable advice. Always consult qualified professionals.",
+    sec4Title: "Addendum: Relevant Laws",
+    law1: "Cannabis Act (CanG)",
+    law1p1: "Purpose: Law on controlled handling of cannabis and amending other regulations. Effective since 01.04.2024.",
+    law1list: "<li>(1) Advertising cannabis and cannabis products is prohibited.</li><li>(2) Sponsorship activities serving cannabis products are prohibited.</li><li>(3) Prohibition also applies to audiovisual commercial communication.</li>",
+    lawNote: "Note: This is a summary. The full legal text is authoritative.",
+    law2: "Youth Protection Act (JuSchG)",
+    law2p1: "It is an administrative offense to make telemedia accessible to children or adolescents that may endanger their moral development.",
+    law2p2: "Application: Cannabis content is classified as harmful to minors. Access must be restricted by age verification systems.",
+    law3: "Telemedia Act (TMG/DDG)",
+    law3p1: "Service providers must keep certain information easily recognizable, immediately accessible, and permanently available for commercial telemedia.",
+    law3p2: "Service providers are responsible for their own information under general laws.",
+    law4: "Basic Law (GG) Art. 5",
+    law4p1: "Everyone has the right to freely express and disseminate opinions in speech, writing, and images, and to inform themselves from generally accessible sources.",
+    law4p2: "Art and science, research and teaching are free. Freedom of teaching does not release from loyalty to the constitution.",
+    law5: "GDPR & TTDSG",
+    law5p1: "When collecting personal data, data subjects must be comprehensively informed.",
+    law5p2: "The storage of information in the end user's terminal equipment is only permitted with consent, unless strictly necessary.",
+    footer: "© 2024 | As of May 2026 | All information without guarantee",
+    footerLegal: "This page does not replace legal advice. For specific legal questions, consult a qualified attorney."
+  },
+  fr: {
+    pageTitle: "Mentions légales - Natural Chillaz",
+    backHome: "Retour à l'accueil",
+    title: "Mentions légales",
+    subtitle: "Informations selon § 5 TMG",
+    print: "Imprimer",
+    ageTitle: "Restriction d'âge 18+",
+    ageText: "Ce site web contient du contenu relatif au cannabis. L'accès est réservé aux adultes de 18 ans et plus conformément à l'article 6 de la loi sur le cannabis (CanG) et à la loi sur la protection de la jeunesse (JuSchG). En restant sur ce site, vous confirmez avoir au moins 18 ans.",
+    sec1Title: "Champ d'application & Objectif",
+    sec1p1: "Ce site web sert à informer, documenter et traiter artistiquement le sujet du cannabis dans le cadre juridique applicable en Allemagne. Le contenu présenté ici ne constitue pas une invitation, une instruction ou une publicité pour la consommation, la culture ou l'acquisition de cannabis.",
+    sec1p2: "Les exploitants de ce site web se distancent expressément de toute utilisation illégale. Le contenu est soumis à la liberté artistique en vertu de l'art. 5 al. 3 de la Loi fondamentale (GG) ainsi qu'à la liberté d'expression et d'information en vertu de l'art. 5 al. 1 GG.",
+    sec2Title: "Conditions légales",
+    sec2h1: "Aucune distribution ni cession",
+    sec2p1: "Ce site ne propose pas la vente, le courtage ou la distribution de cannabis ou d'autres stupéfiants. Aucune source d'approvisionnement n'est nommée ou liée.",
+    sec2h2: "Pas d'incitation à la consommation",
+    sec2p2: "Le contenu ne sert pas à banaliser, glorifier ou promouvoir la consommation de cannabis. Selon l'article 6 CanG, la publicité et le parrainage pour le cannabis sont interdits.",
+    sec2h3: "Protection de la jeunesse",
+    sec2p3: "L'accès aux mineurs est interdit. Nous respectons les exigences de la loi sur la protection de la jeunesse (JuSchG) et de l'article 6 al. 2 CanG. Des mesures de protection techniques sont mises en œuvre.",
+    sec2h4: "Liberté artistique, Art. 5 al. 3 GG",
+    sec2p4: "Le contenu artistique, documentaire et journalistique est protégé par la liberté artistique. La distinction entre l'art et la publicité interdite se fait conformément à la jurisprudence actuelle de la Cour constitutionnelle fédérale.",
+    sec3Title: "Clause de non-responsabilité",
+    sec3p1: "3.1 Contenu : Le contenu de ce site web a été créé avec le plus grand soin possible. Cependant, nous ne pouvons garantir l'exactitude, l'exhaustivité et l'actualité du contenu. En tant que prestataire de services, nous sommes responsables de notre propre contenu sur ces pages selon l'article 7 al. 1 TMG en vertu du droit général.",
+    sec3p2: "3.2 Liens externes : Notre site contient des liens vers des sites web externes de tiers sur le contenu desquels nous n'avons aucune influence. Par conséquent, nous ne pouvons assumer aucune responsabilité pour ce contenu externe. Le fournisseur ou l'exploitant respectif des pages est toujours responsable du contenu des pages liées.",
+    sec3p3: "3.3 Pas de conseil juridique ou de santé : Les informations fournies ne constituent pas un conseil juridique, un conseil médical ou une recommandation d'action. Consultez toujours des professionnels qualifiés pour toute question.",
+    sec4Title: "Addendum : Lois pertinentes",
+    law1: "Loi sur le cannabis (CanG)",
+    law1p1: "Objet : Loi sur la gestion contrôlée du cannabis et modifiant d'autres règlements. En vigueur depuis le 01.04.2024.",
+    law1list: "<li>(1) Il est interdit de faire de la publicité pour le cannabis et les produits à base de cannabis.</li><li>(2) Il est interdit de mener des activités de parrainage servant les produits à base de cannabis.</li><li>(3) L'interdiction s'applique également à la communication commerciale audiovisuelle.</li>",
+    lawNote: "Remarque : Ceci est un résumé. Le texte juridique complet fait foi.",
+    law2: "Loi sur la protection de la jeunesse (JuSchG)",
+    law2p1: "Article 28 JuSchG : Quiconque, en tant que fournisseur, rend accessible aux enfants ou aux adolescents des télémédias susceptibles de les mettre en danger moralement agit en violation des règlements.",
+    law2p2: "Application : Le contenu sur le thème du cannabis doit être classé comme nuisible aux mineurs. L'accès doit être restreint par des systèmes de vérification de l'âge.",
+    law3: "Loi sur les télémédias (TMG/DDG)",
+    law3p1: "Article 5 TMG / Article 5 DDG – Obligation d'impression : Les prestataires de services doivent tenir certaines informations facilement reconnaissables, directement accessibles et disponibles en permanence pour les télémédias commerciaux.",
+    law3p2: "Les prestataires de services sont responsables de leurs propres informations en vertu des lois générales.",
+    law4: "Loi fondamentale (GG) Art. 5",
+    law4p1: "Art. 5 al. 1 GG : Chacun a le droit d'exprimer et de diffuser librement son opinion par la parole, l'écrit et l'image, et de s'informer sans entrave auprès de sources généralement accessibles.",
+    law4p2: "Art. 5 al. 3 GG : L'art et la science, la recherche et l'enseignement sont libres. La liberté de l'enseignement ne dispense pas de la fidélité à la constitution.",
+    law5: "RGPD & TTDSG",
+    law5p1: "Lors de la collecte de données personnelles, les personnes concernées doivent être informées de manière exhaustive conformément à l'art. 13 du RGPD.",
+    law5p2: "Article 25 TTDSG : Le stockage d'informations dans l'équipement terminal de l'utilisateur final ou l'accès aux informations déjà stockées dans l'équipement terminal n'est autorisé que si l'utilisateur final y a consenti.",
+    footer: "© 2024 | État : Mai 2026 | Toutes informations sans garantie",
+    footerLegal: "Cette page ne remplace pas un conseil juridique. Pour des questions juridiques spécifiques, consultez un avocat qualifié."
+  },
+  es: {
+    pageTitle: "Aviso Legal | Contenido Cannabis",
+    headerTitle: "Aviso Legal",
+    headerSubtitle: "Contenido Cannabis & Libertad Artística",
+    print: "Imprimir",
+    ageTitle: "Restricción de edad 18+",
+    ageText: "Este sitio web contiene contenido relacionado con el cannabis. El acceso está restringido a adultos mayores de 18 años de acuerdo con el Artículo 6 de la Ley del Cannabis (CanG) y la Ley de Protección de la Juventud (JuSchG). Al permanecer en este sitio, confirmas que tienes al menos 18 años.",
+    sec1Title: "Ámbito y Propósito",
+    sec1p1: "Este sitio web sirve para informar, documentar y tratar artísticamente el tema del cannabis dentro del marco legal aplicable en Alemania. El contenido presentado aquí no constituye una invitación, instrucción o publicidad para el consumo, cultivo o adquisición de cannabis.",
+    sec1p2: "Los operadores de este sitio web se distancian expresamente de cualquier uso ilegal. El contenido está sujeto a la libertad artística según el Art. 5 apdo. 3 de la Ley Fundamental (GG) y a la libertad de expresión e información según el Art. 5 apdo. 1 GG.",
+    sec2Title: "Condiciones Legales",
+    sec2h1: "Sin distribución ni transferencia",
+    sec2p1: "Este sitio no ofrece la venta, intermediación o distribución de cannabis u otros estupefacientes. No se nombran ni enlazan fuentes de suministro.",
+    sec2h2: "Sin incitación al consumo",
+    sec2p2: "El contenido no sirve para trivializar, glorificar o promover el consumo de cannabis. Según el Artículo 6 CanG, la publicidad y el patrocinio de cannabis están prohibidos.",
+    sec2h3: "Protección de menores",
+    sec2p3: "El acceso a menores está prohibido. Cumplimos con los requisitos de la Ley de Protección de la Juventud (JuSchG) y el Artículo 6 apdo. 2 CanG. Se implementan medidas técnicas de protección.",
+    sec2h4: "Libertad artística, Art. 5 apdo. 3 GG",
+    sec2p4: "El contenido artístico, documental y periodístico está protegido por la libertad artística. La distinción entre arte y publicidad prohibida se realiza de acuerdo con la jurisprudencia actual del Tribunal Constitucional Federal.",
+    sec3Title: "Exención de Responsabilidad",
+    sec3p1: "3.1 Contenido: El contenido de este sitio web ha sido creado con el mayor cuidado posible. Sin embargo, no podemos garantizar la exactitud, integridad y actualidad del contenido. Como proveedor de servicios, somos responsables de nuestro propio contenido en estas páginas según el Artículo 7 apdo. 1 TMG bajo la ley general.",
+    sec3p2: "3.2 Enlaces externos: Nuestro sitio contiene enlaces a sitios web externos de terceros sobre cuyo contenido no tenemos influencia. Por lo tanto, no podemos asumir ninguna responsabilidad por este contenido externo. El respectivo proveedor u operador de las páginas es siempre responsable del contenido de las páginas enlazadas.",
+    sec3p3: "3.3 Sin asesoramiento legal o de salud: La información proporcionada no constituye asesoramiento legal, asesoramiento médico o una recomendación de acción. Consulte siempre a profesionales cualificados con cualquier pregunta.",
+    sec4Title: "Anexo: Leyes Relevantes",
+    law1: "Ley del Cannabis (CanG)",
+    law1p1: "Objeto: Ley sobre el manejo controlado del cannabis y la modificación de otras regulaciones. En vigor desde el 01.04.2024.",
+    law1list: "<li>(1) Está prohibido publicitar cannabis y productos de cannabis.</li><li>(2) Está prohibido realizar actividades de patrocinio al servicio de productos de cannabis.</li><li>(3) La prohibición también se aplica a la comunicación comercial audiovisual.</li>",
+    lawNote: "Nota: Esto es un resumen. El texto legal completo es autoritativo.",
+    law2: "Ley de Protección de la Juventud (JuSchG)",
+    law2p1: "Artículo 28 JuSchG: Quien, como proveedor, haga accesibles a niños o adolescentes telemedios que puedan ponerlos en peligro moralmente, actúa en violación de las regulaciones.",
+    law2p2: "Aplicación: El contenido sobre el tema del cannabis debe clasificarse como perjudicial para los menores. El acceso debe restringirse mediante sistemas de verificación de edad.",
+    law3: "Ley de Telemedios (TMG/DDG)",
+    law3p1: "Artículo 5 TMG / Artículo 5 DDG – Obligación de impresión: Los proveedores de servicios deben mantener cierta información fácilmente reconocible, directamente accesible y permanentemente disponible para telemedios comerciales.",
+    law3p2: "Los proveedores de servicios son responsables de su propia información en virtud de las leyes generales.",
+    law4: "Ley Fundamental (GG) Art. 5",
+    law4p1: "Art. 5 apdo. 1 GG: Toda persona tiene derecho a expresar y difundir libremente su opinión de palabra, por escrito y mediante la imagen, y a informarse sin trabas de fuentes generalmente accesibles.",
+    law4p2: "Art. 5 apdo. 3 GG: El arte y la ciencia, la investigación y la enseñanza son libres. La libertad de enseñanza no exime de la lealtad a la constitución.",
+    law5: "RGPD & TTDSG",
+    law5p1: "Al recopilar datos personales, los interesados deben ser informados exhaustivamente de conformidad con el art. 13 del RGPD.",
+    law5p2: "Artículo 25 TTDSG: El almacenamiento de información en el equipo terminal del usuario final o el acceso a información ya almacenada en el equipo terminal solo está permitido si el usuario final ha dado su consentimiento.",
+    footer: "© 2024 | Estado: Mayo 2026 | Toda la información sin garantía",
+    footerLegal: "Esta página no reemplaza el asesoramiento legal. Para preguntas legales específicas, consulte a un abogado calificado."
+  },
+  bg: {
+    pageTitle: "Правна информация | Съдържание за канабис",
+    headerTitle: "Правна информация",
+    headerSubtitle: "Съдържание за канабис и артистична свобода",
+    print: "Печат",
+    ageTitle: "Възрастово ограничение 18+",
+    ageText: "Този уебсайт съдържа съдържание, свързано с канабис. Достъпът е ограничен до пълнолетни лица над 18 години в съответствие с §6 от Закона за канабиса (CanG) и Закона за защита на младежта (JuSchG). Оставайки на този сайт, вие потвърждавате, че сте навършили поне 18 години.",
+    sec1Title: "Обхват и цел",
+    sec1p1: "Този уебсайт служи за информиране, документиране и артистично ангажиране с темата за канабиса в рамките на правната рамка, приложима в Германия. Представеното тук съдържание не представлява покана, инструкция или реклама за консумация, отглеждане или придобиване на канабис.",
+    sec1p2: "Операторите на този уебсайт изрично се дистанцират от всякаква незаконна употреба. Съдържанието е предмет на артистична свобода съгласно чл. 5 ал. 3 от Основния закон (GG) и свобода на изразяване и информация съгласно чл. 5 ал. 1 GG.",
+    sec2Title: "Правни условия",
+    sec2h1: "Без разпространение или прехвърляне",
+    sec2p1: "Този сайт не предлага продажба, посредничество или разпространение на канабис или други наркотици. Не се назовават или свързват източници на доставка.",
+    sec2h2: "Без насърчаване на консумацията",
+    sec2p2: "Съдържанието не служи за омаловажаване, прославяне или насърчаване на употребата на канабис. Съгласно §6 CanG рекламата и спонсорството за канабис са забранени.",
+    sec2h3: "Защита на младежта",
+    sec2p3: "Достъпът за непълнолетни е забранен. Ние спазваме изискванията на Закона за защита на младежта (JuSchG) и §6 ал. 2 CanG. Внедрени са технически защитни мерки.",
+    sec2h4: "Артистична свобода, чл. 5 ал. 3 GG",
+    sec2p4: "Артистичното, документалното и журналистическото съдържание е защитено от артистичната свобода. Разграничението между изкуство и забранена реклама се прави в съответствие с действащата съдебна практика на Федералния конституционен съд.",
+    sec3Title: "Отказ от отговорност",
+    sec3p1: "3.1 Съдържание: Съдържанието на този уебсайт е създадено с възможно най-голямо внимание. Въпреки това не можем да гарантираме точността, пълнотата и актуалността на съдържанието. Като доставчик на услуги, ние носим отговорност за собственото си съдържание на тези страници съгласно §7 ал. 1 TMG по общото право.",
+    sec3p2: "3.2 Външни връзки: Нашият сайт съдържа връзки към външни уебсайтове на трети страни, върху чието съдържание нямаме влияние. Следователно не можем да поемем никаква отговорност за това външно съдържание. Съответният доставчик или оператор на страниците винаги носи отговорност за съдържанието на свързаните страници.",
+    sec3p3: "3.3 Без правни или здравни съвети: Предоставената информация не представлява правен съвет, медицински съвет или препоръка за действие. Винаги се консултирайте с квалифицирани специалисти при всякакви въпроси.",
+    sec4Title: "Приложение: Съответни закони",
+    law1: "Закон за канабиса (CanG)",
+    law1p1: "Цел: Закон за контролираното боравене с канабис и за изменение на други разпоредби. В сила от 01.04.2024 г.",
+    law1list: "<li>(1) Забранено е да се рекламира канабис и продукти от канабис.</li><li>(2) Забранено е да се извършват спонсорски дейности, обслужващи продукти от канабис.</li><li>(3) Забраната се прилага и за аудиовизуална търговска комуникация.</li>",
+    lawNote: "Забележка: Това е резюме. Пълният правен текст е авторитетен.",
+    law2: "Закон за защита на младежта (JuSchG)",
+    law2p1: "§28 JuSchG: Всеки, който като доставчик прави достъпни за деца или юноши телемедии, които са в състояние да ги застрашат морално, действа в нарушение на разпоредбите.",
+    law2p2: "Приложение: Съдържанието по темата за канабиса трябва да се класифицира като вредно за непълнолетни. Достъпът трябва да бъде ограничен чрез системи за проверка на възрастта.",
+    law3: "Закон за телемедиите (TMG/DDG)",
+    law3p1: "§5 TMG / §5 DDG – Задължение за отпечатък: Доставчиците на услуги трябва да поддържат определена информация лесно разпознаваема, директно достъпна и постоянно налична за търговски телемедии.",
+    law3p2: "Доставчиците на услуги са отговорни за собствената си информация по общите закони.",
+    law4: "Основен закон (GG) чл. 5",
+    law4p1: "Чл. 5 ал. 1 GG: Всеки има право свободно да изразява и разпространява мнението си чрез слово, писмено и чрез образ, и да се информира безпрепятствено от общодостъпни източници.",
+    law4p2: "Чл. 5 ал. 3 GG: Изкуството и науката, изследванията и преподаването са свободни. Свободата на преподаване не освобождава от вярност към конституцията.",
+    law5: "GDPR & TTDSG",
+    law5p1: "При събиране на лични данни субектите на данни трябва да бъдат изчерпателно информирани съгласно чл. 13 от GDPR.",
+    law5p2: "§25 TTDSG: Съхраняването на информация в крайното устройство на крайния потребител или достъпът до информация, която вече е съхранена в крайното устройство, е разрешено само ако крайният потребител е дал съгласие.",
+    footer: "© 2024 | Състояние: Май 2026 | Цялата информация без гаранция",
+    footerLegal: "Тази страница не замества правен съвет. За конкретни правни въпроси се консултирайте с квалифициран адвокат."
+  },
+  pl: {
+    pageTitle: "Informacje prawne | Treści o konopiach",
+    headerTitle: "Informacje prawne",
+    headerSubtitle: "Treści o konopiach i wolność artystyczna",
+    print: "Drukuj",
+    ageTitle: "Ograniczenie wiekowe 18+",
+    ageText: "Ta strona internetowa zawiera treści związane z konopiami. Dostęp jest ograniczony do osób dorosłych powyżej 18 roku życia zgodnie z §6 Ustawy o konopiach (CanG) i Ustawy o ochronie młodzieży (JuSchG). Pozostając na tej stronie, potwierdzasz, że masz co najmniej 18 lat.",
+    sec1Title: "Zakres i cel",
+    sec1p1: "Ta strona internetowa służy do informowania, dokumentowania i artystycznego angażowania się w temat konopi w ramach prawnych obowiązujących w Niemczech. Prezentowane tutaj treści nie stanowią zaproszenia, instrukcji ani reklamy do konsumpcji, uprawy lub nabywania konopi.",
+    sec1p2: "Operatorzy tej strony internetowej wyraźnie dystansują się od jakiegokolwiek nielegalnego użytku. Treści podlegają wolności artystycznej na mocy art. 5 ust. 3 Ustawy Zasadniczej (GG) oraz wolności wypowiedzi i informacji na mocy art. 5 ust. 1 GG.",
+       sec2Title: "Warunki prawne",
+    sec2h1: "Brak dystrybucji lub przekazywania",
+    sec2p1: "Ta strona nie oferuje sprzedaży, pośrednictwa ani dystrybucji konopi lub innych narkotyków. Nie są wymieniane ani linkowane żadne źródła zaopatrzenia.",
+    sec2h2: "Brak zachęty do konsumpcji",
+    sec2p2: "Treści nie służą trywializowaniu, gloryfikowaniu ani promowaniu używania konopi. Zgodnie z §6 CanG reklama i sponsoring konopi są zabronione.",
+    sec2h3: "Ochrona młodzieży",
+    sec2p3: "Dostęp dla nieletnich jest zabroniony. Przestrzegamy wymogów Ustawy o ochronie młodzieży (JuSchG) oraz §6 ust. 2 CanG. Wdrożono techniczne środki ochrony.",
+    sec2h4: "Wolność artystyczna, Art. 5 ust. 3 GG",
+    sec2p4: "Treści artystyczne, dokumentalne i dziennikarskie są chronione wolnością artystyczną. Rozróżnienie między sztuką a zakazaną reklamą dokonywane jest zgodnie z aktualnym orzecznictwem Federalnego Trybunału Konstytucyjnego.",
+    sec3Title: "Wyłączenie odpowiedzialności",
+    sec3p1: "3.1 Treść: Treść tej strony internetowej została stworzona z najwyższą możliwą starannością. Nie możemy jednak zagwarantować dokładności, kompletności i aktualności treści. Jako usługodawca ponosimy odpowiedzialność za własne treści na tych stronach zgodnie z §7 ust. 1 TMG na mocy prawa ogólnego.",
+    sec3p2: "3.2 Linki zewnętrzne: Nasza strona zawiera linki do zewnętrznych stron internetowych osób trzecich, na których treść nie mamy wpływu. Dlatego nie możemy ponosić żadnej odpowiedzialności za te treści zewnętrzne. Odpowiedni dostawca lub operator stron jest zawsze odpowiedzialny za treść linkowanych stron.",
+    sec3p3: "3.3 Brak porad prawnych lub zdrowotnych: Dostarczone informacje nie stanowią porady prawnej, porady medycznej ani zalecenia działania. W przypadku jakichkolwiek pytań zawsze skonsultuj się z wykwalifikowanymi specjalistami.",
+    sec4Title: "Dodatek: Odpowiednie ustawy",
+    law1: "Ustawa o konopiach (CanG)",
+    law1p1: "Cel: Ustawa o kontrolowanym postępowaniu z konopiami i zmieniająca inne przepisy. Obowiązuje od 01.04.2024.",
+    law1list: "<li>(1) Zabronione jest reklamowanie konopi i produktów z konopi.</li><li>(2) Zabronione jest prowadzenie działań sponsorskich służących produktom z konopi.</li><li>(3) Zakaz dotyczy również audiowizualnej komunikacji handlowej.</li>",
+    lawNote: "Uwaga: Ten akapit stanowi podsumowanie. Międzyarodajny jest pełny tekst ustawy.",
+    law2: "Ustawa o ochronie młodzieży (JuSchG)",
+    law2p1: "Ordynacja wykroczenia dopuszcza się ten, kto jako dostawca udostępnia dzieciom lub młodzieży telemedia, które mogą je moralnie zagrozić.",
+    law2p2: "Zastosowanie: Treści na temat konopi należy klasyfikować jako szkodliwe dla nieletnich. Dostęp musi być ograniczony przez systemy weryfikacji wieku.",
+    law3: "Ustawa o telemediach (TMG/DDG)",
+    law3p1: "Dostawcy usług muszą utrzymywać pewne informacje łatwo rozpoznawalne, bezpośrednio dostępne i stale dostępne dla komercyjnych telemediów.",
+    law3p2: "Dostawcy usług są odpowiedzialni za własne informacje zgodnie z prawem ogólnym.",
+    law4: "Ustawa Zasadnicza (GG) Art. 5",
+    law4p1: "Każdy ma prawo do swobodnego wyrażania i rozpowszechniania swojej opinii słowem, pismem i obrazem oraz do niezakłóconego informowania się z ogólnie dostępnych źródeł.",
+    law4p2: "Sztuka i nauka, badania i nauczanie są wolne. Wolność nauczania nie zwalnia z wierności konstytucji.",
+    law5: "RODO & TTDSG",
+    law5p1: "Przy zbieraniu danych osobowych osoby, których dane dotyczą, muszą być wyczerpująco informowane.",
+    law5p2: "Przechowywanie informacji w urządzeniu końcowym użytkownika końcowego lub dostęp do informacji już przechowywanych w urządzeniu końcowym jest dozwolony tylko wtedy, gdy użytkownik końcowy wyraził na to zgodę.",
+    footer: "Stan: Maj 2026 | Wszystkie informacje bez gwarancji | W kwestiach prawnych skonsultuj się z adwokatem",
+    footerLegal: "Ta strona nie zastępuje porady prawnej."
+  },
+  ja: {
+    pageTitle: "免責事項 & 法的通知 | 大麻コンテンツ",
+    headerTitle: "法的免責事項",
+    headerSubtitle: "大麻コンテンツ & 芸術の自由",
+    print: "印刷",
+    ageTitle: "年齢制限 18+",
+    ageText: "このウェブサイトには大麻に関するコンテンツが含まれています。アクセスは、ドイツの大麻法第6条および青少年保護法に基づき、18歳以上の成人のみに制限されています。このページに留まることにより、あなたは18歳以上であることを確認したことになります。",
+    sec1Title: "適用範囲と目的",
+    sec1p1: "このウェブサイトは、ドイツで適用される法的枠組み内での大麻に関する情報提供、文書化、芸術的な取り組みを目的としています。ここに提示されているコンテンツは、大麻の消費、栽培、取得を促したり、指示したり、宣伝したりするものではありません。",
+    sec1p2: "このウェブサイトの運営者は、いかなる違法な使用からも明確に距離を置いています。コンテンツは、基本法（GG）第5条第3項に基づく芸術の自由、およびGG第5条第1項に基づく表現と情報の自由の対象となります。",
+    sec2Title: "法的条件",
+    sec2h1: "配布や譲渡なし",
+    sec2p1: "このサイトは、大麻やその他の麻薬の販売、仲介、または配布を提供していません。供給源は命名もリンクもされていません。",
+    sec2h2: "消費の奨励なし",
+    sec2p2: "コンテンツは、大麻使用の矮小化、美化、または促進を目的としたものではありません。CanG第6条によれば、大麻の広告とスポンサーシップは禁止されています。",
+    sec2h3: "青少年保護",
+    sec2p3: "未成年者のアクセスは禁止されています。青少年保護法（JuSchG）およびCanG第6条第2項の要件を遵守しています。技術的な保護措置が実装されています。",
+    sec2h4: "芸術の自由、GG第5条第3項",
+    sec2p4: "芸術的、ドキュメンタリー、ジャーナリズムのコンテンツは芸術の自由によって保護されています。芸術と禁止された広告の区別は、連邦憲法裁判所の現在の判例に従って行われます。",
+    sec3Title: "免責事項",
+    sec3p1: "3.1 コンテンツ：このウェブサイトのコンテンツは最大限の注意を払って作成されました。ただし、コンテンツの正確性、完全性、適時性を保証することはできません。サービスプロバイダーとして、私たちはTMG第7条第1項に基づき、一般法の下でこれらのページ上の独自のコンテンツに対して責任を負います。",
+    sec3p2: "3.2 外部リンク：当サイトには、そのコンテンツに影響を及ぼさない第三者の外部ウェブサイトへのリンクが含まれています。したがって、この外部コンテンツに対して一切の責任を負うことはできません。リンクされたページのコンテンツについては、常にそれぞれのプロバイダーまたは運営者が責任を負います。",
+    sec3p3: "3.3 法的または健康上のアドバイスなし：提供される情報は、法的アドバイス、医学的アドバイス、または行動の推奨を構成するものではありません。質問がある場合は、常に資格のある専門家に相談してください。",
+    sec4Title: "付録：関連法律",
+    law1: "大麻法（CanG）",
+    law1p1: "目的：大麻の管理された取り扱いおよびその他の規制を改正する法律。2024年4月1日より施行。",
+    law1list: "<li>(1) 大麻および大麻製品の広告は禁止されています。</li><li>(2) 大麻製品に資するスポンサー活動を行うことは禁止されています。</li><li>(3) 禁止は視聴覚商業通信にも適用されます。</li>",
+    lawNote: "注：この段落は要約です。正式なのは法律の全文です。",
+    law2: "青少年保護法（JuSchG）",
+    law2p1: "プロバイダーとして、道徳的に危険にさらす可能性のあるテレメディアを子供や青少年にアクセス可能にした者は、秩序違反行為を行ったことになります。",
+    law2p2: "適用：大麻に関するコンテンツは未成年者に有害として分類されます。アクセスは年齢確認システムによって制限される必要があります。",
+    law3: "テレメディア法（TMG/DDG）",
+    law3p1: "サービスプロバイダーは、商業テレメディアについて特定の情報を容易に認識でき、直接アクセス可能で、常に利用できる状態に保つ必要があります。",
+    law3p2: "サービスプロバイダーは、一般法の下で自身の情報に対して責任を負います。",
+    law4: "基本法（GG）第5条",
+    law4p1: "何人も、言葉、文書および画像により自己の意見を自由に表明し流布し、かつ一般に入手可能な情報源から妨げられることなく知る権利を有する。",
+    law4p2: "芸術および学問、研究および教授は自由である。教授の自由は憲法への忠誠から免除されない。",
+    law5: "GDPR & TTDSG",
+    law5p1: "個人データを収集する場合、データ主体はGDPR第13条に従って包括的に通知されなければなりません。",
+    law5p2: "エンドユーザーの端末機器への情報の保存、または端末機器に既に保存されている情報へのアクセスは、エンドユーザーが同意した場合にのみ許可されます。",
+    footer: "更新：2026年5月 | すべての情報は保証なし | 法的問題については弁護士に相談してください",
+    footerLegal: "このページは法的アドバイスに代わるものではありません。"
+  }
+};
+
+// --- 2. Ländercodes zu Sprachen mappen für Geo-IP ---
+const countryToLang = {
+  DE: 'de', AT: 'de', CH: 'de',
+  US: 'en', GB: 'en', CA: 'en', AU: 'en',
+  FR: 'fr', BE: 'fr',
+  ES: 'es', MX: 'es', AR: 'es',
+  BG: 'bg',
+  PL: 'pl',
+  JP: 'ja'
+};
+
+const supported = ['de','en','fr','es','bg','pl','ja'];
+let currentLang = 'en';
+
+// --- 3. Sprache setzen + UI updaten ---
+function setLanguage(lang) {
+  const dict = translations[lang] || translations['en'];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (dict[key]) el.innerHTML = dict[key];
+  });
+  document.documentElement.lang = lang;
+  currentLang = lang;
+
+  document.querySelectorAll('.lang-switch button').forEach(btn => {
+    btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+  });
+}
+window.switchLang = setLanguage;
+
+// --- 4. Geo-IP Erkennung + Fallbacks ---
+async function detectLanguage() {
+  try {
+    const res = await fetch('https://ipapi.co/json/');
+    const data = await res.json();
+    const countryLang = countryToLang[data.country_code];
+    if (countryLang && supported.includes(countryLang)) {
+      setLanguage(countryLang);
+      return;
+    }
+  } catch(e) {
+    console.log('Geo-IP failed, using browser language');
+  }
+
+  const browserLang = (navigator.language || navigator.userLanguage).slice(0,2).toLowerCase();
+  if (supported.includes(browserLang)) {
+    setLanguage(browserLang);
+    return;
+  }
+
+  setLanguage('en');
+}
+
+// Accordion Toggle
+window.toggleAccordion = function(header) {
+  const content = header.nextElementSibling;
+  const icon = header.querySelector('.fa-chevron-down');
+  const isOpen = content.classList.contains('active');
+
+  document.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.accordion-header.fa-chevron-down').forEach(i => i.style.transform = 'rotate(0deg)');
+
+  if (!isOpen) {
+    content.classList.add('active');
+    icon.style.transform = 'rotate(180deg)';
+  }
+}
+
+detectLanguage();
+</script>
+
 </body>
 </html>
