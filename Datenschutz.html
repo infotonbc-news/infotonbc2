@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Datenschutzerklärung – Kein Tracking</title>
+    <title data-i18n="title">Datenschutzerklärung – Kein Tracking</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,56 +42,70 @@
         .prose ul { list-style: none; padding-left: 0; margin: 1rem 0; }
         .prose li { position: relative; padding-left: 1.5rem; margin-bottom: 0.5rem; color: rgb(161 161 170); }
         .prose li:before { content: "•"; position: absolute; left: 0; color: #C9A227; }
+        .lang-switch { position: fixed; top: 15px; right: 15px; z-index: 999; display: flex; gap: 6px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 6px; border-radius: 12px; border: 1px solid rgba(201,162,39,0.2); }
+        .lang-switch button { background: transparent; border: 1px solid rgba(201,162,39,0.2); color: #a1a1aa; padding: 4px 8px; border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 12px; transition: all .2s; }
+        .lang-switch button:hover, .lang-switch button.active { background: #C9A227; color: #070807; border-color: #C9A227; }
+        @media (max-width: 640px) { .lang-switch { top: 10px; right: 10px; flex-wrap: wrap; max-width: 180px; } }
+        @media print { .no-print, .lang-switch { display: none; } body { background: white; } }
     </style>
 </head>
 <body class="text-zinc-200">
+    <div class="lang-switch no-print">
+      <button onclick="switchLang('de')" data-lang="de">DE</button>
+      <button onclick="switchLang('en')" data-lang="en">EN</button>
+      <button onclick="switchLang('fr')" data-lang="fr">FR</button>
+      <button onclick="switchLang('es')" data-lang="es">ES</button>
+      <button onclick="switchLang('bg')" data-lang="bg">BG</button>
+      <button onclick="switchLang('pl')" data-lang="pl">PL</button>
+      <button onclick="switchLang('ja')" data-lang="ja">JA</button>
+    </div>
+
     <!-- Background -->
     <div class="fixed inset-0 -z-10">
-        <div class="absolute inset-0 bg-"></div>
-        <div class="absolute inset-0 bg-grid opacity-"></div>
-        <div class="absolute top- left- w- h- bg-/ rounded-full blur-"></div>
-        <div class="absolute bottom- right- w- h- bg-/ rounded-full blur-"></div>
+        <div class="absolute inset-0 bg-grid opacity-40"></div>
+        <div class="absolute top-20 left-10 w-72 h-72 bg-yellow-500/5 rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl"></div>
     </div>
 
     <!-- Header -->
-    <header class="sticky top-0 z-40 border-b border-white/ bg-/70 backdrop-blur-2xl">
-        <div class="max-w-6xl mx-auto px-6 lg:px-8 h- flex items-center justify-between">
+    <header class="sticky top-0 z-40 border-b border-white/5 bg-black/70 backdrop-blur-2xl">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="/" class="flex items-center gap-3 group">
-                <div class="w-9 h-9 rounded-xl bg-/10 border border-/20 flex items-center justify-center group-hover:border-/40 transition">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-">
+                <div class="w-9 h-9 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center group-hover:border-yellow-500/40 transition">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-yellow-500">
                         <path d="M12 3l7 4v10l-7 4-7-4V7l7-4z" stroke="currentColor" stroke-width="1.5" fill="none"/>
                     </svg>
                 </div>
-                <span class="text- tracking-widest font-medium text-zinc-300">INFOTON</span>
+                <span class="text-sm tracking-widest font-medium text-zinc-300">INFOTON</span>
             </a>
             <div class="flex items-center gap-3">
-                <span class="hidden sm:inline-flex items-center gap-1.5 text- uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300/80 border border-emerald-500/20">
+                <span class="hidden sm:inline-flex items-center gap-1.5 text-xs uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300/80 border border-emerald-500/20">
                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Kein Tracking
+                    <span data-i18n="noTracking">Kein Tracking</span>
                 </span>
-                <a href="/" class="text-sm text-zinc-400 hover:text- transition">Zurück</a>
+                <a href="/" class="text-sm text-zinc-400 hover:text-yellow-500 transition" data-i18n="back">Zurück</a>
             </div>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-6 lg:px-8 py-12 lg:py-20">
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-20">
         <!-- Hero -->
-        <div class="mb-16">
+        <div class="mb-12 sm:mb-16">
             <div class="inline-flex items-center gap-2 mb-6">
-                <div class="h-px w-12 bg-gradient-to-r from-transparent to-/60"></div>
-                <span class="text- uppercase tracking- text-/80">Rechtliches</span>
+                <div class="h-px w-12 bg-gradient-to-r from-transparent to-yellow-500/60"></div>
+                <span class="text-xs uppercase tracking-widest text-yellow-500/80" data-i18n="legal">Rechtliches</span>
             </div>
-            <h1 class="text-4xl md:text-5xl lg:text-6xl leading- mb-6">
-                <span class="gold-gradient">Datenschutz</span><br>
-                <span class="text-zinc-100">erklärung</span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight mb-6">
+                <span class="gold-gradient" data-i18n="privacy">Datenschutz</span><br>
+                <span class="text-zinc-100" data-i18n="declaration">erklärung</span>
             </h1>
-            <p class="text-lg text-zinc-400 max-w-2xl leading-relaxed">
+            <p class="text-base sm:text-lg text-zinc-400 max-w-2xl leading-relaxed" data-i18n="intro">
                 Transparenz ist uns wichtig. Diese Seite informiert Sie gemäß DSGVO über die Datenverarbeitung auf unserer reinen Informationsseite – wir tracken nicht.
             </p>
-            <div class="flex items-center gap-4 mt-8 text-xs text-zinc-500">
-                <span>Stand: <span id="date">Januar 2025</span></span>
+            <div class="flex flex-wrap items-center gap-4 mt-8 text-xs text-zinc-500">
+                <span><span data-i18n="status">Stand</span>: <span id="date">Januar 2025</span></span>
                 <span>•</span>
-                <span>DSGVO-konform</span>
+                <span data-i18n="gdprCompliant">DSGVO-konform</span>
             </div>
         </div>
 
@@ -99,138 +113,138 @@
         <div class="space-y-6">
 
             <!-- 1 Verantwortlicher -->
-            <section class="card rounded- p-8 md:p-10">
+            <section class="card rounded-2xl p-6 sm:p-8 md:p-10">
                 <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-/10 border border-/20 flex items-center justify-center mt-1">
-                        <svg class="w-5 h-5 text-" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mt-1">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                     </div>
                     <div class="flex-1 prose">
-                        <h2 class="text-2xl text-zinc-100 mb-4">1. Verantwortlicher</h2>
-                        <p>Verantwortlicher im Sinne der Datenschutz-Grundverordnung (Art. 4 Nr. 7 DSGVO) ist:</p>
+                        <h2 class="text-xl sm:text-2xl text-zinc-100 mb-4" data-i18n="sec1Title">1. Verantwortlicher</h2>
+                        <p data-i18n="sec1p1">Verantwortlicher im Sinne der Datenschutz-Grundverordnung <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e1385-1-1" target="_blank">(Art. 4 Nr. 7 DSGVO)</a> ist:</p>
                         <p><strong>Slawomir Wisniewski</strong><br>
                         E-Mail: <a href="mailto:infotonbc@gmail.com">infotonbc@gmail.com</a></p>
                         <button id="copyMail" class="mt-3 inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-zinc-300 transition">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-                            <span>E-Mail kopieren</span>
+                            <span data-i18n="copyMail">E-Mail kopieren</span>
                         </button>
                     </div>
                 </div>
             </section>
 
             <!-- 2 Hosting -->
-            <section class="card rounded- p-8 md:p-10">
+            <section class="card rounded-2xl p-6 sm:p-8 md:p-10">
                 <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-/10 border border-/20 flex items-center justify-center mt-1">
-                        <svg class="w-5 h-5 text-" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/></svg>
+                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mt-1">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/></svg>
                     </div>
                     <div class="flex-1 prose">
-                        <h2 class="text-2xl text-zinc-100 mb-4">2. Hosting über GitHub Pages</h2>
-                        <p>Diese Website wird gehostet über <strong>GitHub Pages</strong>, ein Angebot der GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.</p>
-                        <p>Beim Aufruf unserer Seite werden Verbindungsdaten (insbesondere Ihre IP-Adresse) an Server von GitHub in den USA übertragen, um die Inhalte auszuliefern. Die Datenverarbeitung in den USA erfolgt auf Grundlage der <strong>EU-Standardvertragsklauseln</strong> gemäß Art. 46 DSGVO.</p>
-                        <p>Weitere Informationen: <a href="https://docs.github.com/de/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a></p>
+                        <h2 class="text-xl sm:text-2xl text-zinc-100 mb-4" data-i18n="sec2Title">2. Hosting über GitHub Pages</h2>
+                        <p data-i18n="sec2p1">Diese Website wird gehostet über <strong>GitHub Pages</strong>, ein Angebot der GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.</p>
+                        <p data-i18n="sec2p2">Beim Aufruf unserer Seite werden Verbindungsdaten (insbesondere Ihre IP-Adresse) an Server von GitHub in den USA übertragen, um die Inhalte auszuliefern. Die Datenverarbeitung in den USA erfolgt auf Grundlage der <strong>EU-Standardvertragsklauseln</strong> gemäß <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e3384-1-1" target="_blank">Art. 46 DSGVO</a>.</p>
+                        <p><span data-i18n="sec2p3">Weitere Informationen:</span> <a href="https://docs.github.com/de/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener">GitHub Privacy Statement</a></p>
                     </div>
                 </div>
             </section>
 
             <!-- 3 Keine Cookies -->
-            <section class="card rounded- p-8 md:p-10">
+            <section class="card rounded-2xl p-6 sm:p-8 md:p-10">
                 <div class="flex items-start gap-4">
                     <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mt-1">
                         <svg class="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                     </div>
                     <div class="flex-1 prose">
-                        <h2 class="text-2xl text-zinc-100 mb-4">3. Keine Cookies. Kein Tracking.</h2>
-                        <p>Wir setzen <strong>keine Cookies</strong>, keine Tracking-Pixel, keine Analyse-Tools (z. B. Google Analytics, Matomo) und keine Social-Media-Plugins ein.</p>
-                        <p>Es findet keine Profilbildung, kein Remarketing und keine Weitergabe von Daten an Werbenetzwerke statt. Diese Seite ist eine rein statische Informationsseite.</p>
+                        <h2 class="text-xl sm:text-2xl text-zinc-100 mb-4" data-i18n="sec3Title">3. Keine Cookies. Kein Tracking.</h2>
+                        <p data-i18n="sec3p1">Wir setzen <strong>keine Cookies</strong>, keine Tracking-Pixel, keine Analyse-Tools (z. B. Google Analytics, Matomo) und keine Social-Media-Plugins ein.</p>
+                        <p data-i18n="sec3p2">Es findet keine Profilbildung, kein Remarketing und keine Weitergabe von Daten an Werbenetzwerke statt. Diese Seite ist eine rein statische Informationsseite nach <a href="https://www.gesetze-im-internet.de/ttdsg/__25.html" target="_blank">§25 TTDSG</a>.</p>
                     </div>
                 </div>
             </section>
 
             <!-- 4 LocalStorage -->
-            <section class="card rounded- p-8 md:p-10">
+            <section class="card rounded-2xl p-6 sm:p-8 md:p-10">
                 <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-/10 border border-/20 flex items-center justify-center mt-1">
-                        <svg class="w-5 h-5 text-" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/></svg>
+                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mt-1">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/></svg>
                     </div>
                     <div class="flex-1 prose">
-                        <h2 class="text-2xl text-zinc-100 mb-4">4. Lokaler Speicher (LocalStorage)</h2>
-                        <p>Zur Verbesserung der Nutzererfahrung speichern wir ausschließlich lokal in Ihrem Browser (LocalStorage, keine Cookies):</p>
+                        <h2 class="text-xl sm:text-2xl text-zinc-100 mb-4" data-i18n="sec4Title">4. Lokaler Speicher (LocalStorage)</h2>
+                        <p data-i18n="sec4p1">Zur Verbesserung der Nutzererfahrung speichern wir ausschließlich lokal in Ihrem Browser (LocalStorage, keine Cookies):</p>
                         <ul>
-                            <li><strong>Spracheinstellung</strong> (de/en/fr/it etc.)</li>
-                            <li><strong>Altersbestätigung (18+)</strong>, damit der Hinweis nicht bei jedem Besuch erneut erscheint</li>
+                            <li data-i18n="sec4li1"><strong>Spracheinstellung</strong> (de/en/fr/es/bg/pl/ja)</li>
+                            <li data-i18n="sec4li2"><strong>Altersbestätigung (18+)</strong>, damit der Hinweis nicht bei jedem Besuch erneut erscheint</li>
                         </ul>
-                        <p>Diese Daten verlassen Ihr Gerät nicht, werden nicht an uns oder Dritte übertragen und können jederzeit in Ihren Browser-Einstellungen gelöscht werden.</p>
-                        <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer funktionsfähigen Website und am Jugendschutz).</p>
+                        <p data-i18n="sec4p2">Diese Daten verlassen Ihr Gerät nicht, werden nicht an uns oder Dritte übertragen und können jederzeit in Ihren Browser-Einstellungen gelöscht werden.</p>
+                        <p data-i18n="sec4p3"><strong>Rechtsgrundlage:</strong> <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e1888-1-1" target="_blank">Art. 6 Abs. 1 lit. f DSGVO</a> (berechtigtes Interesse an einer funktionsfähigen Website und am Jugendschutz).</p>
                         <button id="clearStorage" class="mt-3 inline-flex items-center gap-2 text-xs px-3 py-1.5 rounded-lg bg-white/5 hover:bg-red-500/10 border border-white/10 hover:border-red-500/30 text-zinc-300 hover:text-red-300 transition">
-                            Lokalen Speicher jetzt löschen
+                            <span data-i18n="clearStorage">Lokalen Speicher jetzt löschen</span>
                         </button>
-                        <p id="clearMsg" class="text-xs text-emerald-400 mt-2 hidden">Gespeicherte Einstellungen wurden gelöscht.</p>
+                        <p id="clearMsg" class="text-xs text-emerald-400 mt-2 hidden" data-i18n="clearMsg">Gespeicherte Einstellungen wurden gelöscht.</p>
                     </div>
                 </div>
             </section>
 
             <!-- 5 Server Logs -->
-            <section class="card rounded- p-8 md:p-10">
+            <section class="card rounded-2xl p-6 sm:p-8 md:p-10">
                 <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-/10 border border-/20 flex items-center justify-center mt-1">
-                        <svg class="w-5 h-5 text-" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mt-1">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                     </div>
                     <div class="flex-1 prose">
-                        <h2 class="text-2xl text-zinc-100 mb-4">5. Server-Logs</h2>
-                        <p>Der Hoster GitHub erhebt beim Aufruf automatisch sogenannte Server-Logfiles. Diese enthalten u.a. Ihre IP-Adresse, Datum und Uhrzeit, Browsertyp sowie die aufgerufene Seite.</p>
-                        <p>Die Speicherung dient der technischen Bereitstellung und Sicherheit (Schutz vor Angriffen). Wir haben keinen direkten Zugriff auf diese Logs. Die IP-Adresse wird von GitHub nur temporär und gemäß deren Aufbewahrungsfristen gespeichert.</p>
-                        <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. f DSGVO.</p>
+                        <h2 class="text-xl sm:text-2xl text-zinc-100 mb-4" data-i18n="sec5Title">5. Server-Logs</h2>
+                        <p data-i18n="sec5p1">Der Hoster GitHub erhebt beim Aufruf automatisch sogenannte Server-Logfiles. Diese enthalten u.a. Ihre IP-Adresse, Datum und Uhrzeit, Browsertyp sowie die aufgerufene Seite.</p>
+                        <p data-i18n="sec5p2">Die Speicherung dient der technischen Bereitstellung und Sicherheit (Schutz vor Angriffen). Wir haben keinen direkten Zugriff auf diese Logs. Die IP-Adresse wird von GitHub nur temporär und gemäß deren Aufbewahrungsfristen gespeichert.</p>
+                        <p data-i18n="sec5p3"><strong>Rechtsgrundlage:</strong> <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e1888-1-1" target="_blank">Art. 6 Abs. 1 lit. f DSGVO</a>.</p>
                     </div>
                 </div>
             </section>
 
             <!-- 6 Kontakt -->
-            <section class="card rounded- p-8 md:p-10">
+            <section class="card rounded-2xl p-6 sm:p-8 md:p-10">
                 <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-/10 border border-/20 flex items-center justify-center mt-1">
-                        <svg class="w-5 h-5 text-" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mt-1">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                     </div>
                     <div class="flex-1 prose">
-                        <h2 class="text-2xl text-zinc-100 mb-4">6. Kontakt per E-Mail</h2>
-                        <p>Wenn Sie uns per E-Mail kontaktieren, speichern wir Ihre Angaben (E-Mail-Adresse, Name, Inhalt) ausschließlich zur Bearbeitung Ihrer Anfrage.</p>
-                        <p>Wir geben diese Daten nicht weiter. Die Löschung erfolgt, sobald der Zweck entfällt oder Sie uns zur Löschung auffordern, sofern keine gesetzlichen Aufbewahrungspflichten bestehen.</p>
-                        <p><strong>Rechtsgrundlage:</strong> Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung) bzw. lit. f DSGVO (berechtigtes Interesse an Kommunikation).</p>
+                        <h2 class="text-xl sm:text-2xl text-zinc-100 mb-4" data-i18n="sec6Title">6. Kontakt per E-Mail</h2>
+                        <p data-i18n="sec6p1">Wenn Sie uns per E-Mail kontaktieren, speichern wir Ihre Angaben (E-Mail-Adresse, Name, Inhalt) ausschließlich zur Bearbeitung Ihrer Anfrage.</p>
+                        <p data-i18n="sec6p2">Wir geben diese Daten nicht weiter. Die Löschung erfolgt, sobald der Zweck entfällt oder Sie uns zur Löschung auffordern, sofern keine gesetzlichen Aufbewahrungspflichten bestehen.</p>
+                        <p data-i18n="sec6p3"><strong>Rechtsgrundlage:</strong> <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e1888-1-1" target="_blank">Art. 6 Abs. 1 lit. b DSGVO</a> (Vertragsanbahnung) bzw. lit. f DSGVO (berechtigtes Interesse an Kommunikation).</p>
                     </div>
                 </div>
             </section>
 
             <!-- 7 Rechte -->
-            <section class="card rounded- p-8 md:p-10">
+            <section class="card rounded-2xl p-6 sm:p-8 md:p-10">
                 <div class="flex items-start gap-4">
-                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-/10 border border-/20 flex items-center justify-center mt-1">
-                        <svg class="w-5 h-5 text-" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mt-1">
+                        <svg class="w-5 h-5 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                     </div>
                     <div class="flex-1 prose">
-                        <h2 class="text-2xl text-zinc-100 mb-4">7. Ihre Rechte</h2>
-                        <p>Sie haben nach der DSGVO folgende Rechte:</p>
+                        <h2 class="text-xl sm:text-2xl text-zinc-100 mb-4" data-i18n="sec7Title">7. Ihre Rechte</h2>
+                        <p data-i18n="sec7p1">Sie haben nach der DSGVO folgende Rechte:</p>
                         <ul>
-                            <li><strong>Auskunft</strong> (Art. 15) – welche Daten wir über Sie speichern</li>
-                            <li><strong>Berichtigung</strong> (Art. 16) – Korrektur unrichtiger Daten</li>
-                            <li><strong>Löschung</strong> (Art. 17) – „Recht auf Vergessenwerden“</li>
-                            <li><strong>Einschränkung</strong> (Art. 18) der Verarbeitung</li>
-                            <li><strong>Datenübertragbarkeit</strong> (Art. 20)</li>
-                            <li><strong>Widerspruch</strong> (Art. 21) gegen Verarbeitung</li>
-                            <li><strong>Beschwerde</strong> bei einer Aufsichtsbehörde (Art. 77)</li>
+                            <li data-i18n="sec7li1"><strong>Auskunft</strong> <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e2233-1-1" target="_blank">(Art. 15)</a> – welche Daten wir über Sie speichern</li>
+                            <li data-i18n="sec7li2"><strong>Berichtigung</strong> <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e2309-1-1" target="_blank">(Art. 16)</a> – Korrektur unrichtiger Daten</li>
+                            <li data-i18n="sec7li3"><strong>Löschung</strong> <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e2344-1-1" target="_blank">(Art. 17)</a> – „Recht auf Vergessenwerden“</li>
+                            <li data-i18n="sec7li4"><strong>Einschränkung</strong> <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e2431-1-1" target="_blank">(Art. 18)</a> der Verarbeitung</li>
+                            <li data-i18n="sec7li5"><strong>Datenübertragbarkeit</strong> <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e2513-1-1" target="_blank">(Art. 20)</a></li>
+                            <li data-i18n="sec7li6"><strong>Widerspruch</strong> <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e2575-1-1" target="_blank">(Art. 21)</a> gegen Verarbeitung</li>
+                            <li data-i18n="sec7li7"><strong>Beschwerde</strong> bei einer Aufsichtsbehörde <a href="https://eur-lex.europa.eu/legal-content/DE/TXT/HTML/?uri=CELEX:32016R0679#d1e4207-1-1" target="_blank">(Art. 77)</a></li>
                         </ul>
-                        <p>Zur Ausübung genügt eine E-Mail an: <a href="mailto:infotonbc@gmail.com">infotonbc@gmail.com</a></p>
+                        <p><span data-i18n="sec7p2">Zur Ausübung genügt eine E-Mail an:</span> <a href="mailto:infotonbc@gmail.com">infotonbc@gmail.com</a></p>
                     </div>
                 </div>
             </section>
 
             <!-- 8 Hinweis 18+ -->
-            <section class="card rounded- p-8 md:p-10 border-amber-500/20 bg-amber-500/">
+            <section class="card rounded-2xl p-6 sm:p-8 md:p-10 border-amber-500/20 bg-amber-500/5">
                 <div class="flex items-start gap-4">
                     <div class="flex-shrink-0 w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center mt-1">
                         <span class="text-amber-400 font-semibold text-sm">18+</span>
                     </div>
                     <div class="flex-1 prose">
-                        <h2 class="text-2xl text-zinc-100 mb-4">8. Hinweis zu 18+ Inhalten</h2>
-                        <p>Diese Website richtet sich ausschließlich an volljährige Personen ab 18 Jahren. Die Altersbestätigung dient dem Jugendschutz und wird nur lokal gespeichert (siehe Punkt 4). Mit dem Betreten bestätigen Sie, dass Sie mindestens 18 Jahre alt sind.</p>
+                        <h2 class="text-xl sm:text-2xl text-zinc-100 mb-4" data-i18n="sec8Title">8. Hinweis zu 18+ Inhalten</h2>
+                        <p data-i18n="sec8p1">Diese Website richtet sich ausschließlich an volljährige Personen ab 18 Jahren. Die Altersbestätigung dient dem Jugendschutz gemäß <a href="https://www.gesetze-im-internet.de/juschg/__1.html" target="_blank">JuSchG</a> und wird nur lokal gespeichert (siehe Punkt 4). Mit dem Betreten bestätigen Sie, dass Sie mindestens 18 Jahre alt sind.</p>
                     </div>
                 </div>
             </section>
@@ -238,47 +252,361 @@
         </div>
 
         <!-- Footer note -->
-        <div class="mt-16 pt-8 border-t border-white/5 text-center">
-            <p class="text-xs text-zinc-500">Diese Datenschutzerklärung wurde für eine tracking-freie, statische Informationsseite erstellt. Keine Rechtsberatung.</p>
-            <p class="text-xs text-zinc-600 mt-2">© <span id="year"></span> – Hosting via GitHub Pages</p>
+        <div class="mt-12 sm:mt-16 pt-8 border-t border-white/5 text-center">
+            <p class="text-xs text-zinc-500" data-i18n="footer1">Diese Datenschutzerklärung wurde für eine tracking-freie, statische Informationsseite erstellt. Keine Rechtsberatung.</p>
+            <p class="text-xs text-zinc-600 mt-2">© <span id="year"></span> – Hosting via GitHub Pages | <a href="/impressum" class="hover:text-yellow-500" data-i18n="imprint">Impressum</a></p>
         </div>
     </main>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Datum
-            const d = new Date();
-            document.getElementById('date').textContent = d.toLocaleDateString('de-DE', { year: 'numeric', month: 'long' });
-            document.getElementById('year').textContent = d.getFullYear();
+        const translations = {
+          de: {
+            title: "Datenschutzerklärung – Kein Tracking",
+            noTracking: "Kein Tracking",
+            back: "Zurück",
+            legal: "Rechtliches",
+            privacy: "Datenschutz",
+            declaration: "erklärung",
+            intro: "Transparenz ist uns wichtig. Diese Seite informiert Sie gemäß DSGVO über die Datenverarbeitung auf unserer reinen Informationsseite – wir tracken nicht.",
+            status: "Stand",
+            gdprCompliant: "DSGVO-konform",
+            sec1Title: "1. Verantwortlicher",
+            sec1p1: "Verantwortlicher im Sinne der Datenschutz-Grundverordnung (Art. 4 Nr. 7 DSGVO) ist:",
+            copyMail: "E-Mail kopieren",
+            sec2Title: "2. Hosting über GitHub Pages",
+            sec2p1: "Diese Website wird gehostet über GitHub Pages, ein Angebot der GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA.",
+            sec2p2: "Beim Aufruf unserer Seite werden Verbindungsdaten (insbesondere Ihre IP-Adresse) an Server von GitHub in den USA übertragen, um die Inhalte auszuliefern. Die Datenverarbeitung in den USA erfolgt auf Grundlage der EU-Standardvertragsklauseln gemäß Art. 46 DSGVO.",
+            sec2p3: "Weitere Informationen:",
+            sec3Title: "3. Keine Cookies. Kein Tracking.",
+            sec3p1: "Wir setzen keine Cookies, keine Tracking-Pixel, keine Analyse-Tools (z. B. Google Analytics, Matomo) und keine Social-Media-Plugins ein.",
+            sec3p2: "Es findet keine Profilbildung, kein Remarketing und keine Weitergabe von Daten an Werbenetzwerke statt. Diese Seite ist eine rein statische Informationsseite nach §25 TTDSG.",
+            sec4Title: "4. Lokaler Speicher (LocalStorage)",
+            sec4p1: "Zur Verbesserung der Nutzererfahrung speichern wir ausschließlich lokal in Ihrem Browser (LocalStorage, keine Cookies):",
+            sec4li1: "Spracheinstellung (de/en/fr/es/bg/pl/ja)",
+            sec4li2: "Altersbestätigung (18+), damit der Hinweis nicht bei jedem Besuch erneut erscheint",
+            sec4p2: "Diese Daten verlassen Ihr Gerät nicht, werden nicht an uns oder Dritte übertragen und können jederzeit in Ihren Browser-Einstellungen gelöscht werden.",
+            sec4p3: "Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an einer funktionsfähigen Website und am Jugendschutz).",
+            clearStorage: "Lokalen Speicher jetzt löschen",
+            clearMsg: "Gespeicherte Einstellungen wurden gelöscht.",
+            sec5Title: "5. Server-Logs",
+            sec5p1: "Der Hoster GitHub erhebt beim Aufruf automatisch sogenannte Server-Logfiles. Diese enthalten u.a. Ihre IP-Adresse, Datum und Uhrzeit, Browsertyp sowie die aufgerufene Seite.",
+            sec5p2: "Die Speicherung dient der technischen Bereitstellung und Sicherheit (Schutz vor Angriffen). Wir haben keinen direkten Zugriff auf diese Logs. Die IP-Adresse wird von GitHub nur temporär und gemäß deren Aufbewahrungsfristen gespeichert.",
+            sec5p3: "Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO.",
+            sec6Title: "6. Kontakt per E-Mail",
+            sec6p1: "Wenn Sie uns per E-Mail kontaktieren, speichern wir Ihre Angaben (E-Mail-Adresse, Name, Inhalt) ausschließlich zur Bearbeitung Ihrer Anfrage.",
+            sec6p2: "Wir geben diese Daten nicht weiter. Die Löschung erfolgt, sobald der Zweck entfällt oder Sie uns zur Löschung auffordern, sofern keine gesetzlichen Aufbewahrungspflichten bestehen.",
+            sec6p3: "Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO (Vertragsanbahnung) bzw. lit. f DSGVO (berechtigtes Interesse an Kommunikation).",
+            sec7Title: "7. Ihre Rechte",
+            sec7p1: "Sie haben nach der DSGVO folgende Rechte:",
+            sec7li1: "Auskunft (Art. 15) – welche Daten wir über Sie speichern",
+            sec7li2: "Berichtigung (Art. 16) – Korrektur unrichtiger Daten",
+            sec7li3: "Löschung (Art. 17) – „Recht auf Vergessenwerden“",
+            sec7li4: "Einschränkung (Art. 18) der Verarbeitung",
+            sec7li5: "Datenübertragbarkeit (Art. 20)",
+            sec7li6: "Widerspruch (Art. 21) gegen Verarbeitung",
+            sec7li7: "Beschwerde bei einer Aufsichtsbehörde (Art. 77)",
+            sec7p2: "Zur Ausübung genügt eine E-Mail an:",
+            sec8Title: "8. Hinweis zu 18+ Inhalten",
+            sec8p1: "Diese Website richtet sich ausschließlich an volljährige Personen ab 18 Jahren. Die Altersbestätigung dient dem Jugendschutz gemäß JuSchG und wird nur lokal gespeichert (siehe Punkt 4). Mit dem Betreten bestätigen Sie, dass Sie mindestens 18 Jahre alt sind.",
+            footer1: "Diese Datenschutzerklärung wurde für eine tracking-freie, statische Informationsseite erstellt. Keine Rechtsberatung.",
+            imprint: "Impressum"
+          },
+          en: {
+              title: "Privacy Policy – No Tracking",
+              noTracking: "No Tracking",
+              back: "Back",
+              legal: "Legal",
+              privacy: "Privacy",
+              declaration: "Policy",
+              subtitle: "Cannabis Content & Artistic Freedom",
+              agegate: "Age Restriction 18+",
+              agegate_text: "This website contains content related to cannabis. Access is restricted to adults aged 18+ in accordance with Section 6 of the Cannabis Act (CanG) and the Youth Protection Act (JuSchG). By remaining on this site, you confirm that you are at least 18 years old.",
+              scope: "Scope & Purpose",
+              scope_text: "This website serves to inform, document, and artistically engage with the topic of cannabis within the legal framework applicable in Germany. The content presented here does not constitute an invitation, instruction, or advertisement for the consumption, cultivation, or acquisition of cannabis.",
+              legal: "Legal Conditions",
+              liability: "Disclaimer of Liability",
+              addendum: "Addendum: Relevant Laws",
+              print: "Print",
+              condition1: "No Distribution or Transfer",
+              condition1text: "This site does not offer the sale, brokerage, or distribution of cannabis or other narcotics. No sources of supply are named or linked.",
+              condition2: "No Encouragement of Consumption",
+              condition2text: "The content does not serve to trivialize, glorify, or promote cannabis use. According to Section 6 CanG, advertising and sponsorship for cannabis is prohibited.",
+              condition3: "Youth Protection",
+              condition3text: "Access for minors is prohibited. We comply with the requirements of the Youth Protection Act (JuSchG) and Section 6 (2) CanG. Technical protection measures are implemented.",
+              condition4: "Artistic Freedom, Art. 5 (3) GG",
+              condition4text: "Artistic, documentary, and journalistic content is protected by artistic freedom. The distinction between art and prohibited advertising is made in accordance with current case law of the Federal Constitutional Court.",
+              liability1: "3.1 Content: The content of this website has been created with the greatest possible care. However, we cannot guarantee the accuracy, completeness, and timeliness of the content. As a service provider, we are responsible for our own content on these pages according to Section 7 (1) TMG under general law.",
+              liability2: "3.2 External Links: Our site contains links to external third-party websites over whose content we have no influence. Therefore, we cannot assume any liability for this external content. The respective provider or operator of the pages is always responsible for the content of the linked pages.",
+              liability3: "3.3 No Legal or Health Advice: The information provided does not constitute legal advice, medical advice, or a recommendation for action. Always consult qualified professionals with any questions.",
+              law1: "Cannabis Act (CanG)",
+              law1p1: "Purpose: Act on the controlled handling of cannabis and amending other regulations. In force since 01.04.2024.",
+              law1p2: "Section 6 CanG – Advertising and Sponsorship Ban: (1) It is prohibited to advertise cannabis and cannabis products. (2) It is prohibited to conduct sponsorship activities serving cannabis products. (3) The ban also applies to audiovisual commercial communication.",
+              law2: "Youth Protection Act (JuSchG)",
+              law2p1: "Section 28 JuSchG: Anyone who, as a provider, makes telemedia accessible to children or adolescents that are likely to morally endanger them is acting in violation of regulations.",
+              law2p2: "Application: Content on the topic of cannabis is to be classified as harmful to minors. Access must be restricted by age verification systems.",
+              law3: "Telemedia Act (TMG/DDG)",
+              law3p1: "Section 5 TMG / Section 5 DDG – Imprint Obligation: Service providers must keep certain information easily recognizable, directly accessible, and permanently available for commercial telemedia.",
+              law4: "German Basic Law (GG)",
+              law4p1: "Art. 5 (1) GG: Everyone has the right to freely express and disseminate their opinion in speech, writing, and pictures, and to inform themselves without hindrance from generally accessible sources.",
+              law4p2: "Art. 5 (3) GG: Art and science, research and teaching are free. Freedom of teaching does not release from loyalty to the constitution.",
+              law5: "GDPR & TTDSG",
+              law5p1: "When collecting personal data, data subjects must be comprehensively informed pursuant to Art. 13 GDPR.",
+              law5p2: "Section 25 TTDSG: The storage of information in the end user's terminal equipment or access to information already stored in the terminal equipment is only permitted if the end user has consented."
+            },
+            fr: {
+              title: "Politique de confidentialité – Pas de suivi",
+              noTracking: "Pas de suivi",
+              back: "Retour",
+              legal: "Légal",
+              privacy: "Confidentialité",
+              declaration: "Politique",
+              subtitle: "Contenu Cannabis & Liberté Artistique",
+              agegate: "Restriction d'âge 18+",
+              agegate_text: "Ce site web contient du contenu relatif au cannabis. L'accès est réservé aux adultes de 18 ans et plus conformément à l'article 6 de la loi sur le cannabis (CanG) et à la loi sur la protection de la jeunesse (JuSchG). En restant sur ce site, vous confirmez avoir au moins 18 ans.",
+              scope: "Champ d'application & Objectif",
+              scope_text: "Ce site web sert à informer, documenter et traiter artistiquement le sujet du cannabis dans le cadre juridique applicable en Allemagne. Le contenu présenté ici ne constitue pas une invitation, une instruction ou une publicité pour la consommation, la culture ou l'acquisition de cannabis.",
+              legal: "Conditions légales",
+              liability: "Clause de non-responsabilité",
+              addendum: "Addendum : Lois pertinentes",
+              print: "Imprimer",
+              condition1: "Aucune distribution ni cession",
+              condition1text: "Ce site ne propose pas la vente, le courtage ou la distribution de cannabis ou d'autres stupéfiants. Aucune source d'approvisionnement n'est nommée ou liée.",
+              condition2: "Pas d'incitation à la consommation",
+              condition2text: "Le contenu ne sert pas à banaliser, glorifier ou promouvoir la consommation de cannabis. Selon l'article 6 CanG, la publicité et le parrainage pour le cannabis sont interdits.",
+              condition3: "Protection de la jeunesse",
+              condition3text: "L'accès aux mineurs est interdit. Nous respectons les exigences de la loi sur la protection de la jeunesse (JuSchG) et de l'article 6 al. 2 CanG. Des mesures de protection techniques sont mises en œuvre.",
+              condition4: "Liberté artistique, Art. 5 al. 3 GG",
+              condition4text: "Le contenu artistique, documentaire et journalistique est protégé par la liberté artistique. La distinction entre l'art et la publicité interdite se fait conformément à la jurisprudence actuelle de la Cour constitutionnelle fédérale.",
+              liability1: "3.1 Contenu : Le contenu de ce site web a été créé avec le plus grand soin possible. Cependant, nous ne pouvons garantir l'exactitude, l'exhaustivité et l'actualité du contenu. En tant que prestataire de services, nous sommes responsables de notre propre contenu sur ces pages selon l'article 7 al. 1 TMG en vertu du droit général.",
+              liability2: "3.2 Liens externes : Notre site contient des liens vers des sites web externes de tiers sur le contenu desquels nous n'avons aucune influence. Par conséquent, nous ne pouvons assumer aucune responsabilité pour ce contenu externe. Le fournisseur ou l'exploitant respectif des pages est toujours responsable du contenu des pages liées.",
+              liability3: "3.3 Pas de conseil juridique ou de santé : Les informations fournies ne constituent pas un conseil juridique, un conseil médical ou une recommandation d'action. Consultez toujours des professionnels qualifiés pour toute question.",
+              law1: "Loi sur le cannabis (CanG)",
+              law1p1: "Objet : Loi sur la gestion contrôlée du cannabis et modifiant d'autres règlements. En vigueur depuis le 01.04.2024.",
+              law1p2: "Article 6 CanG – Interdiction de la publicité et du parrainage : (1) Il est interdit de faire de la publicité pour le cannabis et les produits à base de cannabis. (2) Il est interdit de mener des activités de parrainage servant les produits à base de cannabis. (3) L'interdiction s'applique également à la communication commerciale audiovisuelle.",
+              law2: "Loi sur la protection de la jeunesse (JuSchG)",
+              law2p1: "Article 28 JuSchG : Quiconque, en tant que fournisseur, rend accessible aux enfants ou aux adolescents des télémédias susceptibles de les mettre en danger moralement agit en violation des règlements.",
+              law2p2: "Application : Le contenu sur le thème du cannabis doit être classé comme nuisible aux mineurs. L'accès doit être restreint par des systèmes de vérification de l'âge.",
+              law3: "Loi sur les télémédias (TMG/DDG)",
+              law3p1: "Article 5 TMG / Article 5 DDG – Obligation d'impression : Les prestataires de services doivent tenir certaines informations facilement reconnaissables, directement accessibles et disponibles en permanence pour les télémédias commerciaux.",
+              law4: "Loi fondamentale (GG)",
+              law4p1: "Art. 5 al. 1 GG : Chacun a le droit d'exprimer et de diffuser librement son opinion par la parole, l'écrit et l'image, et de s'informer sans entrave auprès de sources généralement accessibles.",
+              law4p2: "Art. 5 al. 3 GG : L'art et la science, la recherche et l'enseignement sont libres. La liberté de l'enseignement ne dispense pas de la fidélité à la constitution.",
+              law5: "RGPD & TTDSG",
+              law5p1: "Lors de la collecte de données personnelles, les personnes concernées doivent être informées de manière exhaustive conformément à l'art. 13 du RGPD.",
+              law5p2: "Article 25 TTDSG : Le stockage d'informations dans l'équipement terminal de l'utilisateur final ou l'accès aux informations déjà stockées dans l'équipement terminal n'est autorisé que si l'utilisateur final y a consenti."
+            },
+            es: {
+              title: "Política de Privacidad – Sin Rastreo",
+              noTracking: "Sin Rastreo",
+              back: "Atrás",
+              legal: "Legal",
+              privacy: "Privacidad",
+              declaration: "Política",
+              subtitle: "Contenido Cannabis & Libertad Artística",
+              agegate: "Restricción de edad 18+",
+              agegate_text: "Este sitio web contiene contenido relacionado con el cannabis. El acceso está restringido a adultos mayores de 18 años de acuerdo con el Artículo 6 de la Ley del Cannabis (CanG) y la Ley de Protección de la Juventud (JuSchG). Al permanecer en este sitio, confirmas que tienes al menos 18 años.",
+              scope: "Ámbito de aplicación y propósito",
+              scope_text: "Este sitio web sirve para informar, documentar y tratar artísticamente el tema del cannabis dentro del marco legal aplicable en Alemania. El contenido presentado aquí no constituye una invitación, instrucción o publicidad para el consumo, cultivo o adquisición de cannabis.",
+              legal: "Condiciones legales",
+              liability: "Exención de responsabilidad",
+              addendum: "Anexo: Leyes relevantes",
+              print: "Imprimir",
+              condition1: "Sin distribución ni transferencia",
+              condition1text: "Este sitio no ofrece la venta, intermediación o distribución de cannabis u otros estupefacientes. No se nombran ni enlazan fuentes de suministro.",
+              condition2: "Sin incitación al consumo",
+              condition2text: "El contenido no sirve para trivializar, glorificar o promover el consumo de cannabis. Según el Artículo 6 CanG, la publicidad y el patrocinio de cannabis están prohibidos.",
+              condition3: "Protección de menores",
+              condition3text: "El acceso a menores está prohibido. Cumplimos con los requisitos de la Ley de Protección de la Juventud (JuSchG) y el Artículo 6 apdo. 2 CanG. Se implementan medidas técnicas de protección.",
+              condition4: "Libertad artística, Art. 5 apdo. 3 GG",
+              condition4text: "El contenido artístico, documental y periodístico está protegido por la libertad artística. La distinción entre arte y publicidad prohibida se realiza de acuerdo con la jurisprudencia actual del Tribunal Constitucional Federal.",
+              liability1: "3.1 Contenido: El contenido de este sitio web ha sido creado con el mayor cuidado posible. Sin embargo, no podemos garantizar la exactitud, integridad y actualidad del contenido. Como proveedor de servicios, somos responsables de nuestro propio contenido en estas páginas según el Artículo 7 apdo. 1 TMG bajo la ley general.",
+              liability2: "3.2 Enlaces externos: Nuestro sitio contiene enlaces a sitios web externos de terceros sobre cuyo contenido no tenemos influencia. Por lo tanto, no podemos asumir ninguna responsabilidad por este contenido externo. El respectivo proveedor u operador de las páginas es siempre responsable del contenido de las páginas enlazadas.",
+              liability3: "3.3 Sin asesoramiento legal o de salud: La información proporcionada no constituye asesoramiento legal, asesoramiento médico o una recomendación de acción. Consulte siempre a profesionales cualificados con cualquier pregunta.",
+              law1: "Ley del Cannabis (CanG)",
+              law1p1: "Objeto: Ley sobre el manejo controlado del cannabis y la modificación de otras regulaciones. En vigor desde el 01.04.2024.",
+              law1p2: "Artículo 6 CanG – Prohibición de publicidad y patrocinio: (1) Está prohibido publicitar cannabis y productos de cannabis. (2) Está prohibido realizar actividades de patrocinio al servicio de productos de cannabis. (3) La prohibición también se aplica a la comunicación comercial audiovisual.",
+              law2: "Ley de Protección de la Juventud (JuSchG)",
+              law2p1: "Artículo 28 JuSchG: Quien, como proveedor, haga accesibles a niños o adolescentes telemedios que puedan ponerlos en peligro moralmente, actúa en violación de las regulaciones.",
+              law2p2: "Aplicación: El contenido sobre el tema del cannabis debe clasificarse como perjudicial para los menores. El acceso debe restringirse mediante sistemas de verificación de edad.",
+              law3: "Ley de Telemedios (TMG/DDG)",
+              law3p1: "Artículo 5 TMG / Artículo 5 DDG – Obligación de impresión: Los proveedores de servicios deben mantener cierta información fácilmente reconocible, directamente accesible y permanentemente disponible para telemedios comerciales.",
+              law4: "Ley Fundamental (GG)",
+              law4p1: "Art. 5 apdo. 1 GG: Toda persona tiene derecho a expresar y difundir libremente su opinión de palabra, por escrito y mediante la imagen, y a informarse sin trabas de fuentes generalmente accesibles.",
+              law4p2: "Art. 5 apdo. 3 GG: El arte y la ciencia, la investigación y la enseñanza son libres. La libertad de enseñanza no exime de la lealtad a la constitución.",
+              law5: "RGPD & TTDSG",
+              law5p1: "Al recopilar datos personales, los interesados deben ser informados exhaustivamente de conformidad con el art. 13 del RGPD.",
+              law5p2: "Artículo 25 TTDSG: El almacenamiento de información en el equipo terminal del usuario final o el acceso a información ya almacenada en el equipo terminal solo está permitido si el usuario final ha dado su consentimiento."
+            },
+            bg: {
+              title: "Политика за поверителност – Без проследяване",
+              noTracking: "Без проследяване",
+              back: "Назад",
+              legal: "Правно",
+              privacy: "Поверителност",
+              declaration: "Политика",
+              subtitle: "Съдържание за канабис и артистична свобода",
+              agegate: "Възрастово ограничение 18+",
+              agegate_text: "Този уебсайт съдържа съдържание, свързано с канабис. Достъпът е ограничен до пълнолетни лица над 18 години в съответствие с §6 от Закона за канабиса (CanG) и Закона за защита на младежта (JuSchG). Оставайки на този сайт, вие потвърждавате, че сте навършили поне 18 години.",
+              scope: "Обхват и цел",
+              scope_text: "Този уебсайт служи за информиране, документиране и артистично ангажиране с темата за канабиса в рамките на правната рамка, приложима в Германия. Представеното тук съдържание не представлява покана, инструкция или реклама за консумация, отглеждане или придобиване на канабис.",
+              legal: "Правни условия",
+              liability: "Отказ от отговорност",
+              addendum: "Приложение: Съответни закони",
+              print: "Печат",
+              condition1: "Без разпространение или прехвърляне",
+              condition1text: "Този сайт не предлага продажба, посредничество или разпространение на канабис или други наркотици. Не се назовават или свързват източници на доставка.",
+              condition2: "Без насърчаване на консумацията",
+              condition2text: "Съдържанието не служи за омаловажаване, прославяне или насърчаване на употребата на канабис. Съгласно §6 CanG рекламата и спонсорството за канабис са забранени.",
+              condition3: "Защита на младежта",
+              condition3text: "Достъпът за непълнолетни е забранен. Ние спазваме изискванията на Закона за защита на младежта (JuSchG) и §6 ал. 2 CanG. Внедрени са технически защитни мерки.",
+              condition4: "Артистична свобода, чл. 5 ал. 3 GG",
+              condition4text: "Артистичното, документалното и журналистическото съдържание е защитено от артистичната свобода. Разграничението между изкуство и забранена реклама се прави в съответствие с действащата съдебна практика на Федералния конституционен съд.",
+              liability1: "3.1 Съдържание: Съдържанието на този уебсайт е създадено с възможно най-голямо внимание. Въпреки това не можем да гарантираме точността, пълнотата и актуалността на съдържанието. Като доставчик на услуги, ние носим отговорност за собственото си съдържание на тези страници съгласно §7 ал. 1 TMG по общото право.",
+              liability2: "3.2 Външни връзки: Нашият сайт съдържа връзки към външни уебсайтове на трети страни, върху чието съдържание нямаме влияние. Следователно не можем да поемем никаква отговорност за това външно съдържание. Съответният доставчик или оператор на страниците винаги носи отговорност за съдържанието на свързаните страници.",
+              liability3: "3.3 Без правни или здравни съвети: Предоставената информация не представлява правен съвет, медицински съвет или препоръка за действие. Винаги се консултирайте с квалифицирани специалисти при всякакви въпроси.",
+              law1: "Закон за канабиса (CanG)",
+              law1p1: "Цел: Закон за контролираното боравене с канабис и за изменение на други разпоредби. В сила от 01.04.2024 г.",
+              law1p2: "§6 CanG – Забрана за реклама и спонсорство: (1) Забранено е да се рекламира канабис и продукти от канабис. (2) Забранено е да се извършват спонсорски дейности, обслужващи продукти от канабис. (3) Забраната се прилага и за аудиовизуална търговска комуникация.",
+              law2: "Закон за защита на младежта (JuSchG)",
+              law2p1: "§28 JuSchG: Всеки, който като доставчик прави достъпни за деца или юноши телемедии, които са в състояние да ги застрашат морално, действа в нарушение на разпоредбите.",
+              law2p2: "Приложение: Съдържанието по темата за канабиса трябва да се класифицира като вредно за непълнолетни. Достъпът трябва да бъде ограничен чрез системи за проверка на възрастта.",
+              law3: "Закон за телемедиите (TMG/DDG)",
+              law3p1: "§5 TMG / §5 DDG – Задължение за отпечатък: Доставчиците на услуги трябва да поддържат определена информация лесно разпознаваема, директно достъпна и постоянно налична за търговски телемедии.",
+              law4: "Основен закон (GG)",
+              law4p1: "Чл. 5 ал. 1 GG: Всеки има право свободно да изразява и разпространява мнението си чрез слово, писмено и чрез образ, и да се информира безпрепятствено от общодостъпни източници.",
+              law4p2: "Чл. 5 ал. 3 GG: Изкуството и науката, изследванията и преподаването са свободни. Свободата на преподаване не освобождава от вярност към конституцията.",
+              law5: "GDPR & TTDSG",
+              law5p1: "При събиране на лични данни субектите на данни трябва да бъдат изчерпателно информирани съгласно чл. 13 от GDPR.",
+              law5p2: "§25 TTDSG: Съхраняването на информация в крайното устройство на крайния потребител или достъпът до информация, която вече е съхранена в крайното устройство, е разрешено само ако крайният потребител е дал съгласие."
+            },
+            pl: {
+              title: "Polityka prywatności – Bez śledzenia",
+              noTracking: "Bez śledzenia",
+              back: "Wstecz",
+              legal: "Prawne",
+              privacy: "Prywatność",
+              declaration: "Polityka",
+              subtitle: "Treści o konopiach i wolność artystyczna",
+              agegate: "Ograniczenie wiekowe 18+",
+              agegate_text: "Ta strona internetowa zawiera treści związane z konopiami. Dostęp jest ograniczony do osób dorosłych powyżej 18 roku życia zgodnie z §6 Ustawy o konopiach (CanG) i Ustawy o ochronie młodzieży (JuSchG). Pozostając na tej stronie, potwierdzasz, że masz co najmniej 18 lat.",
+              scope: "Zakres i cel",
+              scope_text: "Ta strona internetowa służy do informowania, dokumentowania i artystycznego angażowania się w temat konopi w ramach prawnych obowiązujących w Niemczech. Prezentowane tutaj treści nie stanowią zaproszenia, instrukcji ani reklamy do konsumpcji, uprawy lub nabywania konopi.",
+              legal: "Warunki prawne",
+              liability: "Wyłączenie odpowiedzialności",
+              addendum: "Dodatek: Odpowiednie ustawy",
+              print: "Drukuj",
+              condition1: "Brak dystrybucji lub przekazywania",
+              condition1text: "Ta strona nie oferuje sprzedaży, pośrednictwa ani dystrybucji konopi lub innych narkotyków. Nie są wymieniane ani linkowane żadne źródła zaopatrzenia.",
+              condition2: "Brak zachęty do konsumpcji",
+              condition2text: "Treści nie służą trywializowaniu, gloryfikowaniu ani promowaniu używania konopi. Zgodnie z §6 CanG reklama i sponsoring konopi są zabronione.",
+              condition3: "Ochrona młodzieży",
+              condition3text: "Dostęp dla nieletnich jest zabroniony. Przestrzegamy wymogów Ustawy o ochronie młodzieży (JuSchG) oraz §6 ust. 2 CanG. Wdrożono techniczne środki ochrony.",
+              condition4: "Wolność artystyczna, art. 5 ust. 3 GG",
+              condition4text: "Treści artystyczne, dokumentalne i dziennikarskie są chronione wolnością artystyczną. Rozróżnienie między sztuką a zakazaną reklamą dokonywane jest zgodnie z aktualnym orzecznictwem Federalnego Trybunału Konstytucyjnego.",
+              liability1: "3.1 Treść: Treść tej strony internetowej została stworzona z najwyższą możliwą starannością. Nie możemy jednak zagwarantować dokładności, kompletności i aktualności treści. Jako usługodawca ponosimy odpowiedzialność za własne treści na tych stronach zgodnie z §7 ust. 1 TMG na mocy prawa ogólnego.",
+              liability2: "3.2 Linki zewnętrzne: Nasza strona zawiera linki do zewnętrznych stron internetowych osób trzecich, na których treść nie mamy wpływu. Dlatego nie możemy ponosić żadnej odpowiedzialności za te treści zewnętrzne. Odpowiedni dostawca lub operator stron jest zawsze odpowiedzialny za treść linkowanych stron.",
+              liability3: "3.3 Brak porad prawnych lub zdrowotnych: Dostarczone informacje nie stanowią porady prawnej, porady medycznej ani zalecenia działania. W przypadku jakichkolwiek pytań zawsze skonsultuj się z wykwalifikowanymi specjalistami.",
+              law1: "Ustawa o konopiach (CanG)",
+              law1p1: "Cel: Ustawa o kontrolowanym postępowaniu z konopiami i zmieniająca inne przepisy. Obowiązuje od 01.04.2024.",
+              law1p2: "§6 CanG – Zakaz reklamy i sponsoringu: (1) Zabronione jest reklamowanie konopi i produktów z konopi. (2) Zabronione jest prowadzenie działań sponsorskich służących produktom z konopi. (3) Zakaz dotyczy również audiowizualnej komunikacji handlowej.",
+              law2: "Ustawa o ochronie młodzieży (JuSchG)",
+              law2p1: "§28 JuSchG: Każdy, kto jako dostawca udostępnia dzieciom lub młodzieży telemedia, które mogą je moralnie zagrozić, działa z naruszeniem przepisów.",
+              law2p2: "Zastosowanie: Treści na temat konopi należy klasyfikować jako szkodliwe dla nieletnich. Dostęp musi być ograniczony przez systemy weryfikacji wieku.",
+              law3: "Ustawa o telemediach (TMG/DDG)",
+              law3p1: "§5 TMG / §5 DDG – Obowiązek stopki redakcyjnej: Dostawcy usług muszą utrzymywać pewne informacje łatwo rozpoznawalne, bezpośrednio dostępne i stale dostępne dla komercyjnych telemediów.",
+              law4: "Ustawa Zasadnicza (GG)",
+              law4p1: "Art. 5 ust. 1 GG: Każdy ma prawo do swobodnego wyrażania i rozpowszechniania swojej opinii słowem, pismem i obrazem oraz do niezakłóconego informowania się z ogólnie dostępnych źródeł.",
+              law4p2: "Art. 5 ust. 3 GG: Sztuka i nauka, badania i nauczanie są wolne. Wolność nauczania nie zwalnia z wierności konstytucji.",
+              law5: "RODO & TTDSG",
+              law5p1: "Przy zbieraniu danych osobowych osoby, których dane dotyczą, muszą być wyczerpująco informowane zgodnie z art. 13 RODO.",
+              law5p2: "§25 TTDSG: Przechowywanie informacji w urządzeniu końcowym użytkownika końcowego lub dostęp do informacji już przechowywanych w urządzeniu końcowym jest dozwolony tylko wtedy, gdy użytkownik końcowy wyraził na to zgodę."
+            },
+            ja: {
+              title: "プライバシーポリシー – トラッキングなし",
+              noTracking: "トラッキングなし",
+              back: "戻る",
+              legal: "法的",
+              privacy: "プライバシー",
+              declaration: "ポリシー",
+              subtitle: "大麻コンテンツ & 芸術の自由",
+              agegate: "年齢制限 18歳以上",
+              agegate_text: "このウェブサイトには大麻に関するコンテンツが含まれています。アクセスは、ドイツの大麻法第6条および青少年保護法に基づき、18歳以上の成人のみに制限されています。このサイトに留まることにより、あなたは18歳以上であることを確認したことになります。",
+              scope: "適用範囲と目的",
+              scope_text: "このウェブサイトは、ドイツで適用される法的枠組み内で大麻のテーマについて情報提供、文書化、芸術的に取り組むために役立ちます。ここに提示されているコンテンツは、大麻の消費、栽培、または取得への勧誘、指示、または広告を構成するものではありません。",
+              legal: "法的条件",
+              liability: "免責事項",
+              addendum: "付録: 関連法律",
+              print: "印刷",
+              condition1: "配布や譲渡なし",
+              condition1text: "このサイトは、大麻やその他の麻薬の販売、仲介、または配布を提供していません。供給源は命名もリンクもされていません。",
+              condition2: "消費の奨励なし",
+              condition2text: "コンテンツは、大麻使用の矮小化、美化、または促進を目的としたものではありません。CanG第6条によると、大麻の広告とスポンサーシップは禁止されています。",
+              condition3: "青少年の保護",
+              condition3text: "未成年者のアクセスは禁止されています。私たちは青少年保護法(JuSchG)およびCanG第6条第2項の要件を遵守します。技術的な保護措置が実施されています。",
+              condition4: "芸術の自由、基本法第5条第3項",
+              condition4text: "芸術的、ドキュメンタリー、ジャーナリスティックなコンテンツは芸術の自由によって保護されています。芸術と禁止された広告の区別は、連邦憲法裁判所の現在の判例に従って行われます。",
+              liability1: "3.1 コンテンツ: このウェブサイトのコンテンツは可能な限り注意深く作成されています。ただし、コンテンツの正確性、完全性、適時性を保証することはできません。サービスプロバイダーとして、私たちは一般法に基づくTMG第7条第1項に従って、これらのページ上の独自のコンテンツに対して責任を負います。",
+              liability2: "3.2 外部リンク: 私たちのサイトには、内容に影響を与えることのできない第三者の外部ウェブサイトへのリンクが含まれています。したがって、この外部コンテンツに対して一切の責任を負うことはできません。リンクされたページのコンテンツについては、常にそれぞれのプロバイダーまたは運営者が責任を負います。",
+              liability3: "3.3 法的または健康上の助言なし: 提供される情報は、法的助言、医療助言、または行動の推奨を構成するものではありません。質問がある場合は、常に資格のある専門家に相談してください。",
+              law1: "大麻法 (CanG)",
+              law1p1: "目的: 大麻の管理された取り扱いおよびその他の規制の改正に関する法律。2024年4月1日から施行。",
+              law1p2: "CanG第6条 – 広告およびスポンサーシップの禁止: (1) 大麻および大麻製品の広告は禁止されています。(2) 大麻製品に資するスポンサー活動を行うことは禁止されています。(3) 禁止は視聴覚的な商業通信にも適用されます。",
+              law2: "青少年保護法 (JuSchG)",
+              law2p1: "JuSchG第28条: プロバイダーとして、道徳的に危険にさらす可能性のあるテレメディアを子供または青少年が利用できるようにした者は、規制に違反して行動している。",
+              law2p2: "適用: 大麻のトピックに関するコンテンツは、未成年者に有害であると分類されます。アクセスは年齢確認システムによって制限する必要があります。",
+              law3: "テレメディア法 (TMG/DDG)",
+              law3p1: "TMG第5条 / DDG第5条 – インプリント義務: サービスプロバイダーは、商業用テレメディアのために、特定の情報を容易に認識でき、直接アクセスでき、恒久的に利用できるように保持する必要があります。",
+              law4: "基本法 (GG)",
+              law4p1: "基本法第5条第1項: すべての人は、言葉、文書、画像で自由に意見を表明し、広め、一般にアクセス可能な情報源から妨げられることなく情報を得る権利を有する。",
+              law4p2: "基本法第5条第3項: 芸術と科学、研究と教育は自由である。教育の自由は憲法への忠誠から免除されない。",
+              law5: "GDPR & TTDSG",
+              law5p1: "個人データを収集する際、データ主体はGDPR第13条に従って包括的に情報を提供されなければならない。",
+              law5p2: "TTDSG第25条: エンドユーザーの端末機器への情報の保存、または端末機器に既に保存されている情報へのアクセスは、エンドユーザーが同意した場合にのみ許可されます。"
+            }
+          };
 
-            // Copy mail
-            const copyBtn = document.getElementById('copyMail');
-            copyBtn?.addEventListener('click', async () => {
-                try {
-                    await navigator.clipboard.writeText('infotonbc@gmail.com');
-                    const span = copyBtn.querySelector('span');
-                    const orig = span.textContent;
-                    span.textContent = 'Kopiert!';
-                    copyBtn.classList.add('border-emerald-500/40', 'text-emerald-300');
-                    setTimeout(() => {
-                        span.textContent = orig;
-                        copyBtn.classList.remove('border-emerald-500/40', 'text-emerald-300');
-                    }, 1800);
-                } catch {}
-            });
+          // Rest des Scripts wie vorher: Geo-IP, setLanguage, Cookie Banner etc.
+          const countryToLang = { DE: 'de', AT: 'de', CH: 'de', US: 'en', GB: 'en', CA: 'en', AU: 'en', FR: 'fr', BE: 'fr', ES: 'es', MX: 'es', AR: 'es', CO: 'es', BG: 'bg', PL: 'pl', JP: 'ja' };
+          const supported = ['de','en','fr','es','bg','pl','ja'];
+          let currentLang = 'de';
 
-            // Clear localStorage
-            document.getElementById('clearStorage')?.addEventListener('click', () => {
-                try {
-                    localStorage.removeItem('lang');
-                    localStorage.removeItem('ageVerified');
-                    localStorage.removeItem('age_verified');
-                    localStorage.clear();
-                    document.getElementById('clearMsg').classList.remove('hidden');
-                    setTimeout(()=> document.getElementById('clearMsg').classList.add('hidden'), 3000);
-                } catch {}
+          function setLanguage(lang) {
+            const dict = translations[lang] || translations['de'];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+              const key = el.getAttribute('data-i18n');
+              if (dict[key]) el.textContent = dict[key];
             });
-        });
-    </script>
-</body>
-</html>
+            document.documentElement.lang = lang;
+            currentLang = lang;
+            document.querySelectorAll('.lang-switch button').forEach(btn => {
+              btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+            });
+            localStorage.setItem('preferred_lang', lang);
+          }
+          window.switchLang = setLanguage;
+
+          async function detectLanguage() {
+            const saved = localStorage.getItem('preferred_lang');
+            if (saved && supported.includes(saved)) { setLanguage(saved); return; }
+            try {
+              const res = await fetch('https://ipapi.co/json/');
+              const data = await res.json();
+              const countryLang = countryToLang[data.country_code];
+              if (countryLang && supported.includes(countryLang)) { setLanguage(countryLang); return; }
+            } catch(e) {}
+            const browserLang = (navigator.language || navigator.userLanguage).slice(0,2).toLowerCase();
+            setLanguage(supported.includes(browserLang)? browserLang : 'de');
+          }
+          detectLanguage();
+
+          function toggleAccordion(btn) {
+            const content = btn.nextElementSibling;
+            const icon = btn.querySelector('.fa-chevron-down');
+            const isActive = content.classList.contains('active');
+            document.querySelectorAll('.accordion-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.accordion-header.fa-chevron-down').forEach(el => el.style.transform = 'rotate(0deg)');
+            if (!isActive) { content.classList.add('active'); icon.style.transform = 'rotate(180deg)'; }
+          }
+        </script>
+        </body>
+        </html>
