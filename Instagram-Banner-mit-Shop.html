@@ -1,371 +1,264 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NaturalBornChillaz | NBC News</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Marcellus&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --neon-purple: #C77DFF;
-      --glow-green: #C4F5E0;
-      --gold: #D4AF37;
-      --wood-dark: #1A1411;
-      --jungle: #0C0A09;
-      --glass: rgba(20, 14, 12, 0.75);
-      --sage: #9DB4A6;
-      --smoke: #F8FAF9;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NaturalBornChillaz | NBC News</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500&family=Marcellus&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wood-dark: #0C0A09;
+    --jungle: #0B2A1F;
+    --glass: rgba(12, 25, 20, 0.42);
+    --sage: #9DB4A6;
+    --glow-green: #C4F5E0;
+    --neon-purple: #C77DFF;
+    --gold: #D4AF37;
+    --smoke: #F8FAF9;
+  }
+  
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--wood-dark);
-      font-family: 'Outfit', sans-serif;
-      color: var(--smoke);
-      min-height: 100vh;
-      overflow-x: hidden;
-      background-image:
-        linear-gradient(90deg, rgba(20,14,12,0.85) 0%, transparent 50%, rgba(20,14,12,0.85) 100%),
-        repeating-linear-gradient(90deg, #0C0A09, #0C0A09 2px, #1A1411 2px, #1A1411 4px),
-        radial-gradient(ellipse at 30% 20%, rgba(196,245,224,0.04) 0%, transparent 50%);
-      background-attachment: fixed;
-    }
-   .vines { position: fixed; inset: 0; pointer-events: none; opacity: 0.06; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cpath d='M10,50 Q30,20 50,50 T90,50' stroke='%23C4F5E0' stroke-width='0.5' fill='none'/%3E%3C/svg%3E"); }
+  
+  body {
+    background: var(--wood-dark);
+    color: var(--smoke);
+    font-family: 'Outfit', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image: 
+      linear-gradient(90deg, rgba(20,14,12,0.85) 0%, transparent 50%, rgba(20,14,12,0.85) 100%),
+      repeating-linear-gradient(90deg, #0C0A09, #0C0A09 2px, #1A1411 2px, #1A1411 4px),
+      radial-gradient(ellipse at 30% 20%, rgba(196,245,224,0.04) 0%, transparent 50%);
+    background-attachment: fixed;
+  }
 
-   .wrap { position: relative; z-index: 2; max-width: 540px; margin: 0 auto; padding: 50px 18px 80px; width: 100%; }
+  #smoke-canvas {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 1; opacity: 0.65;
+  }
 
-   .glass-plate {
-      background: var(--glass);
-      backdrop-filter: blur(20px) saturate(150%);
-      border-radius: 26px;
-      box-shadow: 0 0 85px rgba(199,125,255,0.12), inset 0 0 45px rgba(12,10,9,0.65);
-      position: relative;
-      overflow: hidden;
-    }
+  .wrap { position: relative; z-index: 2; max-width: 540px; margin: 0 auto; padding: 50px 18px 80px; }
 
-   .glass-plate::before {
-      content: ''; position: absolute; inset: 0; border-radius: 26px; padding: 1.2px;
-      background: linear-gradient(135deg, var(--neon-purple), var(--gold), var(--glow-green));
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude;
-      opacity: 0.65; animation: borderGlow 7s ease-in-out infinite alternate;
-    }
-    @keyframes borderGlow { 0% { opacity: 0.45; } 100% { opacity: 0.85; } }
+  .glass-plate {
+    background: var(--glass);
+    backdrop-filter: blur(20px) saturate(150%);
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    border-radius: 26px;
+    position: relative;
+    box-shadow: 0 35px 70px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05);
+  }
 
-   .hero { text-align: center; padding: 42px 28px 36px; }
-   .logo-img {
-      width: 112px; height: 112px; margin: 0 auto 18px; border-radius: 50%;
-      object-fit: cover; border: 2px solid rgba(212,175,55,0.45);
-      box-shadow: 0 0 45px rgba(199,125,255,0.22), inset 0 0 22px rgba(0,0,0,0.5);
-    }
-   .nbc-title { width: 100%; max-width: 400px; height: auto; margin: 0 auto 10px; display: block; filter: drop-shadow(0 0 18px rgba(196,245,224,0.18)); }
-   .tagline { font-weight: 300; color: var(--sage); font-size: 0.95rem; letter-spacing: 2.2px; text-transform: uppercase; }
+  .glass-plate::before {
+    content: ''; position: absolute; inset: 0; border-radius: 26px; padding: 1.2px;
+    background: linear-gradient(135deg, var(--neon-purple), var(--gold), var(--glow-green));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor; mask-composite: exclude;
+    opacity: 0.65; animation: borderGlow 7s ease-in-out infinite alternate;
+  }
+  @keyframes borderGlow { 0% { opacity: 0.45; } 100% { opacity: 0.85; } }
 
-   .lang-switch { position: fixed; top: 15px; right: 15px; z-index: 999; display: flex; gap: 6px; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); padding: 6px; border-radius: 12px; border: 1px solid rgba(212,175,55,0.2); }
-   .lang-switch button { background: transparent; border: 1px solid rgba(212,175,55,0.2); color: var(--sage); padding: 4px 8px; border-radius: 8px; cursor: pointer; font-family: 'Outfit', sans-serif; font-size: 12px; transition: all.2s; }
-   .lang-switch button:hover,.lang-switch button.active { background: var(--gold); color: var(--wood-dark); border-color: var(--gold); }
+  .hero { text-align: center; padding: 42px 28px 36px; }
+  .logo-img {
+    width: 112px; height: 112px; margin: 0 auto 18px; border-radius: 50%;
+    object-fit: cover; border: 2px solid rgba(212,175,55,0.45);
+    box-shadow: 0 0 45px rgba(199,125,255,0.22), inset 0 0 22px rgba(0,0,0,0.5);
+  }
+  .nbc-title { width: 100%; max-width: 400px; height: auto; margin: 0 auto 10px; display: block; filter: drop-shadow(0 0 18px rgba(196,245,224,0.18)); }
+  .tagline { font-weight: 300; color: var(--sage); font-size: 0.95rem; letter-spacing: 2.2px; text-transform: uppercase; }
 
-   .inner-section { padding: 0 28px 32px; }
-   .section-block { margin-bottom: 38px; padding-bottom: 36px; border-bottom: 1px solid rgba(196,245,224,0.09); }
-   .section-block:last-child { border: none; margin: 0; padding: 0; }
-   .section-block h2 {
-      font-family: 'Marcellus', serif; font-size: 1.55rem; color: var(--glow-green);
-      margin-bottom: 16px; font-weight: 400; display: flex; align-items: center; gap: 10px;
-    }
-   .section-block h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(212,175,55,0.45), transparent); }
-   .section-block p { color: var(--sage); font-weight: 300; line-height: 1.85; margin-bottom: 20px; font-size: 0.97rem; }
-   .quote { font-style: italic; color: var(--glow-green); padding: 16px 0 16px 20px; border-left: 2px solid var(--gold); margin: 22px 0; background: rgba(212,175,55,0.035); }
+  .inner-section { padding: 0 28px 32px; }
+  .section-block { margin-bottom: 38px; padding-bottom: 36px; border-bottom: 1px solid rgba(196,245,224,0.09); }
+  .section-block:last-child { border: none; margin: 0; padding: 0; }
+  .section-block h2 {
+    font-family: 'Marcellus', serif; font-size: 1.55rem; color: var(--glow-green);
+    margin-bottom: 16px; font-weight: 400; display: flex; align-items: center; gap: 10px;
+  }
+  .section-block h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(212,175,55,0.45), transparent); }
+  .section-block p { color: var(--sage); font-weight: 300; line-height: 1.85; margin-bottom: 20px; font-size: 0.97rem; }
+  .quote { font-style: italic; color: var(--glow-green); padding: 16px 0 16px 20px; border-left: 2px solid var(--gold); margin: 22px 0; background: rgba(212,175,55,0.035); }
 
-   .manifesto-list { list-style: none; margin: 18px 0; }
-   .manifesto-list li { margin: 14px 0; padding-left: 26px; position: relative; color: var(--sage); line-height: 1.7; }
-   .manifesto-list li::before { content: '•'; position: absolute; left: 0; color: var(--gold); font-size: 1.2rem; }
-   .manifesto-list strong { color: var(--glow-green); font-weight: 500; }
+  .manifesto-list { list-style: none; margin: 18px 0; }
+  .manifesto-list li { margin: 14px 0; padding-left: 26px; position: relative; color: var(--sage); line-height: 1.7; }
+  .manifesto-list li::before { content: '•'; position: absolute; left: 0; color: var(--gold); font-size: 1.2rem; }
+  .manifesto-list strong { color: var(--glow-green); font-weight: 500; }
 
-   .btn {
-      display: block; width: 100%; padding: 17px; margin: 12px 0;
-      background: rgba(196,245,224,0.045); color: var(--smoke); text-align: center; text-decoration: none;
-      border-radius: 14px; border: 1px solid rgba(199,125,255,0.28);
-      transition: all 0.5s cubic-bezier(0.23,1,0.32,1); font-weight: 400; letter-spacing: 0.8px;
-      position: relative; overflow: hidden; cursor: pointer;
-    }
-   .btn::before { content: ''; position: absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.12), transparent); transition: left 0.6s; }
-   .btn:hover::before { left:100%; }
-   .btn:hover { background: rgba(199,125,255,0.11); border-color: rgba(212,175,55,0.55); box-shadow: 0 0 26px rgba(199,125,255,0.22); transform: translateY(-3px); }
+  .btn {
+    display: block; width: 100%; padding: 17px; margin: 12px 0;
+    background: rgba(196,245,224,0.045); color: var(--smoke); text-align: center; text-decoration: none;
+    border-radius: 14px; border: 1px solid rgba(199,125,255,0.28);
+    transition: all 0.5s cubic-bezier(0.23,1,0.32,1); font-weight: 400; letter-spacing: 0.8px;
+    position: relative; overflow: hidden; cursor: pointer;
+  }
+  .btn::before { content: ''; position: absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.12), transparent); transition: left 0.6s; }
+  .btn:hover::before { left:100%; }
+  .btn:hover { background: rgba(199,125,255,0.11); border-color: rgba(212,175,55,0.55); box-shadow: 0 0 26px rgba(199,125,255,0.22); transform: translateY(-3px); }
 
-    /* SPENDEN BUTTON - Das hat gefehlt */
-   .donate-btn {
-      background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(199,125,255,0.15));
-      border: 2px solid var(--gold);
-      font-weight: 500;
-      font-size: 1.05rem;
-    }
-   .donate-btn:hover {
-      background: linear-gradient(135deg, rgba(212,175,55,0.25), rgba(199,125,255,0.25));
-      box-shadow: 0 0 35px rgba(212,175,55,0.4);
-    }
+  .shop { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
+  .item { background: rgba(12,10,9,0.52); border: 1px solid rgba(157,180,166,0.12); border-radius: 18px; padding: 20px 16px; text-align: center; transition: all 0.4s ease; cursor: pointer; }
+  .item:hover { border-color: rgba(212,175,55,0.34); background: rgba(12,10,9,0.72); box-shadow: 0 12px 32px rgba(0,0,0,0.35); transform: translateY(-2px); }
+  .item-img { width: 100%; aspect-ratio: 1; border-radius: 14px; background: var(--jungle); margin-bottom: 14px; object-fit: cover; border: 1px solid rgba(196,245,224,0.12); }
+  .item h3 { font-size: 1.02rem; color: var(--glow-green); font-weight: 400; margin-bottom: 6px; font-family: 'Marcellus', serif; }
+  .item .price { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; font-weight: 300; }
+  .item .subtext { font-size: 0.82rem; color: var(--sage); margin-bottom: 14px; line-height: 1.45; }
+  .item .btn { padding: 11px; font-size: 0.86rem; margin: 0; }
+  .item.construction { opacity: 0.62; cursor: not-allowed; } .item.construction:hover { transform: none; }
 
-   .shop { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
-   .item {
-      background: rgba(12,10,9,0.52);
-      border: 1px solid rgba(157,180,166,0.12);
-      border-radius: 18px;
-      padding: 20px 16px;
-      text-align: center;
-      transition: all 0.4s ease;
-      cursor: pointer;
-      position: relative; /* Wichtig für Sticker */
-    }
-   .item:hover { border-color: rgba(212,175,55,0.34); background: rgba(12,10,9,0.72); box-shadow: 0 12px 32px rgba(0,0,0,0.35); transform: translateY(-2px); }
+  .footer { text-align: center; margin-top: 48px; font-size: 0.76rem; color: var(--sage); opacity: 0.55; line-height: 1.75; }
 
-    /* LOGO STICKER - Das hat auch gefehlt */
-   .item-sticker {
-      position: absolute;
-      top: -8px;
-      right: -8px;
-      width: 42px;
-      height: 42px;
-      background: var(--gold);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--wood-dark);
-      box-shadow: 0 4px 12px rgba(212,175,55,0.5);
-      border: 2px solid var(--wood-dark);
-      z-index: 5;
-    }
-
-   .item-img { width: 100%; aspect-ratio: 1; border-radius: 14px; background: var(--jungle); margin-bottom: 14px; object-fit: cover; border: 1px solid rgba(196,245,224,0.12); }
-   .item h3 { font-size: 1.02rem; color: var(--glow-green); font-weight: 400; margin-bottom: 6px; font-family: 'Marcellus', serif; }
-   .item.price { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; font-weight: 300; }
-   .item.subtext { font-size: 0.82rem; color: var(--sage); margin-bottom: 14px; line-height: 1.45; }
-   .item.btn { padding: 11px; font-size: 0.86rem; margin: 0; }
-   .item.construction { opacity: 0.62; cursor: not-allowed; }
-   .item.construction:hover { transform: none; }
-
-   .footer { text-align: center; margin-top: 48px; font-size: 0.76rem; color: var(--sage); opacity: 0.55; line-height: 1.75; }
-
-    /* MODAL */
-   .modal { display: none; position: fixed; z-index: 999; left:0; top:0; width:100%; height:100%; background: rgba(12,10,9,0.92); backdrop-filter: blur(12px); animation: fadeIn 0.3s ease; }
-   .modal.active { display: flex; align-items: center; justify-content: center; }
-    @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
-   .pokemon-card { width: 90%; max-width: 390px; background: linear-gradient(135deg,#1a1a2e 0%,#16213e 100%); border-radius: 22px; padding: 3px; position: relative; box-shadow: 0 0 65px rgba(199,125,255,0.45); animation: cardPop 0.42s cubic-bezier(0.34,1.56,0.64,1); }
-    @keyframes cardPop { from { transform: scale(0.85); opacity:0 } to { transform: scale(1); opacity:1 } }
-   .pokemon-card::before { content:''; position:absolute; inset:0; border-radius:22px; padding:3px; background: linear-gradient(135deg,var(--gold),var(--neon-purple),var(--glow-green)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
-   .card-inner { background: linear-gradient(135deg,#0f1729 0%,#1a1a2e 100%); border-radius: 19px; padding: 22px; }
-   .card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
-   .card-title { font-family:'Marcellus',serif; font-size:1.32rem; color:var(--gold); }
-   .card-hp { color:var(--glow-green); font-weight:500; font-size:0.92rem; }
-   .card-image { width:100%; aspect-ratio:4/3; background:var(--jungle); border-radius:12px; margin-bottom:15px; border:3px solid rgba(212,175,55,0.32); object-fit:cover; }
-   .card-desc { background: rgba(196,245,224,0.055); padding:15px; border-radius:10px; margin-bottom:15px; font-size:0.87rem; line-height:1.62; color:var(--sage); }
-   .card-stats { display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid rgba(212,175,55,0.22); border-bottom:1px solid rgba(212,175,55,0.22); margin-bottom:15px; }
-   .stat { text-align:center; }
-   .stat-label { font-size:0.7rem; color:var(--sage); text-transform:uppercase; letter-spacing:1px; }
-   .stat-value { font-size:1.05rem; color:var(--gold); font-weight:500; margin-top:3px; }
-   .card-action { display:flex; gap:12px; margin-top:15px; }
-   .card-action.btn { flex:1; margin:0; padding:13px; font-size:0.9rem; }
-   .close-modal { position:absolute; top:12px; right:12px; width:34px; height:34px; background:rgba(199,125,255,0.15); border:1px solid rgba(212,175,55,0.32); border-radius:50%; color:var(--gold); font-size:1.45rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.3s ease; }
-   .close-modal:hover { background:rgba(199,125,255,0.28); transform:rotate(90deg); }
-
-    @media (max-width: 640px) {
-    .shop { grid-template-columns: 1fr; }
-    .lang-switch { top: 10px; right: 10px; flex-wrap: wrap; max-width: 180px; }
-    .wrap { padding: 30px 12px 60px; }
-    }
-  </style>
+  /* MODAL */
+  .modal { display: none; position: fixed; z-index: 999; left:0; top:0; width:100%; height:100%; background: rgba(12,10,9,0.92); backdrop-filter: blur(12px); animation: fadeIn 0.3s ease; }
+  .modal.active { display: flex; align-items: center; justify-content: center; }
+  @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
+  .pokemon-card { width: 90%; max-width: 390px; background: linear-gradient(135deg,#1a1a2e 0%,#16213e 100%); border-radius: 22px; padding: 3px; position: relative; box-shadow: 0 0 65px rgba(199,125,255,0.45); animation: cardPop 0.42s cubic-bezier(0.34,1.56,0.64,1); }
+  @keyframes cardPop { from { transform: scale(0.85); opacity:0 } to { transform: scale(1); opacity:1 } }
+  .pokemon-card::before { content:''; position:absolute; inset:0; border-radius:22px; padding:3px; background: linear-gradient(135deg,var(--gold),var(--neon-purple),var(--glow-green)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+  .card-inner { background: linear-gradient(135deg,#0f1729 0%,#1a1a2e 100%); border-radius: 19px; padding: 22px; }
+  .card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
+  .card-title { font-family:'Marcellus',serif; font-size:1.32rem; color:var(--gold); }
+  .card-hp { color:var(--glow-green); font-weight:500; font-size:0.92rem; }
+  .card-image { width:100%; aspect-ratio:4/3; background:var(--jungle); border-radius:12px; margin-bottom:15px; border:3px solid rgba(212,175,55,0.32); object-fit:cover; }
+  .card-desc { background: rgba(196,245,224,0.055); padding:15px; border-radius:10px; margin-bottom:15px; font-size:0.87rem; line-height:1.62; color:var(--sage); }
+  .card-stats { display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid rgba(212,175,55,0.22); border-bottom:1px solid rgba(212,175,55,0.22); margin-bottom:15px; }
+  .stat { text-align:center; } .stat-label { font-size:0.7rem; color:var(--sage); text-transform:uppercase; letter-spacing:1px; } .stat-value { font-size:1.12rem; color:var(--glow-green); font-weight:500; }
+  .card-footer { text-align:center; font-size:0.76rem; color:var(--sage); opacity:0.75; margin-bottom:15px; }
+  .modal-close { position:absolute; top:-12px; right:-12px; width:38px; height:38px; background:var(--neon-purple); border:2px solid var(--gold); border-radius:50%; color:var(--smoke); font-size:1.25rem; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 0 22px rgba(199,125,255,0.55); }
+</style>
 </head>
 <body>
-  <div class="vines"></div>
-
-  <div class="lang-switch">
-    <button onclick="switchLang('de')" data-lang="de">DE</button>
-    <button onclick="switchLang('en')" data-lang="en">EN</button>
-  </div>
-
+  <canvas id="smoke-canvas"></canvas>
+  
   <div class="wrap">
     <div class="glass-plate">
+      
       <div class="hero">
-        <img src="logo.png" alt="NBC Logo" class="logo-img">
-        <h1 class="nbc-title" data-i18n="title">NaturalBornChillaz</h1>
-        <p class="tagline" data-i18n="tagline">We are from Earth, not Mars</p>
+        <img src="LogoNeu.jpg" alt="NBC Logo" class="logo-img">
+        <img src="NBC_Schriftzug_Natur.png" alt="NaturalBornChillaz" class="nbc-title">
+        <p class="tagline">NBC News – Unabhängig. Freiwillig.</p>
       </div>
 
       <div class="inner-section">
+
+        <!-- NEU: SINN DES PROJEKTS -->
         <div class="section-block">
-          <h2 data-i18n="manifestoTitle">Manifesto</h2>
-          <p data-i18n="intro1">NaturalBornChillaz ist ein Kollektiv aus Freidenkern, Naturliebhabern und Community-Buildern.</p>
+          <h2>🌐 Sinn des Projekts</h2>
+          <p>Die <strong>NBC News (Natural Born Chillaz)</strong> präsentieren sich als ein unabhängiges, freiwilliges Projekt, das Information mit Kunst verbindet, um Freiheit und Aufklärung zu fördern. Die Plattform bietet eine stetig wachsende Community-Anbindung und Funktionen, die speziell für wahre „NaturalBornChillaz“ entwickelt wurden.</p>
+          
+          <p style="margin-top:18px; color: var(--glow-green); font-weight:400;">Freiwilliges Projekt für Aufklärung & Gemeinschaft</p>
+          
           <ul class="manifesto-list">
-            <li data-i18n="manifesto1"><strong>Freiheit:</strong> Wir glauben an Selbstbestimmung und natürliche Lebensweise.</li>
-            <li data-i18n="manifesto2"><strong>Community:</strong> Gemeinsam sind wir stärker als allein.</li>
-            <li data-i18n="manifesto3"><strong>Natur:</strong> Zurück zu den Wurzeln, im Einklang mit der Erde.</li>
+            <li><strong>CanG & Cannabis:</strong> Bietet alle relevanten Fakten zur aktuellen Gesetzgebung und zu Medizinalcannabis.</li>
+            <li><strong>Wachsende Community:</strong> Echte Vernetzung und exklusive Funktionen für wahre NBC NaturalBornChillaz.</li>
+            <li><strong>Freiheit durch Info:</strong> Ein ehrenamtliches Projekt, das durch eine spielerische und künstlerische Art Vorbehalte abbaut.</li>
           </ul>
-          <div class="quote" data-i18n="quote">„Die Natur braucht uns nicht, aber wir brauchen die Natur.“</div>
+          
+          <p style="font-size:0.85rem; opacity:0.8; margin-top:12px;">📍 Besuche die offizielle Seite: <a href="https://infotonbc-news.github.io/infotonbc2/" style="color:var(--gold); text-decoration:none;">infotonbc-news.github.io/infotonbc2/</a> <em>(Zutritt ab 18 Jahren)</em></p>
+        </div>
+        
+        <div class="section-block">
+          <h2>Unitycard Club</h2>
+          <p class="quote">„Chillaz, hast du heute schon dein Gehirn gegossen?“</p>
+          <p>Exklusiver Zugang zum Member Tank. Unity Concentrate, SuaveBot und kuratierte Drops.</p>
+          <a href="https://infotonbc-news.github.io/infotonbc2/unitycard.html" class="btn">Unitycard aktivieren</a>
+          <a href="https://infotonbc-news.github.io/infotonbc2/" class="btn">Zu den News</a>
         </div>
 
         <div class="section-block">
-          <h2 data-i18n="shopTitle">Shop</h2>
+          <h2>Sanctum Drops</h2>
+          <p>Handverlesene Relikte aus dem Neo-Jungle. Jeder Erwerb unterstützt das Kollektiv direkt.</p>
           <div class="shop">
-            <div class="item" onclick="openModal('seed')">
-              <div class="item-sticker">NBC</div>
-              <img src="seed.jpg" alt="Seeds" class="item-img">
-              <h3 data-i18n="seedTitle">Seeds</h3>
-              <p class="price" data-i18n="seedPrice">ab 15€</p>
-              <p class="subtext" data-i18n="seedDesc">Premium Genetics</p>
-              <button class="btn" data-i18n="viewBtn">Ansehen</button>
+            
+            <div class="item" onclick="openStickerCard()">
+              <img src="sticker.png" alt="Unity Sticker" class="item-img" onerror="this.src='https://via.placeholder.com/300x300/0B2A1F/D4AF37?text=STICKER'">
+              <h3>kleb Dir einen</h3>
+              <p class="price">ab 6€</p>
+              <div class="btn">Details</div>
             </div>
+
+            <div class="item" onclick="window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN', '_blank')">
+              <img src="spendenlogo.jpg" alt="Support den Chillaz" class="item-img">
+              <h3>Feed Da Chillaz</h3>
+              <p class="subtext">Der Chilla braucht mehr als Luft zum Leben.</p>
+              <div class="btn">Supporten</div>
+            </div>
+
             <div class="item construction">
-              <div class="item-sticker">NBC</div>
-              <img src="merch.jpg" alt="Merch" class="item-img">
-              <h3 data-i18n="merchTitle">Merch</h3>
-              <p class="price" data-i18n="comingSoon">Coming Soon</p>
-              <p class="subtext" data-i18n="merchDesc">NBC Wear</p>
-              <button class="btn" disabled data-i18n="soonBtn">Bald</button>
+              <img src="https://via.placeholder.com/300x300/0B2A1F/C77DFF?text=?" alt="Coming Soon" class="item-img">
+              <h3>Joint Venture</h3>
+              <p class="subtext">Warum teilen Kiffer immer? Weil sie High-Society sind.</p>
+              <div class="btn">Under Construction</div>
             </div>
+
+            <div class="item construction">
+              <img src="https://via.placeholder.com/300x300/0B2A1F/C77DFF?text=?" alt="Coming Soon" class="item-img">
+              <h3>Buddha Bowl</h3>
+              <p class="subtext">Ich hab Gras gekauft. Jetzt hab ich kein Geld mehr für Essen. Zen.</p>
+              <div class="btn">Under Construction</div>
+            </div>
+
           </div>
-
-          <!-- SPENDEN BUTTON - Hier war er -->
-          <a href="https://paypal.me/naturalbornchillaz" target="_blank" class="btn donate-btn" data-i18n="donateBtn">💚 Support NBC</a>
         </div>
-      </div>
 
-      <div class="footer" data-i18n="footer">© 2026 NaturalBornChillaz. Alle Rechte vorbehalten.</div>
+        <div class="section-block">
+          <h2>Zugang & Rechtliches</h2>
+          <p>CanG, Legalisierung, Medizin & Kultur. Tiefgründige Analysen für die bewusste Community.</p>
+          <a href="https://infotonbc-news.github.io/infotonbc2/disclaimer.html" class="btn">Disclaimer 18+</a>
+          <a href="https://www.instagram.com/infotonbc" class="btn">@infotonbc folgen</a>
+        </div>
+
+      </div>
     </div>
+
+    <div class="footer">
+      NBC News ist ein freiwilliges, unabhängiges Projekt.<br>
+      Zuwendungen sind Schenkungen an eine Privatperson – keine Spendenquittung.<br>
+      infotonbc@gmail.com
+    </div>
+
   </div>
 
-  <!-- MODAL -->
-  <div id="modal" class="modal" onclick="closeModal()">
-    <div class="pokemon-card" onclick="event.stopPropagation()">
-      <button class="close-modal" onclick="closeModal()">&times;</button>
+  <!-- POKEMON CARD MODAL -->
+  <div id="stickerModal" class="modal">
+    <div class="pokemon-card">
+      <button class="modal-close" onclick="closeStickerCard()">×</button>
       <div class="card-inner">
         <div class="card-header">
-          <h3 class="card-title" id="modalTitle">NBC Seed</h3>
-          <span class="card-hp">HP 420</span>
+          <div class="card-title">Unity Sticker</div>
+          <div class="card-hp">NBC 026</div>
         </div>
-        <img id="modalImg" src="" alt="" class="card-image">
-        <div class="card-desc" id="modalDesc">Beschreibung...</div>
+        
+        <img src="sticker.png" alt="Unity Sticker" class="card-image" onerror="this.src='https://via.placeholder.com/400x300/0B2A1F/D4AF37?text=STICKER.PNG'">
+        
+        <div class="card-desc">
+          Offizieller NaturalBornChillaz Unity Sticker. Holographic Finish. Limitierte Auflage aus dem Neo-Jungle.
+        </div>
+        
         <div class="card-stats">
-          <div class="stat">
-            <div class="stat-label" data-i18n="thc">THC</div>
-            <div class="stat-value" id="modalThc">22%</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label" data-i18n="type">Type</div>
-            <div class="stat-value" id="modalType">Hybrid</div>
-          </div>
-          <div class="stat">
-            <div class="stat-label" data-i18n="price">Preis</div>
-            <div class="stat-value" id="modalPrice">15€</div>
-          </div>
+          <div class="stat"><div class="stat-label">Seltenheit</div><div class="stat-value">Rare</div></div>
+          <div class="stat"><div class="stat-label">Chill</div><div class="stat-value">+420</div></div>
+          <div class="stat"><div class="stat-label">Vibe</div><div class="stat-value">∞</div></div>
         </div>
-        <div class="card-action">
-          <button class="btn" data-i18n="orderBtn">Bestellen</button>
-        </div>
+        
+        <div class="card-footer">Aufwandspauschale: 6€ minimum – höhere Spenden willkommen</div>
+        
+        <a href="https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN" class="btn" target="_blank">Sticker sichern ab 6€</a>
       </div>
     </div>
   </div>
 
 <script>
-  const translations = {
-    de: {
-      title: "NaturalBornChillaz | NBC News",
-      tagline: "We are from Earth, not Mars",
-      manifestoTitle: "Manifesto",
-      intro1: "NaturalBornChillaz ist ein Kollektiv aus Freidenkern, Naturliebhabern und Community-Buildern.",
-      manifesto1: "Freiheit: Wir glauben an Selbstbestimmung und natürliche Lebensweise.",
-      manifesto2: "Community: Gemeinsam sind wir stärker als allein.",
-      manifesto3: "Natur: Zurück zu den Wurzeln, im Einklang mit der Erde.",
-      quote: "„Die Natur braucht uns nicht, aber wir brauchen die Natur.“",
-      shopTitle: "Shop",
-      seedTitle: "Seeds",
-      seedPrice: "ab 15€",
-      seedDesc: "Premium Genetics",
-      merchTitle: "Merch",
-      comingSoon: "Coming Soon",
-      merchDesc: "NBC Wear",
-      viewBtn: "Ansehen",
-      soonBtn: "Bald",
-      donateBtn: "💚 Support NBC",
-      thc: "THC",
-      type: "Typ",
-      price: "Preis",
-      orderBtn: "Bestellen",
-      footer: "© 2026 NaturalBornChillaz. Alle Rechte vorbehalten."
-    },
-    en: {
-      title: "NaturalBornChillaz | NBC News",
-      tagline: "We are from Earth, not Mars",
-      manifestoTitle: "Manifesto",
-      intro1: "NaturalBornChillaz is a collective of free thinkers, nature lovers and community builders.",
-      manifesto1: "Freedom: We believe in self-determination and natural lifestyle.",
-      manifesto2: "Community: Together we are stronger than alone.",
-      manifesto3: "Nature: Back to the roots, in harmony with earth.",
-      quote: "\"Nature doesn't need us, but we need nature.\"",
-      shopTitle: "Shop",
-      seedTitle: "Seeds",
-      seedPrice: "from 15€",
-      seedDesc: "Premium Genetics",
-      merchTitle: "Merch",
-      comingSoon: "Coming Soon",
-      merchDesc: "NBC Wear",
-      viewBtn: "View",
-      soonBtn: "Soon",
-      donateBtn: "💚 Support NBC",
-      thc: "THC",
-      type: "Type",
-      price: "Price",
-      orderBtn: "Order",
-      footer: "© 2026 NaturalBornChillaz. All rights reserved."
-    }
-  };
+// Rauch
+const canvas = document.getElementById('smoke-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
+function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resizeCanvas(); window.addEventListener('resize', resizeCanvas);
+class SmokeParticle { constructor(){ this.reset(); this.y = Math.random()*canvas.height; } reset(){ this.x = Math.random()*canvas.width; this.y = canvas.height + Math.random()*100; this.size = Math.random()*80+40; this.speedY = Math.random()*-0.5-0.2; this.speedX = Math.random()*0.4-0.2; this.opacity = Math.random()*0.15+0.05; } update(){ this.y+=this.speedY; this.x+=this.speedX; this.opacity-=0.0008; if(this.y<-100||this.opacity<=0) this.reset(); } draw(){ const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.size); g.addColorStop(0,`rgba(196,245,224,${this.opacity})`); g.addColorStop(0.4,`rgba(199,125,255,${this.opacity*0.3})`); g.addColorStop(1,`rgba(12,10,9,0)`); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); } }
+for(let i=0;i<26;i++) particles.push(new SmokeParticle());
+function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); } animate();
 
-  let currentLang = 'de';
-
-  function setLanguage(lang) {
-    const dict = translations[lang] || translations['de'];
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (dict[key]) el.textContent = dict[key];
-    });
-    document.documentElement.lang = lang;
-    document.title = dict.title;
-    currentLang = lang;
-    document.querySelectorAll('.lang-switch button').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.lang === lang);
-    });
-    localStorage.setItem('preferred_lang', lang);
-  }
-  window.switchLang = setLanguage;
-
-  function openModal(type) {
-    document.getElementById('modal').classList.add('active');
-  }
-
-  function closeModal() {
-    document.getElementById('modal').classList.remove('active');
-  }
-
-  async function detectLanguage() {
-    const saved = localStorage.getItem('preferred_lang');
-    if (saved && ['de','en'].includes(saved)) { setLanguage(saved); return; }
-    try {
-      const res = await fetch('https://ipapi.co/json/');
-      const data = await res.json();
-      const countryLang = { DE: 'de', AT: 'de', CH: 'de', US: 'en', GB: 'en' }[data.country_code];
-      if (countryLang) { setLanguage(countryLang); return; }
-    } catch(e) {
-      console.log('Geo-IP failed, using browser language');
-    }
-    const browserLang = (navigator.language || navigator.userLanguage).slice(0,2).toLowerCase();
-    if (['de','en'].includes(browserLang)) {
-      setLanguage(browserLang);
-      return;
-    }
-    setLanguage('en');
-  }
-
-  detectLanguage();
+// Modal
+function openStickerCard(){ document.getElementById('stickerModal').classList.add('active'); document.body.style.overflow='hidden'; }
+function closeStickerCard(){ document.getElementById('stickerModal').classList.remove('active'); document.body.style.overflow='auto'; }
+document.getElementById('stickerModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeStickerCard(); });
 </script>
 
 </body>
