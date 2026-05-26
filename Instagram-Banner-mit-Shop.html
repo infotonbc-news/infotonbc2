@@ -40,21 +40,6 @@
 
   .wrap { position: relative; z-index: 2; max-width: 540px; margin: 0 auto; padding: 50px 18px 80px; }
 
-  .lang-switch {
-    position: fixed;
-    top: 18px;
-    right: 18px;
-    z-index: 100;
-    background: var(--glass);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(199,125,255,0.28);
-    border-radius: 12px;
-    padding: 8px 12px;
-    color: var(--sage);
-    font-size: 0.85rem;
-    cursor: pointer;
-  }
-
   .glass-plate {
     background: var(--glass);
     backdrop-filter: blur(20px) saturate(150%);
@@ -143,98 +128,94 @@
 <body>
   <canvas id="smoke-canvas"></canvas>
   
-  <select class="lang-switch" id="langSwitch">
-    <option value="de">🇩🇪 DE</option>
-    <option value="en">🇬🇧 EN</option>
-    <option value="es">🇪🇸 ES</option>
-    <option value="fr">🇫🇷 FR</option>
-  </select>
-
   <div class="wrap">
     <div class="glass-plate">
       
       <div class="hero">
         <img src="LogoNeu.jpg" alt="NBC Logo" class="logo-img">
         <img src="NBC_Schriftzug_Natur.png" alt="NaturalBornChillaz" class="nbc-title">
-        <p class="tagline" data-i18n="tagline">NBC News – Unabhängig. Freiwillig.</p>
+        <p class="tagline">NBC News – Unabhängig. Freiwillig.</p>
       </div>
 
       <div class="inner-section">
 
+        <!-- NEU: SINN DES PROJEKTS -->
         <div class="section-block">
-          <h2 data-i18n="projectTitle">🌐 Sinn des Projekts</h2>
-          <p data-i18n="projectDesc">Die <strong>NBC News (Natural Born Chillaz)</strong> präsentieren sich als ein unabhängiges, freiwilliges Projekt, das Information mit Kunst verbindet, um Freiheit und Aufklärung zu fördern. Die Plattform bietet eine stetig wachsende Community-Anbindung und Funktionen, die speziell für wahre „NaturalBornChillaz“ entwickelt wurden.</p>
+          <h2>🌐 Sinn des Projekts</h2>
+          <p>Die <strong>NBC News (Natural Born Chillaz)</strong> präsentieren sich als ein unabhängiges, freiwilliges Projekt, das Information mit Kunst verbindet, um Freiheit und Aufklärung zu fördern. Die Plattform bietet eine stetig wachsende Community-Anbindung und Funktionen, die speziell für wahre „NaturalBornChillaz“ entwickelt wurden.</p>
           
-          <p style="margin-top:18px; color: var(--glow-green); font-weight:400;" data-i18n="projectSub">Freiwilliges Projekt für Aufklärung & Gemeinschaft</p>
+          <p style="margin-top:18px; color: var(--glow-green); font-weight:400;">Freiwilliges Projekt für Aufklärung & Gemeinschaft</p>
           
           <ul class="manifesto-list">
-            <li data-i18n="point1"><strong>CanG & Cannabis:</strong> Bietet alle relevanten Fakten zur aktuellen Gesetzgebung und zu Medizinalcannabis.</li>
-            <li data-i18n="point2"><strong>Wachsende Community:</strong> Echte Vernetzung und exklusive Funktionen für wahre NBC NaturalBornChillaz.</li>
-            <li data-i18n="point3"><strong>Freiheit durch Info:</strong> Ein ehrenamtliches Projekt, das durch eine spielerische und künstlerische Art Vorbehalte abbaut.</li>
+            <li><strong>CanG & Cannabis:</strong> Bietet alle relevanten Fakten zur aktuellen Gesetzgebung und zu Medizinalcannabis.</li>
+            <li><strong>Wachsende Community:</strong> Echte Vernetzung und exklusive Funktionen für wahre NBC NaturalBornChillaz.</li>
+            <li><strong>Freiheit durch Info:</strong> Ein ehrenamtliches Projekt, das durch eine spielerische und künstlerische Art Vorbehalte abbaut.</li>
           </ul>
           
-          <p style="font-size:0.85rem; opacity:0.8; margin-top:12px;"><span data-i18n="visitSite">📍 Besuche die offizielle Seite:</span> <a href="https://infotonbc-news.github.io/infotonbc2/" style="color:var(--gold); text-decoration:none;">infotonbc-news.github.io/infotonbc2/</a> <em data-i18n="ageNote">(Zutritt ab 18 Jahren)</em></p>
+          <p style="font-size:0.85rem; opacity:0.8; margin-top:12px;">📍 Besuche die offizielle Seite: <a href="https://infotonbc-news.github.io/infotonbc2/" style="color:var(--gold); text-decoration:none;">infotonbc-news.github.io/infotonbc2/</a> <em>(Zutritt ab 18 Jahren)</em></p>
         </div>
         
         <div class="section-block">
-          <h2 data-i18n="unityTitle">Unitycard Club</h2>
-          <p class="quote" data-i18n="quote">„Chillaz, hast du heute schon dein Gehirn gegossen?“</p>
-          <p data-i18n="unityDesc">Exklusiver Zugang zum Member Tank. Unity Concentrate, SuaveBot und kuratierte Drops.</p>
-          <a href="https://infotonbc-news.github.io/infotonbc2/unitycard.html" class="btn" data-i18n="unityBtn">Unitycard aktivieren</a>
-          <a href="https://infotonbc-news.github.io/infotonbc2/" class="btn" data-i18n="newsBtn">Zu den News</a>
+          <h2>Unitycard Club</h2>
+          <p class="quote">„Chillaz, hast du heute schon dein Gehirn gegossen?“</p>
+          <p>Exklusiver Zugang zum Member Tank. Unity Concentrate, SuaveBot und kuratierte Drops.</p>
+          <a href="https://infotonbc-news.github.io/infotonbc2/unitycard.html" class="btn">Unitycard aktivieren</a>
+          <a href="https://infotonbc-news.github.io/infotonbc2/" class="btn">Zu den News</a>
         </div>
 
         <div class="section-block">
-          <h2 data-i18n="shopTitle">Sanctum Drops</h2>
-          <p data-i18n="shopDesc">Handverlesene Relikte aus dem Neo-Jungle. Jeder Erwerb unterstützt das Kollektiv direkt.</p>
+          <h2>Sanctum Drops</h2>
+          <p>Handverlesene Relikte aus dem Neo-Jungle. Jeder Erwerb unterstützt das Kollektiv direkt.</p>
           <div class="shop">
             
             <div class="item" onclick="openStickerCard()">
               <img src="sticker.png" alt="Unity Sticker" class="item-img" onerror="this.src='https://via.placeholder.com/300x300/0B2A1F/D4AF37?text=STICKER'">
-              <h3 data-i18n="stickerTitle">kleb Dir einen</h3>
-              <p class="price" data-i18n="stickerPrice">ab 6€</p>
-              <div class="btn" data-i18n="detailsBtn">Details</div>
+              <h3>kleb Dir einen</h3>
+              <p class="price">ab 6€</p>
+              <div class="btn">Details</div>
             </div>
 
             <div class="item" onclick="window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN', '_blank')">
               <img src="spendenlogo.jpg" alt="Support den Chillaz" class="item-img">
-              <h3 data-i18n="donateTitle">Feed Da Chillaz</h3>
-              <p class="subtext" data-i18n="donateDesc">Der Chilla braucht mehr als Luft zum Leben.</p>
-              <div class="btn" data-i18n="supportBtn">Supporten</div>
+              <h3>Feed Da Chillaz</h3>
+              <p class="subtext">Der Chilla braucht mehr als Luft zum Leben.</p>
+              <div class="btn">Supporten</div>
             </div>
 
             <div class="item construction">
               <img src="https://via.placeholder.com/300x300/0B2A1F/C77DFF?text=?" alt="Coming Soon" class="item-img">
-              <h3 data-i18n="jointTitle">Joint Venture</h3>
-              <p class="subtext" data-i18n="jointDesc">Warum teilen Kiffer immer? Weil sie High-Society sind.</p>
-              <div class="btn" data-i18n="construction">Under Construction</div>
+              <h3>Joint Venture</h3>
+              <p class="subtext">Warum teilen Kiffer immer? Weil sie High-Society sind.</p>
+              <div class="btn">Under Construction</div>
             </div>
 
             <div class="item construction">
               <img src="https://via.placeholder.com/300x300/0B2A1F/C77DFF?text=?" alt="Coming Soon" class="item-img">
-              <h3 data-i18n="bowlTitle">Buddha Bowl</h3>
-              <p class="subtext" data-i18n="bowlDesc">Ich hab Gras gekauft. Jetzt hab ich kein Geld mehr für Essen. Zen.</p>
-              <div class="btn" data-i18n="construction2">Under Construction</div>
+              <h3>Buddha Bowl</h3>
+              <p class="subtext">Ich hab Gras gekauft. Jetzt hab ich kein Geld mehr für Essen. Zen.</p>
+              <div class="btn">Under Construction</div>
             </div>
 
           </div>
         </div>
 
         <div class="section-block">
-          <h2 data-i18n="legalTitle">Zugang & Rechtliches</h2>
-          <p data-i18n="legalDesc">CanG, Legalisierung, Medizin & Kultur. Tiefgründige Analysen für die bewusste Community.</p>
-          <a href="https://infotonbc-news.github.io/infotonbc2/disclaimer.html" class="btn" data-i18n="disclaimerBtn">Disclaimer 18+</a>
-          <a href="https://www.instagram.com/infotonbc" class="btn" data-i18n="followBtn">@infotonbc folgen</a>
+          <h2>Zugang & Rechtliches</h2>
+          <p>CanG, Legalisierung, Medizin & Kultur. Tiefgründige Analysen für die bewusste Community.</p>
+          <a href="https://infotonbc-news.github.io/infotonbc2/disclaimer.html" class="btn">Disclaimer 18+</a>
+          <a href="https://www.instagram.com/infotonbc" class="btn">@infotonbc folgen</a>
         </div>
 
       </div>
     </div>
 
-    <div class="footer" data-i18n="footer">
+    <div class="footer">
       NBC News ist ein freiwilliges, unabhängiges Projekt.<br>
       Zuwendungen sind Schenkungen an eine Privatperson – keine Spendenquittung.<br>
       infotonbc@gmail.com
     </div>
+
+  </div>
 
   <!-- POKEMON CARD MODAL -->
   <div id="stickerModal" class="modal">
@@ -242,25 +223,25 @@
       <button class="modal-close" onclick="closeStickerCard()">×</button>
       <div class="card-inner">
         <div class="card-header">
-          <div class="card-title" data-i18n="cardTitle">Unity Sticker</div>
+          <div class="card-title">Unity Sticker</div>
           <div class="card-hp">NBC 026</div>
         </div>
         
         <img src="sticker.png" alt="Unity Sticker" class="card-image" onerror="this.src='https://via.placeholder.com/400x300/0B2A1F/D4AF37?text=STICKER.PNG'">
         
-        <div class="card-desc" data-i18n="cardDesc">
+        <div class="card-desc">
           Offizieller NaturalBornChillaz Unity Sticker. Holographic Finish. Limitierte Auflage aus dem Neo-Jungle.
         </div>
         
         <div class="card-stats">
-          <div class="stat"><div class="stat-label" data-i18n="statRarity">Seltenheit</div><div class="stat-value" data-i18n="statRare">Rare</div></div>
-          <div class="stat"><div class="stat-label" data-i18n="statChill">Chill</div><div class="stat-value">+420</div></div>
-          <div class="stat"><div class="stat-label" data-i18n="statVibe">Vibe</div><div class="stat-value">∞</div></div>
+          <div class="stat"><div class="stat-label">Seltenheit</div><div class="stat-value">Rare</div></div>
+          <div class="stat"><div class="stat-label">Chill</div><div class="stat-value">+420</div></div>
+          <div class="stat"><div class="stat-label">Vibe</div><div class="stat-value">∞</div></div>
         </div>
         
-        <div class="card-footer" data-i18n="cardFooter">Aufwandspauschale: 6€ minimum – höhere Spenden willkommen</div>
+        <div class="card-footer">Aufwandspauschale: 6€ minimum – höhere Spenden willkommen</div>
         
-        <a href="https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN" class="btn" target="_blank" data-i18n="cardBtn">Sticker sichern ab 6€</a>
+        <a href="https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN" class="btn" target="_blank">Sticker sichern ab 6€</a>
       </div>
     </div>
   </div>
@@ -278,225 +259,6 @@ function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.for
 function openStickerCard(){ document.getElementById('stickerModal').classList.add('active'); document.body.style.overflow='hidden'; }
 function closeStickerCard(){ document.getElementById('stickerModal').classList.remove('active'); document.body.style.overflow='auto'; }
 document.getElementById('stickerModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeStickerCard(); });
-
-// I18N SYSTEM
-const translations = {
-  de: {
-    tagline: "NBC News – Unabhängig. Freiwillig.",
-    projectTitle: "🌐 Sinn des Projekts",
-    projectDesc: "Die <strong>NBC News (Natural Born Chillaz)</strong> präsentieren sich als ein unabhängiges, freiwilliges Projekt, das Information mit Kunst verbindet, um Freiheit und Aufklärung zu fördern. Die Plattform bietet eine stetig wachsende Community-Anbindung und Funktionen, die speziell für wahre „NaturalBornChillaz“ entwickelt wurden.",
-    projectSub: "Freiwilliges Projekt für Aufklärung & Gemeinschaft",
-    point1: "<strong>CanG & Cannabis:</strong> Bietet alle relevanten Fakten zur aktuellen Gesetzgebung und zu Medizinalcannabis.",
-    point2: "<strong>Wachsende Community:</strong> Echte Vernetzung und exklusive Funktionen für wahre NBC NaturalBornChillaz.",
-    point3: "<strong>Freiheit durch Info:</strong> Ein ehrenamtliches Projekt, das durch eine spielerische und künstlerische Art Vorbehalte abbaut.",
-    visitSite: "📍 Besuche die offizielle Seite:",
-    ageNote: "(Zutritt ab 18 Jahren)",
-    unityTitle: "Unitycard Club",
-    quote: "„Chillaz, hast du heute schon dein Gehirn gegossen?“",
-    unityDesc: "Exklusiver Zugang zum Member Tank. Unity Concentrate, SuaveBot und kuratierte Drops.",
-    unityBtn: "Unitycard aktivieren",
-    newsBtn: "Zu den News",
-    shopTitle: "Sanctum Drops",
-    shopDesc: "Handverlesene Relikte aus dem Neo-Jungle. Jeder Erwerb unterstützt das Kollektiv direkt.",
-    stickerTitle: "kleb Dir einen",
-    stickerPrice: "ab 6€",
-    detailsBtn: "Details",
-    donateTitle: "Feed Da Chillaz",
-    donateDesc: "Der Chilla braucht mehr als Luft zum Leben.",
-    supportBtn: "Supporten",
-    jointTitle: "Joint Venture",
-    jointDesc: "Warum teilen Kiffer immer? Weil sie High-Society sind.",
-    construction: "Under Construction",
-    bowlTitle: "Buddha Bowl",
-    bowlDesc: "Ich hab Gras gekauft. Jetzt hab ich kein Geld mehr für Essen. Zen.",
-    construction2: "Under Construction",
-    legalTitle: "Zugang & Rechtliches",
-    legalDesc: "CanG, Legalisierung, Medizin & Kultur. Tiefgründige Analysen für die bewusste Community.",
-    disclaimerBtn: "Disclaimer 18+",
-    followBtn: "@infotonbc folgen",
-    footer: "NBC News ist ein freiwilliges, unabhängiges Projekt.<br>Zuwendungen sind Schenkungen an eine Privatperson – keine Spendenquittung.<br>infotonbc@gmail.com",
-    cardTitle: "Unity Sticker",
-    cardDesc: "Offizieller NaturalBornChillaz Unity Sticker. Holographic Finish. Limitierte Auflage aus dem Neo-Jungle.",
-    statRarity: "Seltenheit",
-    statRare: "Rare",
-    statChill: "Chill",
-    statVibe: "Vibe",
-    cardFooter: "Aufwandspauschale: 6€ minimum – höhere Spenden willkommen",
-    cardBtn: "Sticker sichern ab 6€"
-  },
-  en: {
-    tagline: "NBC News – Independent. Voluntary.",
-    projectTitle: "🌐 Project Purpose",
-    projectDesc: "The <strong>NBC News (Natural Born Chillaz)</strong> present themselves as an independent, voluntary project combining information with art to promote freedom and education. The platform offers growing community features built specifically for true NaturalBornChillaz.",
-    projectSub: "Voluntary Project for Education & Community",
-    point1: "<strong>CanG & Cannabis:</strong> Provides all relevant facts on current legislation and medical cannabis.",
-    point2: "<strong>Growing Community:</strong> Real networking and exclusive features for true NBC NaturalBornChillaz.",
-    point3: "<strong>Freedom through Info:</strong> A volunteer project that breaks down prejudice through play and art.",
-    visitSite: "📍 Visit the official site:",
-    ageNote: "(18+ only)",
-    unityTitle: "Unitycard Club",
-    quote: "“Chillaz, did you water your brain today?”",
-    unityDesc: "Exclusive access to the Member Tank. Unity Concentrate, SuaveBot and curated drops.",
-    unityBtn: "Activate Unitycard",
-    newsBtn: "Go to News",
-    shopTitle: "Sanctum Drops",
-    shopDesc: "Hand-picked relics from the Neo-Jungle. Every purchase directly supports the collective.",
-    stickerTitle: "Stick One On",
-    stickerPrice: "from €6",
-    detailsBtn: "Details",
-    donateTitle: "Feed Da Chillaz",
-    donateDesc: "A Chilla needs more than air to live.",
-    supportBtn: "Support",
-    jointTitle: "Joint Venture",
-    jointDesc: "Why do stoners always share? Because they're high-society.",
-    construction: "Under Construction",
-    bowlTitle: "Buddha Bowl",
-    bowlDesc: "I bought weed. Now I have no money for food. Zen.",
-    construction2: "Under Construction",
-    legalTitle: "Access & Legal",
-    legalDesc: "CanG, legalization, medicine & culture. Deep analysis for the conscious community.",
-    disclaimerBtn: "Disclaimer 18+",
-    followBtn: "Follow @infotonbc",
-    footer: "NBC News is a voluntary, independent project.<br>Contributions are gifts to a private person – no donation receipt.<br>infotonbc@gmail.com",
-    cardTitle: "Unity Sticker",
-    cardDesc: "Official NaturalBornChillaz Unity Sticker. Holographic finish. Limited edition from the Neo-Jungle.",
-    statRarity: "Rarity",
-    statRare: "Rare",
-    statChill: "Chill",
-    statVibe: "Vibe",
-    cardFooter: "Expense fee: €6 minimum – higher donations welcome",
-    cardBtn: "Get Sticker from €6"
-  },
-  es: {
-    tagline: "NBC News – Independiente. Voluntario.",
-    projectTitle: "🌐 Propósito del Proyecto",
-    projectDesc: "Las <strong>NBC News (Natural Born Chillaz)</strong> se presentan como un proyecto independiente y voluntario que combina información con arte para promover la libertad y la educación. La plataforma ofrece una comunidad en crecimiento con funciones diseñadas para verdaderos NaturalBornChillaz.",
-    projectSub: "Proyecto voluntario para educación y comunidad",
-    point1: "<strong>CanG & Cannabis:</strong> Ofrece todos los datos relevantes sobre legislación actual y cannabis medicinal.",
-    point2: "<strong>Comunidad Creciente:</strong> Networking real y funciones exclusivas para verdaderos NBC NaturalBornChillaz.",
-    point3: "<strong>Libertad mediante Info:</strong> Un proyecto voluntario que elimina prejuicios a través del juego y el arte.",
-    visitSite: "📍 Visita el sitio oficial:",
-    ageNote: "(Solo +18)",
-    unityTitle: "Unitycard Club",
-    quote: "“Chillaz, ¿ya regaste tu cerebro hoy?”",
-    unityDesc: "Acceso exclusivo al Member Tank. Unity Concentrate, SuaveBot y drops curados.",
-    unityBtn: "Activar Unitycard",
-    newsBtn: "Ir a las Noticias",
-    shopTitle: "Sanctum Drops",
-    shopDesc: "Reliquias seleccionadas del Neo-Jungle. Cada compra apoya directamente al colectivo.",
-    stickerTitle: "Pégate uno",
-    stickerPrice: "desde 6€",
-    detailsBtn: "Detalles",
-    donateTitle: "Feed Da Chillaz",
-    donateDesc: "Un Chilla necesita más que aire para vivir.",
-    supportBtn: "Apoyar",
-    jointTitle: "Joint Venture",
-    jointDesc: "¿Por qué los fumetas siempre comparten? Porque son alta sociedad.",
-    construction: "En Construcción",
-    bowlTitle: "Buddha Bowl",
-    bowlDesc: "Compré hierba. Ahora no tengo dinero para comida. Zen.",
-    construction2: "En Construcción",
-    legalTitle: "Acceso & Legal",
-    legalDesc: "CanG, legalización, medicina y cultura. Análisis profundo para la comunidad consciente.",
-    disclaimerBtn: "Aviso 18+",
-    followBtn: "Seguir @infotonbc",
-    footer: "NBC News es un proyecto voluntario e independiente.<br>Las contribuciones son regalos a una persona privada – sin recibo de donación.<br>infotonbc@gmail.com",
-    cardTitle: "Unity Sticker",
-    cardDesc: "Sticker oficial NaturalBornChillaz Unity. Acabado holográfico. Edición limitada del Neo-Jungle.",
-    statRarity: "Rareza",
-    statRare: "Rara",
-    statChill: "Chill",
-    statVibe: "Vibe",
-    cardFooter: "Tarifa de gastos: 6€ mínimo – donaciones mayores bienvenidas",
-    cardBtn: "Conseguir Sticker desde 6€"
-  },
-  fr: {
-    tagline: "NBC News – Indépendant. Volontaire.",
-    projectTitle: "🌐 But du Projet",
-    projectDesc: "Les <strong>NBC News (Natural Born Chillaz)</strong> se présentent comme un projet indépendant et volontaire qui allie information et art pour promouvoir la liberté et l'éducation. La plateforme offre une communauté grandissante avec des fonctions conçues pour les vrais NaturalBornChillaz.",
-    projectSub: "Projet volontaire pour l'éducation & la communauté",
-    point1: "<strong>CanG & Cannabis :</strong> Fournit tous les faits pertinents sur la législation actuelle et le cannabis médical.",
-    point2: "<strong>Communauté Grandissante :</strong> Vrai networking et fonctions exclusives pour les vrais NBC NaturalBornChillaz.",
-    point3: "<strong>Liberté par l'Info :</strong> Un projet bénévole qui déconstruit les préjugés par le jeu et l'art.",
-    visitSite: "📍 Visite le site officiel :",
-    ageNote: "(18+ uniquement)",
-    unityTitle: "Unitycard Club",
-    quote: "« Chillaz, t'as arrosé ton cerveau aujourd'hui ? »",
-    unityDesc: "Accès exclusif au Member Tank. Unity Concentrate, SuaveBot et drops curatés.",
-    unityBtn: "Activer Unitycard",
-    newsBtn: "Aller aux News",
-    shopTitle: "Sanctum Drops",
-    shopDesc: "Reliques triées sur le volet du Neo-Jungle. Chaque achat soutient directement le collectif.",
-    stickerTitle: "Colle-t'en un",
-    stickerPrice: "dès 6€",
-    detailsBtn: "Détails",
-    donateTitle: "Feed Da Chillaz",
-    donateDesc: "Un Chilla a besoin de plus que d'air pour vivre.",
-    supportBtn: "Soutenir",
-    jointTitle: "Joint Venture",
-    jointDesc: "Pourquoi les fumeurs partagent toujours ? Parce qu'ils sont la haute société.",
-    construction: "En Construction",
-    bowlTitle: "Buddha Bowl",
-    bowlDesc: "J'ai acheté de l'herbe. Maintenant j'ai plus de thune pour manger. Zen.",
-    construction2: "En Construction",
-    legalTitle: "Accès & Légal",
-    legalDesc: "CanG, légalisation, médecine & culture. Analyses profondes pour la communauté consciente.",
-    disclaimerBtn: "Disclaimer 18+",
-    followBtn: "Suivre @infotonbc",
-    footer: "NBC News est un projet volontaire et indépendant.<br>Les contributions sont des dons à une personne privée – pas de reçu fiscal.<br>infotonbc@gmail.com",
-    cardTitle: "Unity Sticker",
-    cardDesc: "Sticker officiel NaturalBornChillaz Unity. Finition holographique. Édition limitée du Neo-Jungle.",
-    statRarity: "Rareté",
-    statRare: "Rare",
-    statChill: "Chill",
-    statVibe: "Vibe",
-    cardFooter: "Frais de participation : 6€ minimum – dons supérieurs bienvenus",
-    cardBtn: "Obtenir le Sticker dès 6€"
-  }
-};
-
-// Sprach-Funktion
-function setLanguage(lang) {
-  const elements = document.querySelectorAll('[data-i18n]');
-  const dict = translations[lang] || translations['de'];
-
-  elements.forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (dict[key]) {
-      el.innerHTML = dict[key];
-    }
-  });
-
-  document.documentElement.lang = lang;
-  localStorage.setItem('nbc-lang', lang);
-  document.getElementById('langSwitch').value = lang;
-}
-
-// Auto-Detect beim Laden
-function detectLanguage() {
-  const saved = localStorage.getItem('nbc-lang');
-  if (saved && translations[saved]) {
-    setLanguage(saved);
-    return;
-  }
-
-  const browserLang = navigator.language || navigator.userLanguage;
-  const shortLang = browserLang.split('-')[0];
-
-  if (translations[shortLang]) {
-    setLanguage(shortLang);
-  } else {
-    setLanguage('de');
-  }
-}
-
-// Event Listener für manuellen Switch
-document.getElementById('langSwitch').addEventListener('change', (e) => {
-  setLanguage(e.target.value);
-});
-
-// Initial laden
-detectLanguage();
 </script>
 
 </body>
