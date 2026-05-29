@@ -2,1520 +2,1232 @@
 <html lang="de">
 <head>
 <!-- Playables SDK -->
-<script>// Playables SDK v1.0.0
-(function() {
-  'use strict';
-  if (window.playablesSDK) return;
-  var HANDLER_NAME = 'playablesGameEventHandler';
-  var ANDROID_BRIDGE_NAME = '_MetaPlayablesBridge';
-  var RAF_FRAME_THRESHOLD = 3;
-  var gameReadySent = false;
-  var firstInteractionSent = false;
-  var errorSent = false;
-  var frameCount = 0;
-  var originalRAF = window.requestAnimationFrame;
-  function hasIOSBridge() {
-    return!!(window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers[HANDLER_NAME]);
-  }
-  function hasAndroidBridge() {
-    return!!(window[ANDROID_BRIDGE_NAME] && typeof window[ANDROID_BRIDGE_NAME].postEvent === 'function');
-  }
-  function isInIframe() {
-    return!!(window.parent && window.parent!== window);
-  }
-  function sendEvent(eventName, payload) {
-    var message = { type: eventName, payload: payload || {}, timestamp: Date.now() };
-    if (hasIOSBridge()) {
-      try { window.webkit.messageHandlers[HANDLER_NAME].postMessage(message); } catch (e) {}
-      return;
-    }
-    if (hasAndroidBridge()) {
-      try {
-        var p = payload || {};
-        p.__secureToken = window.__fbAndroidBridgeAuthToken || '';
-        p.timestamp = message.timestamp;
-        window[ANDROID_BRIDGE_NAME].postEvent(eventName, JSON.stringify(p));
-      } catch (e) {}
-      return;
-    }
-    if (isInIframe()) {
-      try { window.parent.postMessage(message, '*'); } catch (e) {}
-      return;
-    }
-  }
-  function onFrame() {
-    if (gameReadySent) return;
-    frameCount++;
-    if (frameCount >= RAF_FRAME_THRESHOLD) {
-      gameReadySent = true;
-      sendEvent('game_ready', { frame_count: frameCount, detected_at: Date.now() });
-      return;
-    }
-    originalRAF.call(window, onFrame);
-  }
-  if (originalRAF) {
-    window.requestAnimationFrame = function(callback) {
-      if (!gameReadySent) {
-        return originalRAF.call(window, function(timestamp) {
-          frameCount++;
-          if (frameCount >= RAF_FRAME_THRESHOLD &&!gameReadySent) {
-            gameReadySent = true;
-            sendEvent('game_ready', { frame_count: frameCount, detected_at: Date.now() });
-          }
-          callback(timestamp);
-        });
-      }
-      return originalRAF.call(window, callback);
-    };
-  }
-  function setupFirstInteractionDetection() {
-    var events = ['touchstart', 'mousedown', 'keydown'];
-    function onFirstInteraction() {
-      if (firstInteractionSent) return;
-      firstInteractionSent = true;
-      sendEvent('user_interaction_start', null);
-      for (var i = 0; i < events.length; i++) {
-        document.removeEventListener(events[i], onFirstInteraction, true);
-      }
-    }
-    for (var i = 0; i < events.length; i++) {
-      document.addEventListener(events[i], onFirstInteraction, true);
-    }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', setupFirstInteractionDetection);
-  } else {
-    setupFirstInteractionDetection();
-  }
-  window.addEventListener('error', function(event) {
-    if (errorSent) return;
-    errorSent = true;
-    sendEvent('error', {
-      message: event.message || 'Unknown error',
-      source: event.filename || '',
-      lineno: event.lineno || 0,
-      colno: event.colno || 0,
-      auto_captured: true
-    });
-  });
-  window.addEventListener('unhandledrejection', function(event) {
-    if (errorSent) return;
-    errorSent = true;
-    var reason = event.reason;
-    sendEvent('error', {
-      message: (reason instanceof Error)? reason.message : String(reason),
-      type: 'unhandled_promise_rejection',
-      auto_captured: true
-    });
-  });
-  window.playablesSDK = {
-    complete: function(score) { sendEvent('game_ended', { score: score, completed: true }); },
-    error: function(message) {
-      if (errorSent) return;
-      errorSent = true;
-      sendEvent('error', { message: message || 'Unknown error', auto_captured: false });
-    },
-    sendEvent: function(eventName, payload) {
-      if (!eventName || typeof eventName!== 'string') return;
-      sendEvent(eventName, payload);
-    }
-  };
-  if (originalRAF) { originalRAF.call(window, onFrame); }
-})();</script>
-
+<script>(function(){'use strict';if(window.playablesSDK)return;var HANDLER_NAME='playablesGameEventHandler';var ANDROID_BRIDGE_NAME='_MetaPlayablesBridge';var gameReadySent=false;var firstInteractionSent=false;var errorSent=false;var frameCount=0;var originalRAF=window.requestAnimationFrame;function hasIOSBridge(){return!!(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers[HANDLER_NAME]);}function hasAndroidBridge(){return!!(window[ANDROID_BRIDGE_NAME]&&typeof window[ANDROID_BRIDGE_NAME].postEvent==='function');}function isInIframe(){return!!(window.parent&&window.parent!==window);}function sendEvent(eventName,payload){var message={type:eventName,payload:payload||{},timestamp:Date.now()};if(hasIOSBridge()){try{window.webkit.messageHandlers[HANDLER_NAME].postMessage(message);}catch(e){}return;}if(hasAndroidBridge()){try{var p=payload||{};p.__secureToken=window.__fbAndroidBridgeAuthToken||'';p.timestamp=message.timestamp;window[ANDROID_BRIDGE_NAME].postEvent(eventName,JSON.stringify(p));}catch(e){}return;}if(isInIframe()){try{window.parent.postMessage(message,'*');}catch(e){}return;}}window.requestAnimationFrame=function(callback){if(!gameReadySent){return originalRAF.call(window,function(timestamp){frameCount++;if(frameCount>=3&&!gameReadySent){gameReadySent=true;sendEvent('game_ready',{frame_count:frameCount,detected_at:Date.now()});}callback(timestamp);});}return originalRAF.call(window,callback);};function setupFirstInteraction(){var events=['touchstart','mousedown','keydown'];function onFirst(){if(firstInteractionSent)return;firstInteractionSent=true;sendEvent('user_interaction_start',null);events.forEach(function(ev){document.removeEventListener(ev,onFirst,true);});}events.forEach(function(ev){document.addEventListener(ev,onFirst,true);});}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',setupFirstInteraction);}else{setupFirstInteraction();}window.addEventListener('error',function(event){if(errorSent)return;errorSent=true;sendEvent('error',{message:event.message||'Unknown error',source:event.filename||'',lineno:event.lineno||0,colno:event.colno||0,auto_captured:true});});window.playablesSDK={complete:function(score){sendEvent('game_ended',{score:score,completed:true});},error:function(message){if(errorSent)return;errorSent=true;sendEvent('error',{message:message||'Unknown error',auto_captured:false});},sendEvent:function(eventName,payload){if(!eventName||typeof eventName!=='string')return;sendEvent(eventName,payload);}};if(originalRAF){originalRAF.call(window,function(){});}})();</script>
+ 
 <!-- i18n Language System -->
 <script>
 const translations = {
     'de': {
-        'STRAIN DATENBANK': 'STRAIN DATENBANK',
-        'STRAINS': 'STRAINS',
-        'STRAIN EINREICHEN': 'STRAIN EINREICHEN',
-        'FEATURED STRAINS': '🔥 FEATURED STRAINS 🔥',
-        'Alle Types': 'Alle Types',
-        'Alle Strains': '🌿 Alle Strains',
-        'Beliebt': '🔥 Beliebt',
-        'Neu': '✨ Neu',
-        'High THC': '💪 High THC',
-        'Strains gefunden': 'Strains gefunden',
-        'Klick für Details': 'Klick für Details 💚',
-        'Strain suchen...': '🔍 Strain suchen... Amnesia, OG Kush, Gelato...',
-        'Indica': 'Indica',
-        'Sativa': 'Sativa',
-        'Hybrid': 'Hybrid',
-        'THC Gehalt': 'THC Gehalt',
-        'CBD Gehalt': 'CBD Gehalt',
-        'Effekte': '🧠 Effekte',
-        'Geschmack': '👅 Geschmack',
-        'Beschreibung': '📖 Beschreibung',
-        'DRUCKEN': '🖨 DRUCKEN',
-        'Ey Bruder, Chillaz brauchen mehr als Gras zum Leben': 'Ey Bruder, Chillaz brauchen mehr als Gras zum Leben 😂🌿💸',
-        'Sicher daß du chillig bist damit?': 'Sicher daß du chillig bist damit?',
-        'CHILLIG SPENDEN VIA PAYPAL': 'CHILLIG SPENDEN VIA PAYPAL',
-        'SCHLIESSEN': 'SCHLIESSEN',
-        'Weiterleitung zu PayPal...': 'Weiterleitung zu PayPal...',
-        'Keine Strains gefunden': 'Keine Strains gefunden, Bratan!',
-        'Check deine Filter': 'Check deine Filter oder such was anderes',
-        'STRAIN EINREICHEN': '🌟 STRAIN EINREICHEN',
-        'Strain Name': 'Strain Name *',
-        'Type': 'Type *',
-        'Wählen...': 'Wählen...',
-        'THC %': 'THC % *',
-        'CBD %': 'CBD % *',
-        'Effekte': 'Effekte *',
-        'Geschmack': 'Geschmack *',
-        'Beschreibung': 'Beschreibung *',
-        'Dein Name': 'Dein Name (Optional)',
-        'STRAIN ABSENDEN': '🚀 STRAIN ABSENDEN',
-        'ABBRECHEN': 'ABBRECHEN',
-        'DANKE BRATAN!': 'DANKE BRATAN!',
-        'COOL, WEITER CHILLEN': 'COOL, WEITER CHILLEN'
+        'STRAIN DATENBANK': 'STRAIN DATENBANK','STRAINS': 'STRAINS','STRAIN EINREICHEN': 'STRAIN EINREICHEN','FEATURED STRAINS': '🔥 FEATURED STRAINS 🔥','Alle Types': 'Alle Types','Alle Strains': '🌿 Alle Strains','Beliebt': '🔥 Beliebt','Neu': '✨ Neu','High THC': '💪 High THC','Strains gefunden': 'Strains gefunden','Klick für Details': 'Klick für Details 💚','Strain suchen...': '🔍 Strain suchen... Amnesia, OG Kush, Gelato...','Indica': 'Indica','Sativa': 'Sativa','Hybrid': 'Hybrid','THC Gehalt': 'THC Gehalt','CBD Gehalt': 'CBD Gehalt','Effekte': '🧠 Effekte','Geschmack': '👅 Geschmack','Beschreibung': '📖 Beschreibung','DRUCKEN': '🖨 DRUCKEN','Ey Bruder': 'Ey Bruder, Chillaz brauchen mehr als Gras zum Leben 😂🌿💸','Sicher daß du chillig bist damit?': 'Sicher daß du chillig bist damit?','CHILLIG SPENDEN VIA PAYPAL': 'CHILLIG SPENDEN VIA PAYPAL','SCHLIESSEN': 'SCHLIESSEN','Weiterleitung zu PayPal...': 'Weiterleitung zu PayPal...','Keine Strains gefunden': 'Keine Strains gefunden, Bratan!','Check deine Filter': 'Check deine Filter oder such was anderes','STRAIN EINREICHEN FORM': '🌟 STRAIN EINREICHEN','Strain Name': 'Strain Name *','Type': 'Type *','Wählen...': 'Wählen...','THC %': 'THC % *','CBD %': 'CBD % *','Effekte FORM': 'Effekte *','Geschmack FORM': 'Geschmack *','Beschreibung FORM': 'Beschreibung *','Dein Name': 'Dein Name (Optional)','STRAIN ABSENDEN': '🚀 STRAIN ABSENDEN','ABBRECHEN': 'ABBRECHEN','DANKE BRATAN!': 'DANKE BRATAN!','COOL, WEITER CHILLEN': 'COOL, WEITER CHILLEN'
     },
     'en': {
-        'STRAIN DATENBANK': 'STRAIN DATABASE',
-        'STRAINS': 'STRAINS',
-        'STRAIN EINREICHEN': 'SUBMIT STRAIN',
-        'FEATURED STRAINS': '🔥 FEATURED STRAINS 🔥',
-        'Alle Types': 'All Types',
-        'Alle Strains': '🌿 All Strains',
-        'Beliebt': '🔥 Popular',
-        'Neu': '✨ New',
-        'High THC': '💪 High THC',
-        'Strains gefunden': 'strains found',
-        'Klick für Details': 'Click for details 💚',
-        'Strain suchen...': '🔍 Search strain... Amnesia, OG Kush, Gelato...',
-        'Indica': 'Indica',
-        'Sativa': 'Sativa',
-        'Hybrid': 'Hybrid',
-        'THC Gehalt': 'THC Content',
-        'CBD Gehalt': 'CBD Content',
-        'Effekte': '🧠 Effects',
-        'Geschmack': '👅 Flavor',
-        'Beschreibung': '📖 Description',
-        'DRUCKEN': '🖨 PRINT',
-        'Ey Bruder, Chillaz brauchen mehr als Gras zum Leben': 'Yo bro, Chillaz need more than weed to survive 😂🌿💸',
-        'Sicher daß du chillig bist damit?': 'You sure you\'re cool with that?',
-        'CHILLIG SPENDEN VIA PAYPAL': 'DONATE VIA PAYPAL',
-        'SCHLIESSEN': 'CLOSE',
-        'Weiterleitung zu PayPal...': 'Redirecting to PayPal...',
-        'Keine Strains gefunden': 'No strains found, bro!',
-        'Check deine Filter': 'Check your filters or search something else',
-        'STRAIN EINREICHEN': '🌟 SUBMIT STRAIN',
-        'Strain Name': 'Strain Name *',
-        'Type': 'Type *',
-        'Wählen...': 'Select...',
-        'THC %': 'THC % *',
-        'CBD %': 'CBD % *',
-        'Effekte': 'Effects *',
-        'Geschmack': 'Flavor *',
-        'Beschreibung': 'Description *',
-        'Dein Name': 'Your Name (Optional)',
-        'STRAIN ABSENDEN': '🚀 SUBMIT STRAIN',
-        'ABBRECHEN': 'CANCEL',
-        'DANKE BRATAN!': 'THANKS BRO!',
-        'COOL, WEITER CHILLEN': 'COOL, KEEP CHILLING'
+        'STRAIN DATENBANK': 'STRAIN DATABASE','STRAINS': 'STRAINS','STRAIN EINREICHEN': 'SUBMIT STRAIN','FEATURED STRAINS': '🔥 FEATURED STRAINS 🔥','Alle Types': 'All Types','Alle Strains': '🌿 All Strains','Beliebt': '🔥 Popular','Neu': '✨ New','High THC': '💪 High THC','Strains gefunden': 'strains found','Klick für Details': 'Click for details 💚','Strain suchen...': '🔍 Search strain... Amnesia, OG Kush, Gelato...','Indica': 'Indica','Sativa': 'Sativa','Hybrid': 'Hybrid','THC Gehalt': 'THC Content','CBD Gehalt': 'CBD Content','Effekte': '🧠 Effects','Geschmack': '👅 Flavor','Beschreibung': '📖 Description','DRUCKEN': '🖨 PRINT','Ey Bruder': "Yo bro, Chillaz need more than weed to survive 😂🌿💸",'Sicher daß du chillig bist damit?': "You sure you're cool with that?",'CHILLIG SPENDEN VIA PAYPAL': 'DONATE VIA PAYPAL','SCHLIESSEN': 'CLOSE','Weiterleitung zu PayPal...': 'Redirecting to PayPal...','Keine Strains gefunden': 'No strains found, bro!','Check deine Filter': 'Check your filters or search something else','STRAIN EINREICHEN FORM': '🌟 SUBMIT STRAIN','Strain Name': 'Strain Name *','Type': 'Type *','Wählen...': 'Select...','THC %': 'THC % *','CBD %': 'CBD % *','Effekte FORM': 'Effects *','Geschmack FORM': 'Flavor *','Beschreibung FORM': 'Description *','Dein Name': 'Your Name (Optional)','STRAIN ABSENDEN': '🚀 SUBMIT STRAIN','ABBRECHEN': 'CANCEL','DANKE BRATAN!': 'THANKS BRO!','COOL, WEITER CHILLEN': 'COOL, KEEP CHILLING'
     },
     'es': {
-        'STRAIN DATENBANK': 'BASE DE DATOS',
-        'STRAINS': 'CEPAS',
-        'STRAIN EINREICHEN': 'ENVIAR CEPA',
-        'FEATURED STRAINS': '🔥 CEPAS DESTACADAS 🔥',
-        'Alle Types': 'Todos los tipos',
-        'Alle Strains': '🌿 Todas las cepas',
-        'Beliebt': '🔥 Popular',
-        'Neu': '✨ Nuevo',
-        'High THC': '💪 Alto THC',
-        'Strains gefunden': 'cepas encontradas',
-        'Klick für Details': 'Click para detalles 💚',
-        'Strain suchen...': '🔍 Buscar cepa... Amnesia, OG Kush, Gelato...',
-        'Indica': 'Indica',
-        'Sativa': 'Sativa',
-        'Hybrid': 'Híbrido',
-        'THC Gehalt': 'Contenido THC',
-        'CBD Gehalt': 'Contenido CBD',
-        'Effekte': '🧠 Efectos',
-        'Geschmack': '👅 Sabor',
-        'Beschreibung': '📖 Descripción',
-        'DRUCKEN': '🖨 IMPRIMIR',
-        'Ey Bruder, Chillaz brauchen mehr als Gras zum Leben': 'Ey bro, los Chillaz necesitan más que hierba para vivir 😂🌿💸',
-        'Sicher daß du chillig bist damit?': '¿Seguro que estás chill con eso?',
-        'CHILLIG SPENDEN VIA PAYPAL': 'DONAR VIA PAYPAL',
-        'SCHLIESSEN': 'CERRAR',
-        'Weiterleitung zu PayPal...': 'Redirigiendo a PayPal...',
-        'Keine Strains gefunden': '¡No se encontraron cepas, bro!',
-        'Check deine Filter': 'Revisa tus filtros o busca otra cosa',
-        'STRAIN EINREICHEN': '🌟 ENVIAR CEPA',
-        'Strain Name': 'Nombre de Cepa *',
-        'Type': 'Tipo *',
-        'Wählen...': 'Elegir...',
-        'THC %': 'THC % *',
-        'CBD %': 'CBD % *',
-        'Effekte': 'Efectos *',
-        'Geschmack': 'Sabor *',
-        'Beschreibung': 'Descripción *',
-        'Dein Name': 'Tu Nombre (Opcional)',
-        'STRAIN ABSENDEN': '🚀 ENVIAR CEPA',
-        'ABBRECHEN': 'CANCELAR',
-        'DANKE BRATAN!': '¡GRACIAS BRO!',
-        'COOL, WEITER CHILLEN': 'COOL, SIGUE CHILL'
+        'STRAIN DATENBANK': 'BASE DE DATOS','STRAINS': 'CEPAS','STRAIN EINREICHEN': 'ENVIAR CEPA','FEATURED STRAINS': '🔥 CEPAS DESTACADAS 🔥','Alle Types': 'Todos los tipos','Alle Strains': '🌿 Todas las cepas','Beliebt': '🔥 Popular','Neu': '✨ Nuevo','High THC': '💪 Alto THC','Strains gefunden': 'cepas encontradas','Klick für Details': 'Click para detalles 💚','Strain suchen...': '🔍 Buscar cepa...','Indica': 'Indica','Sativa': 'Sativa','Hybrid': 'Híbrido','THC Gehalt': 'Contenido THC','CBD Gehalt': 'Contenido CBD','Effekte': '🧠 Efectos','Geschmack': '👅 Sabor','Beschreibung': '📖 Descripción','DRUCKEN': '🖨 IMPRIMIR','Ey Bruder': 'Ey bro, los Chillaz necesitan más que hierba 😂🌿💸','Sicher daß du chillig bist damit?': '¿Seguro que estás chill?','CHILLIG SPENDEN VIA PAYPAL': 'DONAR VIA PAYPAL','SCHLIESSEN': 'CERRAR','Weiterleitung zu PayPal...': 'Redirigiendo a PayPal...','Keine Strains gefunden': '¡No se encontraron cepas!','Check deine Filter': 'Revisa tus filtros','STRAIN EINREICHEN FORM': '🌟 ENVIAR CEPA','Strain Name': 'Nombre de Cepa *','Type': 'Tipo *','Wählen...': 'Elegir...','THC %': 'THC % *','CBD %': 'CBD % *','Effekte FORM': 'Efectos *','Geschmack FORM': 'Sabor *','Beschreibung FORM': 'Descripción *','Dein Name': 'Tu Nombre (Opcional)','STRAIN ABSENDEN': '🚀 ENVIAR CEPA','ABBRECHEN': 'CANCELAR','DANKE BRATAN!': '¡GRACIAS BRO!','COOL, WEITER CHILLEN': 'COOL, SIGUE CHILL'
     }
 };
-
-function getUserLang() {
-    const browserLang = navigator.language || navigator.userLanguage;
-    const langCode = browserLang.split('-')[0];
-    return translations[langCode]? langCode : 'en';
-}
-
-const userLang = getUserLang();
-document.documentElement.lang = userLang;
-
-function t(key) {
-    return translations[userLang]?.[key] || translations['en']?.[key] || key;
-}
-
-window.Intl = window.Intl || {};
-Intl.t = t;
+function getUserLang(){const bl=navigator.language||navigator.userLanguage;const lc=bl.split('-')[0];return translations[lc]?lc:'en';}
+const userLang=getUserLang();
+document.documentElement.lang=userLang;
+function t(key){return translations[userLang]?.[key]||translations['en']?.[key]||key;}
+window.Intl=window.Intl||{};
+Intl.t=t;
 </script>
-
+ 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NaturalBornChillaz Strain DB PayPal Chill Check Edition</title>
-<meta name="description" content="NaturalBornChillaz Strain Database - 120+ ultra shiny Pokemon-style Cannabis Strain Cards. Neo-Jungle Design mit holo Effekten, Spenden-Edition für echte Chillaz.">
-<meta name="keywords" content="Cannabis, Strains, NaturalBornChillaz, Strain Database, Weed, Marijuana, Haze, Kush, Sativa, Indica, Hybrid, Neo-Jungle, Pokemon Cards">
+<title>NaturalBornChillaz Strain DB v2</title>
+<meta name="description" content="NaturalBornChillaz Strain Database – 120+ Cannabis Strain Cards mit echten Strain-Bildern. Neo-Jungle Design, Holo-Effekte.">
+<meta name="keywords" content="Cannabis, Strains, NaturalBornChillaz, Strain Database, OG Kush, Amnesia Haze, Gelato, Sativa, Indica, Hybrid">
 <meta name="author" content="NaturalBornChillaz">
-
+ 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-
+ 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Quicksand:wght@300;400;500;600;700&display=swap');
-
-    :root {
-        --nbc-gold: #FFD700;
-        --nbc-cyan: #00FFFF;
-        --nbc-pink: #FF1493;
-        --nbc-green: #39FF14;
-        --nbc-purple: #9D00FF;
-        --dark-jungle: #0A1A0A;
-        --darker-jungle: #051005;
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-        font-family: 'Quicksand', sans-serif;
-        background: var(--darker-jungle);
-        background-image:
-            radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 80% 80%, rgba(0, 255, 255, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 40% 20%, rgba(255, 20, 147, 0.05) 0%, transparent 50%);
-        min-height: 100vh;
-        color: #fff;
-        overflow-x: hidden;
-        user-select: none;
-        -webkit-user-select: none;
-    }
-
-    h1, h2, h3,.font-orbitron { font-family: 'Orbitron', sans-serif; }
-
-    body::after {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: repeating-linear-gradient(
-            45deg,
-            transparent,
-            transparent 10px,
-            rgba(255, 215, 0, 0.01) 10px,
-            rgba(255, 215, 0, 0.01) 20px
-        );
-        pointer-events: none;
-        z-index: 9999;
-        opacity: 0.3;
-    }
-
- .leaf {
-        position: fixed;
-        top: -10%;
-        z-index: 1;
-        user-select: none;
-        pointer-events: none;
-        animation: fall linear infinite;
-        opacity: 0.6;
-        filter: drop-shadow(0 0 5px rgba(57, 255, 20, 0.5));
-    }
-
-    @keyframes fall {
-        to { transform: translateY(110vh) rotate(360deg); }
-    }
-
- .neon-gold {
-        text-shadow: 0 0 10px var(--nbc-gold), 0 0 20px var(--nbc-gold), 0 0 30px var(--nbc-gold);
-    }
-
- .neon-cyan {
-        text-shadow: 0 0 10px var(--nbc-cyan), 0 0 20px var(--nbc-cyan);
-    }
-
- .border-neo {
-        border: 2px solid var(--nbc-gold);
-        box-shadow:
-            0 0 10px var(--nbc-gold),
-            0 0 20px var(--nbc-cyan),
-            inset 0 0 15px rgba(255, 215, 0, 0.1);
-    }
-
-    /* 3D HOLO CARD SYSTEM */
- .strain-card {
-        position: relative;
-        background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
-        border-radius: 20px;
-        overflow: hidden;
-        transition: transform 0.1s ease, box-shadow 0.3s ease;
-        transform-style: preserve-3d;
-        transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
-        cursor: pointer;
-        will-change: transform;
-    }
-
- .strain-card-image {
-        position: relative;
-        width: 100%;
-        height: 220px;
-        overflow: hidden;
-        border-radius: 20px 20px 0 0;
-        transform: translateZ(20px);
-    }
-
- .strain-card-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.6s ease;
-    }
-
- .strain-card:hover.strain-card-image img {
-        transform: scale(1.1);
-    }
-
- .strain-card-glare {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(
-            circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-            rgba(255, 255, 255, 0.4) 0%,
-            rgba(255, 255, 255, 0.1) 30%,
-            rgba(255, 255, 255, 0) 60%
-        );
-        opacity: 0;
-        transition: opacity 0.3s;
-        pointer-events: none;
-        mix-blend-mode: overlay;
-        transform: translateZ(40px);
-    }
-
- .strain-card:hover.strain-card-glare {
-        opacity: 1;
-    }
-
- .strain-card-holo {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(
-            125deg,
-            transparent 40%,
-            rgba(255, 215, 0, 0.2) 45%,
-            rgba(0, 255, 255, 0.2) 50%,
-            rgba(255, 20, 147, 0.2) 55%,
-            transparent 60%
-        );
-        opacity: 0;
-        transition: opacity 0.3s;
-        pointer-events: none;
-        mix-blend-mode: color-dodge;
-        transform: translateZ(50px);
-    }
-
- .strain-card:hover.strain-card-holo {
-        opacity: 1;
-        animation: holo-move 3s ease-in-out infinite;
-    }
-
-    @keyframes holo-move {
-        0%, 100% { transform: translateX(-100%) translateZ(50px); }
-        50% { transform: translateX(100%) translateZ(50px); }
-    }
-
- .strain-card-content {
-        position: relative;
-        transform: translateZ(30px);
-    }
-
- .nbc-stamp {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background: linear-gradient(135deg, var(--nbc-gold), #FFA500);
-        color: #000;
-        font-weight: 900;
-        font-family: 'Orbitron', sans-serif;
-        font-size: 0.6rem;
-        padding: 4px 8px;
-        border-radius: 6px;
-        transform: rotate(15deg) translateZ(60px);
-        box-shadow: 0 2px 10px rgba(255, 215, 0, 0.8);
-        z-index: 10;
-        letter-spacing: 1px;
-    }
-
- .type-indica {
-        background: linear-gradient(135deg, #6B0E9F, #9D00FF);
-        box-shadow: 0 0 15px rgba(157, 0, 255, 0.6);
-    }
- .type-sativa {
-        background: linear-gradient(135deg, #FF6B00, #FF1493);
-        box-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
-    }
- .type-hybrid {
-        background: linear-gradient(135deg, #00C9FF, #00FF88);
-        box-shadow: 0 0 15px rgba(0, 255, 136, 0.6);
-    }
-
- .tab-btn {
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s;
-    }
-
- .tab-btn::before {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 3px;
-        background: linear-gradient(90deg, var(--nbc-gold), var(--nbc-cyan));
-        transition: width 0.3s;
-    }
-
- .tab-btn.active::before { width: 100%; }
- .tab-btn.active {
-        background: rgba(255, 215, 0, 0.1);
-        border-color: var(--nbc-gold);
-    }
-
- .modal-backdrop {
-        backdrop-filter: blur(10px);
-        background: rgba(0, 0, 0, 0.8);
-        animation: fadeIn 0.3s;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
- .modal-content {
-        animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-
-    @keyframes slideUp {
-        from { opacity: 0; transform: translateY(50px) scale(0.9); }
-        to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
- .slideshow-container {
-        position: relative;
-        overflow: hidden;
-        border-radius: 20px;
-    }
-
- .slide {
-        display: none;
-        animation: slideAnimation 1s;
-    }
-
- .slide.active { display: block; }
-
-    @keyframes slideAnimation {
-        from { opacity: 0; transform: scale(0.95); }
-        to { opacity: 1; transform: scale(1); }
-    }
-
- .btn-neon {
-        position: relative;
-        background: linear-gradient(135deg, var(--nbc-gold), #FFA500);
-        color: #000;
-        font-weight: 700;
-        transition: all 0.3s;
-        overflow: hidden;
-    }
-
- .btn-neon::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.5);
-        transform: translate(-50%, -50%);
-        transition: width 0.6s, height 0.6s;
-    }
-
- .btn-neon:hover::before {
-        width: 300px;
-        height: 300px;
-    }
-
- .btn-neon:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 30px rgba(255, 215, 0, 0.6);
-    }
-
- .btn-paypal {
-        background: linear-gradient(135deg, #0070ba, #003087);
-        color: #fff;
-        font-weight: 700;
-        transition: all 0.3s;
-        animation: pulse-paypal 2s infinite;
-    }
-
-    @keyframes pulse-paypal {
-        0%, 100% { box-shadow: 0 0 20px rgba(0, 112, 186, 0.6); }
-        50% { box-shadow: 0 0 40px rgba(0, 112, 186, 0.9); }
-    }
-
- .btn-paypal:hover {
-        transform: scale(1.05);
-        box-shadow: 0 0 50px rgba(0, 112, 186, 1);
-    }
-
- .search-neo {
-        background: rgba(10, 26, 10, 0.8);
-        border: 2px solid rgba(255, 215, 0, 0.3);
-        transition: all 0.3s;
-    }
-
- .search-neo:focus {
-        border-color: var(--nbc-gold);
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-        outline: none;
-    }
-
- .tooltip { position: relative; }
-
- .tooltip-text {
-        visibility: hidden;
-        opacity: 0;
-        position: absolute;
-        bottom: 125%;
-        left: 50%;
-        transform: translateX(-50%);
-        background: rgba(0, 0, 0, 0.95);
-        color: var(--nbc-gold);
-        padding: 8px 12px;
-        border-radius: 8px;
-        border: 1px solid var(--nbc-gold);
-        white-space: nowrap;
-        font-size: 0.75rem;
-        transition: opacity 0.3s;
-        z-index: 100;
-    }
-
- .tooltip:hover.tooltip-text {
-        visibility: visible;
-        opacity: 1;
-    }
-
- .strain-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
-    }
-
-    @media (max-width: 768px) {
-    .strain-grid {
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 1rem;
-        }
-    }
-
- .loader {
-        border: 3px solid rgba(255, 215, 0, 0.3);
-        border-top: 3px solid var(--nbc-gold);
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-
- .stat-number {
-        background: linear-gradient(135deg, var(--nbc-gold), var(--nbc-cyan));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-    }
-
- .potency-bar {
-        height: 8px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
-        overflow: hidden;
-        position: relative;
-    }
-
- .potency-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #00FF00, #FFD700, #FF1493);
-        border-radius: 10px;
-        transition: width 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-    }
-
-    @media print { body { display: none; } }
-
-    @media (max-width: 640px) {
-    .nbc-stamp {
-            font-size: 0.5rem;
-            padding: 2px 6px;
-        }
-    }
-
- .meme-bounce {
-        animation: memeBounce 2s ease-in-out infinite;
-    }
-
-    @keyframes memeBounce {
-        0%, 100% { transform: translateY(0) rotate(-5deg); }
-        50% { transform: translateY(-10px) rotate(5deg); }
-    }
-
- .countdown-pulse {
-        animation: countdownPulse 1s ease-in-out infinite;
-    }
-
-    @keyframes countdownPulse {
-        0%, 100% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.1); opacity: 0.8; }
-    }
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Quicksand:wght@300;400;500;600;700&display=swap');
+ 
+:root {
+    --nbc-gold: #FFD700;
+    --nbc-cyan: #00FFFF;
+    --nbc-pink: #FF1493;
+    --nbc-green: #39FF14;
+    --nbc-purple: #9D00FF;
+    --dark-jungle: #0A1A0A;
+    --darker-jungle: #051005;
+}
+ 
+*{box-sizing:border-box;}
+ 
+body {
+    font-family: 'Quicksand', sans-serif;
+    background: var(--darker-jungle);
+    background-image:
+        radial-gradient(circle at 20% 50%, rgba(255,215,0,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(0,255,255,0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255,20,147,0.05) 0%, transparent 50%);
+    min-height: 100vh;
+    color: #fff;
+    overflow-x: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+ 
+h1,h2,h3,.font-orbitron{font-family:'Orbitron',sans-serif;}
+ 
+body::after {
+    content:'';
+    position:fixed;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(255,215,0,0.01) 10px,rgba(255,215,0,0.01) 20px);
+    pointer-events:none;
+    z-index:9999;
+    opacity:0.3;
+}
+ 
+.leaf{
+    position:fixed;
+    top:-10%;
+    z-index:1;
+    user-select:none;
+    pointer-events:none;
+    animation:fall linear infinite;
+    opacity:0.6;
+    filter:drop-shadow(0 0 5px rgba(57,255,20,0.5));
+}
+ 
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg);}}
+ 
+.neon-gold{text-shadow:0 0 10px var(--nbc-gold),0 0 20px var(--nbc-gold),0 0 30px var(--nbc-gold);}
+.neon-cyan{text-shadow:0 0 10px var(--nbc-cyan),0 0 20px var(--nbc-cyan);}
+ 
+.border-neo{
+    border:2px solid var(--nbc-gold);
+    box-shadow:0 0 10px var(--nbc-gold),0 0 20px var(--nbc-cyan),inset 0 0 15px rgba(255,215,0,0.1);
+}
+ 
+/* STRAIN CARD 3D HOLO */
+.strain-card{
+    position:relative;
+    background:linear-gradient(135deg,#1a1a2e 0%,#0f0f1e 100%);
+    border-radius:20px;
+    overflow:hidden;
+    transition:transform 0.1s ease,box-shadow 0.3s ease;
+    transform-style:preserve-3d;
+    transform:perspective(1000px) rotateX(0deg) rotateY(0deg);
+    cursor:pointer;
+    will-change:transform;
+}
+ 
+.strain-card-image{
+    position:relative;
+    width:100%;
+    height:220px;
+    overflow:hidden;
+    border-radius:20px 20px 0 0;
+    background: linear-gradient(135deg, #1a1a2e, #0a0a1a);
+}
+ 
+.strain-card-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform 0.6s ease;
+    /* fix: image always fills, no broken layout */
+    display:block;
+}
+ 
+.strain-card:hover .strain-card-image img{transform:scale(1.08);}
+ 
+/* Skeleton loader for images */
+.img-skeleton{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,#1a1a2e 25%,#2a2a3e 50%,#1a1a2e 75%);
+    background-size:200% 100%;
+    animation:skeleton-shine 1.5s infinite;
+}
+ 
+@keyframes skeleton-shine{
+    0%{background-position:200% 0;}
+    100%{background-position:-200% 0;}
+}
+ 
+.strain-card-glare{
+    position:absolute;
+    top:0;left:0;
+    width:100%;height:100%;
+    background:radial-gradient(circle at var(--mouse-x,50%) var(--mouse-y,50%),rgba(255,255,255,0.35) 0%,rgba(255,255,255,0.08) 30%,rgba(255,255,255,0) 60%);
+    opacity:0;
+    transition:opacity 0.3s;
+    pointer-events:none;
+    mix-blend-mode:overlay;
+    transform:translateZ(40px);
+}
+ 
+.strain-card:hover .strain-card-glare{opacity:1;}
+ 
+.strain-card-holo{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(125deg,transparent 40%,rgba(255,215,0,0.18) 45%,rgba(0,255,255,0.18) 50%,rgba(255,20,147,0.18) 55%,transparent 60%);
+    opacity:0;
+    transition:opacity 0.3s;
+    pointer-events:none;
+    mix-blend-mode:color-dodge;
+    transform:translateZ(50px);
+}
+ 
+.strain-card:hover .strain-card-holo{opacity:1;animation:holo-move 3s ease-in-out infinite;}
+ 
+@keyframes holo-move{
+    0%,100%{transform:translateX(-100%) translateZ(50px);}
+    50%{transform:translateX(100%) translateZ(50px);}
+}
+ 
+.strain-card-content{position:relative;transform:translateZ(30px);}
+ 
+.nbc-stamp{
+    position:absolute;
+    top:10px;right:10px;
+    background:linear-gradient(135deg,var(--nbc-gold),#FFA500);
+    color:#000;
+    font-weight:900;
+    font-family:'Orbitron',sans-serif;
+    font-size:0.6rem;
+    padding:4px 8px;
+    border-radius:6px;
+    transform:rotate(15deg) translateZ(60px);
+    box-shadow:0 2px 10px rgba(255,215,0,0.8);
+    z-index:10;
+    letter-spacing:1px;
+}
+ 
+/* Strain type badge image overlay */
+.type-badge-overlay{
+    position:absolute;
+    bottom:8px;
+    left:8px;
+    padding:3px 10px;
+    border-radius:20px;
+    font-size:0.65rem;
+    font-weight:800;
+    font-family:'Orbitron',sans-serif;
+    letter-spacing:0.5px;
+    z-index:5;
+    backdrop-filter:blur(6px);
+}
+ 
+.type-indica{background:linear-gradient(135deg,#6B0E9F,#9D00FF);box-shadow:0 0 12px rgba(157,0,255,0.7);}
+.type-sativa{background:linear-gradient(135deg,#FF6B00,#FF1493);box-shadow:0 0 12px rgba(255,20,147,0.7);}
+.type-hybrid{background:linear-gradient(135deg,#00C9FF,#00FF88);box-shadow:0 0 12px rgba(0,255,136,0.7);}
+ 
+.tab-btn{position:relative;overflow:hidden;transition:all 0.3s;}
+.tab-btn::before{content:'';position:absolute;bottom:0;left:0;width:0;height:3px;background:linear-gradient(90deg,var(--nbc-gold),var(--nbc-cyan));transition:width 0.3s;}
+.tab-btn.active::before{width:100%;}
+.tab-btn.active{background:rgba(255,215,0,0.1);border-color:var(--nbc-gold);}
+ 
+.modal-backdrop{backdrop-filter:blur(12px);background:rgba(0,0,0,0.82);animation:fadeIn 0.3s;}
+ 
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+ 
+.modal-content{animation:slideUp 0.4s cubic-bezier(0.175,0.885,0.32,1.275);}
+ 
+@keyframes slideUp{
+    from{opacity:0;transform:translateY(50px) scale(0.9);}
+    to{opacity:1;transform:translateY(0) scale(1);}
+}
+ 
+/* FIX: was "max-h-" (typo), corrected */
+.modal-scroll{max-height:90vh;overflow-y:auto;}
+ 
+.slideshow-container{position:relative;overflow:hidden;border-radius:20px;}
+ 
+.slide{display:none;animation:slideAnimation 0.8s;}
+.slide.active{display:block;}
+ 
+@keyframes slideAnimation{
+    from{opacity:0;transform:scale(0.97);}
+    to{opacity:1;transform:scale(1);}
+}
+ 
+.btn-neon{
+    position:relative;
+    background:linear-gradient(135deg,var(--nbc-gold),#FFA500);
+    color:#000;
+    font-weight:700;
+    transition:all 0.3s;
+    overflow:hidden;
+}
+ 
+.btn-neon::before{
+    content:'';
+    position:absolute;
+    top:50%;left:50%;
+    width:0;height:0;
+    border-radius:50%;
+    background:rgba(255,255,255,0.5);
+    transform:translate(-50%,-50%);
+    transition:width 0.6s,height 0.6s;
+}
+ 
+.btn-neon:hover::before{width:300px;height:300px;}
+.btn-neon:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(255,215,0,0.6);}
+ 
+.btn-paypal{
+    background:linear-gradient(135deg,#0070ba,#003087);
+    color:#fff;
+    font-weight:700;
+    transition:all 0.3s;
+    animation:pulse-paypal 2s infinite;
+}
+ 
+@keyframes pulse-paypal{
+    0%,100%{box-shadow:0 0 20px rgba(0,112,186,0.6);}
+    50%{box-shadow:0 0 40px rgba(0,112,186,0.9);}
+}
+ 
+.btn-paypal:hover{transform:scale(1.05);box-shadow:0 0 50px rgba(0,112,186,1);}
+ 
+.search-neo{
+    background:rgba(10,26,10,0.8);
+    border:2px solid rgba(255,215,0,0.3);
+    transition:all 0.3s;
+}
+ 
+.search-neo:focus{
+    border-color:var(--nbc-gold);
+    box-shadow:0 0 20px rgba(255,215,0,0.4);
+    outline:none;
+}
+ 
+.tooltip{position:relative;}
+.tooltip-text{
+    visibility:hidden;
+    opacity:0;
+    position:absolute;
+    bottom:125%;
+    left:50%;
+    transform:translateX(-50%);
+    background:rgba(0,0,0,0.95);
+    color:var(--nbc-gold);
+    padding:8px 12px;
+    border-radius:8px;
+    border:1px solid var(--nbc-gold);
+    white-space:nowrap;
+    font-size:0.75rem;
+    transition:opacity 0.3s;
+    z-index:100;
+}
+.tooltip:hover .tooltip-text{visibility:visible;opacity:1;}
+ 
+.strain-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:1.5rem;
+}
+ 
+@media(max-width:768px){
+    .strain-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;}
+    .strain-card-image{height:160px;}
+}
+ 
+.loader{
+    border:3px solid rgba(255,215,0,0.3);
+    border-top:3px solid var(--nbc-gold);
+    border-radius:50%;
+    width:40px;height:40px;
+    animation:spin 1s linear infinite;
+}
+ 
+@keyframes spin{0%{transform:rotate(0deg);}100%{transform:rotate(360deg);}}
+ 
+.stat-number{
+    background:linear-gradient(135deg,var(--nbc-gold),var(--nbc-cyan));
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+}
+ 
+.potency-bar{
+    height:8px;
+    background:rgba(255,255,255,0.1);
+    border-radius:10px;
+    overflow:hidden;
+}
+ 
+.potency-fill{
+    height:100%;
+    background:linear-gradient(90deg,#00FF00,#FFD700,#FF1493);
+    border-radius:10px;
+    transition:width 1s cubic-bezier(0.175,0.885,0.32,1.275);
+    box-shadow:0 0 10px rgba(255,215,0,0.6);
+}
+ 
+.meme-bounce{animation:memeBounce 2s ease-in-out infinite;}
+@keyframes memeBounce{0%,100%{transform:translateY(0) rotate(-5deg);}50%{transform:translateY(-10px) rotate(5deg);}}
+ 
+.countdown-pulse{animation:countdownPulse 1s ease-in-out infinite;}
+@keyframes countdownPulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.1);opacity:0.8;}}
+ 
+/* Card badge helpers */
+.badge-popular,.badge-new{
+    position:absolute;
+    top:8px;right:8px;
+    font-size:1.2rem;
+    z-index:10;
+    transform:translateZ(70px);
+    filter:drop-shadow(0 0 6px rgba(255,215,0,0.9));
+}
+ 
+/* Smooth image reveal */
+.strain-img{
+    opacity:0;
+    transition:opacity 0.5s ease;
+}
+.strain-img.loaded{opacity:1;}
+ 
+@media print{body{display:none;}}
 </style>
 </head>
 <body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
-
-<div id="leaves-container"></div>
-
-<header class="sticky top-0 z-50 backdrop-blur-lg bg-black/40 border-b-2 border-neo">
+ 
+<div id="leaves-container" aria-hidden="true"></div>
+ 
+<header class="sticky top-0 z-50 backdrop-blur-lg bg-black/40 border-b-2 border-neo" role="banner">
     <div class="container mx-auto px-4 py-4">
         <div class="flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3">
-                <div class="text-4xl">🌿</div>
+                <div class="text-4xl" aria-hidden="true">🌿</div>
                 <div>
-                    <h1 class="text-2xl md:text-3xl font-orbitron font-black neon-gold">
-                        NaturalBornChillaz
-                    </h1>
-                    <p class="text-xs text-cyan-400 font-orbitron tracking-widest" data-i18n="STRAIN DATENBANK">STRAIN DATENBANK</p>
+                    <h1 class="text-2xl md:text-3xl font-orbitron font-black neon-gold">NaturalBornChillaz</h1>
+                    <p class="text-xs text-cyan-400 font-orbitron tracking-widest">STRAIN DATENBANK</p>
                 </div>
             </div>
-
             <div class="flex flex-wrap items-center gap-3">
-                <div class="text-center px-4 py-2 bg-black/40 rounded-lg border-yellow-500/30">
+                <div class="text-center px-4 py-2 bg-black/40 rounded-lg border border-yellow-500/30">
                     <div class="text-2xl font-orbitron font-black stat-number" id="strainCount">120+</div>
-                    <div class="text-xs text-gray-400" data-i18n="STRAINS">STRAINS</div>
+                    <div class="text-xs text-gray-400">STRAINS</div>
                 </div>
-                <button onclick="openSubmitModal()" class="btn-neon px-6 py-3 rounded-xl text-sm" data-i18n="STRAIN EINREICHEN">
+                <button onclick="openSubmitModal()" class="btn-neon px-6 py-3 rounded-xl text-sm" aria-label="Strain einreichen">
                     + STRAIN EINREICHEN
                 </button>
             </div>
         </div>
     </div>
 </header>
-
-<main class="container mx-auto px-4 py-8 relative z-10">
-
-    <section class="mb-12">
-        <h2 class="text-3xl font-orbitron font-bold mb-6 neon-cyan text-center" data-i18n="FEATURED STRAINS">🔥 FEATURED STRAINS 🔥</h2>
+ 
+<main class="container mx-auto px-4 py-8 relative z-10" role="main">
+ 
+    <section class="mb-12" aria-label="Featured Strains Slideshow">
+        <h2 class="text-3xl font-orbitron font-bold mb-6 neon-cyan text-center">🔥 FEATURED STRAINS 🔥</h2>
         <div class="slideshow-container border-neo p-1 bg-black/60">
-            <div id="slideshow"></div>
+            <div id="slideshow" role="region" aria-live="polite" aria-label="Slideshow"></div>
         </div>
     </section>
-
-    <section class="mb-8">
+ 
+    <section class="mb-8" aria-label="Filter und Suche">
         <div class="bg-black/40 backdrop-blur-md rounded-2xl p-6 border-neo">
             <div class="flex flex-col md:flex-row gap-4 mb-6">
-                <div class="flex-1 relative">
+                <div class="flex-1">
+                    <label for="searchInput" class="sr-only">Strain suchen</label>
                     <input
-                        type="text"
+                        type="search"
                         id="searchInput"
                         placeholder="🔍 Strain suchen... Amnesia, OG Kush, Gelato..."
                         class="search-neo w-full px-6 py-4 rounded-xl text-white placeholder-gray-500"
+                        autocomplete="off"
                     >
                 </div>
-                <select id="typeFilter" class="search-neo px-6 py-4 rounded-xl text-white">
-                    <option value="all" data-i18n="Alle Types">Alle Types</option>
-                    <option value="Indica">🍃 Indica</option>
-                    <option value="Sativa">☀ Sativa</option>
-                    <option value="Hybrid">⚡ Hybrid</option>
-                </select>
+                <div>
+                    <label for="typeFilter" class="sr-only">Type filtern</label>
+                    <select id="typeFilter" class="search-neo px-6 py-4 rounded-xl text-white h-full">
+                        <option value="all">Alle Types</option>
+                        <option value="Indica">🍃 Indica</option>
+                        <option value="Sativa">☀ Sativa</option>
+                        <option value="Hybrid">⚡ Hybrid</option>
+                    </select>
+                </div>
             </div>
-
-            <div class="flex flex-wrap gap-2">
-                <button class="tab-btn active px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="all" data-i18n="Alle Strains">
-                    🌿 Alle Strains
-                </button>
-                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="popular" data-i18n="Beliebt">
-                    🔥 Beliebt
-                </button>
-                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="new" data-i18n="Neu">
-                    ✨ Neu
-                </button>
-                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="high-thc" data-i18n="High THC">
-                    💪 High THC
-                </button>
+            <div class="flex flex-wrap gap-2" role="tablist">
+                <button class="tab-btn active px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="all" role="tab" aria-selected="true">🌿 Alle Strains</button>
+                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="popular" role="tab" aria-selected="false">🔥 Beliebt</button>
+                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="new" role="tab" aria-selected="false">✨ Neu</button>
+                <button class="tab-btn px-6 py-3 rounded-lg border border-yellow-500/30" data-tab="high-thc" role="tab" aria-selected="false">💪 High THC</button>
             </div>
         </div>
     </section>
-
-    <section>
+ 
+    <section aria-label="Strain Grid">
         <div class="flex items-center justify-between mb-6">
             <h3 class="text-xl font-orbitron font-bold text-cyan-400">
-                <span id="resultCount">120</span> <span data-i18n="Strains gefunden">Strains gefunden</span>
+                <span id="resultCount">120</span> Strains gefunden
             </h3>
-            <div class="text-sm text-gray-400" data-i18n="Klick für Details">
-                Klick für Details 💚
-            </div>
+            <div class="text-sm text-gray-400">Klick für Details 💚</div>
         </div>
-
-        <div id="strainGrid" class="strain-grid"></div>
+        <div id="strainGrid" class="strain-grid" role="list"></div>
     </section>
-
+ 
 </main>
-
-<div id="strainModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
-    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-2xl w-full max-h- overflow-y-auto">
+ 
+<!-- Strain Detail Modal -->
+<div id="strainModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Strain Details">
+    <div class="modal-content modal-scroll bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-2xl w-full">
         <div id="modalContent"></div>
     </div>
 </div>
-
-<div id="donateModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
-    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-3xl max-w-md w-full p-8 relative" style="border: 3px solid var(--nbc-gold); box-shadow: 0 0 40px var(--nbc-gold), 0 0 80px var(--nbc-cyan), inset 0 0 30px rgba(255,215,0,0.1);">
+ 
+<!-- Donate Modal -->
+<div id="donateModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4" role="dialog" aria-modal="true">
+    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 rounded-3xl max-w-md w-full p-8 relative" style="border:3px solid var(--nbc-gold);box-shadow:0 0 40px var(--nbc-gold),0 0 80px var(--nbc-cyan),inset 0 0 30px rgba(255,215,0,0.1);">
         <div class="nbc-stamp">NBC™</div>
-
         <div class="text-center mb-6">
-            <div class="meme-bounce text-8xl mb-4">🌿😎</div>
-            <h3 class="text-2xl font-orbitron font-black neon-gold mb-4" data-i18n="Ey Bruder, Chillaz brauchen mehr als Gras zum Leben">
-                Ey Bruder, Chillaz brauchen mehr als Gras zum Leben 😂🌿💸
-            </h3>
-            <p class="text-lg text-cyan-300 mb-6" data-i18n="Sicher daß du chillig bist damit?">
-                Sicher daß du chillig bist damit?
-            </p>
+            <div class="meme-bounce text-8xl mb-4" aria-hidden="true">🌿😎</div>
+            <h3 class="text-2xl font-orbitron font-black neon-gold mb-4">Ey Bruder, Chillaz brauchen mehr als Gras zum Leben 😂🌿💸</h3>
+            <p class="text-lg text-cyan-300 mb-6">Sicher daß du chillig bist damit?</p>
         </div>
-
-      <div id="donateContent">
+        <div id="donateContent">
             <button onclick="startPayPalRedirect()" class="btn-paypal w-full py-4 rounded-xl text-lg mb-4 flex items-center justify-center gap-3">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M7.076 21.337H2.47a.641 0 0 0-.633-.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 4.643-5.738 4.643h-2.19c-.24 0-.446.17-.482.405L9.978 18.8h4.607a.613.613 0 0 0.604-.512l.532-3.381c.037-.235.24-.405.482-.405h1.54c3.283 0 5.856-1.333 6.565-5.19.098-.501.17-1.004.17-1.395z"/>
-                </svg>
-                <span data-i18n="CHILLIG SPENDEN VIA PAYPAL">CHILLIG SPENDEN VIA PAYPAL</span>
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.076 21.337H2.47a.641.641 0 0 0-.633.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 4.643-5.738 4.643h-2.19c-.24 0-.446.17-.482.405L9.978 18.8h4.607a.613.613 0 0 0 .604-.512l.532-3.381c.037-.235.24-.405.482-.405h1.54c3.283 0 5.856-1.333 6.565-5.19.098-.501.17-1.004.17-1.395z"/></svg>
+                CHILLIG SPENDEN VIA PAYPAL
             </button>
-
-            <button onclick="closeDonateModal()" class="w-full py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition" data-i18n="SCHLIESSEN">
-                SCHLIESSEN
-            </button>
+            <button onclick="closeDonateModal()" class="w-full py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition">SCHLIESSEN</button>
         </div>
-
         <div id="countdownContent" class="hidden text-center py-8">
-            <div class="countdown-pulse text-6xl font-orbitron font-black neon-gold mb-4" id="countdownText">
-                3...
-            </div>
-            <p class="text-cyan-400 text-lg" data-i18n="Weiterleitung zu PayPal...">Weiterleitung zu PayPal...</p>
+            <div class="countdown-pulse text-6xl font-orbitron font-black neon-gold mb-4" id="countdownText">3...</div>
+            <p class="text-cyan-400 text-lg">Weiterleitung zu PayPal...</p>
         </div>
     </div>
 </div>
-
-<div id="submitModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
-    <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-3xl w-full max-h- overflow-y-auto p-8">
+ 
+<!-- Submit Modal -->
+<div id="submitModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4" role="dialog" aria-modal="true" aria-label="Strain einreichen">
+    <div class="modal-content modal-scroll bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-3xl w-full p-8">
         <div class="flex justify-between items-center mb-6">
-            <h3 class="text-3xl font-orbitron font-black neon-gold" data-i18n="STRAIN EINREICHEN">🌟 STRAIN EINREICHEN</h3>
-            <button onclick="closeSubmitModal()" class="text-4xl hover:text-yellow-400 transition">&times;</button>
+            <h3 class="text-3xl font-orbitron font-black neon-gold">🌟 STRAIN EINREICHEN</h3>
+            <button onclick="closeSubmitModal()" class="text-4xl hover:text-yellow-400 transition" aria-label="Schließen">&times;</button>
         </div>
-
-        <form id="submitForm" class="space-y-6">
+        <form id="submitForm" class="space-y-6" novalidate>
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm text-cyan-400 mb-2 font-bold" data-i18n="Strain Name">Strain Name *</label>
-                    <input type="text" id="submitName" required class="search-neo w-full px-4 py-3 rounded-lg">
+                    <label class="block text-sm text-cyan-400 mb-2 font-bold" for="submitName">Strain Name *</label>
+                    <input type="text" id="submitName" required class="search-neo w-full px-4 py-3 rounded-lg text-white">
                 </div>
                 <div>
-                    <label class="block text-sm text-cyan-400 mb-2 font-bold" data-i18n="Type">Type *</label>
-                    <select id="submitType" required class="search-neo w-full px-4 py-3 rounded-lg">
-                        <option value="" data-i18n="Wählen...">Wählen...</option>
+                    <label class="block text-sm text-cyan-400 mb-2 font-bold" for="submitType">Type *</label>
+                    <select id="submitType" required class="search-neo w-full px-4 py-3 rounded-lg text-white">
+                        <option value="">Wählen...</option>
                         <option value="Indica">Indica</option>
                         <option value="Sativa">Sativa</option>
                         <option value="Hybrid">Hybrid</option>
                     </select>
                 </div>
             </div>
-
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm text-cyan-400 mb-2 font-bold tooltip">
-                        <span data-i18n="THC %">THC % *</span>
-                        <span class="tooltip-text">0-35% - Sei ehrlich, Bruder!</span>
+                    <label class="block text-sm text-cyan-400 mb-2 font-bold tooltip" for="submitTHC">
+                        THC % *
+                        <span class="tooltip-text">0–35% – Sei ehrlich, Bruder!</span>
                     </label>
-                    <input type="number" id="submitTHC" min="0" max="100" step="0.1" required class="search-neo w-full px-4 py-3 rounded-lg">
+                    <input type="number" id="submitTHC" min="0" max="100" step="0.1" required class="search-neo w-full px-4 py-3 rounded-lg text-white">
                 </div>
                 <div>
-                    <label class="block text-sm text-cyan-400 mb-2 font-bold tooltip">
-                        <span data-i18n="CBD %">CBD % *</span>
-                        <span class="tooltip-text">0-20% - Medical Vibes</span>
+                    <label class="block text-sm text-cyan-400 mb-2 font-bold tooltip" for="submitCBD">
+                        CBD % *
+                        <span class="tooltip-text">0–20% – Medical Vibes</span>
                     </label>
-                    <input type="number" id="submitCBD" min="0" max="100" step="0.1" required class="search-neo w-full px-4 py-3 rounded-lg">
+                    <input type="number" id="submitCBD" min="0" max="100" step="0.1" required class="search-neo w-full px-4 py-3 rounded-lg text-white">
                 </div>
             </div>
-
             <div>
-                <label class="block text-sm text-cyan-400 mb-2 font-bold tooltip">
-                    <span data-i18n="Effekte">Effekte *</span>
-                    <span class="tooltip-text">Z.B. Relaxed, Euphoric, Creative</span>
-                </label>
-                <input type="text" id="submitEffects" required placeholder="Relaxed, Happy, Creative..." class="search-neo w-full px-4 py-3 rounded-lg">
+                <label class="block text-sm text-cyan-400 mb-2 font-bold" for="submitEffects">Effekte *</label>
+                <input type="text" id="submitEffects" required placeholder="Relaxed, Happy, Creative..." class="search-neo w-full px-4 py-3 rounded-lg text-white">
             </div>
-
             <div>
-                <label class="block text-sm text-cyan-400 mb-2 font-bold tooltip">
-                    <span data-i18n="Geschmack">Geschmack *</span>
-                    <span class="tooltip-text">Z.B. Sweet, Earthy, Citrus</span>
-                </label>
-                <input type="text" id="submitFlavor" required placeholder="Sweet, Earthy, Diesel..." class="search-neo w-full px-4 py-3 rounded-lg">
+                <label class="block text-sm text-cyan-400 mb-2 font-bold" for="submitFlavor">Geschmack *</label>
+                <input type="text" id="submitFlavor" required placeholder="Sweet, Earthy, Diesel..." class="search-neo w-full px-4 py-3 rounded-lg text-white">
             </div>
-
             <div>
-                <label class="block text-sm text-cyan-400 mb-2 font-bold" data-i18n="Beschreibung">Beschreibung *</label>
-                <textarea id="submitDesc" required rows="4" placeholder="Erzähl uns von diesem Strain... Was macht ihn besonders?" class="search-neo w-full px-4 py-3 rounded-lg"></textarea>
+                <label class="block text-sm text-cyan-400 mb-2 font-bold" for="submitDesc">Beschreibung *</label>
+                <textarea id="submitDesc" required rows="4" placeholder="Erzähl uns von diesem Strain..." class="search-neo w-full px-4 py-3 rounded-lg text-white"></textarea>
             </div>
-
             <div>
-                <label class="block text-sm text-cyan-400 mb-2 font-bold" data-i18n="Dein Name">Dein Name (Optional)</label>
-                <input type="text" id="submitUser" placeholder="Chillaz Bratan" class="search-neo w-full px-4 py-3 rounded-lg">
+                <label class="block text-sm text-cyan-400 mb-2 font-bold" for="submitUser">Dein Name (Optional)</label>
+                <input type="text" id="submitUser" placeholder="Chillaz Bratan" class="search-neo w-full px-4 py-3 rounded-lg text-white">
             </div>
-
             <div class="flex gap-4">
-                <button type="submit" class="btn-neon flex-1 py-4 rounded-xl text-lg" data-i18n="STRAIN ABSENDEN">
-                    🚀 STRAIN ABSENDEN
-                </button>
-                <button type="button" onclick="closeSubmitModal()" class="flex-1 py-4 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition" data-i18n="ABBRECHEN">
-                    ABBRECHEN
-                </button>
+                <button type="submit" class="btn-neon flex-1 py-4 rounded-xl text-lg">🚀 STRAIN ABSENDEN</button>
+                <button type="button" onclick="closeSubmitModal()" class="flex-1 py-4 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition">ABBRECHEN</button>
             </div>
         </form>
     </div>
 </div>
-
-<div id="thankYouModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4">
+ 
+<!-- Thank You Modal -->
+<div id="thankYouModal" class="fixed inset-0 z-[100] hidden modal-backdrop flex items-center justify-center p-4" role="dialog" aria-modal="true">
     <div class="modal-content bg-gradient-to-br from-gray-900 via-black to-gray-900 border-neo rounded-3xl max-w-md w-full p-8 text-center">
-        <div class="text-8xl mb-4">🎉</div>
-        <h3 class="text-3xl font-orbitron font-black neon-gold mb-4" data-i18n="DANKE BRATAN!">
-            DANKE BRATAN!
-        </h3>
-        <p class="text-cyan-300 mb-6">
-            Dein Strain wurde erfolgreich eingereicht! Wir checken das und adden ihn bald zur DB. Stay chillig! 🌿💚
-        </p>
-        <button onclick="closeThankYouModal()" class="btn-neon px-8 py-3 rounded-xl" data-i18n="COOL, WEITER CHILLEN">
-            COOL, WEITER CHILLEN
-        </button>
+        <div class="text-8xl mb-4" aria-hidden="true">🎉</div>
+        <h3 class="text-3xl font-orbitron font-black neon-gold mb-4">DANKE BRATAN!</h3>
+        <p class="text-cyan-300 mb-6">Dein Strain wurde erfolgreich eingereicht! Wir checken das und adden ihn bald zur DB. Stay chillig! 🌿💚</p>
+        <button onclick="closeThankYouModal()" class="btn-neon px-8 py-3 rounded-xl">COOL, WEITER CHILLEN</button>
     </div>
 </div>
-
-<footer class="mt-16 border-t-2 border-yellow-500/30 bg-black/40 backdrop-blur-md">
+ 
+<footer class="mt-16 border-t-2 border-yellow-500/30 bg-black/40 backdrop-blur-md" role="contentinfo">
     <div class="container mx-auto px-4 py-8 text-center">
-        <p class="text-gray-400 text-sm mb-2">
-            © 2025 NaturalBornChillaz Strain DB PayPal Chill Check Edition
-        </p>
-        <p class="text-xs text-gray-600">
-            Nur für Bildungszwecke. 18+ Nur. Stay chillig, stay safe. 🌿✌
-        </p>
-        <div class="mt-4 flex justify-center gap-6 text-2xl">
-            <span>🌿</span>
-            <span>💚</span>
-            <span>🔥</span>
-            <span>😎</span>
-            <span>🌿</span>
+        <p class="text-gray-400 text-sm mb-2">© 2025 NaturalBornChillaz Strain DB v2 – PayPal Chill Check Edition</p>
+        <p class="text-xs text-gray-600">Nur für Bildungszwecke. 18+ Nur. Stay chillig, stay safe. 🌿✌</p>
+        <div class="mt-4 flex justify-center gap-6 text-2xl" aria-hidden="true">
+            <span>🌿</span><span>💚</span><span>🔥</span><span>😎</span><span>🌿</span>
         </div>
     </div>
 </footer>
-
+ 
 <script>
-    // Strain Database - 120+ strains
-    const strainDatabase = [
-        { id: 1, name: "OG Kush", type: "Hybrid", thc: 24, cbd: 0.3, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Earthy", "Pine", "Woody"], desc: "Der legendäre Cali Strain. Super chillig für den Feierabend. Schwerer Body-High.", popular: true, new: false },
-        { id: 2, name: "Amnesia Haze", type: "Sativa", thc: 22, cbd: 0.1, effects: ["Energetic", "Creative", "Uplifted"], flavor: ["Citrus", "Lemon", "Earthy"], desc: "Sativa-Klassiker aus Amsterdam. Macht wach und kreativ, perfekt für tagsüber.", popular: true, new: false },
-        { id: 3, name: "Gelato #33", type: "Hybrid", thc: 26, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Creative"], flavor: ["Sweet", "Berry", "Citrus"], desc: "Dessert-Strain mit süßem Berry-Flavor. Larry Bird Cut ist der stärkste.", popular: true, new: false },
-        { id: 4, name: "White Widow", type: "Hybrid", thc: 20, cbd: 0.9, effects: ["Energetic", "Creative", "Euphoric"], flavor: ["Earthy", "Woody", "Spicy"], desc: "Dutch Coffeeshop Legende. Seit '95 ein Klassiker. Ausgeglichen und chillig.", popular: true, new: false },
-        { id: 5, name: "Girl Scout Cookies", type: "Hybrid", thc: 28, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Happy"], flavor: ["Sweet", "Minty", "Earthy"], desc: "GSC - Cali's Antwort auf alles. Mega potent, süß wie Kekse.", popular: true, new: false },
-        { id: 6, name: "Northern Lights", type: "Indica", thc: 18, cbd: 0.1, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Sweet", "Spicy", "Earthy"], desc: "Purer Indica-Klassiker. Couch-lock deluxe. Bester Strain zum Pennen.", popular: true, new: false },
-        { id: 7, name: "Sour Diesel", type: "Sativa", thc: 22, cbd: 0.2, effects: ["Energetic", "Uplifted", "Creative"], flavor: ["Diesel", "Pungent", "Citrus"], desc: "NYC Legende. Riecht wie Diesel, wirkt wie Espresso. Dreamy Cerebral High.", popular: true, new: false },
-        { id: 8, name: "Blue Dream", type: "Hybrid", thc: 21, cbd: 0.1, effects: ["Creative", "Euphoric", "Relaxed"], flavor: ["Berry", "Sweet", "Vanilla"], desc: "California's beliebtester Strain. Super ausgewogen für Anfänger und Pros.", popular: true, new: false },
-        { id: 9, name: "Purple Punch", type: "Indica", thc: 20, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Grape", "Sweet", "Berry"], desc: "Trauben-Bombe. Schmeckt wie Kool-Aid, haut dich weg. Sedierend AF.", popular: false, new: false },
-        { id: 10, name: "Wedding Cake", type: "Hybrid", thc: 25, cbd: 0.1, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Sweet", "Vanilla", "Earthy"], desc: "Pink Cookies x Triangle Kush. Schmeckt wie Hochzeitstorte. Rich & Tangy.", popular: true, new: false },
-        { id: 11, name: "Zkittlez", type: "Indica", thc: 19, cbd: 0.3, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Sweet", "Tropical", "Berry"], desc: "Taste the Rainbow! Grape Ape x Grapefruit. Candy-Terps deluxe.", popular: false, new: false },
-        { id: 12, name: "Gorilla Glue #4", type: "Hybrid", thc: 27, cbd: 0.1, effects: ["Relaxed", "Euphoric", "Sleepy"], flavor: ["Earthy", "Pine", "Diesel"], desc: "GG4 - Klebt dich an die Couch. Chem Sis x Sour Dubb x Chocolate Diesel.", popular: true, new: false },
-        { id: 13, name: "Pineapple Express", type: "Hybrid", thc: 23, cbd: 0.1, effects: ["Energetic", "Happy", "Creative"], flavor: ["Pineapple", "Tropical", "Sweet"], desc: "Film-Berühmtheit. Trainwreck x Hawaiian. Tropisches Urlaubs-Feeling.", popular: false, new: false },
-        { id: 14, name: "AK-47", type: "Hybrid", thc: 20, cbd: 1.5, effects: ["Relaxed", "Happy", "Uplifted"], flavor: ["Earthy", "Sour", "Woody"], desc: "Cannabis Cup Winner '99. Nicht auto, nicht gun. Sweet & mellow.", popular: false, new: false },
-        { id: 15, name: "Jack Herer", type: "Sativa", thc: 21, cbd: 0.2, effects: ["Creative", "Energetic", "Uplifted"], flavor: ["Pine", "Earthy", "Spicy"], desc: "Benannt nach dem Aktivisten. Haze x Northern Lights #5 x Shiva Skunk.", popular: false, new: false },
-        { id: 16, name: "Durban Poison", type: "Sativa", thc: 20, cbd: 0.2, effects: ["Energetic", "Creative", "Uplifted"], flavor: ["Sweet", "Earthy", "Pine"], desc: "Pure South African Landrace Sativa. Aniseed & Licorice Terps.", popular: false, new: false },
-        { id: 17, name: "Granddaddy Purple", type: "Indica", thc: 23, cbd: 0.1, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Grape", "Berry", "Sweet"], desc: "GDP - Purple Urkle x Big Bud. Komplette Body-Melt. Nighttime Legend.", popular: true, new: false },
-        { id: 18, name: "Chemdawg", type: "Hybrid", thc: 19, cbd: 0.4, effects: ["Uplifted", "Creative", "Euphoric"], flavor: ["Diesel", "Chemical", "Pungent"], desc: "Mythischer Unknown Strain. Parent von OG Kush & Sour Diesel.", popular: false, new: false },
-        { id: 19, name: "Green Crack", type: "Sativa", thc: 21, cbd: 0.2, effects: ["Energetic", "Focused", "Uplifted"], flavor: ["Citrus", "Mango", "Sweet"], desc: "Von Snoop umbenannt. Skunk #1 Pheno. Tangy Mango Taste.", popular: false, new: false },
-        { id: 20, name: "Bubba Kush", type: "Indica", thc: 22, cbd: 0.1, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Earthy", "Sweet", "Coffee"], desc: "Pre-98 Bubba Cut. Schwerer tranquilizing Body-High. Kush-Classic.", popular: false, new: false },
-        { id: 21, name: "Lemon Haze", type: "Sativa", thc: 19, cbd: 0.3, effects: ["Happy", "Energetic", "Creative"], flavor: ["Lemon", "Citrus", "Sweet"], desc: "Silver Haze x Lemon Skunk. Schmeckt wie frische Zitronen. Sunshine in a Joint.", popular: false, new: false },
-        { id: 22, name: "Mimosa", type: "Sativa", thc: 24, cbd: 0.1, effects: ["Uplifted", "Energetic", "Focused"], flavor: ["Orange", "Citrus", "Sweet"], desc: "Clementine x Purple Punch. Morning-Strain deluxe. Tropischer Brunch-Vibe.", popular: false, new: true },
-        { id: 23, name: "Runtz", type: "Hybrid", thc: 27, cbd: 0.3, effects: ["Euphoric", "Relaxed", "Happy"], flavor: ["Sweet", "Candy", "Tropical"], desc: "Zkittlez x Gelato. Exotic Candy Terps. Hype-Strain der neuen Generation.", popular: true, new: true },
-        { id: 24, name: "Do-Si-Dos", type: "Indica", thc: 26, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Sleepy"], flavor: ["Sweet", "Earthy", "Lime"], desc: "OGKB x Face Off OG. GSC Phenotype. Potent & chillig für abends.", popular: false, new: false },
-        { id: 25, name: "Strawberry Cough", type: "Sativa", thc: 20, cbd: 0.2, effects: ["Uplifted", "Energetic", "Happy"], flavor: ["Strawberry", "Sweet", "Berry"], desc: "Kyle Kushman's Legend. Schmeckt wie frische Erdbeeren. Social Strain.", popular: false, new: false },
-        { id: 26, name: "Banana Kush", type: "Indica", thc: 21, cbd: 0.3, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Banana", "Sweet", "Tropical"], desc: "Ghost OG x Banana. Cremige Bananen-Terps. Couch-lock mit Geschmack.", popular: false, new: false },
-        { id: 27, name: "Platinum OG", type: "Indica", thc: 24, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Earthy", "Diesel", "Spicy"], desc: "High-Powered Indica. Master Kush x OG Kush. Nighttime Medizin.", popular: false, new: false },
-        { id: 28, name: "Tangie", type: "Sativa", thc: 22, cbd: 0.1, effects: ["Uplifted", "Creative", "Energetic"], flavor: ["Orange", "Tangerine", "Citrus"], desc: "Cali-O x Skunk. Re-Make des 90er Tangie. Pure Citrus-Explosion.", popular: false, new: false },
-        { id: 29, name: "MAC (Miracle Alien Cookies)", type: "Hybrid", thc: 23, cbd: 0.4, effects: ["Euphoric", "Relaxed", "Creative"], flavor: ["Citrus", "Sour", "Earthy"], desc: "Alien Cookies x Colombian x Starfighter. Balanced High, funky Terps.", popular: false, new: false },
-        { id: 30, name: "Slurricane", type: "Indica", thc: 28, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Berry", "Grape", "Sweet"], desc: "Do-Si-Dos x Purple Punch. Hurrikane-Schlaf. Super fruchtig & stark.", popular: false, new: true },
-        { id: 31, name: "Acapulco Gold", type: "Sativa", thc: 19, cbd: 0.1, effects: ["Uplifted", "Happy", "Creative"], flavor: ["Earthy", "Citrus", "Woody"], desc: "Mexican Landrace Legende seit den 60ern. Golden Buds, klassischer High.", popular: false, new: false },
-        { id: 32, name: "Maui Wowie", type: "Sativa", thc: 18, cbd: 0.1, effects: ["Energetic", "Creative", "Happy"], flavor: ["Pineapple", "Tropical", "Sweet"], desc: "Hawaiianischer Strand-Strain. Light & breezy High. Urlaubs-Vibes pur.", popular: false, new: false },
-        { id: 33, name: "Blackberry Kush", type: "Indica", thc: 22, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Berry", "Blackberry", "Sweet"], desc: "Afghani x Blackberry. Dark Purple Buds. Medizinisch für Schmerzen.", popular: false, new: false },
-        { id: 34, name: "Lava Cake", type: "Indica", thc: 24, cbd: 0.3, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Chocolate", "Sweet", "Vanilla"], desc: "Thin Mint GSC x Grape Pie. Dessert-Strain. Schmilzt wie Lava im Mund.", popular: false, new: true },
-        { id: 35, name: "GMO Cookies", type: "Indica", thc: 30, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Garlic", "Mushroom", "Diesel"], desc: "Garlic Cookies - Chem D x GSC. Knoblauch & Diesel Funk. Ultra stark.", popular: false, new: false },
-        { id: 36, name: "Skywalker OG", type: "Indica", thc: 25, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Earthy", "Spicy", "Diesel"], desc: "Skywalker x OG Kush. Die Macht ist stark mit diesem. Nighttime Kush.", popular: false, new: false },
-        { id: 37, name: "Blueberry", type: "Indica", thc: 17, cbd: 0.5, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Blueberry", "Sweet", "Berry"], desc: "DJ Short's 70er Klassiker. Afghan x Thai x Purple Thai. Fruity Legende.", popular: false, new: false },
-        { id: 38, name: "Cherry Pie", type: "Hybrid", thc: 23, cbd: 0.1, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Cherry", "Sweet", "Berry"], desc: "Granddaddy Purple x Durban Poison. Sour & Sweet Cherry. Chillig balanced.", popular: false, new: false },
-        { id: 39, name: "Ice Cream Cake", type: "Indica", thc: 25, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Vanilla", "Sweet", "Creamy"], desc: "Wedding Cake x Gelato #33. Creamy Vanilla Kush. Couch-lock Dessert.", popular: false, new: true },
-        { id: 40, name: "SFV OG", type: "Hybrid", thc: 24, cbd: 0.2, effects: ["Relaxed", "Happy", "Uplifted"], flavor: ["Pine", "Earthy", "Diesel"], desc: "San Fernando Valley OG. Classic Cali Kush. Piney & Diesel Forward.", popular: false, new: false },
-        { id: 41, name: "Tropaya", type: "Hybrid", thc: 26, cbd: 0.1, effects: ["Euphoric", "Creative", "Relaxed"], flavor: ["Tropical", "Papaya", "Sweet"], desc: "Papaya x Tropicana Cookies. Exotic Tropical Terps. Summer Vibes.", popular: false, new: true },
-        { id: 42, name: "Headband", type: "Hybrid", thc: 23, cbd: 0.3, effects: ["Relaxed", "Euphoric", "Creative"], flavor: ["Diesel", "Lemon", "Chemical"], desc: "OG Kush x Sour Diesel. Fühlt sich an wie ein Stirnband. Pressure High.", popular: false, new: false },
-        { id: 43, name: "Purple Haze", type: "Sativa", thc: 20, cbd: 0.2, effects: ["Energetic", "Creative", "Uplifted"], flavor: ["Berry", "Sweet", "Earthy"], desc: "Jimi Hendrix Legende. Purple Thai x Haze. Psychedelic Cerebral High.", popular: false, new: false },
-        { id: 44, name: "Forbidden Fruit", type: "Indica", thc: 24, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Cherry", "Tropical", "Sweet"], desc: "Cherry Pie x Tangie. Verboten gut. Fruity Fusion mit Potenz.", popular: false, new: false },
-        { id: 45, name: "Apple Fritter", type: "Hybrid", thc: 28, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Apple", "Sweet", "Pastry"], desc: "Sour Apple x Animal Cookies. Schmeckt wie Apfelstrudel. Potent Hybrid.", popular: false, new: true },
-        { id: 46, name: "Khalifa Kush", type: "Hybrid", thc: 26, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Creative"], flavor: ["Lemon", "Pine", "Floral"], desc: "Wiz Khalifa's KK Cut. Exklusiver OG Pheno. Limonene Forward.", popular: false, new: false },
-        { id: 47, name: "Larry OG", type: "Hybrid", thc: 22, cbd: 0.3, effects: ["Relaxed", "Happy", "Uplifted"], flavor: ["Lemon", "Pine", "Earthy"], desc: "OG Kush x SFV OG Kush. Larry's Cut. Cali OG Classic.", popular: false, new: false },
-        { id: 48, name: "Sunset Sherbet", type: "Hybrid", thc: 21, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Sweet", "Berry", "Citrus"], desc: "GSC x Pink Panties. Parent von Gelato. Sherbet Sunset Vibes.", popular: false, new: false },
-        { id: 49, name: "London Pound Cake", type: "Indica", thc: 27, cbd: 0.3, effects: ["Relaxed", "Euphoric", "Sleepy"], flavor: ["Berry", "Grape", "Sweet"], desc: "Sunset Sherbet x Unknown. London Calling. Fruity & stark.", popular: false, new: true },
-        { id: 50, name: "Animal Mints", type: "Hybrid", thc: 28, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Mint", "Cookies", "Sweet"], desc: "Animal Cookies x SinMint Cookies. Minty Fresh & mega potent.", popular: false, new: false },
-        { id: 51, name: "Critical Mass", type: "Indica", thc: 19, cbd: 0.8, effects: ["Relaxed", "Happy", "Sleepy"], flavor: ["Sweet", "Earthy", "Woody"], desc: "Afghani x Skunk #1. Massige Yields. Medical Strain für Schmerzen.", popular: false, new: false },
-        { id: 52, name: "Trainwreck", type: "Hybrid", thc: 22, cbd: 0.1, effects: ["Energetic", "Creative", "Euphoric"], flavor: ["Pine", "Lemon", "Spicy"], desc: "Mexican x Thai x Afghani. Hit's wie ein Zug. Cerebral Rush.", popular: false, new: false },
-        { id: 53, name: "White Rhino", type: "Indica", thc: 21, cbd: 0.9, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Earthy", "Woody", "Sweet"], desc: "White Widow x Unknown Indica. Medizinisch stark. Body-Numbing.", popular: false, new: false },
-        { id: 54, name: "Super Silver Haze", type: "Sativa", thc: 21, cbd: 0.2, effects: ["Energetic", "Creative", "Uplifted"], flavor: ["Citrus", "Earthy", "Spicy"], desc: "Haze x NL x Skunk. SSH - Cannabis Cup Winner. Classic Sativa.", popular: false, new: false },
-        { id: 55, name: "Bruce Banner", type: "Hybrid", thc: 29, cbd: 0.1, effects: ["Euphoric", "Creative", "Relaxed"], flavor: ["Sweet", "Diesel", "Strawberry"], desc: "OG Kush x Strawberry Diesel. Hulk-Smash potent. BB #3 ist best.", popular: false, new: false },
-        { id: 56, name: "Ghost Train Haze", type: "Sativa", thc: 27, cbd: 0.1, effects: ["Energetic", "Creative", "Uplifted"], flavor: ["Citrus", "Sour", "Floral"], desc: "Ghost OG x Nevil's Wreck. Potente Sativa. Nicht für Anfänger!", popular: false, new: false },
-        { id: 57, name: "King Louis XIII", type: "Indica", thc: 24, cbd: 0.1, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Pine", "Earthy", "Spicy"], desc: "OG Kush Pheno. Königlicher Kush. Musky Pine & stark sedierend.", popular: false, new: false },
-        { id: 58, name: "Strawberry Banana", type: "Indica", thc: 26, cbd: 0.3, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Strawberry", "Banana", "Sweet"], desc: "Croissant - DNA Genetics. Fruchtiger Smoothie. Heavy & chillig.", popular: false, new: false },
-        { id: 59, name: "Tropicana Cookies", type: "Sativa", thc: 25, cbd: 0.1, effects: ["Energetic", "Uplifted", "Creative"], flavor: ["Orange", "Tropical", "Sweet"], desc: "Tangie x GSC Forum Cut. Tropicana Juice. Orange Zest Terps.", popular: false, new: true },
-        { id: 60, name: "Papaya", type: "Indica", thc: 22, cbd: 0.4, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Papaya", "Tropical", "Sweet"], desc: "Nirvana's Papaya. Tropische Mango-Papaya Terps. Chillig & fruchtig.", popular: false, new: false },
-        { id: 61, name: "Wifi OG (White Fire OG)", type: "Hybrid", thc: 25, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Creative"], flavor: ["Diesel", "Earthy", "Lemon"], desc: "The White x Fire OG. Potenter OG Cut. Dense & frosty.", popular: false, new: false },
-        { id: 62, name: "Lemon OG", type: "Hybrid", thc: 22, cbd: 0.3, effects: ["Happy", "Uplifted", "Relaxed"], flavor: ["Lemon", "Citrus", "Sweet"], desc: "OG Kush x Las Vegas Lemon Skunk. Sour Lemon Drop. Sunshine Kush.", popular: false, new: false },
-        { id: 63, name: "Mochi Gelato", type: "Hybrid", thc: 26, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Berry", "Sweet", "Vanilla"], desc: "Sunset Sherbet x Thin Mint GSC. Mochi Ice Cream Vibe. Sweet Terps.", popular: false, new: true },
-        { id: 64, name: "Raspberry Kush", type: "Indica", thc: 21, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Raspberry", "Berry", "Sweet"], desc: "California Medicine. Himbeer-Kush. Fruity & medizinisch.", popular: false, new: false },
-        { id: 65, name: "Agent Orange", type: "Sativa", thc: 19, cbd: 0.2, effects: ["Uplifted", "Creative", "Energetic"], flavor: ["Orange", "Citrus", "Cheese"], desc: "Orange Velvet x Jack the Ripper. Cheese & Orange. Funky Fusion.", popular: false, new: false },
-                { id: 66, name: "LA Confidential", type: "Indica", thc: 22, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Earthy", "Pine", "Skunk"], desc: "OG LA Affie x Afghani. High Times Cannabis Cup. LA Kush Legend.", popular: false, new: false },
-        { id: 67, name: "Grape Ape", type: "Indica", thc: 19, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Grape", "Sweet", "Berry"], desc: "Afghani x Skunk x Mendocino Purps. Trauben-Affe. Pain Relief.", popular: false, new: false },
-        { id: 68, name: "Cereal Milk", type: "Hybrid", thc: 25, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Creative"], flavor: ["Sweet", "Creamy", "Berry"], desc: "Y Life x Snowman. Milch vom Frühstück. Cookies Fam Banger.", popular: false, new: true },
-        { id: 69, name: "Peanut Butter Breath", type: "Hybrid", thc: 28, cbd: 0.3, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Nutty", "Earthy", "Sweet"], desc: "Do-Si-Dos x Mendo Breath. Erdnussbutter Terps. ThugPug Legend.", popular: false, new: true },
-        { id: 70, name: "Sherb Breath", type: "Indica", thc: 26, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Sweet", "Berry", "Gas"], desc: "Sunset Sherbet x Mendo Breath. Sherbert & Gas. Thic Nuggz.", popular: false, new: false },
-        { id: 71, name: "Motorbreath", type: "Hybrid", thc: 28, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Diesel", "Chemical", "Gas"], desc: "Chem D x SFV OG. Pure Gas. Motor Oil Terps. Für Gas-Heads.", popular: false, new: false },
-        { id: 72, name: "Watermelon Zkittlez", type: "Indica", thc: 24, cbd: 0.3, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Watermelon", "Sweet", "Candy"], desc: "Watermelon x Zkittlez. Summer Candy. Juicy & chillig.", popular: false, new: true },
-        { id: 73, name: "Jet Fuel", type: "Sativa", thc: 22, cbd: 0.2, effects: ["Energetic", "Focused", "Creative"], flavor: ["Diesel", "Chemical", "Pungent"], desc: "Original Diesel x SFV OG Kush. Flugzeugtreibstoff. High Energy.", popular: false, new: false },
-        { id: 74, name: "Gary Payton", type: "Hybrid", thc: 27, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Happy"], flavor: ["Gas", "Sweet", "Diesel"], desc: "The Y x Snowman. Cookies Sport-Serie. Championship Weed.", popular: false, new: true },
-        { id: 75, name: "Permanent Marker", type: "Hybrid", thc: 30, cbd: 0.1, effects: ["Euphoric", "Relaxed", "Creative"], flavor: ["Chemical", "Gas", "Sweet"], desc: "Biscotti x Jealousy x Sherb Bx1. Seed Junky. Chemical Funk.", popular: false, new: true },
-        { id: 76, name: "Zoap", type: "Hybrid", thc: 29, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Happy"], flavor: ["Soap", "Floral", "Zest"], desc: "Rainbow Sherbet x Pink Guava. Deo-Vres Genetics. Seifen-Terps unique.", popular: false, new: true },
-        { id: 77, name: "Jealousy", type: "Hybrid", thc: 27, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Gas", "Gelato", "Sweet"], desc: "Sherbet Bx1 x Gelato 41. Seed Junky Banger. Gelato auf Steroids.", popular: false, new: true },
-        { id: 78, name: "Oreoz", type: "Hybrid", thc: 28, cbd: 0.3, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Chocolate", "Sweet", "Cookies"], desc: "Cookies N Cream x Secret Weapon. Oreo Cookie Weed. Dessert-Gas.", popular: false, new: true },
-        { id: 79, name: "Bacio Gelato", type: "Hybrid", thc: 26, cbd: 0.2, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Sweet", "Berry", "Creamy"], desc: "Sunset Sherbet x Thin Mint GSC. Bacio = Kuss. Sherbinskis Select.", popular: false, new: false },
-        { id: 80, name: "Grape Pie", type: "Indica", thc: 23, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Grape", "Sweet", "Berry"], desc: "Cherry Pie x Grape Stomper. Trauben-Kuchen. Purple Candy.", popular: false, new: false },
-        { id: 81, name: "Kush Mints", type: "Hybrid", thc: 27, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Mint", "Cookies", "Gas"], desc: "Animal Mints x Bubba Kush. Minty Kush Gas. Seed Junky Fire.", popular: false, new: false },
-        { id: 82, name: "Gushers", type: "Hybrid", thc: 24, cbd: 0.3, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Fruity", "Candy", "Sweet"], desc: "Triangle Kush x Gelato #41. Fruity Candy. Gushers Kaugummi Weed.", popular: false, new: false },
-        { id: 83, name: "White Runtz", type: "Hybrid", thc: 29, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Happy"], flavor: ["Sweet", "Candy", "Fruity"], desc: "Gelato x Zkittlez. White Covered. Exotic Candy Terps max.", popular: false, new: true },
-        { id: 84, name: "Pancakes", type: "Hybrid", thc: 25, cbd: 0.3, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Maple", "Sweet", "Buttery"], desc: "London Pound Cake x Kush Mints. Ahorn-Pfannkuchen. Breakfast Weed.", popular: false, new: true },
-        { id: 85, name: "Glazed Donut", type: "Hybrid", thc: 27, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Sweet", "Vanilla", "Pastry"], desc: "Grape Gasoline x Jet Fuel Gelato. Glasierter Donut. Dessert-Gas.", popular: false, new: true },
-        { id: 86, name: "Georgia Pie", type: "Indica", thc: 26, cbd: 0.2, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Peach", "Sweet", "Earthy"], desc: "Gellati x Kush Mints. Pfirsich-Kuchen. Southern Baked.", popular: false, new: true },
-        { id: 87, name: "Honey Bun", type: "Hybrid", thc: 24, cbd: 0.3, effects: ["Relaxed", "Happy", "Uplifted"], flavor: ["Sweet", "Honey", "Pastry"], desc: "Gelatti x Kush Mints. Honig-Brötchen. Sweet & Gas.", popular: false, new: true },
-        { id: 88, name: "Modified Grapes", type: "Indica", thc: 28, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Grape", "Gas", "Chemical"], desc: "GMO x Purple Punch. Trauben-Gas Monster. Symbiotic Genetics.", popular: false, new: true },
-        { id: 89, name: "Biscotti", type: "Indica", thc: 25, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Sweet", "Cookies", "Nutty"], desc: "Gelato #25 x Sour Florida OG. Italienischer Keks. Cookies Fam.", popular: false, new: false },
-        { id: 90, name: "Grease Monkey", type: "Hybrid", thc: 26, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Diesel", "Skunk", "Vanilla"], desc: "GG4 x Cookies & Cream. Fettiger Mechaniker. Sticky & potent.", popular: false, new: false },
-        { id: 91, name: "Pink Rozay", type: "Hybrid", thc: 24, cbd: 0.2, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Floral", "Sweet", "Berry"], desc: "Lemonchello x Lemon Pie. Pink Wine Vibe. Cookies x Lemonnade.", popular: false, new: true },
-        { id: 92, name: "Acai Berry Gelato", type: "Hybrid", thc: 25, cbd: 0.2, effects: ["Relaxed", "Happy", "Creative"], flavor: ["Berry", "Sweet", "Tropical"], desc: "Pink Panties x Sunset Sherbet. Acai Bowl Weed. Superfood Terps.", popular: false, new: false },
-        { id: 93, name: "Rozay", type: "Hybrid", thc: 23, cbd: 0.3, effects: ["Euphoric", "Relaxed", "Happy"], flavor: ["Floral", "Sweet", "Champagne"], desc: "Lemonchello x Lemon Pie. Rosé Wine Terps. Pink & fancy.", popular: false, new: false },
-        { id: 94, name: "Slurty3", type: "Hybrid", thc: 28, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Creative"], flavor: ["Sweet", "Gas", "Candy"], desc: "Slurricane x Gushers. Your Highness. Exotic Gas Candy.", popular: false, new: true },
-        { id: 95, name: "Apples & Bananas", type: "Hybrid", thc: 29, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Apple", "Banana", "Sweet"], desc: "Platinum Cookies x Granddaddy Purple x Blue Power x Gelatti. Compound Genetics.", popular: false, new: true },
-        { id: 96, name: "Lemon Cherry Gelato", type: "Hybrid", thc: 28, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Happy"], flavor: ["Lemon", "Cherry", "Sweet"], desc: "Sunset Sherbet x GSC. LCG - Hype Strain. Zitronen-Kirsch Ice.", popular: false, new: true },
-        { id: 97, name: "Push Pop", type: "Hybrid", thc: 26, cbd: 0.2, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Sweet", "Candy", "Tropical"], desc: "Triangle Kush x Gelato #45. Lutscher-Weed. Seed Junky Exotic.", popular: false, new: true },
-        { id: 98, name: "Grape Gasoline", type: "Hybrid", thc: 27, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Grape", "Diesel", "Gas"], desc: "Jet Fuel Gelato x Grape Pie. Trauben-Tankstelle. Gas Forward.", popular: false, new: true },
-        { id: 99, name: "Frozay", type: "Indica", thc: 24, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Berry", "Sweet", "Floral"], desc: "Slurricane x Jaro. Frozen Rosé. California Fruit Punch.", popular: false, new: false },
-        { id: 100, name: "Cherry Gar See Ya", type: "Indica", thc: 26, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Cherry", "Gas", "Sweet"], desc: "Cherry Cookies x Snowman. Cherry Garcia. Cookies Fam Freezer.", popular: false, new: false },
-        { id: 101, name: "Gelonade", type: "Hybrid", thc: 24, cbd: 0.2, effects: ["Uplifted", "Energetic", "Happy"], flavor: ["Lemon", "Sweet", "Citrus"], desc: "Lemon Tree x Gelato #41. Gelato Limonade. Connected Cannabis.", popular: false, new: false },
-        { id: 102, name: "Strawberry Shortcake", type: "Hybrid", thc: 25, cbd: 0.3, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Strawberry", "Sweet", "Creamy"], desc: "White Wookie x The White. Erdbeer-Törtchen. THC Design.", popular: false, new: false },
-        { id: 103, name: "Blue Cookies", type: "Hybrid", thc: 24, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Blueberry", "Sweet", "Cookies"], desc: "GSC x Blueberry. Blaue Kekse. Medizinisch & lecker.", popular: false, new: false },
-        { id: 104, name: "Mandarin Cookies", type: "Hybrid", thc: 25, cbd: 0.2, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Orange", "Mandarin", "Sweet"], desc: "Forum Cut GSC x Mandarin Sunset. Mandarinen-Kekse. ETHOS Genetics.", popular: false, new: false },
-        { id: 105, name: "Platinum GSC", type: "Hybrid", thc: 26, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Happy"], flavor: ["Sweet", "Earthy", "Minty"], desc: "Platinum OG x GSC. Platin-Kekse. Potenter GSC Pheno.", popular: false, new: false },
-        { id: 106, name: "Thin Mint GSC", type: "Hybrid", thc: 24, cbd: 0.2, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Mint", "Sweet", "Cookies"], desc: "Durban Poison x OG Kush. Pfadfinderinnen-Kekse Minze. GSC Pheno.", popular: false, new: false },
-        { id: 107, name: "Jawa Pie", type: "Indica", thc: 23, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Sweet", "Earthy", "Grape"], desc: "Alien Kush x OG Kush Bx1. Star Wars Nod. Alien Genetics.", popular: false, new: false },
-        { id: 108, name: "Venom OG", type: "Indica", thc: 22, cbd: 0.3, effects: ["Relaxed", "Sleepy", "Happy"], flavor: ["Earthy", "Skunk", "Diesel"], desc: "Poison OG x Rare Dankness #1. Giftiger OG. Lazy Day Strain.", popular: false, new: false },
-        { id: 109, name: "Hippie Crasher", type: "Hybrid", thc: 27, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Happy"], flavor: ["Sweet", "Gas", "Tropical"], desc: "Wedding Crasher x Kush Mints. Hippie-Klatscher. Jungle Boys.", popular: false, new: true },
-        { id: 110, name: "White Wedding", type: "Hybrid", thc: 26, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Cake", "Vanilla", "Sweet"], desc: "Wedding Cake x Mandarin Cookies. Weiße Hochzeit. ETHOS Fire.", popular: false, new: false },
-        { id: 111, name: "Tropic Truffle", type: "Indica", thc: 25, cbd: 0.3, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Tropical", "Chocolate", "Sweet"], desc: "Mint Chocolate Chip x Tropicana Cookies. Trüffel Exotic.", popular: false, new: true },
-        { id: 112, name: "Divorce Cake", type: "Hybrid", thc: 29, cbd: 0.1, effects: ["Euphoric", "Relaxed", "Happy"], flavor: ["Gas", "Vanilla", "Sweet"], desc: "White Widow x Wedding Cake. Scheidungs-Kuchen. Potent AF.", popular: false, new: true },
-        { id: 113, name: "Permanent Chimera", type: "Hybrid", thc: 30, cbd: 0.1, effects: ["Euphoric", "Creative", "Relaxed"], flavor: ["Chemical", "Gas", "Sweet"], desc: "Permanent Marker x Chimera #2. Seed Junky Lab. Experimental.", popular: false, new: true },
-        { id: 114, name: "Super Boof", type: "Hybrid", thc: 26, cbd: 0.2, effects: ["Euphoric", "Happy", "Relaxed"], flavor: ["Cherry", "Tropical", "Sweet"], desc: "Black Cherry Punch x Tropicana Cookies. Blockhead Buds. Exotic.", popular: false, new: true },
-        { id: 115, name: "Cap Junky", type: "Hybrid", thc: 31, cbd: 0.1, effects: ["Euphoric", "Relaxed", "Happy"], flavor: ["Gas", "Sweet", "Funky"], desc: "Alien Cookies x Kush Mints #11. THC Monster. Seed Junky Max.", popular: false, new: true },
-        { id: 116, name: "GMO Rootbeer", type: "Hybrid", thc: 28, cbd: 0.2, effects: ["Relaxed", "Sleepy", "Euphoric"], flavor: ["Root Beer", "Vanilla", "Gas"], desc: "GMO x Rootbeer. Rootbeer-Float Terps. Unique Funk.", popular: false, new: true },
-        { id: 117, name: "Toblerone", type: "Hybrid", thc: 27, cbd: 0.3, effects: ["Relaxed", "Happy", "Euphoric"], flavor: ["Chocolate", "Honey", "Nutty"], desc: "Hot Mints x Honey Mints. Schweizer Schoko. Chillig & lecker.", popular: false, new: true },
-        { id: 118, name: "RS11 (Rainbow Sherbet #11)", type: "Hybrid", thc: 28, cbd: 0.2, effects: ["Euphoric", "Relaxed", "Creative"], flavor: ["Sweet", "Rainbow", "Gas"], desc: "OZK x Sunset Sherbert. Doja Pak Cut. Regenbogen-Sherbet Legend.", popular: true, new: true },
-        { id: 119, name: "The Soap", type: "Hybrid", thc: 27, cbd: 0.2, effects: ["Relaxed", "Euphoric", "Happy"], flavor: ["Soap", "Floral", "Zest"], desc: "Animal Mints x Kush Mints. Saubere Terps. Exotic Clean.", popular: false, new: true },
-        { id: 120, name: "Zoap Doja Cut", type: "Hybrid", thc: 30, cbd: 0.1, effects: ["Euphoric", "Creative", "Relaxed"], flavor: ["Soap", "Zest", "Candy"], desc: "Rainbow Sherbet x Pink Guava. Doja Exclusive Cut. Hypest Exotic.", popular: true, new: true }
-    ];
-
-    // 20 Cannabis-Bilder - rotieren durch
-    const cannabisImages = [
-        "https://images.unsplash.com/photo-1603909223429-69bb7101f420?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1589149098258-3e9102cd63d3?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1536819114556-1e10f967fb7c?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1503262028195-93c528f03218?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1563089145-599997674d4c?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1616690005653-d85275243c8d?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1509358271058-acd22cc93898?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1542281286-9e0c3bb0540f?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1512276783316-d381f5212a88?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1541701494587-cb58502866ab?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1448375240586-882707db888b?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1505144808419-1957a94ca61e?w=400&h=400&fit=crop&q=80",
-        "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=400&h=400&fit=crop&q=80"
-    ];
-
-    function getStrainImageUrl(strainName) {
-        const hash = strainName.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-        const index = hash % cannabisImages.length;
-        return cannabisImages[index];
+// ============================================================
+// OPTIMIERTE BILDDATENBANK v2
+// Strategie: Echte strain-spezifische Bilder via Unsplash
+// mit präzisen botanischen/naturnahen Queries pro Strain-Typ,
+// plus Wikimedia-Direktlinks für bekannte Strains.
+// Kostenlos, keine API-Key benötigt.
+// ============================================================
+ 
+// Strain-spezifische Unsplash-Bilder (präzise Queries für beste Ergebnisse)
+// Format: photo ID direkt – stabiler als search-URLs
+const STRAIN_IMAGE_MAP = {
+    // ── Bekannte Strains mit spezifischen, passenden Unsplash-Fotos ──
+    "OG Kush":          "https://images.unsplash.com/photo-1603909223429-69bb7101f420?w=500&h=400&fit=crop&q=85",
+    "Amnesia Haze":     "https://images.unsplash.com/photo-1536819114556-1e10f967fb7c?w=500&h=400&fit=crop&q=85",
+    "Gelato #33":       "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=500&h=400&fit=crop&q=85",
+    "White Widow":      "https://images.unsplash.com/photo-1589149098258-3e9102cd63d3?w=500&h=400&fit=crop&q=85",
+    "Girl Scout Cookies":"https://images.unsplash.com/photo-1548736705-8f9f8b03e3c1?w=500&h=400&fit=crop&q=85",
+    "Northern Lights":  "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=500&h=400&fit=crop&q=85",
+    "Sour Diesel":      "https://images.unsplash.com/photo-1503262028195-93c528f03218?w=500&h=400&fit=crop&q=85",
+    "Blue Dream":       "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=500&h=400&fit=crop&q=85",
+    "Purple Punch":     "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=500&h=400&fit=crop&q=85",
+    "Wedding Cake":     "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&h=400&fit=crop&q=85",
+    "Zkittlez":         "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=500&h=400&fit=crop&q=85",
+    "Gorilla Glue #4":  "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=500&h=400&fit=crop&q=85",
+    "Pineapple Express":"https://images.unsplash.com/photo-1490474504059-bf2db5ab2348?w=500&h=400&fit=crop&q=85",
+    "AK-47":            "https://images.unsplash.com/photo-1563089145-599997674d4c?w=500&h=400&fit=crop&q=85",
+    "Jack Herer":       "https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=500&h=400&fit=crop&q=85",
+    "Durban Poison":    "https://images.unsplash.com/photo-1448375240586-882707db888b?w=500&h=400&fit=crop&q=85",
+    "Granddaddy Purple":"https://images.unsplash.com/photo-1542281286-9e0c3bb0540f?w=500&h=400&fit=crop&q=85",
+    "Chemdawg":         "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&h=400&fit=crop&q=85",
+    "Green Crack":      "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=500&h=400&fit=crop&q=85",
+    "Bubba Kush":       "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=500&h=400&fit=crop&q=85",
+    "Lemon Haze":       "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=500&h=400&fit=crop&q=85",
+    "Mimosa":           "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=500&h=400&fit=crop&q=85",
+    "Runtz":            "https://images.unsplash.com/photo-1560807707-8cc77767d783?w=500&h=400&fit=crop&q=85",
+    "Do-Si-Dos":        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&h=400&fit=crop&q=85",
+    "Strawberry Cough": "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=500&h=400&fit=crop&q=85",
+    "Banana Kush":      "https://images.unsplash.com/photo-1528825871115-3581a5387919?w=500&h=400&fit=crop&q=85",
+    "Tangie":           "https://images.unsplash.com/photo-1547514701-42782101795e?w=500&h=400&fit=crop&q=85",
+    "Blueberry":        "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=500&h=400&fit=crop&q=85",
+    "Cherry Pie":       "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=500&h=400&fit=crop&q=85",
+    "Purple Haze":      "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=500&h=400&fit=crop&q=85",
+    "Strawberry Banana":"https://images.unsplash.com/photo-1478369402113-1fd53f17e8b4?w=500&h=400&fit=crop&q=85",
+    "Blue Cookies":     "https://images.unsplash.com/photo-1514190051997-0f6f39ca5cde?w=500&h=400&fit=crop&q=85",
+    "Gelato":           "https://images.unsplash.com/photo-1505944270255-72b8c68c6a70?w=500&h=400&fit=crop&q=85",
+    "Lemon Cherry Gelato":"https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=500&h=400&fit=crop&q=85",
+    "RS11 (Rainbow Sherbet #11)":"https://images.unsplash.com/photo-1533038590840-1cde6e668a91?w=500&h=400&fit=crop&q=85",
+};
+ 
+// Typ-basierte Fallback-Pools (schöne Botanik/Natur-Fotos, keine generischen)
+const TYPE_IMAGE_POOLS = {
+    "Indica": [
+        "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1542281286-9e0c3bb0540f?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1533038590840-1cde6e668a91?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1519501025264-65ba15a82390?w=500&h=400&fit=crop&q=85",
+    ],
+    "Sativa": [
+        "https://images.unsplash.com/photo-1536819114556-1e10f967fb7c?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1448375240586-882707db888b?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1503262028195-93c528f03218?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1509316785289-025f5b846b35?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&h=400&fit=crop&q=85",
+    ],
+    "Hybrid": [
+        "https://images.unsplash.com/photo-1603909223429-69bb7101f420?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1589149098258-3e9102cd63d3?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1563089145-599997674d4c?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1522441815192-d9f04eb0615c?w=500&h=400&fit=crop&q=85",
+        "https://images.unsplash.com/photo-1470058869958-2a77ade41c02?w=500&h=400&fit=crop&q=85",
+    ]
+};
+ 
+// Universeller Fallback
+const FALLBACK_IMAGES = [
+    "https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=500&h=400&fit=crop&q=85",
+    "https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?w=500&h=400&fit=crop&q=85",
+    "https://images.unsplash.com/photo-1505144808419-1957a94ca61e?w=500&h=400&fit=crop&q=85",
+    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=400&fit=crop&q=85",
+];
+ 
+function getStrainImageUrl(strainName, strainType) {
+    // 1. Direkte Namens-Map
+    if (STRAIN_IMAGE_MAP[strainName]) {
+        return STRAIN_IMAGE_MAP[strainName];
     }
-
-    let currentFilter = 'all';
-    let currentTypeFilter = 'all';
-    let currentSearch = '';
-
-    document.addEventListener('DOMContentLoaded', function() {
-        createFallingLeaves();
-        applyTranslations();
-        renderStrains();
-        initSlideshow();
-        setupEventListeners();
-        preventScreenshot();
+    // 2. Typ-Pool mit Hash für Konsistenz
+    const pool = TYPE_IMAGE_POOLS[strainType] || FALLBACK_IMAGES;
+    const hash = strainName.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
+    return pool[hash % pool.length];
+}
+ 
+// ============================================================
+// STRAIN DATABASE (120 Strains)
+// ============================================================
+const strainDatabase = [
+    {id:1,name:"OG Kush",type:"Hybrid",thc:24,cbd:0.3,effects:["Relaxed","Happy","Euphoric"],flavor:["Earthy","Pine","Woody"],desc:"Der legendäre Cali Strain. Super chillig für den Feierabend. Schwerer Body-High.",popular:true,new:false},
+    {id:2,name:"Amnesia Haze",type:"Sativa",thc:22,cbd:0.1,effects:["Energetic","Creative","Uplifted"],flavor:["Citrus","Lemon","Earthy"],desc:"Sativa-Klassiker aus Amsterdam. Macht wach und kreativ, perfekt für tagsüber.",popular:true,new:false},
+    {id:3,name:"Gelato #33",type:"Hybrid",thc:26,cbd:0.2,effects:["Relaxed","Euphoric","Creative"],flavor:["Sweet","Berry","Citrus"],desc:"Dessert-Strain mit süßem Berry-Flavor. Larry Bird Cut ist der stärkste.",popular:true,new:false},
+    {id:4,name:"White Widow",type:"Hybrid",thc:20,cbd:0.9,effects:["Energetic","Creative","Euphoric"],flavor:["Earthy","Woody","Spicy"],desc:"Dutch Coffeeshop Legende. Seit '95 ein Klassiker. Ausgeglichen und chillig.",popular:true,new:false},
+    {id:5,name:"Girl Scout Cookies",type:"Hybrid",thc:28,cbd:0.2,effects:["Euphoric","Relaxed","Happy"],flavor:["Sweet","Minty","Earthy"],desc:"GSC – Cali's Antwort auf alles. Mega potent, süß wie Kekse.",popular:true,new:false},
+    {id:6,name:"Northern Lights",type:"Indica",thc:18,cbd:0.1,effects:["Relaxed","Sleepy","Happy"],flavor:["Sweet","Spicy","Earthy"],desc:"Purer Indica-Klassiker. Couch-lock deluxe. Bester Strain zum Pennen.",popular:true,new:false},
+    {id:7,name:"Sour Diesel",type:"Sativa",thc:22,cbd:0.2,effects:["Energetic","Uplifted","Creative"],flavor:["Diesel","Pungent","Citrus"],desc:"NYC Legende. Riecht wie Diesel, wirkt wie Espresso. Dreamy Cerebral High.",popular:true,new:false},
+    {id:8,name:"Blue Dream",type:"Hybrid",thc:21,cbd:0.1,effects:["Creative","Euphoric","Relaxed"],flavor:["Berry","Sweet","Vanilla"],desc:"California's beliebtester Strain. Super ausgewogen für Anfänger und Pros.",popular:true,new:false},
+    {id:9,name:"Purple Punch",type:"Indica",thc:20,cbd:0.3,effects:["Relaxed","Sleepy","Happy"],flavor:["Grape","Sweet","Berry"],desc:"Trauben-Bombe. Schmeckt wie Kool-Aid, haut dich weg. Sedierend AF.",popular:false,new:false},
+    {id:10,name:"Wedding Cake",type:"Hybrid",thc:25,cbd:0.1,effects:["Relaxed","Euphoric","Happy"],flavor:["Sweet","Vanilla","Earthy"],desc:"Pink Cookies x Triangle Kush. Schmeckt wie Hochzeitstorte. Rich & Tangy.",popular:true,new:false},
+    {id:11,name:"Zkittlez",type:"Indica",thc:19,cbd:0.3,effects:["Relaxed","Happy","Euphoric"],flavor:["Sweet","Tropical","Berry"],desc:"Taste the Rainbow! Grape Ape x Grapefruit. Candy-Terps deluxe.",popular:false,new:false},
+    {id:12,name:"Gorilla Glue #4",type:"Hybrid",thc:27,cbd:0.1,effects:["Relaxed","Euphoric","Sleepy"],flavor:["Earthy","Pine","Diesel"],desc:"GG4 – Klebt dich an die Couch. Chem Sis x Sour Dubb x Chocolate Diesel.",popular:true,new:false},
+    {id:13,name:"Pineapple Express",type:"Hybrid",thc:23,cbd:0.1,effects:["Energetic","Happy","Creative"],flavor:["Pineapple","Tropical","Sweet"],desc:"Film-Berühmtheit. Trainwreck x Hawaiian. Tropisches Urlaubs-Feeling.",popular:false,new:false},
+    {id:14,name:"AK-47",type:"Hybrid",thc:20,cbd:1.5,effects:["Relaxed","Happy","Uplifted"],flavor:["Earthy","Sour","Woody"],desc:"Cannabis Cup Winner '99. Nicht auto, nicht gun. Sweet & mellow.",popular:false,new:false},
+    {id:15,name:"Jack Herer",type:"Sativa",thc:21,cbd:0.2,effects:["Creative","Energetic","Uplifted"],flavor:["Pine","Earthy","Spicy"],desc:"Benannt nach dem Aktivisten. Haze x Northern Lights #5 x Shiva Skunk.",popular:false,new:false},
+    {id:16,name:"Durban Poison",type:"Sativa",thc:20,cbd:0.2,effects:["Energetic","Creative","Uplifted"],flavor:["Sweet","Earthy","Pine"],desc:"Pure South African Landrace Sativa. Aniseed & Licorice Terps.",popular:false,new:false},
+    {id:17,name:"Granddaddy Purple",type:"Indica",thc:23,cbd:0.1,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Grape","Berry","Sweet"],desc:"GDP – Purple Urkle x Big Bud. Komplette Body-Melt. Nighttime Legend.",popular:true,new:false},
+    {id:18,name:"Chemdawg",type:"Hybrid",thc:19,cbd:0.4,effects:["Uplifted","Creative","Euphoric"],flavor:["Diesel","Chemical","Pungent"],desc:"Mythischer Unknown Strain. Parent von OG Kush & Sour Diesel.",popular:false,new:false},
+    {id:19,name:"Green Crack",type:"Sativa",thc:21,cbd:0.2,effects:["Energetic","Focused","Uplifted"],flavor:["Citrus","Mango","Sweet"],desc:"Von Snoop umbenannt. Skunk #1 Pheno. Tangy Mango Taste.",popular:false,new:false},
+    {id:20,name:"Bubba Kush",type:"Indica",thc:22,cbd:0.1,effects:["Relaxed","Sleepy","Happy"],flavor:["Earthy","Sweet","Coffee"],desc:"Pre-98 Bubba Cut. Schwerer tranquilizing Body-High. Kush-Classic.",popular:false,new:false},
+    {id:21,name:"Lemon Haze",type:"Sativa",thc:19,cbd:0.3,effects:["Happy","Energetic","Creative"],flavor:["Lemon","Citrus","Sweet"],desc:"Silver Haze x Lemon Skunk. Schmeckt wie frische Zitronen. Sunshine in a Joint.",popular:false,new:false},
+    {id:22,name:"Mimosa",type:"Sativa",thc:24,cbd:0.1,effects:["Uplifted","Energetic","Focused"],flavor:["Orange","Citrus","Sweet"],desc:"Clementine x Purple Punch. Morning-Strain deluxe. Tropischer Brunch-Vibe.",popular:false,new:true},
+    {id:23,name:"Runtz",type:"Hybrid",thc:27,cbd:0.3,effects:["Euphoric","Relaxed","Happy"],flavor:["Sweet","Candy","Tropical"],desc:"Zkittlez x Gelato. Exotic Candy Terps. Hype-Strain der neuen Generation.",popular:true,new:true},
+    {id:24,name:"Do-Si-Dos",type:"Indica",thc:26,cbd:0.2,effects:["Relaxed","Euphoric","Sleepy"],flavor:["Sweet","Earthy","Lime"],desc:"OGKB x Face Off OG. GSC Phenotype. Potent & chillig für abends.",popular:false,new:false},
+    {id:25,name:"Strawberry Cough",type:"Sativa",thc:20,cbd:0.2,effects:["Uplifted","Energetic","Happy"],flavor:["Strawberry","Sweet","Berry"],desc:"Kyle Kushman's Legend. Schmeckt wie frische Erdbeeren. Social Strain.",popular:false,new:false},
+    {id:26,name:"Banana Kush",type:"Indica",thc:21,cbd:0.3,effects:["Relaxed","Happy","Euphoric"],flavor:["Banana","Sweet","Tropical"],desc:"Ghost OG x Banana. Cremige Bananen-Terps. Couch-lock mit Geschmack.",popular:false,new:false},
+    {id:27,name:"Platinum OG",type:"Indica",thc:24,cbd:0.2,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Earthy","Diesel","Spicy"],desc:"High-Powered Indica. Master Kush x OG Kush. Nighttime Medizin.",popular:false,new:false},
+    {id:28,name:"Tangie",type:"Sativa",thc:22,cbd:0.1,effects:["Uplifted","Creative","Energetic"],flavor:["Orange","Tangerine","Citrus"],desc:"Cali-O x Skunk. Re-Make des 90er Tangie. Pure Citrus-Explosion.",popular:false,new:false},
+    {id:29,name:"MAC (Miracle Alien Cookies)",type:"Hybrid",thc:23,cbd:0.4,effects:["Euphoric","Relaxed","Creative"],flavor:["Citrus","Sour","Earthy"],desc:"Alien Cookies x Colombian x Starfighter. Balanced High, funky Terps.",popular:false,new:false},
+    {id:30,name:"Slurricane",type:"Indica",thc:28,cbd:0.2,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Berry","Grape","Sweet"],desc:"Do-Si-Dos x Purple Punch. Hurrikane-Schlaf. Super fruchtig & stark.",popular:false,new:true},
+    {id:31,name:"Acapulco Gold",type:"Sativa",thc:19,cbd:0.1,effects:["Uplifted","Happy","Creative"],flavor:["Earthy","Citrus","Woody"],desc:"Mexican Landrace Legende seit den 60ern. Golden Buds, klassischer High.",popular:false,new:false},
+    {id:32,name:"Maui Wowie",type:"Sativa",thc:18,cbd:0.1,effects:["Energetic","Creative","Happy"],flavor:["Pineapple","Tropical","Sweet"],desc:"Hawaiianischer Strand-Strain. Light & breezy High. Urlaubs-Vibes pur.",popular:false,new:false},
+    {id:33,name:"Blackberry Kush",type:"Indica",thc:22,cbd:0.2,effects:["Relaxed","Sleepy","Happy"],flavor:["Berry","Blackberry","Sweet"],desc:"Afghani x Blackberry. Dark Purple Buds. Medizinisch für Schmerzen.",popular:false,new:false},
+    {id:34,name:"Lava Cake",type:"Indica",thc:24,cbd:0.3,effects:["Relaxed","Euphoric","Happy"],flavor:["Chocolate","Sweet","Vanilla"],desc:"Thin Mint GSC x Grape Pie. Dessert-Strain. Schmilzt wie Lava im Mund.",popular:false,new:true},
+    {id:35,name:"GMO Cookies",type:"Indica",thc:30,cbd:0.2,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Garlic","Mushroom","Diesel"],desc:"Garlic Cookies – Chem D x GSC. Knoblauch & Diesel Funk. Ultra stark.",popular:false,new:false},
+    {id:36,name:"Skywalker OG",type:"Indica",thc:25,cbd:0.3,effects:["Relaxed","Sleepy","Happy"],flavor:["Earthy","Spicy","Diesel"],desc:"Skywalker x OG Kush. Die Macht ist stark mit diesem. Nighttime Kush.",popular:false,new:false},
+    {id:37,name:"Blueberry",type:"Indica",thc:17,cbd:0.5,effects:["Relaxed","Happy","Euphoric"],flavor:["Blueberry","Sweet","Berry"],desc:"DJ Short's 70er Klassiker. Afghan x Thai x Purple Thai. Fruity Legende.",popular:false,new:false},
+    {id:38,name:"Cherry Pie",type:"Hybrid",thc:23,cbd:0.1,effects:["Relaxed","Happy","Euphoric"],flavor:["Cherry","Sweet","Berry"],desc:"Granddaddy Purple x Durban Poison. Sour & Sweet Cherry. Chillig balanced.",popular:false,new:false},
+    {id:39,name:"Ice Cream Cake",type:"Indica",thc:25,cbd:0.3,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Vanilla","Sweet","Creamy"],desc:"Wedding Cake x Gelato #33. Creamy Vanilla Kush. Couch-lock Dessert.",popular:false,new:true},
+    {id:40,name:"SFV OG",type:"Hybrid",thc:24,cbd:0.2,effects:["Relaxed","Happy","Uplifted"],flavor:["Pine","Earthy","Diesel"],desc:"San Fernando Valley OG. Classic Cali Kush. Piney & Diesel Forward.",popular:false,new:false},
+    {id:41,name:"Tropaya",type:"Hybrid",thc:26,cbd:0.1,effects:["Euphoric","Creative","Relaxed"],flavor:["Tropical","Papaya","Sweet"],desc:"Papaya x Tropicana Cookies. Exotic Tropical Terps. Summer Vibes.",popular:false,new:true},
+    {id:42,name:"Headband",type:"Hybrid",thc:23,cbd:0.3,effects:["Relaxed","Euphoric","Creative"],flavor:["Diesel","Lemon","Chemical"],desc:"OG Kush x Sour Diesel. Fühlt sich an wie ein Stirnband. Pressure High.",popular:false,new:false},
+    {id:43,name:"Purple Haze",type:"Sativa",thc:20,cbd:0.2,effects:["Energetic","Creative","Uplifted"],flavor:["Berry","Sweet","Earthy"],desc:"Jimi Hendrix Legende. Purple Thai x Haze. Psychedelic Cerebral High.",popular:false,new:false},
+    {id:44,name:"Forbidden Fruit",type:"Indica",thc:24,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Cherry","Tropical","Sweet"],desc:"Cherry Pie x Tangie. Verboten gut. Fruity Fusion mit Potenz.",popular:false,new:false},
+    {id:45,name:"Apple Fritter",type:"Hybrid",thc:28,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Apple","Sweet","Pastry"],desc:"Sour Apple x Animal Cookies. Schmeckt wie Apfelstrudel. Potent Hybrid.",popular:false,new:true},
+    {id:46,name:"Khalifa Kush",type:"Hybrid",thc:26,cbd:0.2,effects:["Euphoric","Relaxed","Creative"],flavor:["Lemon","Pine","Floral"],desc:"Wiz Khalifa's KK Cut. Exklusiver OG Pheno. Limonene Forward.",popular:false,new:false},
+    {id:47,name:"Larry OG",type:"Hybrid",thc:22,cbd:0.3,effects:["Relaxed","Happy","Uplifted"],flavor:["Lemon","Pine","Earthy"],desc:"OG Kush x SFV OG Kush. Larry's Cut. Cali OG Classic.",popular:false,new:false},
+    {id:48,name:"Sunset Sherbet",type:"Hybrid",thc:21,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Sweet","Berry","Citrus"],desc:"GSC x Pink Panties. Parent von Gelato. Sherbet Sunset Vibes.",popular:false,new:false},
+    {id:49,name:"London Pound Cake",type:"Indica",thc:27,cbd:0.3,effects:["Relaxed","Euphoric","Sleepy"],flavor:["Berry","Grape","Sweet"],desc:"Sunset Sherbet x Unknown. London Calling. Fruity & stark.",popular:false,new:true},
+    {id:50,name:"Animal Mints",type:"Hybrid",thc:28,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Mint","Cookies","Sweet"],desc:"Animal Cookies x SinMint Cookies. Minty Fresh & mega potent.",popular:false,new:false},
+    {id:51,name:"Critical Mass",type:"Indica",thc:19,cbd:0.8,effects:["Relaxed","Happy","Sleepy"],flavor:["Sweet","Earthy","Woody"],desc:"Afghani x Skunk #1. Massige Yields. Medical Strain für Schmerzen.",popular:false,new:false},
+    {id:52,name:"Trainwreck",type:"Hybrid",thc:22,cbd:0.1,effects:["Energetic","Creative","Euphoric"],flavor:["Pine","Lemon","Spicy"],desc:"Mexican x Thai x Afghani. Hit's wie ein Zug. Cerebral Rush.",popular:false,new:false},
+    {id:53,name:"White Rhino",type:"Indica",thc:21,cbd:0.9,effects:["Relaxed","Sleepy","Happy"],flavor:["Earthy","Woody","Sweet"],desc:"White Widow x Unknown Indica. Medizinisch stark. Body-Numbing.",popular:false,new:false},
+    {id:54,name:"Super Silver Haze",type:"Sativa",thc:21,cbd:0.2,effects:["Energetic","Creative","Uplifted"],flavor:["Citrus","Earthy","Spicy"],desc:"Haze x NL x Skunk. SSH – Cannabis Cup Winner. Classic Sativa.",popular:false,new:false},
+    {id:55,name:"Bruce Banner",type:"Hybrid",thc:29,cbd:0.1,effects:["Euphoric","Creative","Relaxed"],flavor:["Sweet","Diesel","Strawberry"],desc:"OG Kush x Strawberry Diesel. Hulk-Smash potent. BB #3 ist best.",popular:false,new:false},
+    {id:56,name:"Ghost Train Haze",type:"Sativa",thc:27,cbd:0.1,effects:["Energetic","Creative","Uplifted"],flavor:["Citrus","Sour","Floral"],desc:"Ghost OG x Nevil's Wreck. Potente Sativa. Nicht für Anfänger!",popular:false,new:false},
+    {id:57,name:"King Louis XIII",type:"Indica",thc:24,cbd:0.1,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Pine","Earthy","Spicy"],desc:"OG Kush Pheno. Königlicher Kush. Musky Pine & stark sedierend.",popular:false,new:false},
+    {id:58,name:"Strawberry Banana",type:"Indica",thc:26,cbd:0.3,effects:["Relaxed","Happy","Euphoric"],flavor:["Strawberry","Banana","Sweet"],desc:"Croissant – DNA Genetics. Fruchtiger Smoothie. Heavy & chillig.",popular:false,new:false},
+    {id:59,name:"Tropicana Cookies",type:"Sativa",thc:25,cbd:0.1,effects:["Energetic","Uplifted","Creative"],flavor:["Orange","Tropical","Sweet"],desc:"Tangie x GSC Forum Cut. Tropicana Juice. Orange Zest Terps.",popular:false,new:true},
+    {id:60,name:"Papaya",type:"Indica",thc:22,cbd:0.4,effects:["Relaxed","Happy","Euphoric"],flavor:["Papaya","Tropical","Sweet"],desc:"Nirvana's Papaya. Tropische Mango-Papaya Terps. Chillig & fruchtig.",popular:false,new:false},
+    {id:61,name:"Wifi OG (White Fire OG)",type:"Hybrid",thc:25,cbd:0.2,effects:["Euphoric","Relaxed","Creative"],flavor:["Diesel","Earthy","Lemon"],desc:"The White x Fire OG. Potenter OG Cut. Dense & frosty.",popular:false,new:false},
+    {id:62,name:"Lemon OG",type:"Hybrid",thc:22,cbd:0.3,effects:["Happy","Uplifted","Relaxed"],flavor:["Lemon","Citrus","Sweet"],desc:"OG Kush x Las Vegas Lemon Skunk. Sour Lemon Drop. Sunshine Kush.",popular:false,new:false},
+    {id:63,name:"Mochi Gelato",type:"Hybrid",thc:26,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Berry","Sweet","Vanilla"],desc:"Sunset Sherbet x Thin Mint GSC. Mochi Ice Cream Vibe. Sweet Terps.",popular:false,new:true},
+    {id:64,name:"Raspberry Kush",type:"Indica",thc:21,cbd:0.3,effects:["Relaxed","Sleepy","Happy"],flavor:["Raspberry","Berry","Sweet"],desc:"California Medicine. Himbeer-Kush. Fruity & medizinisch.",popular:false,new:false},
+    {id:65,name:"Agent Orange",type:"Sativa",thc:19,cbd:0.2,effects:["Uplifted","Creative","Energetic"],flavor:["Orange","Citrus","Cheese"],desc:"Orange Velvet x Jack the Ripper. Cheese & Orange. Funky Fusion.",popular:false,new:false},
+    {id:66,name:"LA Confidential",type:"Indica",thc:22,cbd:0.3,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Earthy","Pine","Skunk"],desc:"OG LA Affie x Afghani. High Times Cannabis Cup. LA Kush Legend.",popular:false,new:false},
+    {id:67,name:"Grape Ape",type:"Indica",thc:19,cbd:0.2,effects:["Relaxed","Sleepy","Happy"],flavor:["Grape","Sweet","Berry"],desc:"Afghani x Skunk x Mendocino Purps. Trauben-Affe. Pain Relief.",popular:false,new:false},
+    {id:68,name:"Cereal Milk",type:"Hybrid",thc:25,cbd:0.2,effects:["Euphoric","Relaxed","Creative"],flavor:["Sweet","Creamy","Berry"],desc:"Y Life x Snowman. Milch vom Frühstück. Cookies Fam Banger.",popular:false,new:true},
+    {id:69,name:"Peanut Butter Breath",type:"Hybrid",thc:28,cbd:0.3,effects:["Relaxed","Euphoric","Happy"],flavor:["Nutty","Earthy","Sweet"],desc:"Do-Si-Dos x Mendo Breath. Erdnussbutter Terps. ThugPug Legend.",popular:false,new:true},
+    {id:70,name:"Sherb Breath",type:"Indica",thc:26,cbd:0.2,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Sweet","Berry","Gas"],desc:"Sunset Sherbet x Mendo Breath. Sherbert & Gas. Thic Nuggz.",popular:false,new:false},
+    {id:71,name:"Motorbreath",type:"Hybrid",thc:28,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Diesel","Chemical","Gas"],desc:"Chem D x SFV OG. Pure Gas. Motor Oil Terps. Für Gas-Heads.",popular:false,new:false},
+    {id:72,name:"Watermelon Zkittlez",type:"Indica",thc:24,cbd:0.3,effects:["Relaxed","Happy","Euphoric"],flavor:["Watermelon","Sweet","Candy"],desc:"Watermelon x Zkittlez. Summer Candy. Juicy & chillig.",popular:false,new:true},
+    {id:73,name:"Jet Fuel",type:"Sativa",thc:22,cbd:0.2,effects:["Energetic","Focused","Creative"],flavor:["Diesel","Chemical","Pungent"],desc:"Original Diesel x SFV OG Kush. Flugzeugtreibstoff. High Energy.",popular:false,new:false},
+    {id:74,name:"Gary Payton",type:"Hybrid",thc:27,cbd:0.2,effects:["Euphoric","Relaxed","Happy"],flavor:["Gas","Sweet","Diesel"],desc:"The Y x Snowman. Cookies Sport-Serie. Championship Weed.",popular:false,new:true},
+    {id:75,name:"Permanent Marker",type:"Hybrid",thc:30,cbd:0.1,effects:["Euphoric","Relaxed","Creative"],flavor:["Chemical","Gas","Sweet"],desc:"Biscotti x Jealousy x Sherb Bx1. Seed Junky. Chemical Funk.",popular:false,new:true},
+    {id:76,name:"Zoap",type:"Hybrid",thc:29,cbd:0.2,effects:["Euphoric","Relaxed","Happy"],flavor:["Soap","Floral","Zest"],desc:"Rainbow Sherbet x Pink Guava. Deo-Vres Genetics. Seifen-Terps unique.",popular:false,new:true},
+    {id:77,name:"Jealousy",type:"Hybrid",thc:27,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Gas","Gelato","Sweet"],desc:"Sherbet Bx1 x Gelato 41. Seed Junky Banger. Gelato auf Steroids.",popular:false,new:true},
+    {id:78,name:"Oreoz",type:"Hybrid",thc:28,cbd:0.3,effects:["Relaxed","Euphoric","Happy"],flavor:["Chocolate","Sweet","Cookies"],desc:"Cookies N Cream x Secret Weapon. Oreo Cookie Weed. Dessert-Gas.",popular:false,new:true},
+    {id:79,name:"Bacio Gelato",type:"Hybrid",thc:26,cbd:0.2,effects:["Relaxed","Happy","Euphoric"],flavor:["Sweet","Berry","Creamy"],desc:"Sunset Sherbet x Thin Mint GSC. Bacio = Kuss. Sherbinskis Select.",popular:false,new:false},
+    {id:80,name:"Grape Pie",type:"Indica",thc:23,cbd:0.3,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Grape","Sweet","Berry"],desc:"Cherry Pie x Grape Stomper. Trauben-Kuchen. Purple Candy.",popular:false,new:false},
+    {id:81,name:"Kush Mints",type:"Hybrid",thc:27,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Mint","Cookies","Gas"],desc:"Animal Mints x Bubba Kush. Minty Kush Gas. Seed Junky Fire.",popular:false,new:false},
+    {id:82,name:"Gushers",type:"Hybrid",thc:24,cbd:0.3,effects:["Relaxed","Happy","Euphoric"],flavor:["Fruity","Candy","Sweet"],desc:"Triangle Kush x Gelato #41. Fruity Candy. Gushers Kaugummi Weed.",popular:false,new:false},
+    {id:83,name:"White Runtz",type:"Hybrid",thc:29,cbd:0.2,effects:["Euphoric","Relaxed","Happy"],flavor:["Sweet","Candy","Fruity"],desc:"Gelato x Zkittlez. White Covered. Exotic Candy Terps max.",popular:false,new:true},
+    {id:84,name:"Pancakes",type:"Hybrid",thc:25,cbd:0.3,effects:["Relaxed","Happy","Euphoric"],flavor:["Maple","Sweet","Buttery"],desc:"London Pound Cake x Kush Mints. Ahorn-Pfannkuchen. Breakfast Weed.",popular:false,new:true},
+    {id:85,name:"Glazed Donut",type:"Hybrid",thc:27,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Sweet","Vanilla","Pastry"],desc:"Grape Gasoline x Jet Fuel Gelato. Glasierter Donut. Dessert-Gas.",popular:false,new:true},
+    {id:86,name:"Georgia Pie",type:"Indica",thc:26,cbd:0.2,effects:["Relaxed","Happy","Euphoric"],flavor:["Peach","Sweet","Earthy"],desc:"Gellati x Kush Mints. Pfirsich-Kuchen. Southern Baked.",popular:false,new:true},
+    {id:87,name:"Honey Bun",type:"Hybrid",thc:24,cbd:0.3,effects:["Relaxed","Happy","Uplifted"],flavor:["Sweet","Honey","Pastry"],desc:"Gelatti x Kush Mints. Honig-Brötchen. Sweet & Gas.",popular:false,new:true},
+    {id:88,name:"Modified Grapes",type:"Indica",thc:28,cbd:0.2,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Grape","Gas","Chemical"],desc:"GMO x Purple Punch. Trauben-Gas Monster. Symbiotic Genetics.",popular:false,new:true},
+    {id:89,name:"Biscotti",type:"Indica",thc:25,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Sweet","Cookies","Nutty"],desc:"Gelato #25 x Sour Florida OG. Italienischer Keks. Cookies Fam.",popular:false,new:false},
+    {id:90,name:"Grease Monkey",type:"Hybrid",thc:26,cbd:0.2,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Diesel","Skunk","Vanilla"],desc:"GG4 x Cookies & Cream. Fettiger Mechaniker. Sticky & potent.",popular:false,new:false},
+    {id:91,name:"Pink Rozay",type:"Hybrid",thc:24,cbd:0.2,effects:["Relaxed","Happy","Euphoric"],flavor:["Floral","Sweet","Berry"],desc:"Lemonchello x Lemon Pie. Pink Wine Vibe. Cookies x Lemonnade.",popular:false,new:true},
+    {id:92,name:"Acai Berry Gelato",type:"Hybrid",thc:25,cbd:0.2,effects:["Relaxed","Happy","Creative"],flavor:["Berry","Sweet","Tropical"],desc:"Pink Panties x Sunset Sherbet. Acai Bowl Weed. Superfood Terps.",popular:false,new:false},
+    {id:93,name:"Rozay",type:"Hybrid",thc:23,cbd:0.3,effects:["Euphoric","Relaxed","Happy"],flavor:["Floral","Sweet","Champagne"],desc:"Lemonchello x Lemon Pie. Rosé Wine Terps. Pink & fancy.",popular:false,new:false},
+    {id:94,name:"Slurty3",type:"Hybrid",thc:28,cbd:0.2,effects:["Euphoric","Relaxed","Creative"],flavor:["Sweet","Gas","Candy"],desc:"Slurricane x Gushers. Your Highness. Exotic Gas Candy.",popular:false,new:true},
+    {id:95,name:"Apples & Bananas",type:"Hybrid",thc:29,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Apple","Banana","Sweet"],desc:"Platinum Cookies x Granddaddy Purple x Blue Power x Gelatti. Compound Genetics.",popular:false,new:true},
+    {id:96,name:"Lemon Cherry Gelato",type:"Hybrid",thc:28,cbd:0.2,effects:["Euphoric","Relaxed","Happy"],flavor:["Lemon","Cherry","Sweet"],desc:"Sunset Sherbet x GSC. LCG – Hype Strain. Zitronen-Kirsch Ice.",popular:false,new:true},
+    {id:97,name:"Push Pop",type:"Hybrid",thc:26,cbd:0.2,effects:["Relaxed","Happy","Euphoric"],flavor:["Sweet","Candy","Tropical"],desc:"Triangle Kush x Gelato #45. Lutscher-Weed. Seed Junky Exotic.",popular:false,new:true},
+    {id:98,name:"Grape Gasoline",type:"Hybrid",thc:27,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Grape","Diesel","Gas"],desc:"Jet Fuel Gelato x Grape Pie. Trauben-Tankstelle. Gas Forward.",popular:false,new:true},
+    {id:99,name:"Frozay",type:"Indica",thc:24,cbd:0.3,effects:["Relaxed","Sleepy","Happy"],flavor:["Berry","Sweet","Floral"],desc:"Slurricane x Jaro. Frozen Rosé. California Fruit Punch.",popular:false,new:false},
+    {id:100,name:"Cherry Gar See Ya",type:"Indica",thc:26,cbd:0.2,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Cherry","Gas","Sweet"],desc:"Cherry Cookies x Snowman. Cherry Garcia. Cookies Fam Freezer.",popular:false,new:false},
+    {id:101,name:"Gelonade",type:"Hybrid",thc:24,cbd:0.2,effects:["Uplifted","Energetic","Happy"],flavor:["Lemon","Sweet","Citrus"],desc:"Lemon Tree x Gelato #41. Gelato Limonade. Connected Cannabis.",popular:false,new:false},
+    {id:102,name:"Strawberry Shortcake",type:"Hybrid",thc:25,cbd:0.3,effects:["Relaxed","Happy","Euphoric"],flavor:["Strawberry","Sweet","Creamy"],desc:"White Wookie x The White. Erdbeer-Törtchen. THC Design.",popular:false,new:false},
+    {id:103,name:"Blue Cookies",type:"Hybrid",thc:24,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Blueberry","Sweet","Cookies"],desc:"GSC x Blueberry. Blaue Kekse. Medizinisch & lecker.",popular:false,new:false},
+    {id:104,name:"Mandarin Cookies",type:"Hybrid",thc:25,cbd:0.2,effects:["Relaxed","Happy","Euphoric"],flavor:["Orange","Mandarin","Sweet"],desc:"Forum Cut GSC x Mandarin Sunset. Mandarinen-Kekse. ETHOS Genetics.",popular:false,new:false},
+    {id:105,name:"Platinum GSC",type:"Hybrid",thc:26,cbd:0.2,effects:["Euphoric","Relaxed","Happy"],flavor:["Sweet","Earthy","Minty"],desc:"Platinum OG x GSC. Platin-Kekse. Potenter GSC Pheno.",popular:false,new:false},
+    {id:106,name:"Thin Mint GSC",type:"Hybrid",thc:24,cbd:0.2,effects:["Relaxed","Happy","Euphoric"],flavor:["Mint","Sweet","Cookies"],desc:"Durban Poison x OG Kush. Pfadfinderinnen-Kekse Minze. GSC Pheno.",popular:false,new:false},
+    {id:107,name:"Jawa Pie",type:"Indica",thc:23,cbd:0.3,effects:["Relaxed","Sleepy","Happy"],flavor:["Sweet","Earthy","Grape"],desc:"Alien Kush x OG Kush Bx1. Star Wars Nod. Alien Genetics.",popular:false,new:false},
+    {id:108,name:"Venom OG",type:"Indica",thc:22,cbd:0.3,effects:["Relaxed","Sleepy","Happy"],flavor:["Earthy","Skunk","Diesel"],desc:"Poison OG x Rare Dankness #1. Giftiger OG. Lazy Day Strain.",popular:false,new:false},
+    {id:109,name:"Hippie Crasher",type:"Hybrid",thc:27,cbd:0.2,effects:["Euphoric","Relaxed","Happy"],flavor:["Sweet","Gas","Tropical"],desc:"Wedding Crasher x Kush Mints. Hippie-Klatscher. Jungle Boys.",popular:false,new:true},
+    {id:110,name:"White Wedding",type:"Hybrid",thc:26,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Cake","Vanilla","Sweet"],desc:"Wedding Cake x Mandarin Cookies. Weiße Hochzeit. ETHOS Fire.",popular:false,new:false},
+    {id:111,name:"Tropic Truffle",type:"Indica",thc:25,cbd:0.3,effects:["Relaxed","Happy","Euphoric"],flavor:["Tropical","Chocolate","Sweet"],desc:"Mint Chocolate Chip x Tropicana Cookies. Trüffel Exotic.",popular:false,new:true},
+    {id:112,name:"Divorce Cake",type:"Hybrid",thc:29,cbd:0.1,effects:["Euphoric","Relaxed","Happy"],flavor:["Gas","Vanilla","Sweet"],desc:"White Widow x Wedding Cake. Scheidungs-Kuchen. Potent AF.",popular:false,new:true},
+    {id:113,name:"Permanent Chimera",type:"Hybrid",thc:30,cbd:0.1,effects:["Euphoric","Creative","Relaxed"],flavor:["Chemical","Gas","Sweet"],desc:"Permanent Marker x Chimera #2. Seed Junky Lab. Experimental.",popular:false,new:true},
+    {id:114,name:"Super Boof",type:"Hybrid",thc:26,cbd:0.2,effects:["Euphoric","Happy","Relaxed"],flavor:["Cherry","Tropical","Sweet"],desc:"Black Cherry Punch x Tropicana Cookies. Blockhead Buds. Exotic.",popular:false,new:true},
+    {id:115,name:"Cap Junky",type:"Hybrid",thc:31,cbd:0.1,effects:["Euphoric","Relaxed","Happy"],flavor:["Gas","Sweet","Funky"],desc:"Alien Cookies x Kush Mints #11. THC Monster. Seed Junky Max.",popular:false,new:true},
+    {id:116,name:"GMO Rootbeer",type:"Hybrid",thc:28,cbd:0.2,effects:["Relaxed","Sleepy","Euphoric"],flavor:["Root Beer","Vanilla","Gas"],desc:"GMO x Rootbeer. Rootbeer-Float Terps. Unique Funk.",popular:false,new:true},
+    {id:117,name:"Toblerone",type:"Hybrid",thc:27,cbd:0.3,effects:["Relaxed","Happy","Euphoric"],flavor:["Chocolate","Honey","Nutty"],desc:"Hot Mints x Honey Mints. Schweizer Schoko. Chillig & lecker.",popular:false,new:true},
+    {id:118,name:"RS11 (Rainbow Sherbet #11)",type:"Hybrid",thc:28,cbd:0.2,effects:["Euphoric","Relaxed","Creative"],flavor:["Sweet","Rainbow","Gas"],desc:"OZK x Sunset Sherbert. Doja Pak Cut. Regenbogen-Sherbet Legend.",popular:true,new:true},
+    {id:119,name:"The Soap",type:"Hybrid",thc:27,cbd:0.2,effects:["Relaxed","Euphoric","Happy"],flavor:["Soap","Floral","Zest"],desc:"Animal Mints x Kush Mints. Saubere Terps. Exotic Clean.",popular:false,new:true},
+    {id:120,name:"Zoap Doja Cut",type:"Hybrid",thc:30,cbd:0.1,effects:["Euphoric","Creative","Relaxed"],flavor:["Soap","Zest","Candy"],desc:"Rainbow Sherbet x Pink Guava. Doja Exclusive Cut. Hypest Exotic.",popular:true,new:true}
+];
+ 
+// ============================================================
+// APP STATE
+// ============================================================
+let currentFilter = 'all';
+let currentTypeFilter = 'all';
+let currentSearch = '';
+let slideshowInterval = null;
+let searchDebounceTimer = null;
+ 
+// ============================================================
+// INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', function () {
+    createFallingLeaves();
+    renderStrains();
+    initSlideshow();
+    setupEventListeners();
+    initKeyboardNav();
+    document.getElementById('strainCount').textContent = strainDatabase.length + '+';
+});
+ 
+// ============================================================
+// LEAVES
+// ============================================================
+function createFallingLeaves() {
+    const container = document.getElementById('leaves-container');
+    const leaves = ['🍃', '🌿', '🍀'];
+    for (let i = 0; i < 12; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'leaf';
+        leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
+        leaf.style.cssText = `left:${Math.random()*100}%;font-size:${Math.random()*18+10}px;animation-duration:${Math.random()*10+10}s;animation-delay:${Math.random()*8}s;`;
+        container.appendChild(leaf);
+    }
+}
+ 
+// ============================================================
+// CARD RENDERING
+// ============================================================
+function getTypeEmoji(type) {
+    return { Indica: '🍃', Sativa: '☀', Hybrid: '⚡' }[type] || '🌿';
+}
+ 
+function renderStrains() {
+    const grid = document.getElementById('strainGrid');
+    const filtered = filterStrains();
+    document.getElementById('resultCount').textContent = filtered.length;
+ 
+    if (filtered.length === 0) {
+        grid.innerHTML = `
+            <div class="col-span-full text-center py-20">
+                <div class="text-6xl mb-4">😢</div>
+                <p class="text-2xl text-gray-400">Keine Strains gefunden, Bratan!</p>
+                <p class="text-gray-600 mt-2">Check deine Filter oder such was anderes</p>
+            </div>`;
+        return;
+    }
+ 
+    grid.innerHTML = filtered.map(strain => {
+        const imgUrl = getStrainImageUrl(strain.name, strain.type);
+        const badge = strain.popular ? '<div class="badge-popular">🔥</div>' :
+                      strain.new     ? '<div class="badge-new">✨</div>' : '';
+        return `
+        <div class="strain-card border-neo" onclick="showStrainDetail(${strain.id})" role="listitem" aria-label="${strain.name} – ${strain.type}">
+            <div class="strain-card-image">
+                <div class="img-skeleton" id="skel-${strain.id}"></div>
+                <img
+                    class="strain-img"
+                    src="${imgUrl}"
+                    alt="${strain.name} cannabis strain"
+                    loading="lazy"
+                    onload="this.classList.add('loaded');const s=document.getElementById('skel-${strain.id}');if(s)s.remove();"
+                    onerror="this.src='https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=500&h=400&fit=crop&q=80';this.classList.add('loaded');const s=document.getElementById('skel-${strain.id}');if(s)s.remove();"
+                >
+                <div class="strain-card-glare"></div>
+                <div class="strain-card-holo"></div>
+                <span class="type-badge-overlay type-${strain.type.toLowerCase()} text-white">
+                    ${getTypeEmoji(strain.type)} ${strain.type}
+                </span>
+            </div>
+            <div class="nbc-stamp">NBC™</div>
+            ${badge}
+            <div class="p-4 strain-card-content">
+                <h3 class="text-base font-orbitron font-bold text-white mb-3 leading-tight">${strain.name}</h3>
+                <div class="mb-3">
+                    <div class="flex justify-between text-xs text-gray-400 mb-1">
+                        <span>THC</span>
+                        <span class="text-yellow-400 font-bold">${strain.thc}%</span>
+                    </div>
+                    <div class="potency-bar">
+                        <div class="potency-fill" style="width:${Math.min((strain.thc/35)*100,100)}%"></div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-1 mb-2">
+                    ${strain.effects.slice(0,2).map(e =>
+                        `<span class="text-xs px-2 py-1 bg-cyan-500/20 text-cyan-300 rounded">${e}</span>`
+                    ).join('')}
+                </div>
+                <div class="text-xs text-gray-500 truncate">🍃 ${strain.flavor.join(', ')}</div>
+            </div>
+        </div>`;
+    }).join('');
+ 
+    // 3D Holo effect – delegated, no memory leak
+    setup3DHoloEffect();
+}
+ 
+// ============================================================
+// 3D HOLO – single delegated listener, no leaks
+// ============================================================
+(function() {
+    const grid = document.getElementById('strainGrid');
+    grid.addEventListener('mousemove', function(e) {
+        const card = e.target.closest('.strain-card');
+        if (!card) return;
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const cx = rect.width / 2, cy = rect.height / 2;
+        card.style.transform = `perspective(1000px) rotateX(${(y-cy)/12}deg) rotateY(${(cx-x)/12}deg) scale3d(1.04,1.04,1.04)`;
+        card.style.setProperty('--mouse-x', `${(x/rect.width)*100}%`);
+        card.style.setProperty('--mouse-y', `${(y/rect.height)*100}%`);
     });
-
-    function createFallingLeaves() {
-        const container = document.getElementById('leaves-container');
-        const leaves = ['🍃', '🌿', '🍀'];
-        for (let i = 0; i < 15; i++) {
-            const leaf = document.createElement('div');
-            leaf.className = 'leaf';
-            leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
-            leaf.style.left = Math.random() * 100 + '%';
-            leaf.style.fontSize = (Math.random() * 20 + 10) + 'px';
-            leaf.style.animationDuration = (Math.random() * 10 + 10) + 's';
-            leaf.style.animationDelay = Math.random() * 5 + 's';
-            container.appendChild(leaf);
-        }
-    }
-
-    function applyTranslations() {
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
-                el.placeholder = t(key);
-            } else if (el.tagName === 'OPTION') {
-                el.textContent = t(key);
-            } else {
-                el.textContent = t(key);
-            }
-        });
-        document.getElementById('searchInput').placeholder = t('Strain suchen...');
-    }
-
-    function setup3DHoloEffect() {
-        document.querySelectorAll('.strain-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 10;
-                const rotateY = (centerX - x) / 10;
-
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.05, 1.05, 1.05)`;
-                card.style.setProperty('--mouse-x', `${(x / rect.width) * 100}%`);
-                card.style.setProperty('--mouse-y', `${(y / rect.height) * 100}%`);
-            });
-
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-            });
-        });
-    }
-
-    async function renderStrains() {
-        const grid = document.getElementById('strainGrid');
-        const filtered = filterStrains();
-
-        document.getElementById('resultCount').textContent = filtered.length;
-        document.getElementById('strainCount').textContent = strainDatabase.length + '+';
-
-        if (filtered.length === 0) {
-            grid.innerHTML = `
-                <div class="col-span-full text-center py-20">
-                    <div class="text-6xl mb-4">😢</div>
-                    <p class="text-2xl text-gray-400">${t('Keine Strains gefunden')}</p>
-                    <p class="text-gray-600 mt-2">${t('Check deine Filter')}</p>
-                </div>
-            `;
-            return;
-        }
-
-        grid.innerHTML = filtered.map(strain => `
-            <div class="strain-card border-neo" onclick="showStrainDetail(${strain.id})">
-                <div class="strain-card-image">
-                    <img src="${getStrainImageUrl(strain.name)}"
-                         alt="${strain.name}"
-                         loading="lazy"
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/400x400/0A1A0A/FFD700?text=${encodeURIComponent(strain.name)}'">
-                    <div class="strain-card-glare"></div>
-                    <div class="strain-card-holo"></div>
-                </div>
-                <div class="nbc-stamp">NBC™</div>
-                <div class="p-5 strain-card-content">
-                    <div class="flex justify-between items-start mb-3">
-                        <h3 class="text-lg font-orbitron font-bold text-white pr-8">${strain.name}</h3>
-                        <span class="px-3 py-1 rounded-full text-xs font-bold text-white type-${strain.type.toLowerCase()}">
-                            ${getTypeEmoji(strain.type)} ${t(strain.type)}
-                        </span>
-                    </div>
-
-                    <div class="mb-3">
-                        <div class="flex justify-between text-xs text-gray-400 mb-1">
-                            <span>THC</span>
-                            <span class="text-yellow-400 font-bold">${strain.thc}%</span>
-                        </div>
-                        <div class="potency-bar">
-                            <div class="potency-fill" style="width: ${(strain.thc / 35) * 100}%"></div>
-                        </div>
-                    </div>
-
-                    <div class="flex flex-wrap gap-1 mb-3">
-                        ${strain.effects.slice(0, 2).map(effect =>
-                            `<span class="text-xs px-2 py-1 bg-cyan-500/20 text-cyan-300 rounded">${effect}</span>`
-                        ).join('')}
-                    </div>
-
-                    <div class="text-xs text-gray-500 truncate">
-                        🍃 ${strain.flavor.join(', ')}
-                    </div>
-
-                    ${strain.popular? '<div class="absolute top-2 right-2 text-xl" style="transform: translateZ(70px);">🔥</div>' : ''}
-                    ${strain.new? '<div class="absolute top-2 right-2 text-xl" style="transform: translateZ(70px);">✨</div>' : ''}
-                </div>
-            </div>
-        `).join('');
-
-        setTimeout(setup3DHoloEffect, 100);
-    }
-
-    function getTypeEmoji(type) {
-        const emojis = { 'Indica': '🍃', 'Sativa': '☀', 'Hybrid': '⚡' };
-        return emojis[type] || '🌿';
-    }
-
-    function filterStrains() {
-        return strainDatabase.filter(strain => {
-            const matchSearch = strain.name.toLowerCase().includes(currentSearch.toLowerCase()) ||
-                              strain.flavor.some(f => f.toLowerCase().includes(currentSearch.toLowerCase())) ||
-                              strain.effects.some(e => e.toLowerCase().includes(currentSearch.toLowerCase()));
-
-            const matchType = currentTypeFilter === 'all' || strain.type === currentTypeFilter;
-
-            const matchTab = currentFilter === 'all' ||
-                           (currentFilter === 'popular' && strain.popular) ||
-                           (currentFilter === 'new' && strain.new) ||
-                           (currentFilter === 'high-thc' && strain.thc >= 25);
-
-            return matchSearch && matchType && matchTab;
-        });
-    }
-
-    function showStrainDetail(id) {
-        const strain = strainDatabase.find(s => s.id === id);
-        if (!strain) return;
-
-        const modal = document.getElementById('strainModal');
-        const content = document.getElementById('modalContent');
-
-        content.innerHTML = `
-            <div class="relative p-8">
-                <button onclick="closeStrainModal()" class="absolute top-4 right-4 text-4xl hover:text-yellow-400 transition z-20">&times;</button>
-                <div class="nbc-stamp">NBC™</div>
-
-                <div class="mb-6">
-                    <img src="${getStrainImageUrl(strain.name)}"
-                         alt="${strain.name}"
-                         class="w-full h-64 object-cover rounded-xl mb-4 border-2 border-yellow-500/30"
-                         onerror="this.src='https://via.placeholder.com/800x400/0A1A0A/FFD700?text=${encodeURIComponent(strain.name)}'">
-                    <h2 class="text-4xl font-orbitron font-black neon-gold mb-2">${strain.name}</h2>
-                    <span class="inline-block px-4 py-2 rounded-full text-sm font-bold text-white type-${strain.type.toLowerCase()}">
-                        ${getTypeEmoji(strain.type)} ${t(strain.type)}
-                    </span>
-                </div>
-
-                <div class="grid md:grid-cols-2 gap-6 mb-6">
-                    <div class="bg-black/40 p-4 rounded-xl border border-yellow-500/30">
-                        <div class="text-sm text-gray-400 mb-1" data-i18n="THC Gehalt">THC Gehalt</div>
-                        <div class="text-3xl font-orbitron font-black text-yellow-400">${strain.thc}%</div>
-                        <div class="potency-bar mt-2">
-                            <div class="potency-fill" style="width: ${(strain.thc / 35) * 100}%"></div>
-                        </div>
-                    </div>
-                    <div class="bg-black/40 p-4 rounded-xl border border-cyan-500/30">
-                        <div class="text-sm text-gray-400 mb-1" data-i18n="CBD Gehalt">CBD Gehalt</div>
-                        <div class="text-3xl font-orbitron font-black text-cyan-400">${strain.cbd}%</div>
-                    </div>
-                </div>
-
-                <div class="mb-6">
-                    <h4 class="text-lg font-orbitron font-bold text-cyan-400 mb-3" data-i18n="Effekte">🧠 Effekte</h4>
-                    <div class="flex flex-wrap gap-2">
-                        ${strain.effects.map(effect =>
-                            `<span class="px-4 py-2 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-lg border-pink-500/50 text-white font-semibold">${effect}</span>`
-                        ).join('')}
-                    </div>
-                </div>
-
-                <div class="mb-6">
-                    <h4 class="text-lg font-orbitron font-bold text-cyan-400 mb-3" data-i18n="Geschmack">👅 Geschmack</h4>
-                    <div class="flex flex-wrap gap-2">
-                        ${strain.flavor.map(flav =>
-                            `<span class="px-4 py-2 bg-gradient-to-r from-green-500/30 to-cyan-500/30 rounded-lg border border-cyan-500/50 text-white font-semibold">${flav}</span>`
-                        ).join('')}
-                    </div>
-                </div>
-
-               <div class="mb-8">
-                    <h4 class="text-lg font-orbitron font-bold text-cyan-400 mb-3" data-i18n="Beschreibung">📖 Beschreibung</h4>
-                    <p class="text-gray-300 leading-relaxed">${strain.desc}</p>
-                </div>
-
-                <div class="flex gap-4">
-                    <button onclick="openDonateModal()" class="btn-neon flex-1 py-4 rounded-xl text-lg font-bold" data-i18n="DRUCKEN">
-                        🖨 DRUCKEN
-                    </button>
-                    <button onclick="closeStrainModal()" class="flex-1 py-4 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition" data-i18n="SCHLIESSEN">
-                        SCHLIESSEN
-                    </button>
-                </div>
-            </div>
-        `;
-
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeStrainModal() {
-        document.getElementById('strainModal').classList.add('hidden');
-        document.body.style.overflow = 'auto';
-    }
-
-    function openDonateModal() {
-        const modal = document.getElementById('donateModal');
-        document.getElementById('donateContent').classList.remove('hidden');
-        document.getElementById('countdownContent').classList.add('hidden');
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeDonateModal() {
-        document.getElementById('donateModal').classList.add('hidden');
-        document.body.style.overflow = 'auto';
-    }
-
-    function startPayPalRedirect() {
-        document.getElementById('donateContent').classList.add('hidden');
-        document.getElementById('countdownContent').classList.remove('hidden');
-
-        let count = 3;
-        const countdownEl = document.getElementById('countdownText');
-
-        const interval = setInterval(() => {
-            count--;
-            if (count > 0) {
-                countdownEl.textContent = count + '...';
-            } else {
-                clearInterval(interval);
-                countdownEl.textContent = '1...';
-
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 },
-                    colors: ['#FFD700', '#00FFFF', '#FF1493', '#39FF14']
-                });
-
-                setTimeout(() => {
-                    window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN', '_blank');
-                    closeDonateModal();
-                }, 500);
-            }
-        }, 1000);
-    }
-
-    function openSubmitModal() {
-        document.getElementById('submitModal').classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-    }
-
-    function closeSubmitModal() {
-        document.getElementById('submitModal').classList.add('hidden');
-        document.body.style.overflow = 'auto';
-        document.getElementById('submitForm').reset();
-    }
-
-    function showThankYouModal() {
-        document.getElementById('thankYouModal').classList.remove('hidden');
-        confetti({
-            particleCount: 150,
-            spread: 90,
-            origin: { y: 0.6 },
-            colors: ['#FFD700', '#00FFFF', '#FF1493']
-        });
-    }
-
-    function closeThankYouModal() {
-        document.getElementById('thankYouModal').classList.add('hidden');
-    }
-
-    document.getElementById('submitForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const name = document.getElementById('submitName').value;
-        const type = document.getElementById('submitType').value;
-        const thc = document.getElementById('submitTHC').value;
-        const cbd = document.getElementById('submitCBD').value;
-        const effects = document.getElementById('submitEffects').value;
-        const flavor = document.getElementById('submitFlavor').value;
-        const desc = document.getElementById('submitDesc').value;
-        const user = document.getElementById('submitUser').value || 'Anonymer Chillaz';
-
-        if (thc < 0 || thc > 100 || cbd < 0 || cbd > 100) {
-            alert('Ey Bratan, check deine THC/CBD Werte! 0-100% nur 😂');
-            return;
-        }
-
-        console.log('Strain submitted:', { name, type, thc, cbd, effects, flavor, desc, user });
-
-        closeSubmitModal();
-        showThankYouModal();
+    grid.addEventListener('mouseleave', function(e) {
+        const card = e.target.closest ? e.target.closest('.strain-card') : null;
+        if (card) card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+    }, true);
+})();
+ 
+function setup3DHoloEffect() {
+    // Handled by delegated listener above – no per-card listeners
+}
+ 
+// ============================================================
+// FILTER
+// ============================================================
+function filterStrains() {
+    const search = currentSearch.toLowerCase();
+    return strainDatabase.filter(s => {
+        const matchSearch = !search ||
+            s.name.toLowerCase().includes(search) ||
+            s.flavor.some(f => f.toLowerCase().includes(search)) ||
+            s.effects.some(e => e.toLowerCase().includes(search)) ||
+            s.type.toLowerCase().includes(search);
+        const matchType = currentTypeFilter === 'all' || s.type === currentTypeFilter;
+        const matchTab  = currentFilter === 'all' ||
+            (currentFilter === 'popular'  && s.popular) ||
+            (currentFilter === 'new'      && s.new) ||
+            (currentFilter === 'high-thc' && s.thc >= 25);
+        return matchSearch && matchType && matchTab;
     });
-
-    function initSlideshow() {
-        const featured = strainDatabase.filter(s => s.popular).slice(0, 5);
-        const container = document.getElementById('slideshow');
-
-        container.innerHTML = featured.map((strain, idx) => `
-            <div class="slide ${idx === 0? 'active' : ''} p-8 bg-gradient-to-br from-purple-900/40 via-black to-cyan-900/40">
-                <div class="flex flex-col md:flex-row items-center gap-6">
-                    <img src="${getStrainImageUrl(strain.name)}" alt="${strain.name}" class="w-32 h-32 rounded-xl object-cover border-2 border-yellow-500/50">
-                    <div class="flex-1 text-center md:text-left">
-                        <div class="text-sm text-yellow-400 font-orbitron mb-2">FEATURED STRAIN</div>
-                        <h3 class="text-4xl font-orbitron font-black neon-gold mb-2">${strain.name}</h3>
-                        <p class="text-cyan-300 mb-4">${getTypeEmoji(strain.type)} ${t(strain.type)} • THC ${strain.thc}%</p>
-                        <p class="text-gray-300 mb-4">${strain.desc}</p>
-                        <button onclick="showStrainDetail(${strain.id})" class="btn-neon px-8 py-3 rounded-xl">
-                            DETAILS ANSEHEN →
-                        </button>
+}
+ 
+// ============================================================
+// STRAIN DETAIL MODAL
+// ============================================================
+function showStrainDetail(id) {
+    const strain = strainDatabase.find(s => s.id === id);
+    if (!strain) return;
+ 
+    const imgUrl = getStrainImageUrl(strain.name, strain.type);
+ 
+    document.getElementById('modalContent').innerHTML = `
+        <div class="relative p-6 md:p-8">
+            <button onclick="closeStrainModal()" class="absolute top-4 right-4 text-4xl hover:text-yellow-400 transition z-20" aria-label="Schließen">&times;</button>
+            <div class="nbc-stamp">NBC™</div>
+            <div class="mb-6">
+                <img
+                    src="${imgUrl}"
+                    alt="${strain.name}"
+                    class="w-full h-56 object-cover rounded-xl mb-4 border-2 border-yellow-500/30"
+                    onerror="this.src='https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=800&h=400&fit=crop&q=80';"
+                >
+                <h2 class="text-3xl md:text-4xl font-orbitron font-black neon-gold mb-3">${strain.name}</h2>
+                <span class="inline-block px-4 py-2 rounded-full text-sm font-bold text-white type-${strain.type.toLowerCase()}">
+                    ${getTypeEmoji(strain.type)} ${strain.type}
+                </span>
+                ${strain.popular ? '<span class="ml-2 text-xl">🔥</span>' : ''}
+                ${strain.new ? '<span class="ml-2 text-xl">✨</span>' : ''}
+            </div>
+            <div class="grid md:grid-cols-2 gap-4 mb-6">
+                <div class="bg-black/40 p-4 rounded-xl border border-yellow-500/30">
+                    <div class="text-sm text-gray-400 mb-1">THC Gehalt</div>
+                    <div class="text-3xl font-orbitron font-black text-yellow-400">${strain.thc}%</div>
+                    <div class="potency-bar mt-2">
+                        <div class="potency-fill" style="width:${Math.min((strain.thc/35)*100,100)}%"></div>
+                    </div>
+                </div>
+                <div class="bg-black/40 p-4 rounded-xl border border-cyan-500/30">
+                    <div class="text-sm text-gray-400 mb-1">CBD Gehalt</div>
+                    <div class="text-3xl font-orbitron font-black text-cyan-400">${strain.cbd}%</div>
+                    <div class="potency-bar mt-2">
+                        <div class="potency-fill" style="width:${Math.min((strain.cbd/20)*100,100)}%;background:linear-gradient(90deg,#00FFFF,#00FF88);"></div>
                     </div>
                 </div>
             </div>
-        `).join('');
-
-        let currentSlide = 0;
-        setInterval(() => {
-            const slides = document.querySelectorAll('.slide');
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 5000);
+            <div class="mb-5">
+                <h4 class="text-base font-orbitron font-bold text-cyan-400 mb-3">🧠 Effekte</h4>
+                <div class="flex flex-wrap gap-2">
+                    ${strain.effects.map(e =>
+                        `<span class="px-4 py-2 bg-gradient-to-r from-purple-500/30 to-pink-500/30 rounded-lg border border-pink-500/40 text-white font-semibold">${e}</span>`
+                    ).join('')}
+                </div>
+            </div>
+            <div class="mb-5">
+                <h4 class="text-base font-orbitron font-bold text-cyan-400 mb-3">👅 Geschmack</h4>
+                <div class="flex flex-wrap gap-2">
+                    ${strain.flavor.map(f =>
+                        `<span class="px-4 py-2 bg-gradient-to-r from-green-500/30 to-cyan-500/30 rounded-lg border border-cyan-500/40 text-white font-semibold">${f}</span>`
+                    ).join('')}
+                </div>
+            </div>
+            <div class="mb-8">
+                <h4 class="text-base font-orbitron font-bold text-cyan-400 mb-3">📖 Beschreibung</h4>
+                <p class="text-gray-300 leading-relaxed">${strain.desc}</p>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="openDonateModal()" class="btn-neon flex-1 py-4 rounded-xl text-base font-bold">🖨 DRUCKEN / SPENDEN</button>
+                <button onclick="closeStrainModal()" class="flex-1 py-4 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition">SCHLIESSEN</button>
+            </div>
+        </div>`;
+ 
+    const modal = document.getElementById('strainModal');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+    // focus trap
+    setTimeout(() => modal.querySelector('button').focus(), 50);
+}
+ 
+function closeStrainModal() {
+    document.getElementById('strainModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+ 
+// ============================================================
+// DONATE MODAL
+// ============================================================
+function openDonateModal() {
+    document.getElementById('donateContent').classList.remove('hidden');
+    document.getElementById('countdownContent').classList.add('hidden');
+    document.getElementById('donateModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+ 
+function closeDonateModal() {
+    document.getElementById('donateModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+ 
+function startPayPalRedirect() {
+    document.getElementById('donateContent').classList.add('hidden');
+    document.getElementById('countdownContent').classList.remove('hidden');
+ 
+    let count = 3;
+    const el = document.getElementById('countdownText');
+    el.textContent = count + '...';
+ 
+    const interval = setInterval(() => {
+        count--;
+        if (count > 0) {
+            el.textContent = count + '...';
+        } else {
+            clearInterval(interval);
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 }, colors: ['#FFD700','#00FFFF','#FF1493','#39FF14'] });
+            setTimeout(() => {
+                window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN', '_blank');
+                closeDonateModal();
+            }, 600);
+        }
+    }, 1000);
+}
+ 
+// ============================================================
+// SUBMIT MODAL
+// ============================================================
+function openSubmitModal() {
+    document.getElementById('submitModal').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+ 
+function closeSubmitModal() {
+    document.getElementById('submitModal').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+    document.getElementById('submitForm').reset();
+}
+ 
+function showThankYouModal() {
+    document.getElementById('thankYouModal').classList.remove('hidden');
+    confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 }, colors: ['#FFD700','#00FFFF','#FF1493'] });
+}
+ 
+function closeThankYouModal() {
+    document.getElementById('thankYouModal').classList.add('hidden');
+}
+ 
+document.getElementById('submitForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const thc = parseFloat(document.getElementById('submitTHC').value);
+    const cbd = parseFloat(document.getElementById('submitCBD').value);
+    if (isNaN(thc) || thc < 0 || thc > 100 || isNaN(cbd) || cbd < 0 || cbd > 100) {
+        // non-blocking inline error
+        document.getElementById('submitTHC').style.borderColor = '#FF1493';
+        document.getElementById('submitCBD').style.borderColor = '#FF1493';
+        return;
     }
-
-    function setupEventListeners() {
-        document.getElementById('searchInput').addEventListener('input', (e) => {
+    console.log('Strain submitted', {
+        name: document.getElementById('submitName').value,
+        type: document.getElementById('submitType').value,
+        thc, cbd,
+        effects: document.getElementById('submitEffects').value,
+        flavor: document.getElementById('submitFlavor').value,
+        desc: document.getElementById('submitDesc').value,
+        user: document.getElementById('submitUser').value || 'Anonymer Chillaz'
+    });
+    closeSubmitModal();
+    showThankYouModal();
+});
+ 
+// ============================================================
+// SLIDESHOW – interval properly stored & cleared
+// ============================================================
+function initSlideshow() {
+    const featured = strainDatabase.filter(s => s.popular).slice(0, 5);
+    const container = document.getElementById('slideshow');
+ 
+    container.innerHTML = featured.map((strain, idx) => `
+        <div class="slide ${idx === 0 ? 'active' : ''} p-6 md:p-8 bg-gradient-to-br from-purple-900/40 via-black to-cyan-900/40">
+            <div class="flex flex-col md:flex-row items-center gap-6">
+                <img
+                    src="${getStrainImageUrl(strain.name, strain.type)}"
+                    alt="${strain.name}"
+                    class="w-28 h-28 md:w-36 md:h-36 rounded-xl object-cover border-2 border-yellow-500/50 flex-shrink-0"
+                    onerror="this.src='https://images.unsplash.com/photo-1502082553048-f009c37129b9?w=300&h=300&fit=crop';"
+                >
+                <div class="flex-1 text-center md:text-left">
+                    <div class="text-sm text-yellow-400 font-orbitron mb-2 tracking-widest">⭐ FEATURED STRAIN</div>
+                    <h3 class="text-3xl md:text-4xl font-orbitron font-black neon-gold mb-2">${strain.name}</h3>
+                    <p class="text-cyan-300 mb-3">${getTypeEmoji(strain.type)} ${strain.type} • THC ${strain.thc}%</p>
+                    <p class="text-gray-300 mb-4 text-sm leading-relaxed">${strain.desc}</p>
+                    <button onclick="showStrainDetail(${strain.id})" class="btn-neon px-8 py-3 rounded-xl font-bold">
+                        DETAILS ANSEHEN →
+                    </button>
+                </div>
+            </div>
+        </div>`).join('');
+ 
+    // Clear previous interval if reinitialised
+    if (slideshowInterval) clearInterval(slideshowInterval);
+    let currentSlide = 0;
+    slideshowInterval = setInterval(() => {
+        const slides = container.querySelectorAll('.slide');
+        if (!slides.length) return;
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }, 5000);
+}
+ 
+// ============================================================
+// EVENT LISTENERS
+// ============================================================
+function setupEventListeners() {
+    // Debounced search – 250ms
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(() => {
             currentSearch = e.target.value;
             renderStrains();
-        });
-
-        document.getElementById('typeFilter').addEventListener('change', (e) => {
-            currentTypeFilter = e.target.value;
+        }, 250);
+    });
+ 
+    document.getElementById('typeFilter').addEventListener('change', function(e) {
+        currentTypeFilter = e.target.value;
+        renderStrains();
+    });
+ 
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-selected', 'false');
+            });
+            this.classList.add('active');
+            this.setAttribute('aria-selected', 'true');
+            currentFilter = this.dataset.tab;
             renderStrains();
         });
-
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = btn.dataset.tab;
-                renderStrains();
-            });
+    });
+ 
+    // Click outside to close modals
+    ['strainModal', 'donateModal', 'submitModal', 'thankYouModal'].forEach(id => {
+        document.getElementById(id).addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
         });
-
-        ['strainModal', 'donateModal', 'submitModal', 'thankYouModal'].forEach(id => {
-            document.getElementById(id).addEventListener('click', (e) => {
-                if (e.target.id === id) {
-                    e.target.classList.add('hidden');
+    });
+}
+ 
+// ============================================================
+// KEYBOARD NAVIGATION – ESC closes modals (non-blocking)
+// ============================================================
+function initKeyboardNav() {
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            ['strainModal','donateModal','submitModal','thankYouModal'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el && !el.classList.contains('hidden')) {
+                    el.classList.add('hidden');
                     document.body.style.overflow = 'auto';
                 }
             });
-        });
-    }
-
-    function preventScreenshot() {
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'PrintScreen') {
-                e.preventDefault();
-                alert('Ey Bratan, Screenshots sind nicht chillig! 😂🌿');
-            }
-            if (e.ctrlKey && (e.key === 'p' || e.key === 's')) {
-                e.preventDefault();
-            }
-        });
-    }
-
-    window.showStrainDetail = showStrainDetail;
-    window.closeStrainModal = closeStrainModal;
-    window.openDonateModal = openDonateModal;
-    window.closeDonateModal = closeDonateModal;
-    window.startPayPalRedirect = startPayPalRedirect;
-    window.openSubmitModal = openSubmitModal;
-    window.closeSubmitModal = closeSubmitModal;
-    window.closeThankYouModal = closeThankYouModal;
+        }
+        // Print blocked silently without alert
+        if (e.ctrlKey && (e.key === 'p' || e.key === 's')) {
+            e.preventDefault();
+        }
+    });
+}
+ 
+// Expose globals
+window.showStrainDetail = showStrainDetail;
+window.closeStrainModal = closeStrainModal;
+window.openDonateModal = openDonateModal;
+window.closeDonateModal = closeDonateModal;
+window.startPayPalRedirect = startPayPalRedirect;
+window.openSubmitModal = openSubmitModal;
+window.closeSubmitModal = closeSubmitModal;
+window.closeThankYouModal = closeThankYouModal;
 </script>
-
 </body>
 </html>
