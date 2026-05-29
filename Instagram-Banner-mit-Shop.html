@@ -102,7 +102,16 @@
   .item .price { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; font-weight: 300; }
   .item .subtext { font-size: 0.82rem; color: var(--sage); margin-bottom: 14px; line-height: 1.45; }
   .item .btn { padding: 11px; font-size: 0.86rem; margin: 0; }
-  .item.construction { opacity: 0.62; cursor: not-allowed; } .item.construction:hover { transform: none; }
+  
+  /* Banner items */
+  .item.banner-item { padding: 0; overflow: hidden; grid-column: span 2; background: rgba(12,10,9,0.7); height: 260px; display: flex; flex-direction: column; }
+  .banner-wrap { width: 100%; height: 100%; border-radius: 14px; overflow: hidden; position: relative; cursor: pointer; border: none; display: flex; flex-direction: column; }
+  .banner-svg { display: block; width: 100%; height: 180px; object-fit: cover; }
+  .banner-label { background: rgba(0,0,0,0.85); padding: 12px 16px; text-align: center; border-top: 1px solid rgba(212,175,55,0.2); }
+  .banner-label h3 { color: var(--gold); font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; font-family: 'Outfit', sans-serif; }
+  .banner-label p { color: var(--sage); font-size: 0.8rem; margin-bottom: 8px; }
+  .book-btn { background: var(--gold); color: #000; border: none; padding: 7px 18px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: transform .15s; }
+  .book-btn:hover { transform: scale(1.05); }
 
   .footer { text-align: center; margin-top: 48px; font-size: 0.76rem; color: var(--sage); opacity: 0.55; line-height: 1.75; }
 
@@ -123,6 +132,37 @@
   .stat { text-align:center; } .stat-label { font-size:0.7rem; color:var(--sage); text-transform:uppercase; letter-spacing:1px; } .stat-value { font-size:1.12rem; color:var(--glow-green); font-weight:500; }
   .card-footer { text-align:center; font-size:0.76rem; color:var(--sage); opacity:0.75; margin-bottom:15px; }
   .modal-close { position:absolute; top:-12px; right:-12px; width:38px; height:38px; background:var(--neon-purple); border:2px solid var(--gold); border-radius:50%; color:var(--smoke); font-size:1.25rem; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 0 22px rgba(199,125,255,0.55); }
+
+  .joke-ticker-wrap {
+    margin: 22px 0;
+    padding: 14px 0;
+    border-left: 2px solid var(--gold);
+    background: rgba(212,175,55,0.035);
+    overflow: hidden;
+    position: relative;
+  }
+  .joke-ticker {
+    font-style: italic;
+    color: var(--glow-green);
+    padding-left: 20px;
+    font-size: 0.98rem;
+    white-space: nowrap;
+    background: linear-gradient(90deg, var(--glow-green) 0%, #fff 20%, var(--gold) 40%, var(--glow-green) 60%, #fff 80%, var(--glow-green) 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: shimmer 4s linear infinite, fadeInOut 0.8s ease;
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(5px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
 </style>
 </head>
 <body>
@@ -139,127 +179,130 @@
 
       <div class="inner-section">
 
-        <!-- NEU: SINN DES PROJEKTS -->
         <div class="section-block">
           <h2>🌐 Sinn des Projekts</h2>
-          <p>Die <strong>NBC News (Natural Born Chillaz)</strong> präsentieren sich als ein unabhängiges, freiwilliges Projekt, das Information mit Kunst verbindet, um Freiheit und Aufklärung zu fördern. Die Plattform bietet eine stetig wachsende Community-Anbindung und Funktionen, die speziell für wahre „NaturalBornChillaz“ entwickelt wurden.</p>
+          <p>Yo, <strong>NBC News</strong> ist kein Konzern, keine Agentur, kein Bullshit – wir sind ein Haufen NaturalBornChillaz, die Bock haben, Wissen zu teilen ohne erhobenen Zeigefinger. Unabhängig, freiwillig, komplett auf Ehrenbasis. Wir verbinden Info mit Kunst, damit Aufklärung nicht nach Schulunterricht schmeckt, sondern nach nem guten Zug am Abend.</p>
           
-          <p style="margin-top:18px; color: var(--glow-green); font-weight:400;">Freiwilliges Projekt für Aufklärung & Gemeinschaft</p>
+          <p class="quote" style="margin-top:20px;">„Freiheit wächst nicht auf Bäumen – aber das Wissen darüber schon.“</p>
+          
+          <p style="margin-top:18px; color: var(--glow-green); font-weight:400;">Was wir hier bauen, Bratan:</p>
           
           <ul class="manifesto-list">
-            <li><strong>CanG & Cannabis:</strong> Bietet alle relevanten Fakten zur aktuellen Gesetzgebung und zu Medizinalcannabis.</li>
-            <li><strong>Wachsende Community:</strong> Echte Vernetzung und exklusive Funktionen für wahre NBC NaturalBornChillaz.</li>
-            <li><strong>Freiheit durch Info:</strong> Ein ehrenamtliches Projekt, das durch eine spielerische und künstlerische Art Vorbehalte abbaut.</li>
+            <li><strong>CanG Real Talk:</strong> Kein Behördendeutsch. Wir brechen dir das neue Gesetz, Medizinalcannabis und deine Rechte runter – so dass du's auch high noch checkst. Fakten statt Panik.</li>
+            <li><strong>Community statt Algorithmus:</strong> Echte Vernetzung. Keine Likes-Jagd, keine Datenkrake. Exklusive Drops, Unitycard, Member Tank – nur für die, die's fühlen. Wächst täglich.</li>
+            <li><strong>Kunst gegen Vorurteile:</strong> Wir malen, coden und bauen, damit Oma versteht warum du chillst. Spielerisch, visuell, mit Augenzwinkern. Vorbehalte abbauen, Vibes aufbauen.</li>
+            <li><strong>100% freiwillig:</strong> Kein Investor im Nacken, keine Paywall. Wenn du supportest, geht's direkt in Server, Artworks und die nächsten Seeds. Ehrenwort.</li>
           </ul>
           
-          <p style="font-size:0.85rem; opacity:0.8; margin-top:12px;">📍 Besuche die offizielle Seite: <a href="https://infotonbc-news.github.io/infotonbc2/" style="color:var(--gold); text-decoration:none;">infotonbc-news.github.io/infotonbc2/</a> <em>(Zutritt ab 18 Jahren)</em></p>
+          <p style="font-size:0.9rem; opacity:0.9; margin-top:18px;">📍 Das volle Programm findest du auf der Hauptbase: <a href="https://infotonbc-news.github.io/infotonbc2/" style="color:var(--gold); text-decoration:none; border-bottom:1px dotted var(--gold);">infotonbc-news.github.io</a> <em style="opacity:0.7;">(Nur für 18+ Chillaz)</em></p>
         </div>
         
         <div class="section-block">
           <h2>Unitycard Club</h2>
-          <p class="quote">„Chillaz, hast du heute schon dein Gehirn gegossen?“</p>
-          <p>Exklusiver Zugang zum Member Tank. Unity Concentrate, SuaveBot und kuratierte Drops.</p>
+          <div class="joke-ticker-wrap">
+            <div class="joke-ticker" id="jokeTicker">„Chillaz, hast du heute schon dein Gehirn gegossen?“</div>
+          </div>
           <a href="https://infotonbc-news.github.io/infotonbc2/unitycard.html" class="btn">Unitycard aktivieren</a>
-          <a href="https://infotonbc-news.github.io/infotonbc2/" class="btn">Zu den News</a>
         </div>
 
         <div class="section-block">
           <h2>Sanctum Drops</h2>
-          <p>Handverlesene Relikte aus dem Neo-Jungle. Jeder Erwerb unterstützt das Kollektiv direkt.</p>
+          <p>Handverlesene Relikte aus dem Neo-Jungle.</p>
           <div class="shop">
             
             <div class="item" onclick="openStickerCard()">
-              <img src="sticker.png" alt="Unity Sticker" class="item-img" onerror="this.src='https://via.placeholder.com/300x300/0B2A1F/D4AF37?text=STICKER'">
+              <img src="sticker.png" alt="Unity Sticker" class="item-img" onerror="this.style.background='#0B2A1F'">
               <h3>kleb Dir einen</h3>
               <p class="price">ab 6€</p>
               <div class="btn">Details</div>
             </div>
 
             <div class="item" onclick="window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN', '_blank')">
-              <img src="spendenlogo.jpg" alt="Support den Chillaz" class="item-img">
+              <img src="spendenlogo.jpg" alt="Support" class="item-img" onerror="this.style.background='#0B2A1F'">
               <h3>Feed Da Chillaz</h3>
-              <p class="subtext">Der Chilla braucht mehr als Luft zum Leben.</p>
+              <p class="subtext">Der Chilla braucht mehr als Luft.</p>
               <div class="btn">Supporten</div>
             </div>
 
-            <div class="item construction">
-              <img src="https://via.placeholder.com/300x300/0B2A1F/C77DFF?text=?" alt="Coming Soon" class="item-img">
-              <h3>Joint Venture</h3>
-              <p class="subtext">Warum teilen Kiffer immer? Weil sie High-Society sind.</p>
-              <div class="btn">Under Construction</div>
+            <!-- BANNER 1: Gärtner -->
+            <div class="item banner-item">
+              <div class="banner-wrap">
+                <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+                  <defs><radialGradient id="skyG1" cx="50%" cy="0%" r="100%"><stop offset="0%" stop-color="#0d2a0d"/><stop offset="100%" stop-color="#050e05"/></radialGradient></defs>
+                  <rect width="320" height="180" fill="url(#skyG1)"/>
+                  <rect x="0" y="140" width="320" height="40" fill="#0a1a08"/>
+                  <ellipse cx="160" cy="142" rx="90" ry="10" fill="#1a0e04"/>
+                  <circle cx="270" cy="28" r="18" fill="#D4AF37" opacity="0.9"><animate attributeName="opacity" values="0.9;1;0.9" dur="3s" repeatCount="indefinite"/></circle>
+                  <g transform="translate(90,142)"><line x1="0" y1="0" x2="0" y2="-35" stroke="#2d6e2d" stroke-width="3"><animate attributeName="y2" values="0;-35" dur="4s" repeatCount="indefinite"/></line><ellipse cx="-10" cy="-28" rx="12" ry="7" fill="#3a8a3a" transform="rotate(-30)"/></g>
+                  <g transform="translate(130,142)"><line x1="0" y1="0" x2="0" y2="-45" stroke="#2d6e2d" stroke-width="3"><animate attributeName="y2" values="0;-45" dur="5s" begin="0.5s" repeatCount="indefinite"/></line></g>
+                  <g transform="translate(175,142)"><line x1="0" y1="0" x2="0" y2="-38" stroke="#2d6e2d" stroke-width="3"><animate attributeName="y2" values="0;-38" dur="4.5s" begin="1s" repeatCount="indefinite"/></line></g>
+                  <g><animateTransform attributeName="transform" type="translate" values="240,60;200,55;240,60" dur="6s" repeatCount="indefinite"/><rect x="0" y="0" width="38" height="28" rx="5" fill="#D4AF37"/><circle cx="-28" cy="30" r="2.5" fill="#7dcfff"><animate attributeName="cy" values="30;90" dur="1s" repeatCount="indefinite"/></circle></g>
+                </svg>
+                <div class="banner-label">
+                  <h3>🌱 Grow With Us – Dein Spot im Jungle</h3>
+                  <p>Premium Plätze für Grower & Headshops</p>
+                  <button class="book-btn" onclick="window.open('mailto:infotonbc@gmail.com?subject=Werbung Gärtner', '_blank')">Anfragen</button>
+                </div>
+              </div>
             </div>
 
-            <div class="item construction">
-              <img src="https://via.placeholder.com/300x300/0B2A1F/C77DFF?text=?" alt="Coming Soon" class="item-img">
-              <h3>Buddha Bowl</h3>
-              <p class="subtext">Ich hab Gras gekauft. Jetzt hab ich kein Geld mehr für Essen. Zen.</p>
-              <div class="btn">Under Construction</div>
+            <!-- BANNER 2: Gracht -->
+            <div class="item banner-item">
+              <div class="banner-wrap">
+                <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+                  <defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d2a1a"/><stop offset="100%" stop-color="#050e0a"/></linearGradient></defs>
+                  <rect width="320" height="180" fill="url(#wg)"/>
+                  <rect x="0" y="125" width="320" height="20" fill="#1a1a0d"/><rect x="0" y="145" width="320" height="35" fill="#0a1510"/>
+                  <circle cx="250" cy="72" r="6" fill="#D4AF37"><animate attributeName="opacity" values="0.9;0.7;0.9" dur="3s" repeatCount="indefinite"/></circle>
+                  <rect x="148" y="118" width="24" height="8" rx="3" fill="#3d2200"/><rect x="152" y="95" width="20" height="26" rx="6" fill="#1a3a1a"/><circle cx="162" cy="88" r="11" fill="#c8a882"/>
+                  <g><animateTransform attributeName="transform" type="rotate" values="0 162 105;5 162 105;0 162 105" dur="4s" repeatCount="indefinite"/><line x1="162" y1="105" x2="140" y2="100" stroke="#c8a882" stroke-width="5"/><rect x="126" y="97" width="18" height="5" rx="2.5" fill="#f5e6c8"/><circle cx="144" cy="99.5" r="2.5" fill="#ff6b35"><animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/></circle></g>
+                </svg>
+                <div class="banner-label">
+                  <h3>🌉 Chill an der Gracht – Werbung für Kenner</h3>
+                  <p>Hochwertig, entspannt, direkt zur Community</p>
+                  <button class="book-btn" onclick="window.open('mailto:infotonbc@gmail.com?subject=Werbung Gracht', '_blank')">Anfragen ✉️</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- BANNER 3: Platzhalter -->
+            <div class="item banner-item">
+              <div class="banner-wrap" style="background:#0a0a0a; display:flex; align-items:center; justify-content:center; height:100%; border:2px dashed #D4AF37;">
+                <div style="text-align:center; padding:20px;">
+                  <div style="font-size:2.5rem; margin-bottom:10px;">🌿</div>
+                  <h3 style="color:#D4AF37; font-size:1.1rem; margin-bottom:8px;">Dein Spot wartet</h3>
+                  <p style="color:#9DB4A6; font-size:0.85rem; margin-bottom:12px;">Dritter Banner – lade deinen Code hoch</p>
+                  <button class="book-btn">Platz sichern</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- BANNER 4: Witzig -->
+            <div class="item banner-item">
+              <div class="banner-wrap" style="background:linear-gradient(135deg,#0B2A1F,#0C0A09); display:flex; align-items:center; justify-content:center; height:100%;">
+                <div style="text-align:center; padding:24px;">
+                  <div style="font-size:2.2rem; margin-bottom:12px;">💨</div>
+                  <h3 style="color:#C4F5E0; font-size:1.05rem; margin-bottom:8px; font-family:Marcellus;">Warum teilen Kiffer immer?</h3>
+                  <p style="color:#D4AF37; font-size:0.95rem; font-style:italic; margin-bottom:14px;">Weil sie High-Society sind.</p>
+                  <p style="color:#9DB4A6; font-size:0.75rem;">Deine Werbung könnte hier stehen – und zünden.</p>
+                </div>
+              </div>
             </div>
 
           </div>
         </div>
 
-        <div class="section-block">
-          <h2>Zugang & Rechtliches</h2>
-          <p>CanG, Legalisierung, Medizin & Kultur. Tiefgründige Analysen für die bewusste Community.</p>
-          <a href="https://infotonbc-news.github.io/infotonbc2/disclaimer.html" class="btn">Disclaimer 18+</a>
-          <a href="https://www.instagram.com/infotonbc" class="btn">@infotonbc folgen</a>
-        </div>
-
       </div>
     </div>
-
-    <div class="footer">
-      NBC News ist ein freiwilliges, unabhängiges Projekt.<br>
-      Zuwendungen sind Schenkungen an eine Privatperson – keine Spendenquittung.<br>
-      infotonbc@gmail.com
-    </div>
-
+    <div class="footer">NBC News – freiwillig, unabhängig</div>
   </div>
 
-  <!-- POKEMON CARD MODAL -->
-  <div id="stickerModal" class="modal">
-    <div class="pokemon-card">
-      <button class="modal-close" onclick="closeStickerCard()">×</button>
-      <div class="card-inner">
-        <div class="card-header">
-          <div class="card-title">Unity Sticker</div>
-          <div class="card-hp">NBC 026</div>
-        </div>
-        
-        <img src="sticker.png" alt="Unity Sticker" class="card-image" onerror="this.src='https://via.placeholder.com/400x300/0B2A1F/D4AF37?text=STICKER.PNG'">
-        
-        <div class="card-desc">
-          Offizieller NaturalBornChillaz Unity Sticker. Holographic Finish. Limitierte Auflage aus dem Neo-Jungle.
-        </div>
-        
-        <div class="card-stats">
-          <div class="stat"><div class="stat-label">Seltenheit</div><div class="stat-value">Rare</div></div>
-          <div class="stat"><div class="stat-label">Chill</div><div class="stat-value">+420</div></div>
-          <div class="stat"><div class="stat-label">Vibe</div><div class="stat-value">∞</div></div>
-        </div>
-        
-        <div class="card-footer">Zur Zeit Ausverkauftt Schon Weg Danke Chillaz</div>
-        
-        <a href="https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN" class="btn" target="_blank">Sticker sichern ab 6€</a>
-      </div>
-    </div>
-  </div>
+  <div id="stickerModal" class="modal"><div class="pokemon-card"><button class="modal-close" onclick="closeStickerCard()">×</button><div class="card-inner"><div class="card-header"><div class="card-title">Unity Sticker</div><div class="card-hp">NBC 026</div></div><div class="card-desc">Offizieller NBC Sticker. Holographic.</div><a href="#" class="btn">Sticker sichern</a></div></div></div>
 
 <script>
-// Rauch
-const canvas = document.getElementById('smoke-canvas'); const ctx = canvas.getContext('2d'); let particles = [];
-function resizeCanvas(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-resizeCanvas(); window.addEventListener('resize', resizeCanvas);
-class SmokeParticle { constructor(){ this.reset(); this.y = Math.random()*canvas.height; } reset(){ this.x = Math.random()*canvas.width; this.y = canvas.height + Math.random()*100; this.size = Math.random()*80+40; this.speedY = Math.random()*-0.5-0.2; this.speedX = Math.random()*0.4-0.2; this.opacity = Math.random()*0.15+0.05; } update(){ this.y+=this.speedY; this.x+=this.speedX; this.opacity-=0.0008; if(this.y<-100||this.opacity<=0) this.reset(); } draw(){ const g=ctx.createRadialGradient(this.x,this.y,0,this.x,this.y,this.size); g.addColorStop(0,`rgba(196,245,224,${this.opacity})`); g.addColorStop(0.4,`rgba(199,125,255,${this.opacity*0.3})`); g.addColorStop(1,`rgba(12,10,9,0)`); ctx.fillStyle=g; ctx.beginPath(); ctx.arc(this.x,this.y,this.size,0,Math.PI*2); ctx.fill(); } }
-for(let i=0;i<26;i++) particles.push(new SmokeParticle());
-function animate(){ ctx.clearRect(0,0,canvas.width,canvas.height); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(animate); } animate();
-
-// Modal
-function openStickerCard(){ document.getElementById('stickerModal').classList.add('active'); document.body.style.overflow='hidden'; }
-function closeStickerCard(){ document.getElementById('stickerModal').classList.remove('active'); document.body.style.overflow='auto'; }
-document.getElementById('stickerModal').addEventListener('click', e=>{ if(e.target===e.currentTarget) closeStickerCard(); });
+const canvas=document.getElementById('smoke-canvas');const ctx=canvas.getContext('2d');function resize(){canvas.width=innerWidth;canvas.height=innerHeight}resize();addEventListener('resize',resize);
+function openStickerCard(){document.getElementById('stickerModal').classList.add('active')}
+function closeStickerCard(){document.getElementById('stickerModal').classList.remove('active')}
 </script>
-
 </body>
 </html>
