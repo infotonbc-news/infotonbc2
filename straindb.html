@@ -620,7 +620,7 @@ body::after {
                     </div>
                 </div>
                 <div class="flex justify-between items-center mt-1.5 px-1">
-                    <div class="text-[10px] font-orbitron text-gray-500">Klick Lemminge für 🪂</div>
+                    <div class="text-[10px] font-orbitron text-gray-500">klick Chillaz für 🪂</div>
                     <button id="lemmingsStop" class="text-[11px] font-orbitron bg-black/70 hover:bg-red-900/70 text-gray-300 hover:text-white px-3 py-1 rounded-full border border-gray-600/60 hover:border-red-500/80 backdrop-blur-sm transition-all">
                         ⏸ STOP
                     </button>
@@ -1679,13 +1679,20 @@ Chillige Gruesse`;
 let lemmingsGame = {
     spawnRate: 10000,
     consecutiveSaves: 0,
-    totalSaved: parseInt(localStorage.getItem('nbc_saved_lemmings') || '0'),
-    totalLost: parseInt(localStorage.getItem('nbc_lost_lemmings') || '0'),
+        totalSaved: 0,
+    totalLost: 0,
     firstFallShown: false,
     activeLemmings: 0,
     maxLemmings: 6,
     spawnTimer: null,
-    paused: false,
+    paused: true,
+    gameStarted: false,
+    gameStartTime: null,
+    
+    updateScore() {
+        const netScore = Math.max(0, this.totalSaved - this.totalLost);
+        document.getElementById('savedCount').textContent = netScore;
+    },
     
     updateScore() {
         const netScore = Math.max(0, this.totalSaved - this.totalLost);
@@ -1740,6 +1747,10 @@ let lemmingsGame = {
             btn.innerHTML = '▶️ START';
             btn.classList.add('text-green-400');
         } else {
+            if(!this.gameStarted) {
+                this.gameStarted = true;
+                this.gameStartTime = Date.now();
+            }
             this.startSpawning();
             btn.innerHTML = '⏸ STOP';
             btn.classList.remove('text-green-400');
@@ -1749,8 +1760,12 @@ let lemmingsGame = {
     init() {
         this.updateScore();
         const btn = document.getElementById('lemmingsStop');
-        if(btn) btn.addEventListener('click', () => this.togglePause());
-        this.startSpawning();
+        if(btn) {
+            btn.addEventListener('click', () => this.togglePause());
+            btn.innerHTML = '▶️ START';
+            btn.classList.add('text-green-400');
+        }
+        // Wait for user to start
     },
     
     startSpawning() {
@@ -1794,6 +1809,11 @@ let lemmingsGame = {
             // Make clickable
             lemming.onclick = (e) => {
                 e.stopPropagation();
+                if(!this.gameStarted) {
+                    this.gameStarted = true;
+                    this.gameStartTime = Date.now();
+                    if(this.paused) this.togglePause();
+                }
                 if(!lemming.classList.contains('has-parachute') && !lemming.classList.contains('saved') && !lemming.classList.contains('splatted')) {
                     lemming.classList.add('has-parachute');
                     lemming.innerHTML = '🪂' + lemming.dataset.original;
@@ -1839,9 +1859,14 @@ let lemmingsGame = {
                 // SAVED
                 this.totalSaved++;
                 this.consecutiveSaves++;
-                localStorage.setItem('nbc_saved_lemmings', this.totalSaved);
                 this.updateScore();
                 this.playSound('save');
+                
+                // Check win condition
+                if(this.totalSaved >= 1000) {
+                    this.winGame();
+                    return;
+                }
                 
                 lemming.classList.remove('falling-arc');
                 lemming.classList.add('cheering', 'saved');
@@ -1911,6 +1936,76 @@ let lemmingsGame = {
         }, fallTime);
     },
     
+    winGame() {
+        this.paused = true;
+        if(this.spawnTimer) clearInterval(this.spawnTimer);
+        
+        const timeSpent = this.gameStartTime ? Math.floor((Date.now() - this.gameStartTime) / 1000) : 0;
+        const minutes = Math.floor(timeSpent / 60);
+        const seconds = timeSpent % 60;
+        const timeStr = `${minutes}m ${seconds}s`;
+        
+        const ranks = ['Stoner Rookie', 'Blunt Apprentice', 'Green Thumb', 'Weed Wizard', 'Stoner Major', 'Blunt Savior', 'High Priest', 'Chillaz Legend'];
+        const rank = ranks[ranks.length - 1];
+        
+        const playerName = prompt('Chillaz Held! Wie ist dein Name für die Hall of Fame?') || 'Anonymer Retter';
+        
+        const sagaText = `In den nebligen Tiefen des Neo-Jungle, wo die Vibes am dünnsten waren, erhob sich ${playerName}. Mit nichts als flinken Fingern und einem Herz aus purem Gold rettete er 1000 Chillaz vor dem sicheren Fall. Die Götter des Grüns nickten anerkennend, während Blunts wie Konfetti regneten. Legenden werden geboren, doch nur wenige werden... zur Saga.`;
+        
+        const winScreen = document.createElement('div');
+        winScreen.id = 'winScreen';
+        winScreen.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:10000;display:flex;align-items:center;justify-content:center;padding:20px;';
+        winScreen.innerHTML = `
+            <div style="position:relative;max-width:800px;width:100%;background:linear-gradient(135deg,#0A1A0A,#1a0f2e);border:3px solid #FFD700;border-radius:24px;padding:40px;box-shadow:0 0 60px rgba(255,215,0,0.5),inset 0 0 40px rgba(0,255,255,0.1);font-family:Orbitron;overflow:hidden;">
+                <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(45deg,transparent,transparent 10px,rgba(255,215,0,0.03) 10px,rgba(255,215,0,0.03) 20px);pointer-events:none;"></div>
+                <button onclick="document.getElementById('winScreen').remove()" style="position:absolute;top:15px;right:15px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.3);color:white;width:32px;height:32px;border-radius:50%;font-size:18px;cursor:pointer;z-index:10;">×</button>
+                
+                <div style="text-align:center;position:relative;z-index:1;">
+                    <div style="font-size:3.5rem;font-weight:900;background:linear-gradient(135deg,#FFD700,#FF1493,#00FFFF);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:10px;">CHILLAZ LEGEND</div>
+                    <div style="font-size:1.2rem;color:#00FFFF;margin-bottom:30px;letter-spacing:3px;">1000 GERETTET • SPIEL BEENDET</div>
+                    
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin:30px 0;text-align:left;">
+                        <div style="background:rgba(0,0,0,0.5);padding:15px;border-radius:12px;border:1px solid rgba(255,215,0,0.3);">
+                            <div style="color:#888;font-size:0.8rem;">RANG</div>
+                            <div style="color:#FFD700;font-size:1.3rem;font-weight:700;">${rank}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.5);padding:15px;border-radius:12px;border:1px solid rgba(255,215,0,0.3);">
+                            <div style="color:#888;font-size:0.8rem;">HELD</div>
+                            <div style="color:#00FF00;font-size:1.3rem;font-weight:700;">${playerName}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.5);padding:15px;border-radius:12px;border:1px solid rgba(255,215,0,0.3);">
+                            <div style="color:#888;font-size:0.8rem;">ZEIT</div>
+                            <div style="color:#00FFFF;font-size:1.3rem;font-weight:700;">${timeStr}</div>
+                        </div>
+                        <div style="background:rgba(0,0,0,0.5);padding:15px;border-radius:12px;border:1px solid rgba(255,215,0,0.3);">
+                            <div style="color:#888;font-size:0.8rem;">VERLOREN</div>
+                            <div style="color:#FF4444;font-size:1.3rem;font-weight:700;">${this.totalLost}</div>
+                        </div>
+                    </div>
+                    
+                    <div style="background:rgba(255,215,0,0.05);border-left:3px solid #FFD700;padding:20px;margin:25px 0;text-align:left;font-family:Quicksand;font-style:italic;line-height:1.6;color:#ddd;">
+                        ${sagaText}
+                    </div>
+                    
+                    <button onclick="window.print()" style="background:linear-gradient(135deg,#FFD700,#FFA500);color:#000;font-family:Orbitron;font-weight:700;padding:14px 32px;border:none;border-radius:12px;font-size:1.1rem;cursor:pointer;margin-top:20px;box-shadow:0 4px 20px rgba(255,215,0,0.4);">
+                        🖨 KARTE DRUCKEN
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(winScreen);
+        
+        if(window.confetti) {
+            const duration = 5000;
+            const end = Date.now() + duration;
+            const frame = () => {
+                confetti({particleCount: 3, angle: 60, spread: 55, origin: {x:0}, colors:['#FFD700','#00FF00','#FF1493']});
+                confetti({particleCount: 3, angle: 120, spread: 55, origin: {x:1}, colors:['#FFD700','#00FF00','#FF1493']});
+                if(Date.now() < end) requestAnimationFrame(frame);
+            };
+            frame();
+        }
+    },
     showRank() {
         const ranks = ['Stoner Rookie', 'Blunt Apprentice', 'Green Thumb', 'Weed Wizard', 'Stoner Major', 'Blunt Savior', 'High Priest', 'Chillaz Legend'];
         const idx = Math.min(Math.floor(this.totalSaved / 33) - 1, ranks.length - 1);
@@ -1930,6 +2025,13 @@ let lemmingsGame = {
     levelUp() {
         this.spawnRate = Math.max(2000, this.spawnRate - 1500);
         this.startSpawning();
+        
+        // Add 2 random extra lemmings for difficulty
+        for(let i = 0; i < 2; i++) {
+            setTimeout(() => {
+                if(!this.paused) this.spawnLemming();
+            }, Math.random() * this.spawnRate);
+        }
         
         const level = Math.floor(this.consecutiveSaves / 5);
         const popup = document.createElement('div');
