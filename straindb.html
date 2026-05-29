@@ -425,18 +425,19 @@ body::after {
 .joke-ticker-header{
     overflow:hidden;
     position:relative;
-    height:28px;
+    height:32px;
     width:100%;
-    max-width:600px;
-    background:rgba(0,0,0,0.3);
+    max-width:650px;
+    background:rgba(0,0,0,0.45);
     border-radius:12px;
-    border:1px solid rgba(255,215,0,0.15);
-    backdrop-filter:blur(4px);
+    border:1px solid rgba(255,215,0,0.25);
+    backdrop-filter:blur(6px);
+    box-shadow:inset 0 0 20px rgba(0,0,0,0.5);
 }
 .ticker-track{
     display:flex;
     white-space:nowrap;
-    animation:ticker-scroll 35s linear infinite;
+    animation:ticker-scroll 24s linear infinite;
     will-change:transform;
     height:100%;
     align-items:center;
@@ -446,9 +447,9 @@ body::after {
     align-items:center;
     padding-right:4rem;
     font-family:'Orbitron',sans-serif;
-    font-size:0.75rem;
-    font-weight:600;
-    letter-spacing:0.5px;
+    font-size:0.8rem;
+    font-weight:700;
+    letter-spacing:0.6px;
     background:linear-gradient(90deg,#ff0000 0%,#ffd700 25%,#00ff00 50%,#ffd700 75%,#ff0000 100%);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
@@ -463,19 +464,120 @@ body::after {
     transition:all 0.2s;
     -webkit-text-fill-color:#FFD700;
     background:none;
+    animation:pulse-love 1.2s ease-in-out infinite;
     filter:drop-shadow(0 0 12px rgba(255,215,0,1));
 }
 .ticker-item .share-love:hover{
     -webkit-text-fill-color:#fff;
-    filter:drop-shadow(0 0 16px rgba(255,215,0,1));
+    animation-play-state:paused;
+    filter:drop-shadow(0 0 20px rgba(255,215,0,1)) drop-shadow(0 0 30px rgba(255,255,255,0.8));
+}
+@keyframes pulse-love{
+    0%,100%{
+        filter:drop-shadow(0 0 8px rgba(255,215,0,0.9)) drop-shadow(0 0 14px rgba(255,215,0,0.5));
+        transform:scale(1);
+    }
+    50%{
+        filter:drop-shadow(0 0 14px rgba(255,215,0,1)) drop-shadow(0 0 22px rgba(255,215,0,0.7));
+        transform:scale(1.04);
+    }
 }
 @keyframes ticker-scroll{
     0%{transform:translateX(0);}
     100%{transform:translateX(-50%);}
 }
 @media(max-width:768px){
-    .joke-ticker-header{max-width:100%;height:24px;}
-    .ticker-item{font-size:0.7rem;}
+    .joke-ticker-header{max-width:100%;height:28px;margin-top:8px;}
+    .ticker-item{font-size:0.78rem;letter-spacing:0.3px;}
+    .ticker-track{animation-duration:32s;}
+}
+
+
+/* LEMMINGS GAME */
+.lemming{
+    position:absolute;
+    font-size:18px;
+    cursor:pointer;
+    user-select:none;
+    z-index:60;
+    transition:transform 0.15s;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.8));
+    line-height:1;
+}
+.lemming:hover{transform:scale(1.25) translateY(-2px);}
+.lemming.walking{animation:lemming-walk linear forwards;}
+.lemming.falling{animation:lemming-fall 0.5s cubic-bezier(0.6,0,1,1) forwards;}
+.lemming.has-parachute::before{
+    content:'🪂';
+    position:absolute;
+    top:-16px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:14px;
+    animation:parachute-bob 0.8s ease-in-out infinite;
+}
+.lemming.parachuting{animation:lemming-parachute 2.5s ease-out forwards;}
+.lemming.splatted{animation:lemming-splat 0.4s ease-out forwards;}
+.lemming.angel{animation:lemming-angel 2.2s ease-out forwards;}
+.lemming.cheering{animation:lemming-cheer 0.6s ease-in-out 3;}
+
+@keyframes lemming-walk{from{left:-30px;}to{left:calc(100% + 10px);}}
+@keyframes lemming-fall{from{top:-30px;}to{top:0px;}}
+@keyframes parachute-bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-2px);}}
+@keyframes lemming-parachute{
+    0%{top:0px;transform:rotate(0deg);}
+    100%{top:calc(100vh - 40px);transform:rotate(5deg);}
+}
+@keyframes lemming-splat{
+    0%{transform:scale(1) rotate(0);}
+    50%{transform:scale(1.3,0.7) rotate(180deg);}
+    100%{transform:scale(0.8,1.2) translateY(20px);opacity:0;}
+}
+@keyframes lemming-angel{
+    0%{top:0;opacity:1;transform:translateX(0) rotate(0);}
+    100%{top:-120px;opacity:0;transform:translateX(var(--drift,50px)) rotate(720deg);}
+}
+@keyframes lemming-cheer{
+    0%,100%{transform:translateY(0) scale(1);}
+    50%{transform:translateY(-8px) scale(1.2);}
+}
+
+.impact-dust{
+    position:absolute;
+    width:30px;
+    height:15px;
+    background:radial-gradient(circle,rgba(139,69,19,0.8) 0%,transparent 70%);
+    border-radius:50%;
+    animation:dust-puff 0.6s ease-out forwards;
+    pointer-events:none;
+    z-index:55;
+}
+@keyframes dust-puff{
+    0%{transform:scale(0.3);opacity:0.9;}
+    100%{transform:scale(2.5);opacity:0;}
+}
+
+.level-popup{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    font-family:'Orbitron',sans-serif;
+    font-size:3rem;
+    font-weight:900;
+    background:linear-gradient(135deg,#FFD700,#FF1493,#00FFFF);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 30px rgba(255,215,0,0.8);
+    z-index:200;
+    pointer-events:none;
+    animation:level-pop 2s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+}
+@keyframes level-pop{
+    0%{transform:translate(-50%,-50%) scale(0) rotate(-10deg);opacity:0;}
+    20%{transform:translate(-50%,-50%) scale(1.3) rotate(5deg);opacity:1;}
+    80%{transform:translate(-50%,-50%) scale(1) rotate(0);opacity:1;}
+    100%{transform:translate(-50%,-50%) scale(0.8) rotate(0);opacity:0;}
 }
 
 </style>
@@ -495,8 +597,14 @@ body::after {
                 </div>
             </div>
             
-            <!-- JOKE TICKER IN MITTE -->
-            <div class="flex-1 w-full md:w-auto order-3 md:order-2 min-w-0">
+            <!-- LEMMINGS GAME -->
+            <div class="flex-1 w-full md:w-auto order-2 min-w-0">
+                <div class="relative h-8 mb-1">
+                    <div id="lemmings-sky" class="absolute inset-0 overflow-visible pointer-events-none"></div>
+                    <div class="absolute bottom-0 left-2 text-[10px] font-orbitron text-green-400/70 bg-black/40 px-2 py-0.5 rounded-full border border-green-500/30 backdrop-blur-sm">
+                        Saved: <span id="savedCount" class="text-yellow-400 font-bold">0</span>
+                    </div>
+                </div>
                 <div class="joke-ticker-header">
                     <div class="ticker-track" id="headerJokeTrack">
                         <div class="ticker-item">Lade Daily Joke... <span class="mx-3 opacity-40">•</span> <span class="share-love" onclick="openDonateModal()">NaturalBornChillaz Share Love</span> <span class="mx-3 opacity-40">•</span></div>
@@ -505,7 +613,7 @@ body::after {
                 </div>
             </div>
             
-            <div class="flex flex-wrap items-center gap-3 flex-shrink-0 order-2 md:order-3">
+            <div class="flex flex-wrap items-center gap-3 flex-shrink-0 order-3 w-full md:w-auto justify-center md:justify-end">
                 <div class="text-center px-4 py-2 bg-black/40 rounded-lg border border-yellow-500/30">
                     <div class="text-2xl font-orbitron font-black stat-number" id="strainCount">120+</div>
                     <div class="text-xs text-gray-400">STRAINS</div>
@@ -941,18 +1049,19 @@ function printStrainCard(id){
 .joke-ticker-header{
     overflow:hidden;
     position:relative;
-    height:28px;
+    height:32px;
     width:100%;
-    max-width:600px;
-    background:rgba(0,0,0,0.3);
+    max-width:650px;
+    background:rgba(0,0,0,0.45);
     border-radius:12px;
-    border:1px solid rgba(255,215,0,0.15);
-    backdrop-filter:blur(4px);
+    border:1px solid rgba(255,215,0,0.25);
+    backdrop-filter:blur(6px);
+    box-shadow:inset 0 0 20px rgba(0,0,0,0.5);
 }
 .ticker-track{
     display:flex;
     white-space:nowrap;
-    animation:ticker-scroll 35s linear infinite;
+    animation:ticker-scroll 24s linear infinite;
     will-change:transform;
     height:100%;
     align-items:center;
@@ -962,9 +1071,9 @@ function printStrainCard(id){
     align-items:center;
     padding-right:4rem;
     font-family:'Orbitron',sans-serif;
-    font-size:0.75rem;
-    font-weight:600;
-    letter-spacing:0.5px;
+    font-size:0.8rem;
+    font-weight:700;
+    letter-spacing:0.6px;
     background:linear-gradient(90deg,#ff0000 0%,#ffd700 25%,#00ff00 50%,#ffd700 75%,#ff0000 100%);
     -webkit-background-clip:text;
     -webkit-text-fill-color:transparent;
@@ -979,19 +1088,120 @@ function printStrainCard(id){
     transition:all 0.2s;
     -webkit-text-fill-color:#FFD700;
     background:none;
+    animation:pulse-love 1.2s ease-in-out infinite;
     filter:drop-shadow(0 0 12px rgba(255,215,0,1));
 }
 .ticker-item .share-love:hover{
     -webkit-text-fill-color:#fff;
-    filter:drop-shadow(0 0 16px rgba(255,215,0,1));
+    animation-play-state:paused;
+    filter:drop-shadow(0 0 20px rgba(255,215,0,1)) drop-shadow(0 0 30px rgba(255,255,255,0.8));
+}
+@keyframes pulse-love{
+    0%,100%{
+        filter:drop-shadow(0 0 8px rgba(255,215,0,0.9)) drop-shadow(0 0 14px rgba(255,215,0,0.5));
+        transform:scale(1);
+    }
+    50%{
+        filter:drop-shadow(0 0 14px rgba(255,215,0,1)) drop-shadow(0 0 22px rgba(255,215,0,0.7));
+        transform:scale(1.04);
+    }
 }
 @keyframes ticker-scroll{
     0%{transform:translateX(0);}
     100%{transform:translateX(-50%);}
 }
 @media(max-width:768px){
-    .joke-ticker-header{max-width:100%;height:24px;}
-    .ticker-item{font-size:0.7rem;}
+    .joke-ticker-header{max-width:100%;height:28px;margin-top:8px;}
+    .ticker-item{font-size:0.78rem;letter-spacing:0.3px;}
+    .ticker-track{animation-duration:32s;}
+}
+
+
+/* LEMMINGS GAME */
+.lemming{
+    position:absolute;
+    font-size:18px;
+    cursor:pointer;
+    user-select:none;
+    z-index:60;
+    transition:transform 0.15s;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.8));
+    line-height:1;
+}
+.lemming:hover{transform:scale(1.25) translateY(-2px);}
+.lemming.walking{animation:lemming-walk linear forwards;}
+.lemming.falling{animation:lemming-fall 0.5s cubic-bezier(0.6,0,1,1) forwards;}
+.lemming.has-parachute::before{
+    content:'🪂';
+    position:absolute;
+    top:-16px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:14px;
+    animation:parachute-bob 0.8s ease-in-out infinite;
+}
+.lemming.parachuting{animation:lemming-parachute 2.5s ease-out forwards;}
+.lemming.splatted{animation:lemming-splat 0.4s ease-out forwards;}
+.lemming.angel{animation:lemming-angel 2.2s ease-out forwards;}
+.lemming.cheering{animation:lemming-cheer 0.6s ease-in-out 3;}
+
+@keyframes lemming-walk{from{left:-30px;}to{left:calc(100% + 10px);}}
+@keyframes lemming-fall{from{top:-30px;}to{top:0px;}}
+@keyframes parachute-bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-2px);}}
+@keyframes lemming-parachute{
+    0%{top:0px;transform:rotate(0deg);}
+    100%{top:calc(100vh - 40px);transform:rotate(5deg);}
+}
+@keyframes lemming-splat{
+    0%{transform:scale(1) rotate(0);}
+    50%{transform:scale(1.3,0.7) rotate(180deg);}
+    100%{transform:scale(0.8,1.2) translateY(20px);opacity:0;}
+}
+@keyframes lemming-angel{
+    0%{top:0;opacity:1;transform:translateX(0) rotate(0);}
+    100%{top:-120px;opacity:0;transform:translateX(var(--drift,50px)) rotate(720deg);}
+}
+@keyframes lemming-cheer{
+    0%,100%{transform:translateY(0) scale(1);}
+    50%{transform:translateY(-8px) scale(1.2);}
+}
+
+.impact-dust{
+    position:absolute;
+    width:30px;
+    height:15px;
+    background:radial-gradient(circle,rgba(139,69,19,0.8) 0%,transparent 70%);
+    border-radius:50%;
+    animation:dust-puff 0.6s ease-out forwards;
+    pointer-events:none;
+    z-index:55;
+}
+@keyframes dust-puff{
+    0%{transform:scale(0.3);opacity:0.9;}
+    100%{transform:scale(2.5);opacity:0;}
+}
+
+.level-popup{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0);
+    font-family:'Orbitron',sans-serif;
+    font-size:3rem;
+    font-weight:900;
+    background:linear-gradient(135deg,#FFD700,#FF1493,#00FFFF);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    text-shadow:0 0 30px rgba(255,215,0,0.8);
+    z-index:200;
+    pointer-events:none;
+    animation:level-pop 2s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+}
+@keyframes level-pop{
+    0%{transform:translate(-50%,-50%) scale(0) rotate(-10deg);opacity:0;}
+    20%{transform:translate(-50%,-50%) scale(1.3) rotate(5deg);opacity:1;}
+    80%{transform:translate(-50%,-50%) scale(1) rotate(0);opacity:1;}
+    100%{transform:translate(-50%,-50%) scale(0.8) rotate(0);opacity:0;}
 }
 
 </style></head><body><div class="card"><img src="${img}"><h1>🌿 ${s.name}</h1><p><b>${s.type} • THC ${s.thc}% • CBD ${s.cbd}%</b></p><h3>${t('HERKUNFT')}</h3><p>${s.herkunft}</p><h3>${t('GESCHICHTE')}</h3><p>${s.geschichte}</p><h3>${t('CHILLAZ WISSEN')}</h3><p>${s.chillazWissen}</p><h3>${t('FUN FACT')}</h3><p>${s.funFact}</p><h3>${t('TERPENE')}</h3><p>${s.terpene}</p><h3>${t('ANBAU')}</h3><p>${s.anbau}</p></div><script>window.onload=()=>setTimeout(()=>window.print(),500);<\/script></body></html>`);
@@ -1442,6 +1652,171 @@ Chillige Gruesse`;
         setTimeout(()=>{ alert('E-Mail geöffnet! Das Bild wurde heruntergeladen – bitte im Mail-Fenster auf Anhängen klicken.'); },800);
     });
 }
+
+
+// ===== LEMMINGS GAME =====
+let lemmingsGame = {
+    spawnRate: 10000,
+    consecutiveSaves: 0,
+    totalSaved: parseInt(localStorage.getItem('nbc_saved_lemmings') || '0'),
+    level: parseInt(localStorage.getItem('nbc_lemming_level') || '0'),
+    activeLemmings: 0,
+    maxLemmings: 8,
+    spawnTimer: null,
+    
+    init() {
+        document.getElementById('savedCount').textContent = this.totalSaved;
+        this.startSpawning();
+        // Update level display
+        if(this.level > 0) {
+            this.spawnRate = Math.max(2000, 10000 - (this.level * 1500));
+        }
+    },
+    
+    startSpawning() {
+        if(this.spawnTimer) clearInterval(this.spawnTimer);
+        this.spawnTimer = setInterval(() => this.spawnLemming(), this.spawnRate);
+        // Spawn first immediately
+        setTimeout(() => this.spawnLemming(), 1000);
+    },
+    
+    spawnLemming() {
+        if(this.activeLemmings >= this.maxLemmings) return;
+        
+        const sky = document.getElementById('lemmings-sky');
+        if(!sky) return;
+        
+        this.activeLemmings++;
+        const lemming = document.createElement('div');
+        lemming.className = 'lemming';
+        lemming.innerHTML = '🚶';
+        lemming.style.left = '-30px';
+        lemming.style.top = '-30px';
+        
+        // Random lemming type
+        const types = ['🚶','🧑‍🌾','🧍','🚶‍♂️'];
+        lemming.innerHTML = types[Math.floor(Math.random() * types.length)];
+        
+        sky.appendChild(lemming);
+        
+        // Fall onto track
+        setTimeout(() => {
+            lemming.classList.add('falling');
+            lemming.style.top = '0px';
+        }, 50);
+        
+        // Start walking after landing
+        setTimeout(() => {
+            lemming.classList.remove('falling');
+            lemming.classList.add('walking');
+            const walkDuration = 8000 + Math.random() * 2000;
+            lemming.style.animationDuration = walkDuration + 'ms';
+            
+            // Click to add parachute
+            lemming.onclick = (e) => {
+                e.stopPropagation();
+                if(!lemming.classList.contains('has-parachute') && !lemming.classList.contains('parachuting')) {
+                    lemming.classList.add('has-parachute');
+                    lemming.innerHTML = '🪂' + lemming.innerHTML;
+                    // Visual feedback
+                    lemming.style.filter = 'drop-shadow(0 0 8px #00FF00)';
+                }
+            };
+            
+            // Reach end of track
+            setTimeout(() => {
+                this.handleLemmingEnd(lemming);
+            }, walkDuration);
+            
+        }, 600);
+    },
+    
+    handleLemmingEnd(lemming) {
+        const hasParachute = lemming.classList.contains('has-parachute');
+        const sky = document.getElementById('lemmings-sky');
+        
+        if(hasParachute) {
+            // SAVED!
+            this.consecutiveSaves++;
+            this.totalSaved++;
+            localStorage.setItem('nbc_saved_lemmings', this.totalSaved);
+            document.getElementById('savedCount').textContent = this.totalSaved;
+            
+            lemming.classList.remove('walking');
+            lemming.classList.add('parachuting');
+            lemming.style.left = 'auto';
+            lemming.style.right = '10px';
+            
+            // Cheer at bottom
+            setTimeout(() => {
+                lemming.classList.remove('parachuting');
+                lemming.classList.add('cheering');
+                lemming.innerHTML = '🎉';
+                
+                // Check level up
+                if(this.consecutiveSaves > 0 && this.consecutiveSaves % 5 === 0) {
+                    this.levelUp();
+                }
+                
+                setTimeout(() => lemming.remove(), 1800);
+                this.activeLemmings--;
+            }, 2500);
+            
+        } else {
+            // LOST!
+            this.consecutiveSaves = 0;
+            
+            lemming.classList.remove('walking');
+            lemming.classList.add('splatted');
+            
+            // Dust effect
+            const dust = document.createElement('div');
+            dust.className = 'impact-dust';
+            dust.style.right = '5px';
+            dust.style.bottom = '0px';
+            sky.appendChild(dust);
+            setTimeout(() => dust.remove(), 600);
+            
+            // Angel fly up
+            setTimeout(() => {
+                lemming.classList.remove('splatted');
+                lemming.classList.add('angel');
+                lemming.innerHTML = '👼';
+                lemming.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
+                
+                setTimeout(() => lemming.remove(), 2200);
+                this.activeLemmings--;
+            }, 400);
+        }
+    },
+    
+    levelUp() {
+        this.level++;
+        localStorage.setItem('nbc_lemming_level', this.level);
+        
+        // Increase spawn rate
+        this.spawnRate = Math.max(2000, 10000 - (this.level * 1500));
+        this.startSpawning();
+        
+        // Show level popup
+        const popup = document.createElement('div');
+        popup.className = 'level-popup';
+        popup.textContent = `LVL ${this.level} START`;
+        document.body.appendChild(popup);
+        setTimeout(() => popup.remove(), 2000);
+        
+        // Confetti
+        if(window.confetti) {
+            confetti({particleCount: 80, spread: 60, origin: {y: 0.3}, colors: ['#FFD700','#00FF00','#FF0000']});
+        }
+    }
+};
+
+// Start game after page load
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => lemmingsGame.init(), 2000);
+});
+
 
 // Expose globals
 window.showStrainDetail = showStrainDetail;
