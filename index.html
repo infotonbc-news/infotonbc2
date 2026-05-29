@@ -39,7 +39,16 @@
 body{margin:0;background-image:url('nbc262.webp');background-size:cover;background-position:center;background-attachment:fixed;color:#eee;font-family:Arial,sans-serif}
 body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,6,7,0.72);z-index:-1}
 body.age-lock{overflow:hidden}
- 
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;font-family:Arial,sans-serif;display:flex;flex-direction:column;align-items:center;gap:20px;padding:24px}
+.banner-wrap{width:320px;border-radius:14px;border:2px dashed #C9A227;overflow:hidden;position:relative;cursor:pointer}
+.banner-wrap:hover{border-color:#e0b43a}
+.banner-svg{display:block;width:100%;height:180px}
+.banner-label{background:#0a0a0a;padding:12px 16px;text-align:center}
+.banner-label h3{color:#C9A227;font-size:13px;font-weight:800;margin-bottom:4px}
+.banner-label p{color:#888;font-size:11px;margin-bottom:8px}
+.book-btn{background:#C9A227;color:#000;border:none;padding:7px 20px;border-radius:20px;cursor:pointer;font-weight:bold;font-size:12px;transition:transform .15s}
+.book-btn:hover{transform:scale(1.06)} 
 /* Age Gate */
 .age-gate{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.96);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
 .age-box{background:#111;border:2px solid #C9A227;border-radius:16px;padding:30px 25px;max-width:420px;text-align:center;box-shadow:0 0 30px rgba(201,162,39,.3)}
@@ -223,23 +232,321 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
   <div class="next-update" id="nextUpdateLabel"></div>
  
   <!-- Ad Banners -->
-  <div class="banner-row">
-    <div class="ad">
-      <h3 data-i18n="ad1_t">Höher als deine Toleranz? Dein Spot hier!</h3>
-      <p data-i18n="ad1_d">Seeds • Shops • CBD • Lass die Chiller dich finden</p>
-     <p><a href="#" onclick="nbcOpenModal();return false;" data-i18n="ad_btn">Jetzt buchen</a></p>
-    </div>
-    <div class="ad">
-      <h3 data-i18n="ad2_t">Günstiger als Amsterdam, näher als dein Dealer</h3>
-      <p data-i18n="ad2_d">Werbung die kleben bleibt – ganz legal</p>
-      <p><a href="#" onclick="nbcOpenModal();return false;" data-i18n="ad_btn">Jetzt buchen</a></p>
-    </div>
-    <div class="ad">
-      <h3 data-i18n="ad3_t">Hier könnte dein Gras… äh, deine Brand wachsen</h3>
-      <p data-i18n="ad3_d">18+ Aufklärung | CanG-konform | High-Reichweite</p>
-      <p><a href="#" onclick="nbcOpenModal();return false;" data-i18n="ad_btn">Jetzt buchen</a></p>
-    </div>
-  </div>
+<!-- BANNER 1: GÄRTNER -->
+<div class="banner-wrap">
+<svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="skyG" cx="50%" cy="0%" r="100%">
+      <stop offset="0%" stop-color="#0d2a0d"/>
+      <stop offset="100%" stop-color="#050e05"/>
+    </radialGradient>
+    <clipPath id="dropClip1"><circle id="dc1" cx="0" cy="0" r="4"/></clipPath>
+  </defs>
+  <!-- Sky -->
+  <rect width="320" height="180" fill="url(#skyG)"/>
+  <!-- Ground -->
+  <rect x="0" y="140" width="320" height="40" fill="#0a1a08" rx="0"/>
+  <!-- Soil bed -->
+  <ellipse cx="160" cy="142" rx="90" ry="10" fill="#1a0e04"/>
+  <!-- Sun -->
+  <circle cx="270" cy="28" r="18" fill="#C9A227" opacity="0.9">
+    <animate attributeName="opacity" values="0.9;1;0.9" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Sun rays -->
+  <g stroke="#C9A227" stroke-width="2" opacity="0.5">
+    <line x1="270" y1="6" x2="270" y2="0"><animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/></line>
+    <line x1="288" y1="10" x2="293" y2="5"><animate attributeName="opacity" values="0.5;1;0.5" dur="2s" begin="0.3s" repeatCount="indefinite"/></line>
+    <line x1="294" y1="28" x2="300" y2="28"><animate attributeName="opacity" values="0.5;1;0.5" dur="2s" begin="0.6s" repeatCount="indefinite"/></line>
+    <line x1="288" y1="46" x2="293" y2="51"><animate attributeName="opacity" values="0.5;1;0.5" dur="2s" begin="0.9s" repeatCount="indefinite"/></line>
+    <line x1="252" y1="10" x2="247" y2="5"><animate attributeName="opacity" values="0.5;1;0.5" dur="2s" begin="1.2s" repeatCount="indefinite"/></line>
+  </g>
+  <!-- Plants growing -->
+  <!-- Plant 1 -->
+  <g transform="translate(90,142)">
+    <line x1="0" y1="0" x2="0" y2="-35" stroke="#2d6e2d" stroke-width="3" stroke-linecap="round">
+      <animate attributeName="y2" values="0;-10;-22;-35" keyTimes="0;0.3;0.6;1" dur="4s" repeatCount="indefinite"/>
+    </line>
+    <ellipse cx="-10" cy="-28" rx="12" ry="7" fill="#3a8a3a" transform="rotate(-30 -10 -28)">
+      <animate attributeName="ry" values="0;3;7" keyTimes="0;0.5;1" dur="4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0.5;1" dur="4s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="10" cy="-22" rx="12" ry="7" fill="#4caf4c" transform="rotate(25 10 -22)">
+      <animate attributeName="ry" values="0;3;7" keyTimes="0;0.6;1" dur="4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;1" dur="4s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+  <!-- Plant 2 -->
+  <g transform="translate(130,142)">
+    <line x1="0" y1="0" x2="0" y2="-45" stroke="#2d6e2d" stroke-width="3" stroke-linecap="round">
+      <animate attributeName="y2" values="0;-15;-30;-45" keyTimes="0;0.3;0.6;1" dur="5s" begin="0.5s" repeatCount="indefinite"/>
+    </line>
+    <ellipse cx="-12" cy="-35" rx="14" ry="8" fill="#3a8a3a" transform="rotate(-25 -12 -35)">
+      <animate attributeName="ry" values="0;4;8" keyTimes="0;0.5;1" dur="5s" begin="0.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;1" dur="5s" begin="0.5s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="12" cy="-28" rx="14" ry="8" fill="#4caf4c" transform="rotate(20 12 -28)">
+      <animate attributeName="ry" values="0;4;8" keyTimes="0;0.6;1" dur="5s" begin="0.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;1" dur="5s" begin="0.5s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="0" cy="-45" rx="10" ry="6" fill="#5dbf5d" transform="rotate(5 0 -45)">
+      <animate attributeName="ry" values="0;3;6" keyTimes="0;0.7;1" dur="5s" begin="0.5s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;1" dur="5s" begin="0.5s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+  <!-- Plant 3 -->
+  <g transform="translate(175,142)">
+    <line x1="0" y1="0" x2="0" y2="-38" stroke="#2d6e2d" stroke-width="3" stroke-linecap="round">
+      <animate attributeName="y2" values="0;-12;-25;-38" keyTimes="0;0.3;0.6;1" dur="4.5s" begin="1s" repeatCount="indefinite"/>
+    </line>
+    <ellipse cx="-11" cy="-30" rx="13" ry="7" fill="#3a8a3a" transform="rotate(-35 -11 -30)">
+      <animate attributeName="ry" values="0;3;7" keyTimes="0;0.5;1" dur="4.5s" begin="1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;1" dur="4.5s" begin="1s" repeatCount="indefinite"/>
+    </ellipse>
+    <ellipse cx="11" cy="-24" rx="13" ry="7" fill="#4caf4c" transform="rotate(30 11 -24)">
+      <animate attributeName="ry" values="0;3;7" keyTimes="0;0.6;1" dur="4.5s" begin="1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0;0;1" dur="4.5s" begin="1s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+  <!-- Watering can -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="240,60;200,55;240,60" keyTimes="0;0.5;1" dur="6s" repeatCount="indefinite"/>
+    <!-- can body -->
+    <rect x="0" y="0" width="38" height="28" rx="5" fill="#C9A227"/>
+    <rect x="2" y="2" width="34" height="10" rx="3" fill="#e0b43a"/>
+    <!-- handle -->
+    <path d="M38 6 Q52 6 52 14 Q52 22 38 22" fill="none" stroke="#C9A227" stroke-width="4" stroke-linecap="round"/>
+    <!-- spout -->
+    <line x1="0" y1="18" x2="-18" y2="26" stroke="#C9A227" stroke-width="5" stroke-linecap="round"/>
+    <line x1="-18" y1="26" x2="-25" y2="26" stroke="#C9A227" stroke-width="4" stroke-linecap="round"/>
+    <!-- water drops -->
+    <circle cx="-28" cy="30" r="2.5" fill="#7dcfff" opacity="0.9">
+      <animate attributeName="cy" values="30;60;90" dur="1s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.9;0.5;0" dur="1s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="-22" cy="28" r="2" fill="#7dcfff" opacity="0.8">
+      <animate attributeName="cy" values="28;58;88" dur="1s" begin="0.2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.8;0.4;0" dur="1s" begin="0.2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="-32" cy="34" r="2" fill="#7dcfff" opacity="0.7">
+      <animate attributeName="cy" values="34;64;94" dur="1s" begin="0.4s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.7;0.3;0" dur="1s" begin="0.4s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="-26" cy="32" r="1.5" fill="#7dcfff" opacity="0.6">
+      <animate attributeName="cy" values="32;62;92" dur="1s" begin="0.6s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;0.2;0" dur="1s" begin="0.6s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+</svg>
+<div class="banner-label">
+  <h3>🌱 Pflanz deine Marke hier!</h3>
+  <p>Seeds • Shops • CBD • Lass die Chiller dich finden</p>
+  <button class="book-btn">Jetzt buchen 🌿</button>
+</div>
+</div>
+
+<!-- BANNER 2: ZIGARRENROLLER -->
+<div class="banner-wrap">
+<svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="tableG" cx="50%" cy="100%" r="80%">
+      <stop offset="0%" stop-color="#1a0e00"/>
+      <stop offset="100%" stop-color="#0a0700"/>
+    </radialGradient>
+  </defs>
+  <rect width="320" height="180" fill="#0a0700"/>
+  <!-- warm lamp light -->
+  <ellipse cx="160" cy="0" rx="140" ry="60" fill="#C9A227" opacity="0.06"/>
+  <!-- table surface -->
+  <rect x="0" y="110" width="320" height="70" fill="url(#tableG)" rx="0"/>
+  <rect x="0" y="110" width="320" height="4" fill="#3d2200" opacity="0.8"/>
+  <!-- mat on table -->
+  <rect x="60" y="115" width="200" height="55" rx="4" fill="#1a0e04" opacity="0.8"/>
+
+  <!-- tobacco/herb pile -->
+  <ellipse cx="160" cy="148" rx="45" ry="12" fill="#2d1a00" opacity="0.9"/>
+  <ellipse cx="150" cy="146" rx="30" ry="8" fill="#3d2200"/>
+  <ellipse cx="170" cy="147" rx="25" ry="7" fill="#4a2d00"/>
+
+  <!-- rolling paper being rolled - animated -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="0 160 140;-3 160 140;0 160 140;3 160 140;0 160 140" dur="3s" repeatCount="indefinite"/>
+    <rect x="110" y="132" width="100" height="18" rx="9" fill="#f5e6c8" opacity="0.92"/>
+    <rect x="110" y="132" width="100" height="9" rx="4" fill="#e8d4a0" opacity="0.6"/>
+    <!-- green fill inside -->
+    <rect x="118" y="136" width="84" height="10" rx="3" fill="#2d6e2d" opacity="0.7"/>
+  </g>
+
+  <!-- LEFT HAND -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0;-3,2;0,0;3,-2;0,0" dur="3s" repeatCount="indefinite"/>
+    <ellipse cx="95" cy="148" rx="28" ry="14" fill="#c8a882" rx2="8"/>
+    <!-- fingers -->
+    <rect x="72" y="138" width="10" height="18" rx="5" fill="#c8a882" transform="rotate(-15 77 148)"/>
+    <rect x="83" y="135" width="10" height="20" rx="5" fill="#d4b48e" transform="rotate(-8 88 145)"/>
+    <rect x="96" y="134" width="10" height="20" rx="5" fill="#c8a882" transform="rotate(0 101 144)"/>
+    <rect x="108" y="136" width="9" height="18" rx="5" fill="#c8a882" transform="rotate(8 112 145)"/>
+  </g>
+  <!-- RIGHT HAND -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="0,0;3,-2;0,0;-3,2;0,0" dur="3s" repeatCount="indefinite"/>
+    <ellipse cx="225" cy="148" rx="28" ry="14" fill="#c8a882"/>
+    <rect x="209" y="136" width="9" height="18" rx="5" fill="#c8a882" transform="rotate(-8 213 145)"/>
+    <rect x="220" y="134" width="10" height="20" rx="5" fill="#d4b48e" transform="rotate(0 225 144)"/>
+    <rect x="232" y="135" width="10" height="20" rx="5" fill="#c8a882" transform="rotate(8 237 145)"/>
+    <rect x="243" y="138" width="10" height="18" rx="5" fill="#c8a882" transform="rotate(15 248 147)"/>
+  </g>
+
+  <!-- finished joint on side -->
+  <g transform="translate(40,125) rotate(-20)">
+    <rect x="0" y="0" width="50" height="9" rx="4" fill="#f5e6c8"/>
+    <rect x="44" y="1" width="8" height="7" rx="1" fill="#d4b48e"/>
+    <circle cx="52" cy="4" r="3" fill="#ff6b35" opacity="0.9">
+      <animate attributeName="opacity" values="0.9;0.4;0.9" dur="1.5s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="3;3.5;3" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <!-- smoke from finished joint -->
+    <path d="M55 4 Q60 -5 55 -14 Q50 -23 56 -32" fill="none" stroke="#888" stroke-width="1.5" opacity="0.4" stroke-linecap="round">
+      <animate attributeName="opacity" values="0.4;0.1;0.4" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="d" values="M55 4 Q60 -5 55 -14 Q50 -23 56 -32;M55 4 Q58 -6 54 -15 Q51 -24 57 -33;M55 4 Q60 -5 55 -14 Q50 -23 56 -32" dur="2s" repeatCount="indefinite"/>
+    </path>
+  </g>
+
+  <!-- lamp -->
+  <path d="M160 0 L140 30 L180 30 Z" fill="#C9A227" opacity="0.7"/>
+  <rect x="155" y="0" width="10" height="8" rx="2" fill="#888"/>
+  <ellipse cx="160" cy="30" rx="22" ry="6" fill="#C9A227" opacity="0.5"/>
+</svg>
+<div class="banner-label">
+  <h3>💨 Smooth wie ein frisch Gerollter</h3>
+  <p>Werbung die bleibt – CanG-konform & legal</p>
+  <button class="book-btn">Platz sichern ✌️</button>
+</div>
+</div>
+
+<!-- BANNER 3: AMSTERDAM GRACHT -->
+<div class="banner-wrap">
+<svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="skyAms" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0d1a2e"/>
+      <stop offset="100%" stop-color="#1a2e1a"/>
+    </linearGradient>
+    <linearGradient id="waterG" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a1a2e"/>
+      <stop offset="100%" stop-color="#050e1a"/>
+    </linearGradient>
+  </defs>
+  <!-- sky / dusk -->
+  <rect width="320" height="180" fill="url(#skyAms)"/>
+  <!-- stars -->
+  <circle cx="30" cy="15" r="1" fill="#fff" opacity="0.8"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="3s" repeatCount="indefinite"/></circle>
+  <circle cx="80" cy="8" r="1" fill="#fff" opacity="0.6"><animate attributeName="opacity" values="0.6;0.2;0.6" dur="2.5s" begin="0.5s" repeatCount="indefinite"/></circle>
+  <circle cx="200" cy="12" r="1" fill="#fff" opacity="0.7"><animate attributeName="opacity" values="0.7;0.1;0.7" dur="2s" begin="1s" repeatCount="indefinite"/></circle>
+  <circle cx="290" cy="6" r="1" fill="#fff" opacity="0.5"><animate attributeName="opacity" values="0.5;0.2;0.5" dur="3.5s" begin="0.3s" repeatCount="indefinite"/></circle>
+  <!-- Moon -->
+  <circle cx="50" cy="22" r="10" fill="#C9A227" opacity="0.7"/>
+  <circle cx="53" cy="19" r="8" fill="#0d1a2e"/>
+
+  <!-- Buildings BG -->
+  <rect x="0" y="55" width="40" height="70" fill="#0d1505" rx="2"/>
+  <rect x="38" y="40" width="35" height="85" fill="#0a1a08" rx="2"/>
+  <polygon points="38,40 55,25 73,40" fill="#0a1a08"/>
+  <rect x="71" y="50" width="30" height="75" fill="#0d1505" rx="2"/>
+  <rect x="99" y="45" width="25" height="80" fill="#0a1a08" rx="2"/>
+  <polygon points="99,45 111,30 124,45" fill="#0a1a08"/>
+  <rect x="220" y="48" width="35" height="77" fill="#0a1a08" rx="2"/>
+  <polygon points="220,48 237,33 255,48" fill="#0a1a08"/>
+  <rect x="253" y="55" width="30" height="70" fill="#0d1505" rx="2"/>
+  <rect x="281" y="42" width="40" height="83" fill="#0a1a08" rx="2"/>
+  <polygon points="281,42 301,28 320,42" fill="#0a1a08"/>
+  <!-- windows lit -->
+  <rect x="45" y="50" width="6" height="7" rx="1" fill="#C9A227" opacity="0.8"><animate attributeName="opacity" values="0.8;0.4;0.8" dur="4s" repeatCount="indefinite"/></rect>
+  <rect x="58" y="55" width="6" height="7" rx="1" fill="#C9A227" opacity="0.6"><animate attributeName="opacity" values="0.6;0.2;0.6" dur="3s" begin="1s" repeatCount="indefinite"/></rect>
+  <rect x="103" y="55" width="5" height="6" rx="1" fill="#C9A227" opacity="0.7"><animate attributeName="opacity" values="0.7;0.3;0.7" dur="3.5s" begin="0.5s" repeatCount="indefinite"/></rect>
+  <rect x="228" y="58" width="6" height="7" rx="1" fill="#C9A227" opacity="0.9"><animate attributeName="opacity" values="0.9;0.5;0.9" dur="2.5s" begin="1.5s" repeatCount="indefinite"/></rect>
+  <rect x="258" y="62" width="6" height="7" rx="1" fill="#C9A227" opacity="0.7"><animate attributeName="opacity" values="0.7;0.2;0.7" dur="4s" begin="0.8s" repeatCount="indefinite"/></rect>
+  <rect x="286" y="52" width="6" height="7" rx="1" fill="#C9A227" opacity="0.8"><animate attributeName="opacity" values="0.8;0.4;0.8" dur="3s" begin="2s" repeatCount="indefinite"/></rect>
+
+  <!-- Quay / sidewalk -->
+  <rect x="0" y="125" width="320" height="20" fill="#1a1a0d"/>
+  <!-- Canal water -->
+  <rect x="0" y="145" width="320" height="35" fill="url(#waterG)"/>
+  <!-- water shimmer -->
+  <line x1="20" y1="153" x2="60" y2="153" stroke="#C9A227" stroke-width="1" opacity="0.15"><animate attributeName="opacity" values="0.15;0.35;0.15" dur="2s" repeatCount="indefinite"/></line>
+  <line x1="100" y1="157" x2="150" y2="157" stroke="#C9A227" stroke-width="1" opacity="0.1"><animate attributeName="opacity" values="0.1;0.3;0.1" dur="2.5s" begin="0.5s" repeatCount="indefinite"/></line>
+  <line x1="200" y1="155" x2="260" y2="155" stroke="#C9A227" stroke-width="1" opacity="0.12"><animate attributeName="opacity" values="0.12;0.28;0.12" dur="3s" begin="1s" repeatCount="indefinite"/></line>
+  <!-- boat -->
+  <g>
+    <animateTransform attributeName="transform" type="translate" values="-30,0;350,0" dur="20s" repeatCount="indefinite"/>
+    <path d="M0 155 Q20 148 40 155 L38 163 Q20 167 2 163 Z" fill="#1a1000"/>
+    <rect x="8" y="147" width="24" height="10" rx="3" fill="#0d0d00" opacity="0.8"/>
+  </g>
+
+  <!-- PERSON sitting at cafe -->
+  <!-- chair/stool -->
+  <rect x="148" y="118" width="24" height="8" rx="3" fill="#3d2200"/>
+  <line x1="152" y1="126" x2="148" y2="140" stroke="#3d2200" stroke-width="3" stroke-linecap="round"/>
+  <line x1="168" y1="126" x2="172" y2="140" stroke="#3d2200" stroke-width="3" stroke-linecap="round"/>
+  <!-- table -->
+  <rect x="175" y="116" width="40" height="4" rx="2" fill="#5c3a00"/>
+  <line x1="195" y1="120" x2="195" y2="138" stroke="#5c3a00" stroke-width="3"/>
+  <!-- coffee cup on table -->
+  <rect x="188" y="108" width="14" height="10" rx="3" fill="#222"/>
+  <ellipse cx="195" cy="108" rx="7" ry="2" fill="#333"/>
+  <rect x="200" y="111" width="5" height="4" rx="2" fill="#222"/>
+  <!-- steam from cup -->
+  <path d="M192 107 Q190 101 193 96" fill="none" stroke="#aaa" stroke-width="1.2" opacity="0.5" stroke-linecap="round">
+    <animate attributeName="opacity" values="0.5;0.1;0.5" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="d" values="M192 107 Q190 101 193 96;M192 107 Q194 101 191 96;M192 107 Q190 101 193 96" dur="2s" repeatCount="indefinite"/>
+  </path>
+  <path d="M197 107 Q195 101 198 96" fill="none" stroke="#aaa" stroke-width="1.2" opacity="0.4" stroke-linecap="round">
+    <animate attributeName="opacity" values="0.4;0.1;0.4" dur="2.5s" begin="0.5s" repeatCount="indefinite"/>
+  </path>
+  <!-- body -->
+  <rect x="152" y="95" width="20" height="26" rx="6" fill="#1a3a1a"/>
+  <!-- head -->
+  <circle cx="162" cy="88" r="11" fill="#c8a882"/>
+  <!-- hat -->
+  <ellipse cx="162" cy="79" rx="13" ry="3" fill="#1a1000"/>
+  <rect x="153" y="68" width="18" height="12" rx="3" fill="#1a1000"/>
+  <!-- arm + joint -->
+  <g>
+    <animateTransform attributeName="transform" type="rotate" values="0 162 105;5 162 105;0 162 105;-5 162 105;0 162 105" dur="4s" repeatCount="indefinite"/>
+    <line x1="162" y1="105" x2="140" y2="100" stroke="#c8a882" stroke-width="5" stroke-linecap="round"/>
+    <!-- joint in hand -->
+    <rect x="126" y="97" width="18" height="5" rx="2.5" fill="#f5e6c8"/>
+    <rect x="140" y="97.5" width="4" height="4" rx="1" fill="#d4b48e"/>
+    <!-- ember -->
+    <circle cx="144" cy="99.5" r="2.5" fill="#ff6b35">
+      <animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="r" values="2.5;3;2.5" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  <!-- smoke wisps -->
+  <path d="M144 97 Q140 88 145 78 Q150 68 144 58" fill="none" stroke="#aaa" stroke-width="1.5" opacity="0.35" stroke-linecap="round">
+    <animate attributeName="opacity" values="0.35;0.05;0.35" dur="3s" repeatCount="indefinite"/>
+    <animate attributeName="d" values="M144 97 Q140 88 145 78 Q150 68 144 58;M144 97 Q142 88 147 78 Q152 68 146 58;M144 97 Q140 88 145 78 Q150 68 144 58" dur="3s" repeatCount="indefinite"/>
+  </path>
+  <path d="M144 95 Q148 86 143 76 Q138 66 143 56" fill="none" stroke="#aaa" stroke-width="1" opacity="0.2" stroke-linecap="round">
+    <animate attributeName="opacity" values="0.2;0.05;0.2" dur="4s" begin="1s" repeatCount="indefinite"/>
+  </path>
+  <!-- street lamp -->
+  <line x1="230" y1="60" x2="230" y2="130" stroke="#3d3d00" stroke-width="4"/>
+  <path d="M230 60 Q248 55 250 70" fill="none" stroke="#3d3d00" stroke-width="3"/>
+  <circle cx="250" cy="72" r="6" fill="#C9A227" opacity="0.9">
+    <animate attributeName="opacity" values="0.9;0.7;0.9" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  <ellipse cx="250" cy="78" rx="18" ry="8" fill="#C9A227" opacity="0.06"/>
+  <!-- bridge -->
+  <path d="M0 138 Q40 128 80 138" fill="none" stroke="#2a2a00" stroke-width="6"/>
+  <path d="M240 138 Q280 128 320 138" fill="none" stroke="#2a2a00" stroke-width="6"/>
+</svg>
+<div class="banner-label">
+  <h3>🌉 Chill an der Gracht – Werbung für Kenner</h3>
+  <p>Hochwertig, entspannt, direkt zur Community</p>
+  <button class="book-btn">Anfragen ✉️</button>
+</div>
+</div>
  
   <!-- Videos -->
   <div class="video-row">
@@ -809,6 +1116,71 @@ window.addEventListener('load',()=>{
     if(e.target === document.getElementById('nbcAdModal')) nbcCloseModal();
   };
   updateDisplay();
+})();
+// ============================================================
+// AUTO-POPUP (alle 3 Min, 30 Sek sichtbar) + BANNER-SLIDES
+// ============================================================
+(function(){
+  const STORAGE_KEY = 'nbc_ad_clicks';
+  const BASE = 1745;
+  const POPUP_INTERVAL = 3 * 60 * 1000;  // 3 Minuten
+  const POPUP_DURATION = 30 * 1000;       // 30 Sekunden
+
+  const popups = [
+    {icon:'🌿',title:'Hey – hier ist noch Platz!',sub:'Deine Seeds, dein Shop, dein CBD – präsentiert vor tausenden echten Cannabis-Fans. Zu smooth um Nein zu sagen.'},
+    {icon:'💰',title:'Günstig. Legal. Wirksam.',sub:'Werbung die nicht nervt – weil sie zur Community passt. CanG-konform, 18+ sicher, NBC-approved.'},
+    {icon:'🚀',title:'1.745 Anfragen können nicht irren',sub:'Immer mehr NBC-Supporter wollen dabei sein. Wann bist du dran?'},
+    {icon:'🌱',title:'Pflanz deine Marke hier!',sub:'Kein Algorithmus, kein Hamsterrad – nur echte Menschen, echtes Interesse, echter Chill.'}
+  ];
+
+  let popupIndex = 0;
+  let autoCloseTimer = null;
+
+  function getCount(){ return parseInt(localStorage.getItem(STORAGE_KEY)||'0',10); }
+  function formatDE(n){ return n.toLocaleString('de-DE'); }
+
+  function showAutoPopup(){
+    const c = popups[popupIndex % popups.length];
+    document.getElementById('nbcAutoIcon').textContent = c.icon;
+    document.getElementById('nbcAutoTitle').textContent = c.title;
+    document.getElementById('nbcAutoSub').textContent = c.sub;
+    document.getElementById('nbcAutoCount').textContent = formatDE(BASE + getCount());
+    const bar = document.getElementById('nbcAutoBar');
+    bar.style.transition = 'none';
+    bar.style.width = '100%';
+    document.getElementById('nbcAutoOverlay').classList.add('show');
+    setTimeout(()=>{
+      bar.style.transition = 'width '+POPUP_DURATION+'ms linear';
+      bar.style.width = '0%';
+    },50);
+    autoCloseTimer = setTimeout(nbcAutoClose, POPUP_DURATION);
+    popupIndex++;
+  }
+
+  window.nbcAutoClose = function(){
+    clearTimeout(autoCloseTimer);
+    document.getElementById('nbcAutoOverlay').classList.remove('show');
+  };
+
+  // Banner-Slides rotieren (alle 4 Sek)
+  const bannerAds = document.querySelectorAll('.ad');
+  bannerAds.forEach(ad=>{
+    const slides = ad.querySelectorAll('.ad-slide');
+    if(slides.length < 2) return;
+    let idx = 0;
+    setInterval(()=>{
+      slides[idx].classList.remove('active');
+      idx = (idx+1) % slides.length;
+      slides[idx].classList.add('active');
+    }, 4000);
+  });
+
+  // Auto-Popup Timer starten (nach 3 Min, dann alle 3 Min)
+  setTimeout(()=>{
+    showAutoPopup();
+    setInterval(showAutoPopup, POPUP_INTERVAL);
+  }, POPUP_INTERVAL);
+
 })();
 </script>
 <div class="nbc-modal-overlay" id="nbcAdModal" onclick="nbcModalClickOutside(event)">
