@@ -1399,7 +1399,7 @@ window.closeThankYouModal = closeThankYouModal;
   const timer = setInterval(()=>{
     s--;
     count.textContent = s;
-    progress.style.strokeDashoffset = total - ((15-s)/15)*total;
+    progress.style.strokeDashoffset = total - ((25-s)/25)*total;
     if(s<=0){
       clearInterval(timer);
       overlay.style.opacity='0';
