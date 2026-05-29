@@ -109,7 +109,16 @@ h2{color:#C9A227;text-align:center;margin:30px 0 20px}
 .ad h3{color:#C9A227;margin:0 0 5px;font-size:16px}
 .ad p{color:#ccc;margin:5px 0;font-size:14px}
 .ad a{color:#C9A227}
- 
+.banner-row{
+  display:flex;
+  gap:20px;
+  justify-content:center;
+  align-items:stretch;
+  flex-wrap:wrap; /* bricht auf Mobile automatisch um */
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+} 
 /* Video */
 .video-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;align-items:stretch;margin:30px 0}
 .video-card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:18px;width:360px;display:flex;flex-direction:column}
@@ -233,7 +242,7 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
  
   <!-- Ad Banners -->
 <!-- BANNER 1: GÄRTNER -->
-<div class="banner-wrap">
+<div class="banner-wrap" onclick="nbcOpenModal()">
 <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient id="skyG" cx="50%" cy="0%" r="100%">
@@ -338,14 +347,14 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
   </g>
 </svg>
 <div class="banner-label">
-  <h3>🌱 Pflanz deine Marke hier!</h3>
-  <p>Seeds • Shops • CBD • Lass die Chiller dich finden</p>
-  <button class="book-btn">Jetzt buchen 🌿</button>
-</div>
-</div>
+      <h3>🌱 Pflanz deine Marke hier!</h3>
+      <p>Seeds • Shops • CBD • Lass die Chiller dich finden</p>
+      <button class="book-btn">Jetzt buchen 🌿</button>
+    </div>
+  </div>
 
 <!-- BANNER 2: ZIGARRENROLLER -->
-<div class="banner-wrap">
+<div class="banner-wrap" onclick="nbcOpenModal()">
 <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient id="tableG" cx="50%" cy="100%" r="80%">
@@ -417,14 +426,14 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
   <ellipse cx="160" cy="30" rx="22" ry="6" fill="#C9A227" opacity="0.5"/>
 </svg>
 <div class="banner-label">
-  <h3>💨 Smooth wie ein frisch Gerollter</h3>
-  <p>Werbung die bleibt – CanG-konform & legal</p>
-  <button class="book-btn">Platz sichern ✌️</button>
-</div>
-</div>
+      <h3>💨 Smooth wie ein frisch Gerollter</h3>
+      <p>Werbung die bleibt – CanG-konform & legal</p>
+      <button class="book-btn">Platz sichern ✌</button>
+    </div>
+  </div>
 
 <!-- BANNER 3: AMSTERDAM GRACHT -->
-<div class="banner-wrap">
+<div class="banner-wrap" onclick="nbcOpenModal()">
 <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="skyAms" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -542,10 +551,12 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
   <path d="M240 138 Q280 128 320 138" fill="none" stroke="#2a2a00" stroke-width="6"/>
 </svg>
 <div class="banner-label">
-  <h3>🌉 Chill an der Gracht – Werbung für Kenner</h3>
-  <p>Hochwertig, entspannt, direkt zur Community</p>
-  <button class="book-btn">Anfragen ✉️</button>
-</div>
+      <h3>🌉 Chill an der Gracht – Werbung für Kenner</h3>
+      <p>Hochwertig, entspannt, direkt zur Community</p>
+      <button class="book-btn">Anfragen ✉</button>
+    </div>
+  </div>
+
 </div>
  
   <!-- Videos -->
