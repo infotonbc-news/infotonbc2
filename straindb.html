@@ -421,6 +421,63 @@ body::after {
     100%{transform:translateX(-200%);}
 }
 
+
+.joke-ticker-header{
+    overflow:hidden;
+    position:relative;
+    height:28px;
+    width:100%;
+    max-width:600px;
+    background:rgba(0,0,0,0.3);
+    border-radius:12px;
+    border:1px solid rgba(255,215,0,0.15);
+    backdrop-filter:blur(4px);
+}
+.ticker-track{
+    display:flex;
+    white-space:nowrap;
+    animation:ticker-scroll 35s linear infinite;
+    will-change:transform;
+    height:100%;
+    align-items:center;
+}
+.ticker-item{
+    display:inline-flex;
+    align-items:center;
+    padding-right:4rem;
+    font-family:'Orbitron',sans-serif;
+    font-size:0.75rem;
+    font-weight:600;
+    letter-spacing:0.5px;
+    background:linear-gradient(90deg,#ff0000 0%,#ffd700 25%,#00ff00 50%,#ffd700 75%,#ff0000 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    filter:drop-shadow(0 0 8px rgba(255,215,0,0.8));
+    flex-shrink:0;
+}
+.ticker-item .share-love{
+    cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    transition:all 0.2s;
+    -webkit-text-fill-color:#FFD700;
+    background:none;
+    filter:drop-shadow(0 0 12px rgba(255,215,0,1));
+}
+.ticker-item .share-love:hover{
+    -webkit-text-fill-color:#fff;
+    filter:drop-shadow(0 0 16px rgba(255,215,0,1));
+}
+@keyframes ticker-scroll{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-50%);}
+}
+@media(max-width:768px){
+    .joke-ticker-header{max-width:100%;height:24px;}
+    .ticker-item{font-size:0.7rem;}
+}
+
 </style>
 </head>
 <body>
@@ -429,15 +486,26 @@ body::after {
 
 <header class="sticky top-0 z-50 backdrop-blur-lg bg-black/40 border-b-2 border-neo" role="banner">
     <div class="container mx-auto px-4 py-4">
-        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div class="flex items-center gap-3">
+        <div class="flex flex-col md:flex-row items-center gap-4">
+            <div class="flex items-center gap-3 flex-shrink-0">
                 <div class="text-4xl" aria-hidden="true">🌿</div>
                 <div>
                     <h1 class="text-2xl md:text-3xl font-orbitron font-black neon-gold">NaturalBornChillaz</h1>
                     <p class="text-xs text-cyan-400 font-orbitron tracking-widest">STRAIN DATENBANK</p>
                 </div>
             </div>
-            <div class="flex flex-wrap items-center gap-3">
+            
+            <!-- JOKE TICKER IN MITTE -->
+            <div class="flex-1 w-full md:w-auto order-3 md:order-2 min-w-0">
+                <div class="joke-ticker-header">
+                    <div class="ticker-track" id="headerJokeTrack">
+                        <div class="ticker-item">Lade Daily Joke... <span class="mx-3 opacity-40">•</span> <span class="share-love" onclick="openDonateModal()">NaturalBornChillaz Share Love</span> <span class="mx-3 opacity-40">•</span></div>
+                        <div class="ticker-item">Lade Daily Joke... <span class="mx-3 opacity-40">•</span> <span class="share-love" onclick="openDonateModal()">NaturalBornChillaz Share Love</span> <span class="mx-3 opacity-40">•</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-3 flex-shrink-0 order-2 md:order-3">
                 <div class="text-center px-4 py-2 bg-black/40 rounded-lg border border-yellow-500/30">
                     <div class="text-2xl font-orbitron font-black stat-number" id="strainCount">120+</div>
                     <div class="text-xs text-gray-400">STRAINS</div>
@@ -510,10 +578,6 @@ body::after {
             <h3 id="donateTitle" class="text-2xl font-orbitron font-black neon-gold mb-3">Ey Bratan, die DB wächst nicht von allein! 🌿💚</h3>
             <p id="donateSubtitle" class="text-sm text-gray-300 mb-3 leading-relaxed">120+ Strains, Holo-Cards, Server, Bilder – das kostet mehr als ein Dübel. Ohne Community-Support geht NaturalBornChillaz baden.</p>
             <p id="donateQuestion" class="text-lg text-cyan-300">Bist du dabei und hältst die Vibes am Leben?</p>
-        </div>
-        <div class="mb-4">
-            <div class="text-xs text-yellow-400 font-orbitron mb-1 tracking-widest">😂 DAILY CHILLAZ JOKE</div>
-            <div class="joke-ticker"><span id="dailyJoke">Lade Witz des Tages...</span></div>
         </div>
         <div id="donateContent">
             <button onclick="startPayPalRedirect()" id="donateButton" class="btn-paypal w-full py-4 rounded-xl text-lg mb-4 flex items-center justify-center gap-3">
@@ -873,6 +937,63 @@ function printStrainCard(id){
     100%{transform:translateX(-200%);}
 }
 
+
+.joke-ticker-header{
+    overflow:hidden;
+    position:relative;
+    height:28px;
+    width:100%;
+    max-width:600px;
+    background:rgba(0,0,0,0.3);
+    border-radius:12px;
+    border:1px solid rgba(255,215,0,0.15);
+    backdrop-filter:blur(4px);
+}
+.ticker-track{
+    display:flex;
+    white-space:nowrap;
+    animation:ticker-scroll 35s linear infinite;
+    will-change:transform;
+    height:100%;
+    align-items:center;
+}
+.ticker-item{
+    display:inline-flex;
+    align-items:center;
+    padding-right:4rem;
+    font-family:'Orbitron',sans-serif;
+    font-size:0.75rem;
+    font-weight:600;
+    letter-spacing:0.5px;
+    background:linear-gradient(90deg,#ff0000 0%,#ffd700 25%,#00ff00 50%,#ffd700 75%,#ff0000 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    filter:drop-shadow(0 0 8px rgba(255,215,0,0.8));
+    flex-shrink:0;
+}
+.ticker-item .share-love{
+    cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:3px;
+    transition:all 0.2s;
+    -webkit-text-fill-color:#FFD700;
+    background:none;
+    filter:drop-shadow(0 0 12px rgba(255,215,0,1));
+}
+.ticker-item .share-love:hover{
+    -webkit-text-fill-color:#fff;
+    filter:drop-shadow(0 0 16px rgba(255,215,0,1));
+}
+@keyframes ticker-scroll{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-50%);}
+}
+@media(max-width:768px){
+    .joke-ticker-header{max-width:100%;height:24px;}
+    .ticker-item{font-size:0.7rem;}
+}
+
 </style></head><body><div class="card"><img src="${img}"><h1>🌿 ${s.name}</h1><p><b>${s.type} • THC ${s.thc}% • CBD ${s.cbd}%</b></p><h3>${t('HERKUNFT')}</h3><p>${s.herkunft}</p><h3>${t('GESCHICHTE')}</h3><p>${s.geschichte}</p><h3>${t('CHILLAZ WISSEN')}</h3><p>${s.chillazWissen}</p><h3>${t('FUN FACT')}</h3><p>${s.funFact}</p><h3>${t('TERPENE')}</h3><p>${s.terpene}</p><h3>${t('ANBAU')}</h3><p>${s.anbau}</p></div><script>window.onload=()=>setTimeout(()=>window.print(),500);<\/script></body></html>`);
   w.document.close();
 }
@@ -890,6 +1011,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setupEventListeners();
     initKeyboardNav();
     document.getElementById('strainCount').textContent = strainDatabase.length + '+';
+    loadDailyJoke();
 
     // --- AUTO HOVERKARTE FIX ---
     // 1,2 Sekunden nach Laden öffnen
@@ -1074,48 +1196,45 @@ function closeStrainModal() {
 
 
 async function loadDailyJoke() {
-    const jokeEl = document.getElementById('dailyJoke');
-    if(!jokeEl) return;
+    const track = document.getElementById('headerJokeTrack');
+    if(!track) return;
     
     const today = new Date().toISOString().split('T')[0];
     const lang = userLang;
     const cacheKey = `nbc_joke_${today}_${lang}`;
     
-    const cached = localStorage.getItem(cacheKey);
-    if(cached) {
-        jokeEl.textContent = cached;
-        return;
+    let joke = localStorage.getItem(cacheKey);
+    
+    if(!joke) {
+        try {
+            const apiLang = ['de','en','es','fr','pt','it'].includes(lang) ? lang : 'en';
+            const res = await fetch(`https://v2.jokeapi.dev/joke/Miscellaneous,Pun?lang=${apiLang}&type=single&safe-mode&blacklistFlags=nsfw,religious,political,racist,sexist`);
+            const data = await res.json();
+            
+            if(data.type === 'single') {
+                joke = data.joke;
+            } else {
+                joke = `${data.setup} ... ${data.delivery}`;
+            }
+            
+            if(!joke || joke.length < 5) throw new Error('No joke');
+            localStorage.setItem(cacheKey, joke);
+            
+        } catch(e) {
+            console.warn('Joke fetch failed', e);
+            const fallbacks = {
+                de: ['Warum kiffen Gärtner so gern? Weil sie ein high Beet haben! 😂', 'Was sagt ein Joint zum Feuerzeug? Du machst mich an! 🔥', 'Warum gehen Kiffer nicht joggen? Zu viel Gras! 🌿'],
+                en: ['Why don\'t stoners get lost? They follow the high-way! 😂', 'What do you call a stoner magician? A high-pnotist! ✨', 'Why did the weed go to school? To get higher education! 🎓'],
+                es: ['¿Por qué los fumetas no usan GPS? ¡Ya están perdidos! 😂', '¿Qué le dice un porro a otro? ¡Nos vemos en el cenicero! 🔥', '¿Por qué el cannabis es buen amigo? ¡Porque siempre te da buen rollo! 🌿']
+            };
+            const list = fallbacks[lang] || fallbacks.en;
+            joke = list[Math.floor(Math.random() * list.length)];
+            localStorage.setItem(cacheKey, joke);
+        }
     }
     
-    try {
-        const apiLang = ['de','en','es','fr','pt','it'].includes(lang) ? lang : 'en';
-        const res = await fetch(`https://v2.jokeapi.dev/joke/Miscellaneous,Pun?lang=${apiLang}&type=single&safe-mode&blacklistFlags=nsfw,religious,political,racist,sexist`);
-        const data = await res.json();
-        
-        let joke = '';
-        if(data.type === 'single') {
-            joke = data.joke;
-        } else {
-            joke = `${data.setup} ... ${data.delivery}`;
-        }
-        
-        if(!joke || joke.length < 5) throw new Error('No joke');
-        
-        localStorage.setItem(cacheKey, joke);
-        jokeEl.textContent = joke;
-        
-    } catch(e) {
-        console.warn('Joke fetch failed', e);
-        const fallbacks = {
-            de: ['Warum kiffen Gärtner so gern? Weil sie ein high Beet haben! 😂', 'Was sagt ein Joint zum Feuerzeug? Du machst mich an! 🔥', 'Warum gehen Kiffer nicht joggen? Zu viel Gras! 🌿'],
-            en: ['Why don\'t stoners get lost? They follow the high-way! 😂', 'What do you call a stoner magician? A high-pnotist! ✨', 'Why did the weed go to school? To get higher education! 🎓'],
-            es: ['¿Por qué los fumetas no usan GPS? ¡Ya están perdidos! 😂', '¿Qué le dice un porro a otro? ¡Nos vemos en el cenicero! 🔥', '¿Por qué el cannabis es buen amigo? ¡Porque siempre te da buen rollo! 🌿']
-        };
-        const list = fallbacks[lang] || fallbacks.en;
-        const pick = list[Math.floor(Math.random() * list.length)];
-        jokeEl.textContent = pick;
-        localStorage.setItem(cacheKey, pick);
-    }
+    const itemHTML = `${joke} <span class="mx-3 opacity-40">•</span> <span class="share-love" onclick="openDonateModal()">NaturalBornChillaz Share Love</span> <span class="mx-3 opacity-40">•</span>`;
+    track.innerHTML = `<div class="ticker-item">${itemHTML}</div><div class="ticker-item">${itemHTML}</div>`;
 }
 
 function openDonateModal() {
@@ -1131,7 +1250,6 @@ function openDonateModal() {
             const span = btn.querySelector('span');
             if(span) span.textContent = t('DONATE_BUTTON');
         }
-        loadDailyJoke();
     } catch(e) { console.warn('Donate modal i18n error', e); }
     document.getElementById('donateContent').classList.remove('hidden');
     document.getElementById('countdownContent').classList.add('hidden');
