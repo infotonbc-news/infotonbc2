@@ -391,6 +391,36 @@ body::after {
     transition:opacity 0.5s ease;
 }
 .strain-img.loaded{opacity:1;}
+
+.joke-ticker{
+    overflow:hidden;
+    position:relative;
+    height:1.8em;
+    background:rgba(0,0,0,0.4);
+    border-radius:8px;
+    border:1px solid rgba(255,215,0,0.2);
+}
+.joke-ticker span{
+    position:absolute;
+    white-space:nowrap;
+    will-change:transform;
+    animation:ticker 25s linear infinite;
+    font-family:'Orbitron',sans-serif;
+    font-size:0.85rem;
+    line-height:1.8em;
+    padding-left:100%;
+    background:linear-gradient(90deg,#ff0000 0%,#ffd700 20%,#00ff00 40%,#ffd700 60%,#ff0000 80%,#ffd700 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    filter:drop-shadow(0 0 10px rgba(255,215,0,0.8)) drop-shadow(0 0 20px rgba(0,255,0,0.5));
+    font-weight:700;
+}
+@keyframes ticker{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-200%);}
+}
+
 </style>
 </head>
 <body>
@@ -480,6 +510,10 @@ body::after {
             <h3 id="donateTitle" class="text-2xl font-orbitron font-black neon-gold mb-3">Ey Bratan, die DB wächst nicht von allein! 🌿💚</h3>
             <p id="donateSubtitle" class="text-sm text-gray-300 mb-3 leading-relaxed">120+ Strains, Holo-Cards, Server, Bilder – das kostet mehr als ein Dübel. Ohne Community-Support geht NaturalBornChillaz baden.</p>
             <p id="donateQuestion" class="text-lg text-cyan-300">Bist du dabei und hältst die Vibes am Leben?</p>
+        </div>
+        <div class="mb-4">
+            <div class="text-xs text-yellow-400 font-orbitron mb-1 tracking-widest">😂 DAILY CHILLAZ JOKE</div>
+            <div class="joke-ticker"><span id="dailyJoke">Lade Witz des Tages...</span></div>
         </div>
         <div id="donateContent">
             <button onclick="startPayPalRedirect()" id="donateButton" class="btn-paypal w-full py-4 rounded-xl text-lg mb-4 flex items-center justify-center gap-3">
@@ -809,7 +843,37 @@ function printStrainCard(id){
   if(!s) return;
   const img = getStrainImageUrl(s.name,s.type);
   const w = window.open('','_blank','width=900,height=1100');
-  w.document.write(`<!DOCTYPE html><html lang="${userLang}"><head><meta charset="UTF-8"><title>${s.name}</title><style>body{font-family:Arial,sans-serif;padding:40px;background:#fff;color:#000}.card{border:4px solid #FFD700;border-radius:20px;padding:30px;max-width:800px;margin:auto} img{width:100%;height:280px;object-fit:cover;border-radius:12px;margin-bottom:20px} h1{font-size:32px;margin:0} h3{margin:18px 0 6px;color:#b8860b;font-size:14px;text-transform:uppercase;letter-spacing:1px} p{margin:0 0 12px;line-height:1.5}</style></head><body><div class="card"><img src="${img}"><h1>🌿 ${s.name}</h1><p><b>${s.type} • THC ${s.thc}% • CBD ${s.cbd}%</b></p><h3>${t('HERKUNFT')}</h3><p>${s.herkunft}</p><h3>${t('GESCHICHTE')}</h3><p>${s.geschichte}</p><h3>${t('CHILLAZ WISSEN')}</h3><p>${s.chillazWissen}</p><h3>${t('FUN FACT')}</h3><p>${s.funFact}</p><h3>${t('TERPENE')}</h3><p>${s.terpene}</p><h3>${t('ANBAU')}</h3><p>${s.anbau}</p></div><script>window.onload=()=>setTimeout(()=>window.print(),500);<\/script></body></html>`);
+  w.document.write(`<!DOCTYPE html><html lang="${userLang}"><head><meta charset="UTF-8"><title>${s.name}</title><style>body{font-family:Arial,sans-serif;padding:40px;background:#fff;color:#000}.card{border:4px solid #FFD700;border-radius:20px;padding:30px;max-width:800px;margin:auto} img{width:100%;height:280px;object-fit:cover;border-radius:12px;margin-bottom:20px} h1{font-size:32px;margin:0} h3{margin:18px 0 6px;color:#b8860b;font-size:14px;text-transform:uppercase;letter-spacing:1px} p{margin:0 0 12px;line-height:1.5}
+.joke-ticker{
+    overflow:hidden;
+    position:relative;
+    height:1.8em;
+    background:rgba(0,0,0,0.4);
+    border-radius:8px;
+    border:1px solid rgba(255,215,0,0.2);
+}
+.joke-ticker span{
+    position:absolute;
+    white-space:nowrap;
+    will-change:transform;
+    animation:ticker 25s linear infinite;
+    font-family:'Orbitron',sans-serif;
+    font-size:0.85rem;
+    line-height:1.8em;
+    padding-left:100%;
+    background:linear-gradient(90deg,#ff0000 0%,#ffd700 20%,#00ff00 40%,#ffd700 60%,#ff0000 80%,#ffd700 100%);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    background-clip:text;
+    filter:drop-shadow(0 0 10px rgba(255,215,0,0.8)) drop-shadow(0 0 20px rgba(0,255,0,0.5));
+    font-weight:700;
+}
+@keyframes ticker{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-200%);}
+}
+
+</style></head><body><div class="card"><img src="${img}"><h1>🌿 ${s.name}</h1><p><b>${s.type} • THC ${s.thc}% • CBD ${s.cbd}%</b></p><h3>${t('HERKUNFT')}</h3><p>${s.herkunft}</p><h3>${t('GESCHICHTE')}</h3><p>${s.geschichte}</p><h3>${t('CHILLAZ WISSEN')}</h3><p>${s.chillazWissen}</p><h3>${t('FUN FACT')}</h3><p>${s.funFact}</p><h3>${t('TERPENE')}</h3><p>${s.terpene}</p><h3>${t('ANBAU')}</h3><p>${s.anbau}</p></div><script>window.onload=()=>setTimeout(()=>window.print(),500);<\/script></body></html>`);
   w.document.close();
 }
 
@@ -1008,6 +1072,52 @@ function closeStrainModal() {
     document.body.style.overflow = 'auto';
 }
 
+
+async function loadDailyJoke() {
+    const jokeEl = document.getElementById('dailyJoke');
+    if(!jokeEl) return;
+    
+    const today = new Date().toISOString().split('T')[0];
+    const lang = userLang;
+    const cacheKey = `nbc_joke_${today}_${lang}`;
+    
+    const cached = localStorage.getItem(cacheKey);
+    if(cached) {
+        jokeEl.textContent = cached;
+        return;
+    }
+    
+    try {
+        const apiLang = ['de','en','es','fr','pt','it'].includes(lang) ? lang : 'en';
+        const res = await fetch(`https://v2.jokeapi.dev/joke/Miscellaneous,Pun?lang=${apiLang}&type=single&safe-mode&blacklistFlags=nsfw,religious,political,racist,sexist`);
+        const data = await res.json();
+        
+        let joke = '';
+        if(data.type === 'single') {
+            joke = data.joke;
+        } else {
+            joke = `${data.setup} ... ${data.delivery}`;
+        }
+        
+        if(!joke || joke.length < 5) throw new Error('No joke');
+        
+        localStorage.setItem(cacheKey, joke);
+        jokeEl.textContent = joke;
+        
+    } catch(e) {
+        console.warn('Joke fetch failed', e);
+        const fallbacks = {
+            de: ['Warum kiffen Gärtner so gern? Weil sie ein high Beet haben! 😂', 'Was sagt ein Joint zum Feuerzeug? Du machst mich an! 🔥', 'Warum gehen Kiffer nicht joggen? Zu viel Gras! 🌿'],
+            en: ['Why don\'t stoners get lost? They follow the high-way! 😂', 'What do you call a stoner magician? A high-pnotist! ✨', 'Why did the weed go to school? To get higher education! 🎓'],
+            es: ['¿Por qué los fumetas no usan GPS? ¡Ya están perdidos! 😂', '¿Qué le dice un porro a otro? ¡Nos vemos en el cenicero! 🔥', '¿Por qué el cannabis es buen amigo? ¡Porque siempre te da buen rollo! 🌿']
+        };
+        const list = fallbacks[lang] || fallbacks.en;
+        const pick = list[Math.floor(Math.random() * list.length)];
+        jokeEl.textContent = pick;
+        localStorage.setItem(cacheKey, pick);
+    }
+}
+
 function openDonateModal() {
     try {
         const setText = (id, key) => { const el = document.getElementById(id); if(el) el.textContent = t(key); };
@@ -1021,6 +1131,7 @@ function openDonateModal() {
             const span = btn.querySelector('span');
             if(span) span.textContent = t('DONATE_BUTTON');
         }
+        loadDailyJoke();
     } catch(e) { console.warn('Donate modal i18n error', e); }
     document.getElementById('donateContent').classList.remove('hidden');
     document.getElementById('countdownContent').classList.add('hidden');
