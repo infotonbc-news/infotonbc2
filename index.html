@@ -35,7 +35,7 @@
 {"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"NaturalBornChillaz","url":"https://naturalbornchillaz.de/","logo":"https://naturalbornchillaz.de/nbc262.webp","description":"Tägliche Cannabis Video-News 2026. CanG Updates Deutschland, USA Schedule III, Legalisierung weltweit.","sameAs":["https://www.instagram.com/infotonbc"]}
 </script>
 <style>
-*{box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
 body{margin:0;background-image:url('nbc262.webp');background-size:cover;background-position:center;background-attachment:fixed;color:#eee;font-family:Arial,sans-serif}
 body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,6,7,0.72);z-index:-1}
 body.age-lock{overflow:hidden}
@@ -76,7 +76,7 @@ body{background:#0a0a0a;font-family:Arial,sans-serif;display:flex;flex-direction
 /* Layout */
 .wrap{max-width:1100px;margin:0 auto;padding:30px 20px 80px}
 h2{color:#C9A227;text-align:center;margin:30px 0 20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
  
 /* News Cards */
 .card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:18px;transition:border-color .2s,transform .2s;position:relative;overflow:hidden}
@@ -104,27 +104,16 @@ h2{color:#C9A227;text-align:center;margin:30px 0 20px}
 .next-update{color:#555;font-size:11px;text-align:center;margin-top:8px}
  
 /* Ad Banners */
-.banner-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;align-items:stretch;margin:40px 0}
-.ad{background:#111;border:2px dashed #C9A227;border-radius:12px;padding:20px;width:300px;display:flex;flex-direction:column;justify-content:center;text-align:center}
-.ad h3{color:#C9A227;margin:0 0 5px;font-size:16px}
-.ad p{color:#ccc;margin:5px 0;font-size:14px}
-.ad a{color:#C9A227}
-.banner-row{
-  display:flex;
-  gap:20px;
-  justify-content:center;
-  align-items:stretch;
-  flex-wrap:wrap; /* bricht auf Mobile automatisch um */
-  width:100%;
-  max-width:1100px;
-  margin:0 auto;
+.banner-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;align-items:stretch;margin:40px 0;width:100%}
+.banner-wrap{width:320px;border-radius:14px;border:2px dashed #C9A227;overflow:hidden;position:relative;cursor:pointer;transition:border-color .2s,transform .2s;background:#0a0a0a}
+.banner-wrap:hover{border-color:#e0b43a;transform:translateY(-3px)}margin:0 auto;
 } 
 /* Video */
 .video-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;align-items:stretch;margin:30px 0}
-.video-card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:18px;width:360px;display:flex;flex-direction:column}
+.video-card{background:#111;border:1px solid #2a2a;border-radius:12px;padding:18px;width:360px;display:flex;flex-direction:column}
 .video-card:hover{border-color:#C9A227}
 .video-card iframe{width:100%;aspect-ratio:16/9;border:2px solid #C9A227;border-radius:8px;margin-top:8px;background:#000}
-.qr{width:200px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.qr{width:200px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
 .qr img{width:180px;height:180px;border:2px solid #C9A227;border-radius:10px}
  
 /* Donate */
@@ -157,13 +146,16 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 .ticker-label.local{background:#7dcfff;color:#000}
 @keyframes tickMove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
  
-@media(max-width:768px){
+@media(max-width:900px){
+.video-row{grid-template-columns:1fr}
+.qr{order:-1;margin:0 auto 20px}
 .logo{font-size:36px}
 .lang-switch{position:static;justify-content:center;margin-bottom:15px}
 .unity-btn{position:static;margin-top:15px}
 .video-card{width:100%}
 .qr{width:100%}
 .news-header{justify-content:center}
+.grid{grid-template-columns:1fr}
 }
 .nbc-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:8000;align-items:center;justify-content:center;padding:20px}
 .nbc-modal-overlay.open{display:flex}
@@ -241,6 +233,7 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
   <div class="next-update" id="nextUpdateLabel"></div>
  
   <!-- Ad Banners -->
+<div class="banner-row">
 <!-- BANNER 1: GÄRTNER -->
 <div class="banner-wrap" onclick="nbcOpenModal()">
 <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
@@ -350,9 +343,7 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
       <h3>🌱 Pflanz deine Marke hier!</h3>
       <p>Seeds • Shops • CBD • Lass die Chiller dich finden</p>
       <button class="book-btn">Jetzt buchen 🌿</button>
-    </div>
   </div>
-
 <!-- BANNER 2: ZIGARRENROLLER -->
 <div class="banner-wrap" onclick="nbcOpenModal()">
 <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
@@ -429,9 +420,7 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
       <h3>💨 Smooth wie ein frisch Gerollter</h3>
       <p>Werbung die bleibt – CanG-konform & legal</p>
       <button class="book-btn">Platz sichern ✌</button>
-    </div>
-  </div>
-
+</div>
 <!-- BANNER 3: AMSTERDAM GRACHT -->
 <div class="banner-wrap" onclick="nbcOpenModal()">
 <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
@@ -555,10 +544,6 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
       <p>Hochwertig, entspannt, direkt zur Community</p>
       <button class="book-btn">Anfragen ✉</button>
     </div>
-  </div>
-
-</div>
- 
   <!-- Videos -->
   <div class="video-row">
     <div class="video-card">
