@@ -482,11 +482,11 @@ body::after {
             <p id="donateQuestion" class="text-lg text-cyan-300">Bist du dabei und hältst die Vibes am Leben?</p>
         </div>
         <div id="donateContent">
-            <button onclick="startPayPalRedirect()" class="btn-paypal w-full py-4 rounded-xl text-lg mb-4 flex items-center justify-center gap-3">
+            <button onclick="startPayPalRedirect()" id="donateButton" class="btn-paypal w-full py-4 rounded-xl text-lg mb-4 flex items-center justify-center gap-3">
                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M7.076 21.337H2.47a.641.641 0 0 0-.633.74L4.944.901C5.026.382 5.474 0 5.998 0h7.46c2.57 0 4.578.543 5.69 1.81 1.01 1.15 1.304 2.42 1.012 4.287-.023.143-.047.288-.077.437-.983 5.05-4.349 6.797-8.647 6.797h-2.19c-.524 0-.968.382-1.05.9l-1.12 7.106zm14.146-14.42a3.35 0 0 0-.607-.541c-.013.076-.026.175-.041.254-.59 3.025-2.566 4.643-5.738 4.643h-2.19c-.24 0-.446.17-.482.405L9.978 18.8h4.607a.613.613 0 0 0.604-.512l.532-3.381c.037-.235.24-.405.482-.405h1.54c3.283 0 5.856-1.333 6.565-5.19.098-.501.17-1.004.17-1.395z"/></svg>
-                CHILLIG SPENDEN VIA PAYPAL
+                <span>CHILLIG SPENDEN VIA PAYPAL</span>
             </button>
-            <button onclick="closeDonateModal()" class="w-full py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition">SCHLIESSEN</button>
+            <button onclick="closeDonateModal()" id="donateClose" class="w-full py-3 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold transition">SCHLIESSEN</button>
         </div>
         <div id="countdownContent" class="hidden text-center py-8">
             <div class="countdown-pulse text-6xl font-orbitron font-black neon-gold mb-4" id="countdownText">3...</div>
@@ -1009,12 +1009,19 @@ function closeStrainModal() {
 }
 
 function openDonateModal() {
-    document.getElementById('donateTitle').textContent = t('DONATE_TITLE');
-    document.getElementById('donateSubtitle').textContent = t('DONATE_SUBTITLE');
-    document.getElementById('donateQuestion').textContent = t('DONATE_QUESTION');
-    document.getElementById('donateButton').querySelector('span').textContent = t('DONATE_BUTTON');
-    document.getElementById('donateClose').textContent = t('DONATE_LATER');
-    document.getElementById('donateRedirect').textContent = t('DONATE_REDIRECT');
+    try {
+        const setText = (id, key) => { const el = document.getElementById(id); if(el) el.textContent = t(key); };
+        setText('donateTitle', 'DONATE_TITLE');
+        setText('donateSubtitle', 'DONATE_SUBTITLE');
+        setText('donateQuestion', 'DONATE_QUESTION');
+        setText('donateClose', 'DONATE_LATER');
+        setText('donateRedirect', 'DONATE_REDIRECT');
+        const btn = document.getElementById('donateButton');
+        if(btn) {
+            const span = btn.querySelector('span');
+            if(span) span.textContent = t('DONATE_BUTTON');
+        }
+    } catch(e) { console.warn('Donate modal i18n error', e); }
     document.getElementById('donateContent').classList.remove('hidden');
     document.getElementById('countdownContent').classList.add('hidden');
     document.getElementById('donateModal').classList.remove('hidden');
