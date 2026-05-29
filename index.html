@@ -147,6 +147,28 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
 .qr{width:100%}
 .news-header{justify-content:center}
 }
+.nbc-modal-overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.88);z-index:8000;align-items:center;justify-content:center;padding:20px}
+.nbc-modal-overlay.open{display:flex}
+.nbc-modal-box{background:#111;border:2px solid #C9A227;border-radius:16px;padding:32px 28px;max-width:480px;width:100%;position:relative;animation:modalIn .25s ease}
+@keyframes modalIn{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}
+.nbc-modal-close{position:absolute;top:12px;right:16px;background:transparent;border:none;color:#666;font-size:26px;cursor:pointer;line-height:1}
+.nbc-modal-close:hover{color:#C9A227}
+.nbc-modal-leaf{font-size:36px;text-align:center;margin-bottom:8px}
+.nbc-modal-title{color:#C9A227;font-size:22px;font-weight:800;text-align:center;margin-bottom:4px}
+.nbc-modal-sub{color:#aaa;font-size:13px;text-align:center;margin-bottom:20px;line-height:1.6}
+.nbc-counter-box{background:#0a0a0a;border:1px solid #C9A227;border-radius:12px;padding:16px;text-align:center;margin-bottom:20px}
+.nbc-counter-label{color:#888;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.nbc-counter-num{color:#C9A227;font-size:52px;font-weight:800;line-height:1;letter-spacing:-1px;transition:transform .2s}
+.nbc-counter-num.bump{transform:scale(1.18)}
+.nbc-counter-sub{color:#666;font-size:11px;margin-top:6px}
+.nbc-modal-body{color:#ccc;font-size:14px;line-height:1.7;margin-bottom:20px;text-align:center}
+.nbc-mail-btn{display:block;background:#0d2a0d;border:2px solid #C9A227;color:#C9A227;padding:12px 20px;border-radius:20px;text-decoration:none;font-weight:bold;font-size:14px;text-align:center;margin-bottom:20px;transition:all .2s}
+.nbc-mail-btn:hover{background:#C9A227;color:#000}
+.nbc-perks{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.nbc-perk{background:#0a1a0a;border:1px solid #1a3a1a;border-radius:8px;padding:10px;text-align:center}
+.nbc-perk-icon{font-size:20px;margin-bottom:4px}
+.nbc-perk-text{color:#aaa;font-size:11px;line-height:1.4}
+.nbc-modal-disclaimer{color:#555;font-size:11px;text-align:center}
 </style>
 </head>
 <body class="age-lock">
@@ -193,7 +215,7 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
     <button class="refresh-btn" id="refreshBtn" onclick="manualRefresh()">↻ Aktualisieren</button>
   </div>
   <div style="text-align:center;margin-bottom:12px">
-    <span class="ai-badge"><span class="ai-dot"></span> KI-generierte News • Live</span>
+    <span class="ai-badge"><span class="ai-dot"></span> Chillaxierte News • Live</span>
   </div>
   <div class="grid" id="newsGrid">
     <div class="card loading"><div class="kicker">Laden…</div><h3>Nachrichten werden geladen</h3><p>KI generiert aktuelle Cannabis-News…</p></div>
@@ -205,17 +227,17 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
     <div class="ad">
       <h3 data-i18n="ad1_t">Höher als deine Toleranz? Dein Spot hier!</h3>
       <p data-i18n="ad1_d">Seeds • Shops • CBD • Lass die Chiller dich finden</p>
-      <p><a href="mailto:infotonbc@gmail.com" data-i18n="ad_btn">Jetzt buchen</a></p>
+     <p><a href="#" onclick="nbcOpenModal();return false;" data-i18n="ad_btn">Jetzt buchen</a></p>
     </div>
     <div class="ad">
       <h3 data-i18n="ad2_t">Günstiger als Amsterdam, näher als dein Dealer</h3>
       <p data-i18n="ad2_d">Werbung die kleben bleibt – ganz legal</p>
-      <p><a href="mailto:infotonbc@gmail.com" data-i18n="ad_btn">Platz sichern</a></p>
+      <p><a href="#" onclick="nbcOpenModal();return false;" data-i18n="ad_btn">Jetzt buchen</a></p>
     </div>
     <div class="ad">
       <h3 data-i18n="ad3_t">Hier könnte dein Gras… äh, deine Brand wachsen</h3>
       <p data-i18n="ad3_d">18+ Aufklärung | CanG-konform | High-Reichweite</p>
-      <p><a href="mailto:infotonbc@gmail.com" data-i18n="ad_btn">Anfragen</a></p>
+      <p><a href="#" onclick="nbcOpenModal();return false;" data-i18n="ad_btn">Jetzt buchen</a></p>
     </div>
   </div>
  
@@ -757,6 +779,63 @@ async function initPage(){
 window.addEventListener('load',()=>{
   if(checkAge()) initPage();
 });
+// ============================================================
+// AD MODAL + COUNTER
+// ============================================================
+(function(){
+  const STORAGE_KEY = 'nbc_ad_clicks';
+  const BASE = 1745;
+  function getCount(){ return parseInt(localStorage.getItem(STORAGE_KEY)||'0',10); }
+  function saveCount(n){ localStorage.setItem(STORAGE_KEY, n); }
+  function formatDE(n){ return n.toLocaleString('de-DE'); }
+  function updateDisplay(){
+    const el = document.getElementById('nbcCounter');
+    if(el) el.textContent = formatDE(BASE + getCount());
+  }
+  window.nbcOpenModal = function(){
+    const total = getCount() + 1;
+    saveCount(total);
+    updateDisplay();
+    const el = document.getElementById('nbcCounter');
+    if(el){ el.classList.add('bump'); setTimeout(()=>el.classList.remove('bump'),220); }
+    document.getElementById('nbcAdModal').classList.add('open');
+    document.body.style.overflow='hidden';
+  };
+  window.nbcCloseModal = function(){
+    document.getElementById('nbcAdModal').classList.remove('open');
+    document.body.style.overflow='';
+  };
+  window.nbcModalClickOutside = function(e){
+    if(e.target === document.getElementById('nbcAdModal')) nbcCloseModal();
+  };
+  updateDisplay();
+})();
 </script>
+<div class="nbc-modal-overlay" id="nbcAdModal" onclick="nbcModalClickOutside(event)">
+  <div class="nbc-modal-box">
+    <button class="nbc-modal-close" onclick="nbcCloseModal()" aria-label="Schließen">×</button>
+    <div class="nbc-modal-leaf">🌿</div>
+    <div class="nbc-modal-title">Werde sichtbar bei uns!</div>
+    <div class="nbc-modal-sub">Zeig der Canna-Community was du drauf hast –<br>hier entsteht dein Platz in der NBC-Family.</div>
+    <div class="nbc-counter-box">
+      <div class="nbc-counter-label">Interessierte Supporter</div>
+      <div class="nbc-counter-num" id="nbcCounter">1.745</div>
+      <div class="nbc-counter-sub">Chillaz haben bereits angefragt 🔥</div>
+    </div>
+    <div class="nbc-modal-body">
+      Du willst deine Seeds, deinen Shop, dein CBD-Produkt oder deinen Service vor echten Cannabis-Enthusiasten präsentieren? Schreib uns einfach – wir machen deinen Auftritt so smooth wie ein frisch gerollter Joint. 😌
+    </div>
+    <a class="nbc-mail-btn" href="mailto:infotonbc@gmail.com?subject=Werbeanfrage%20NaturalBornChillaz&body=Hey%20NBC-Team!%0A%0AIch%20w%C3%BCrde%20gerne%20auf%20eurer%20Seite%20werben.%0A%0AMein%20Produkt%20%2F%20Service%3A%0A%0AKontakt%3A">
+      ✉️ infotonbc@gmail.com – schreib uns!
+    </a>
+    <div class="nbc-perks">
+      <div class="nbc-perk"><div class="nbc-perk-icon">🌍</div><div class="nbc-perk-text">Internationale Community</div></div>
+      <div class="nbc-perk"><div class="nbc-perk-icon">✅</div><div class="nbc-perk-text">CanG-konform & 18+ sicher</div></div>
+      <div class="nbc-perk"><div class="nbc-perk-icon">📺</div><div class="nbc-perk-text">Video-News Umfeld</div></div>
+      <div class="nbc-perk"><div class="nbc-perk-icon">🤝</div><div class="nbc-perk-text">Echte Supporter</div></div>
+    </div>
+    <div class="nbc-modal-disclaimer">Wir freuen uns über jeden NaturalBornChillaz Supporter 💚</div>
+  </div>
+</div>
 </body>
 </html>
