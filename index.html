@@ -1118,10 +1118,22 @@ window.addEventListener('load',()=>{
 // AUTO-POPUP (alle 3 Min, 30 Sek sichtbar) + BANNER-SLIDES
 // ============================================================
 (function(){
-  const STORAGE_KEY = 'nbc_ad_clicks';
-  const BASE = 1745;
   const POPUP_INTERVAL = 3 * 60 * 1000;  // 3 Minuten
-  const POPUP_DURATION = 30 * 1000;       // 30 Sekunden
+  const POPUP_DURATION = 30 * 1000;      // 30 Sekunden
+
+  function autoOpen(){
+    if(typeof nbcOpenModal === 'function'){
+      nbcOpenModal();
+      setTimeout(()=>{ if(typeof nbcCloseModal === 'function') nbcCloseModal(); }, POPUP_DURATION);
+    }
+  }
+
+  // erstes Mal nach 3 Min, dann alle 3 Min
+  setTimeout(()=>{
+    autoOpen();
+    setInterval(autoOpen, POPUP_INTERVAL);
+  }, POPUP_INTERVAL);
+})();
 
   const popups = [
     {icon:'🌿',title:'Hey – hier ist noch Platz!',sub:'Deine Seeds, dein Shop, dein CBD – präsentiert vor tausenden echten Cannabis-Fans. Zu smooth um Nein zu sagen.'},
