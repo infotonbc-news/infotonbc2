@@ -494,29 +494,23 @@ body::after {
 
 
 /* LEMMINGS GAME */
-.lemming.falling-arc{
-    animation:lemming-arc 2.2s cubic-bezier(0.4,0,0.8,1) forwards;
-}
-@keyframes lemming-arc{
-    0%{top:0;right:10px;transform:rotate(0deg) scale(1);}
-    30%{top:25vh;right:-20px;transform:rotate(45deg) scale(1.1);}
-    70%{top:70vh;right:-40px;transform:rotate(180deg) scale(0.95);}
-    100%{top:calc(100vh - 50px);right:-60px;transform:rotate(270deg) scale(1);}
-}
-
 .lemming{
     position:absolute;
-    font-size:18px;
+    font-size:20px;
     cursor:pointer;
     user-select:none;
     z-index:60;
     transition:transform 0.15s;
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.8));
+    filter:drop-shadow(0 2px 4px rgba(0,0,0,0.9));
     line-height:1;
+    pointer-events:auto;
+    padding:4px;
+    margin:-4px;
 }
-.lemming:hover{transform:scale(1.25) translateY(-2px);}
-.lemming.walking{animation:lemming-walk linear forwards;}
-.lemming.falling{animation:lemming-fall 0.5s cubic-bezier(0.6,0,1,1) forwards;}
+.lemming:hover{transform:scale(1.35) translateY(-3px);filter:drop-shadow(0 0 10px #00ff00);}
+.lemming.walking{animation:lemming-walk linear forwards, lemming-bob 0.35s ease-in-out infinite;}
+.lemming.falling-arc{animation:lemming-arc 3.4s cubic-bezier(0.3,0,0.7,1) forwards;}
+.lemming.falling{animation:lemming-fall 1.1s cubic-bezier(0.55,0,0.8,0.4) forwards;}
 .lemming.has-parachute::before{
     content:'🪂';
     position:absolute;
@@ -526,13 +520,14 @@ body::after {
     font-size:14px;
     animation:parachute-bob 0.8s ease-in-out infinite;
 }
-.lemming.parachuting{animation:lemming-parachute 2.5s ease-out forwards;}
+.lemming.parachuting{animation:lemming-parachute 3.8s cubic-bezier(0.2,0.6,0.3,1) forwards;}
 .lemming.splatted{animation:lemming-splat 0.4s ease-out forwards;}
 .lemming.angel{animation:lemming-angel 2.2s ease-out forwards;}
 .lemming.cheering{animation:lemming-cheer 0.6s ease-in-out 3;}
 
 @keyframes lemming-walk{from{left:-30px;}to{left:calc(100% + 10px);}}
-@keyframes lemming-fall{from{top:-30px;}to{top:0px;}}
+@keyframes lemming-bob{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-3px) rotate(2deg);}}
+@keyframes lemming-fall{from{top:-40px;transform:rotate(-15deg);}to{top:0px;transform:rotate(5deg);}}
 @keyframes parachute-bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-2px);}}
 @keyframes lemming-parachute{
     0%{top:0px;transform:rotate(0deg);}
@@ -583,6 +578,7 @@ body::after {
     pointer-events:none;
     animation:level-pop 2s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
 }
+@keyframes ohno-float{0%{transform:translateY(0) scale(0.8);opacity:1;}100%{transform:translateY(-25px) scale(1.2);opacity:0;}}
 @keyframes level-pop{
     0%{transform:translate(-50%,-50%) scale(0) rotate(-10deg);opacity:0;}
     20%{transform:translate(-50%,-50%) scale(1.3) rotate(5deg);opacity:1;}
@@ -590,6 +586,7 @@ body::after {
     100%{transform:translate(-50%,-50%) scale(0.8) rotate(0);opacity:0;}
 }
 
+@keyframes lemming-arc{0%{transform:translateY(0) translateX(0) rotate(0);} 25%{transform:translateY(25vh) translateX(-12px) rotate(70deg);} 60%{transform:translateY(65vh) translateX(-30px) rotate(180deg);} 85%{transform:translateY(85vh) translateX(-45px) rotate(240deg);} 100%{transform:translateY(calc(100vh - 80px)) translateX(-55px) rotate(300deg);}}
 </style>
 </head>
 <body>
@@ -610,17 +607,23 @@ body::after {
             <!-- LEMMINGS GAME -->
             <div class="flex-1 w-full md:w-auto order-2 min-w-0">
                 <div class="relative h-8 mb-1">
-                    <div id="lemmings-sky" class="absolute inset-0 overflow-visible pointer-events-none"></div>
+                    <div id="lemmings-sky" class="absolute inset-0 overflow-visible" style="pointer-events:none;"></div>
                     <div class="absolute bottom-0 left-2 text-[10px] font-orbitron text-green-400/70 bg-black/40 px-2 py-0.5 rounded-full border border-green-500/30 backdrop-blur-sm">
                         Saved: <span id="savedCount" class="text-yellow-400 font-bold">0</span>
                     </div>
-
+                    
                 </div>
                 <div class="joke-ticker-header">
                     <div class="ticker-track" id="headerJokeTrack">
                         <div class="ticker-item">Lade Daily Joke... <span class="mx-3 opacity-40">•</span> <span class="share-love" onclick="openDonateModal()">NaturalBornChillaz Share Love</span> <span class="mx-3 opacity-40">•</span></div>
                         <div class="ticker-item">Lade Daily Joke... <span class="mx-3 opacity-40">•</span> <span class="share-love" onclick="openDonateModal()">NaturalBornChillaz Share Love</span> <span class="mx-3 opacity-40">•</span></div>
                     </div>
+                </div>
+                <div class="flex justify-between items-center mt-1.5 px-1">
+                    <div class="text-[10px] font-orbitron text-gray-500">Klick Lemminge für 🪂</div>
+                    <button id="lemmingsStop" class="text-[11px] font-orbitron bg-black/70 hover:bg-red-900/70 text-gray-300 hover:text-white px-3 py-1 rounded-full border border-gray-600/60 hover:border-red-500/80 backdrop-blur-sm transition-all">
+                        ⏸ STOP
+                    </button>
                 </div>
             </div>
             
@@ -1129,29 +1132,23 @@ function printStrainCard(id){
 
 
 /* LEMMINGS GAME */
-.lemming.falling-arc{
-    animation:lemming-arc 2.2s cubic-bezier(0.4,0,0.8,1) forwards;
-}
-@keyframes lemming-arc{
-    0%{top:0;right:10px;transform:rotate(0deg) scale(1);}
-    30%{top:25vh;right:-20px;transform:rotate(45deg) scale(1.1);}
-    70%{top:70vh;right:-40px;transform:rotate(180deg) scale(0.95);}
-    100%{top:calc(100vh - 50px);right:-60px;transform:rotate(270deg) scale(1);}
-}
-
 .lemming{
     position:absolute;
-    font-size:18px;
+    font-size:20px;
     cursor:pointer;
     user-select:none;
     z-index:60;
     transition:transform 0.15s;
-    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.8));
+    filter:drop-shadow(0 2px 4px rgba(0,0,0,0.9));
     line-height:1;
+    pointer-events:auto;
+    padding:4px;
+    margin:-4px;
 }
-.lemming:hover{transform:scale(1.25) translateY(-2px);}
-.lemming.walking{animation:lemming-walk linear forwards;}
-.lemming.falling{animation:lemming-fall 0.5s cubic-bezier(0.6,0,1,1) forwards;}
+.lemming:hover{transform:scale(1.35) translateY(-3px);filter:drop-shadow(0 0 10px #00ff00);}
+.lemming.walking{animation:lemming-walk linear forwards, lemming-bob 0.35s ease-in-out infinite;}
+.lemming.falling-arc{animation:lemming-arc 3.4s cubic-bezier(0.3,0,0.7,1) forwards;}
+.lemming.falling{animation:lemming-fall 1.1s cubic-bezier(0.55,0,0.8,0.4) forwards;}
 .lemming.has-parachute::before{
     content:'🪂';
     position:absolute;
@@ -1161,13 +1158,14 @@ function printStrainCard(id){
     font-size:14px;
     animation:parachute-bob 0.8s ease-in-out infinite;
 }
-.lemming.parachuting{animation:lemming-parachute 2.5s ease-out forwards;}
+.lemming.parachuting{animation:lemming-parachute 3.8s cubic-bezier(0.2,0.6,0.3,1) forwards;}
 .lemming.splatted{animation:lemming-splat 0.4s ease-out forwards;}
 .lemming.angel{animation:lemming-angel 2.2s ease-out forwards;}
 .lemming.cheering{animation:lemming-cheer 0.6s ease-in-out 3;}
 
 @keyframes lemming-walk{from{left:-30px;}to{left:calc(100% + 10px);}}
-@keyframes lemming-fall{from{top:-30px;}to{top:0px;}}
+@keyframes lemming-bob{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-3px) rotate(2deg);}}
+@keyframes lemming-fall{from{top:-40px;transform:rotate(-15deg);}to{top:0px;transform:rotate(5deg);}}
 @keyframes parachute-bob{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-2px);}}
 @keyframes lemming-parachute{
     0%{top:0px;transform:rotate(0deg);}
@@ -1218,6 +1216,7 @@ function printStrainCard(id){
     pointer-events:none;
     animation:level-pop 2s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
 }
+@keyframes ohno-float{0%{transform:translateY(0) scale(0.8);opacity:1;}100%{transform:translateY(-25px) scale(1.2);opacity:0;}}
 @keyframes level-pop{
     0%{transform:translate(-50%,-50%) scale(0) rotate(-10deg);opacity:0;}
     20%{transform:translate(-50%,-50%) scale(1.3) rotate(5deg);opacity:1;}
@@ -1225,6 +1224,7 @@ function printStrainCard(id){
     100%{transform:translate(-50%,-50%) scale(0.8) rotate(0);opacity:0;}
 }
 
+@keyframes lemming-arc{0%{transform:translateY(0) translateX(0) rotate(0);} 25%{transform:translateY(25vh) translateX(-12px) rotate(70deg);} 60%{transform:translateY(65vh) translateX(-30px) rotate(180deg);} 85%{transform:translateY(85vh) translateX(-45px) rotate(240deg);} 100%{transform:translateY(calc(100vh - 80px)) translateX(-55px) rotate(300deg);}}
 </style></head><body><div class="card"><img src="${img}"><h1>🌿 ${s.name}</h1><p><b>${s.type} • THC ${s.thc}% • CBD ${s.cbd}%</b></p><h3>${t('HERKUNFT')}</h3><p>${s.herkunft}</p><h3>${t('GESCHICHTE')}</h3><p>${s.geschichte}</p><h3>${t('CHILLAZ WISSEN')}</h3><p>${s.chillazWissen}</p><h3>${t('FUN FACT')}</h3><p>${s.funFact}</p><h3>${t('TERPENE')}</h3><p>${s.terpene}</p><h3>${t('ANBAU')}</h3><p>${s.anbau}</p></div><script>window.onload=()=>setTimeout(()=>window.print(),500);<\/script></body></html>`);
   w.document.close();
 }
@@ -1682,20 +1682,21 @@ let lemmingsGame = {
     totalSaved: parseInt(localStorage.getItem('nbc_saved_lemmings') || '0'),
     totalLost: parseInt(localStorage.getItem('nbc_lost_lemmings') || '0'),
     firstFallShown: false,
-    level: parseInt(localStorage.getItem('nbc_lemming_level') || '0'),
     activeLemmings: 0,
-    maxLemmings: 8,
+    maxLemmings: 6,
     spawnTimer: null,
+    paused: false,
     
-
     updateScore() {
         const netScore = Math.max(0, this.totalSaved - this.totalLost);
         document.getElementById('savedCount').textContent = netScore;
     },
+    
     playSound(type) {
+        if(this.paused) return;
         try {
             const ctx = new (window.AudioContext || window.webkitAudioContext)();
-            const play = (freq, duration, vol = 0.18, type = 'sine', start = 0) => {
+            const play = (freq, duration, vol = 0.15, type = 'sine', start = 0) => {
                 const o = ctx.createOscillator();
                 const g = ctx.createGain();
                 o.connect(g); g.connect(ctx.destination);
@@ -1714,42 +1715,53 @@ let lemmingsGame = {
                     play(900, 0.1, 0.12, 'sine', 0.05);
                     break;
                 case 'save':
-                    // Jubel: C-E-G-C
                     [523,659,784,1046].forEach((f,i) => play(f, 0.15, 0.17, 'triangle', i*0.07));
                     break;
                 case 'splat':
-                    play(180, 0.35, 0.24, 'sawtooth');
-                    setTimeout(() => play(90, 0.2, 0.18, 'square'), 80);
+                    play(180, 0.35, 0.22, 'sawtooth');
+                    setTimeout(() => play(90, 0.2, 0.16, 'square'), 80);
                     break;
                 case 'ohno':
-                    // "Oh no" - fallend
                     [400,350,300,250].forEach((f,i) => play(f, 0.12, 0.13, 'sawtooth', i*0.06));
                     break;
                 case 'levelup':
-                    // Arcade Level Up
                     [400,600,800,1000,1200].forEach((f,i) => play(f, 0.09, 0.15, 'square', i*0.09));
                     break;
             }
         } catch(e) {}
     },
+    
+    togglePause() {
+        this.paused = !this.paused;
+        const btn = document.getElementById('lemmingsStop');
+        if(!btn) return;
+        if(this.paused) {
+            if(this.spawnTimer) clearInterval(this.spawnTimer);
+            btn.innerHTML = '▶️ START';
+            btn.classList.add('text-green-400');
+        } else {
+            this.startSpawning();
+            btn.innerHTML = '⏸ STOP';
+            btn.classList.remove('text-green-400');
+        }
+    },
+    
     init() {
         this.updateScore();
+        const btn = document.getElementById('lemmingsStop');
+        if(btn) btn.addEventListener('click', () => this.togglePause());
         this.startSpawning();
-        // Update level display
-        if(this.level > 0) {
-            this.spawnRate = Math.max(2000, 10000 - (this.level * 1500));
-        }
     },
     
     startSpawning() {
         if(this.spawnTimer) clearInterval(this.spawnTimer);
+        if(this.paused) return;
         this.spawnTimer = setInterval(() => this.spawnLemming(), this.spawnRate);
-        // Spawn first immediately
-        setTimeout(() => this.spawnLemming(), 1000);
+        setTimeout(() => this.spawnLemming(), 1500);
     },
     
     spawnLemming() {
-        if(this.activeLemmings >= this.maxLemmings) return;
+        if(this.paused || this.activeLemmings >= this.maxLemmings) return;
         
         const sky = document.getElementById('lemmings-sky');
         if(!sky) return;
@@ -1757,13 +1769,12 @@ let lemmingsGame = {
         this.activeLemmings++;
         const lemming = document.createElement('div');
         lemming.className = 'lemming';
-        lemming.innerHTML = '🚶';
+        const types = ['🚶','🧑‍🌾','🚶‍♂️','🧍'];
+        lemming.innerHTML = types[Math.floor(Math.random() * types.length)];
+        lemming.dataset.original = lemming.innerHTML;
         lemming.style.left = '-30px';
         lemming.style.top = '-30px';
-        
-        // Random lemming type
-        const types = ['🚶','🧑‍🌾','🧍','🚶‍♂️'];
-        lemming.innerHTML = types[Math.floor(Math.random() * types.length)];
+        lemming.style.pointerEvents = 'auto';
         
         sky.appendChild(lemming);
         
@@ -1773,137 +1784,166 @@ let lemmingsGame = {
             lemming.style.top = '0px';
         }, 50);
         
-        // Start walking after landing
+        // Start walking
         setTimeout(() => {
             lemming.classList.remove('falling');
             lemming.classList.add('walking');
-            const walkDuration = 8000 + Math.random() * 2000;
+            const walkDuration = 7000 + Math.random() * 2000;
             lemming.style.animationDuration = walkDuration + 'ms';
             
-            // Click to add parachute (works during walk AND fall)
+            // Make clickable
             lemming.onclick = (e) => {
                 e.stopPropagation();
-                if(!lemming.classList.contains('has-parachute') && !lemming.classList.contains('parachuting') && !lemming.classList.contains('splatted')) {
+                if(!lemming.classList.contains('has-parachute') && !lemming.classList.contains('saved') && !lemming.classList.contains('splatted')) {
                     lemming.classList.add('has-parachute');
                     lemming.innerHTML = '🪂' + lemming.dataset.original;
                     this.playSound('parachute');
-                    lemming.style.filter = 'drop-shadow(0 0 8px #00FF00)';
-                    
-                    // If already falling, switch to parachute immediately
-                    if(lemming.classList.contains('falling-arc')) {
-                        lemming.classList.remove('falling-arc');
-                        lemming.classList.add('parachuting');
-                        lemming.style.animation = 'lemming-parachute 2.5s ease-out forwards';
-                    }
+                    lemming.style.filter = 'drop-shadow(0 0 10px #00FF00)';
                 }
             };
-            lemming.dataset.original = lemming.innerHTML;
             
-            // Reach end of track
-            setTimeout(() => {
-                this.handleLemmingEnd(lemming);
-            }, walkDuration);
-            
+            setTimeout(() => this.startFall(lemming), walkDuration);
         }, 600);
     },
     
-    handleLemmingEnd(lemming) {
-        const hasParachute = lemming.classList.contains('has-parachute');
-        const sky = document.getElementById('lemmings-sky');
+    startFall(lemming) {
+        // First fall message
+        if(!this.firstFallShown) {
+            this.firstFallShown = true;
+            const popup = document.createElement('div');
+            popup.className = 'level-popup';
+            popup.style.fontSize = '2.2rem';
+            popup.textContent = 'Save da Chillaz';
+            document.body.appendChild(popup);
+            setTimeout(() => popup.remove(), 1800);
+        }
         
-        if(hasParachute) {
-            // SAVED!
-            this.consecutiveSaves++;
-            this.totalSaved++;
-            localStorage.setItem('nbc_saved_lemmings', this.totalSaved);
-            this.updateScore();
+        // Move lemming to body for full-page fall
+        const rect = lemming.getBoundingClientRect();
+        lemming.style.position = 'fixed';
+        lemming.style.left = (rect.right - 30) + 'px';
+        lemming.style.top = rect.top + 'px';
+        lemming.style.zIndex = '9998';
+        document.body.appendChild(lemming);
+        
+        lemming.classList.remove('walking');
+        lemming.classList.add('falling-arc');
+        
+        // Fall duration - extended
+        const fallTime = 3400;
+        
+        setTimeout(() => {
+            const hasParachute = lemming.classList.contains('has-parachute');
             
-            lemming.classList.remove('walking');
-            lemming.classList.add('parachuting');
-            lemming.style.left = 'auto';
-            lemming.style.right = '10px';
-            
-            // Cheer at bottom
-            setTimeout(() => {
-                lemming.classList.remove('parachuting');
-                lemming.classList.add('cheering');
-                lemming.innerHTML = '🎉';
+            if(hasParachute) {
+                // SAVED
+                this.totalSaved++;
+                this.consecutiveSaves++;
+                localStorage.setItem('nbc_saved_lemmings', this.totalSaved);
+                this.updateScore();
                 this.playSound('save');
                 
-                // Check level up
-                if(this.consecutiveSaves > 0 && this.consecutiveSaves % 5 === 0) {
+                lemming.classList.remove('falling-arc');
+                lemming.classList.add('cheering', 'saved');
+                lemming.innerHTML = '🎉';
+                lemming.style.top = 'auto';
+                lemming.style.bottom = '20px';
+                
+                // Rank at 33
+                if(this.totalSaved === 33 || this.totalSaved === 66 || this.totalSaved === 99) {
+                    this.showRank();
+                }
+                
+                if(this.consecutiveSaves % 5 === 0) {
                     this.levelUp();
                 }
                 
-                setTimeout(() => lemming.remove(), 1800);
-                this.activeLemmings--;
-            }, 2500);
-            
-        } else {
-            // LOST!
-            this.consecutiveSaves = 0;
-            
-            lemming.classList.remove('walking');
-            lemming.classList.add('splatted');
-            this.playSound('ohno');
-            setTimeout(() => this.playSound('splat'), 150);
-            
-            // Dust effect
-            const dust = document.createElement('div');
-            dust.className = 'impact-dust';
-            dust.style.right = '5px';
-            dust.style.bottom = '0px';
-            sky.appendChild(dust);
-            setTimeout(() => dust.remove(), 600);
-            
-            // Angel fly up
-            setTimeout(() => {
-                lemming.classList.remove('splatted');
-                lemming.classList.add('angel');
-                lemming.innerHTML = '👼';
-                lemming.style.setProperty('--drift', (Math.random() * 100 - 50) + 'px');
+                setTimeout(() => {
+                    lemming.remove();
+                    this.activeLemmings--;
+                }, 1200);
                 
-                setTimeout(() => lemming.remove(), 2200);
-                this.activeLemmings--;
-            }, 400);
-        }
+            } else {
+                // LOST
+                this.totalLost++;
+                this.consecutiveSaves = 0;
+                localStorage.setItem('nbc_lost_lemmings', this.totalLost);
+                this.updateScore();
+                this.playSound('ohno');
+                
+                // OH NOOO text
+                const ohNo = document.createElement('div');
+                ohNo.textContent = 'OH NOOO!';
+                ohNo.style.cssText = 'position:fixed;right:30px;bottom:60px;font-size:14px;font-family:Orbitron;font-weight:900;color:#ff4444;text-shadow:0 0 10px #ff0000;animation:ohno-float 1.2s ease-out forwards;pointer-events:none;z-index:9999;';
+                document.body.appendChild(ohNo);
+                setTimeout(() => ohNo.remove(), 1200);
+                
+                setTimeout(() => this.playSound('splat'), 200);
+                
+                lemming.classList.remove('falling-arc');
+                lemming.classList.add('splatted');
+                lemming.style.top = 'auto';
+                lemming.style.bottom = '15px';
+                
+                // Dust
+                const dust = document.createElement('div');
+                dust.className = 'impact-dust';
+                dust.style.position = 'fixed';
+                dust.style.bottom = '10px';
+                dust.style.right = '25px';
+                dust.style.zIndex = '9997';
+                document.body.appendChild(dust);
+                setTimeout(() => dust.remove(), 600);
+                
+                setTimeout(() => {
+                    lemming.classList.remove('splatted');
+                    lemming.classList.add('angel');
+                    lemming.innerHTML = '👼';
+                    lemming.style.bottom = '20px';
+                    lemming.style.setProperty('--drift', (Math.random()*80-40)+'px');
+                    
+                    setTimeout(() => {
+                        lemming.remove();
+                        this.activeLemmings--;
+                    }, 2000);
+                }, 400);
+            }
+        }, fallTime);
     },
     
     showRank() {
         const ranks = ['Stoner Rookie', 'Blunt Apprentice', 'Green Thumb', 'Weed Wizard', 'Stoner Major', 'Blunt Savior', 'High Priest', 'Chillaz Legend'];
-        const rank = ranks[Math.min(Math.floor(this.totalSaved / 33), ranks.length - 1)];
+        const idx = Math.min(Math.floor(this.totalSaved / 33) - 1, ranks.length - 1);
+        const rank = ranks[idx] || 'Chillaz God';
         
         const popup = document.createElement('div');
         popup.className = 'level-popup';
-        popup.style.fontSize = '2.5rem';
-        popup.innerHTML = `RANK UP!<br><span style="font-size:1.8rem">${rank}</span>`;
+        popup.style.fontSize = '4.2rem';
+        popup.style.textShadow = '0 0 40px #FFD700, 0 0 80px #FF1493';
+        popup.style.lineHeight = '1.1';
+        popup.innerHTML = `RANK UP!<br><span style="font-size:2.8rem;color:#FFD700;display:block;margin-top:10px;text-shadow:0 0 30px #FFD700">${rank}</span>`;
         document.body.appendChild(popup);
         this.playSound('levelup');
-        setTimeout(() => popup.remove(), 2500);
+        setTimeout(() => popup.remove(), 2600);
     },
+    
     levelUp() {
-        this.level++;
-        localStorage.setItem('nbc_lemming_level', this.level);
-        this.playSound('levelup');
-        
-        // Increase spawn rate
-        this.spawnRate = Math.max(2000, 10000 - (this.level * 1500));
+        this.spawnRate = Math.max(2000, this.spawnRate - 1500);
         this.startSpawning();
         
-        // Show level popup
+        const level = Math.floor(this.consecutiveSaves / 5);
         const popup = document.createElement('div');
         popup.className = 'level-popup';
-        popup.textContent = `LVL ${this.level} START`;
+        popup.textContent = `LVL ${level} START`;
         document.body.appendChild(popup);
+        this.playSound('levelup');
         setTimeout(() => popup.remove(), 2000);
         
-        // Confetti
         if(window.confetti) {
-            confetti({particleCount: 80, spread: 60, origin: {y: 0.3}, colors: ['#FFD700','#00FF00','#FF0000']});
+            confetti({particleCount: 60, spread: 50, origin: {y: 0.4}});
         }
     }
 };
-
 // Start game after page load
 document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => lemmingsGame.init(), 2000);
