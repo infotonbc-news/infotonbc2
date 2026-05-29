@@ -2,12 +2,10 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="robots" content="noindex, nofollow">
-<link rel="canonical" href="https://infotonbc-news.github.io/infotonbc2/">
+<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="NaturalBornChillaz: Tägliche Cannabis Video-News 2026. CanG Updates Deutschland, USA Schedule III, Legalisierung weltweit. Auto-Update. 18+ Aufklärung nach Art. 5 GG.">
 <meta name="keywords" content="Cannabis News, CanG 2026, Legalisierung Deutschland, Social Clubs, Medical Cannabis, CBD, USA Schedule III, Video News, Unitycard">
-<meta name="robots" content="index, follow, max-image-preview:large">
 <meta name="theme-color" content="#C9A227">
 <meta name="rating" content="adult">
 <meta name="author" content="NaturalBornChillaz">
@@ -37,19 +35,24 @@
 {"@context":"https://schema.org","@type":"NewsMediaOrganization","name":"NaturalBornChillaz","url":"https://naturalbornchillaz.de/","logo":"https://naturalbornchillaz.de/nbc262.webp","description":"Tägliche Cannabis Video-News 2026. CanG Updates Deutschland, USA Schedule III, Legalisierung weltweit.","sameAs":["https://www.instagram.com/infotonbc"]}
 </script>
 <style>
+*{box-sizing:border-box}
 body{margin:0;background-image:url('nbc262.webp');background-size:cover;background-position:center;background-attachment:fixed;color:#eee;font-family:Arial,sans-serif}
-body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,6,7,0.7);z-index:-1}
+body::before{content:'';position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(5,6,7,0.72);z-index:-1}
 body.age-lock{overflow:hidden}
-.age-gate{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.96);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px;box-sizing:border-box}
+ 
+/* Age Gate */
+.age-gate{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.96);backdrop-filter:blur(8px);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
 .age-box{background:#111;border:2px solid #C9A227;border-radius:16px;padding:30px 25px;max-width:420px;text-align:center;box-shadow:0 0 30px rgba(201,162,39,.3)}
 .age-box h2{color:#C9A227;margin:0 0 12px;font-size:28px}
 .age-box p{color:#ccc;font-size:14px;line-height:1.5;margin:0 0 20px}
-.age-box.buttons{display:flex;gap:12px;justify-content:center}
-.age-box button{padding:12px 24px;border-radius:8px;font-weight:bold;font-size:15px;cursor:pointer;border:2px solid #C9A227;transition:all.2s}
+.age-buttons{display:flex;gap:12px;justify-content:center}
+.age-buttons button{padding:12px 24px;border-radius:8px;font-weight:bold;font-size:15px;cursor:pointer;border:2px solid #C9A227;transition:all .2s}
 .age-yes{background:#C9A227;color:#000}
 .age-yes:hover{background:#e0b43a;transform:scale(1.05)}
 .age-no{background:transparent;color:#C9A227}
 .age-no:hover{background:#C9A227;color:#000}
+ 
+/* Header */
 .top{background:radial-gradient(circle at 30% 20%,rgba(201,162,39,.20),transparent 50%),#050607;padding:50px 20px 30px;text-align:center;border-bottom:1px solid #222;position:relative}
 .logo{font-size:52px;font-weight:800;color:#C9A227;margin:0;text-shadow:0 0 15px rgba(201,162,39,.3)}
 .tag{color:#aaa;letter-spacing:3px;font-size:13px;margin-top:8px}
@@ -58,71 +61,110 @@ body.age-lock{overflow:hidden}
 .lang-switch select:hover{border-color:#C9A227}
 .lang-switch span{color:#aaa;font-size:12px}
 .unity-btn{position:absolute;top:55px;right:20px}
-.unity-btn a{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#0d5c2f,#C9A227);color:#fff;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;border:1px solid #C9A227;box-shadow:0 0 12px rgba(201,162,39,.4);transition:all.2s}
+.unity-btn a{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#0d5c2f,#C9A227);color:#fff;text-decoration:none;padding:8px 14px;border-radius:20px;font-weight:bold;font-size:13px;border:1px solid #C9A227;box-shadow:0 0 12px rgba(201,162,39,.4);transition:all .2s}
 .unity-btn a:hover{transform:scale(1.05);box-shadow:0 0 18px rgba(201,162,39,.6)}
-.unity-btn.leaf{font-size:16px}
+ 
+/* Layout */
 .wrap{max-width:1100px;margin:0 auto;padding:30px 20px 80px}
 h2{color:#C9A227;text-align:center;margin:30px 0 20px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
-.card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:18px;transition:border-color.2s}
-.card:hover{border-color:#C9A227}
+ 
+/* News Cards */
+.card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:18px;transition:border-color .2s,transform .2s;position:relative;overflow:hidden}
+.card:hover{border-color:#C9A227;transform:translateY(-2px)}
 .card a{color:#fff;text-decoration:none;display:block}
-.kicker{color:#C9A227;font-size:11px;text-transform:uppercase;letter-spacing:1px}
-.card h3{margin:6px 0;color:#fff;font-size:18px}
-.card p{margin:0;color:#bbb;font-size:14px}
+.card .kicker{color:#C9A227;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.card h3{margin:6px 0;color:#fff;font-size:17px;line-height:1.3}
+.card p{margin:0;color:#bbb;font-size:13px;line-height:1.5}
+.card .timestamp{position:absolute;top:10px;right:12px;color:#555;font-size:10px}
+.card.loading{opacity:.5}
+.card.fresh{animation:fadeInUp .4s ease both}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+ 
+/* AI News indicator */
+.ai-badge{display:inline-flex;align-items:center;gap:4px;background:#0d2a0d;border:1px solid #1a5c1a;border-radius:12px;padding:2px 8px;font-size:10px;color:#4caf50;margin-bottom:8px}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:#4caf50;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+ 
+/* News section header */
+.news-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.news-header h2{margin:0}
+.refresh-btn{background:transparent;border:1px solid #C9A227;color:#C9A227;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:12px;transition:all .2s}
+.refresh-btn:hover{background:#C9A227;color:#000}
+.refresh-btn:disabled{opacity:.4;cursor:not-allowed}
+.next-update{color:#555;font-size:11px;text-align:center;margin-top:8px}
+ 
+/* Ad Banners */
 .banner-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;align-items:stretch;margin:40px 0}
 .ad{background:#111;border:2px dashed #C9A227;border-radius:12px;padding:20px;width:300px;display:flex;flex-direction:column;justify-content:center;text-align:center}
 .ad h3{color:#C9A227;margin:0 0 5px;font-size:16px}
 .ad p{color:#ccc;margin:5px 0;font-size:14px}
 .ad a{color:#C9A227}
+ 
+/* Video */
 .video-row{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;align-items:stretch;margin:30px 0}
 .video-card{background:#111;border:1px solid #2a2a2a;border-radius:12px;padding:18px;width:360px;display:flex;flex-direction:column}
 .video-card:hover{border-color:#C9A227}
 .video-card iframe{width:100%;aspect-ratio:16/9;border:2px solid #C9A227;border-radius:8px;margin-top:8px;background:#000}
 .qr{width:200px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .qr img{width:180px;height:180px;border:2px solid #C9A227;border-radius:10px}
-footer{background:#000;border-top:1px solid #222;padding:25px;text-align:center;color:#888;margin-top:40px}
-footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
-.ticker{background:#000;border-top:1px solid #C9A227;color:#C9A227;padding:8px;position:fixed;bottom:0;left:0;right:0;white-space:nowrap;overflow:hidden;font-size:13px}
-.ticker span{display:inline-block;animation:move 60s linear infinite;padding-left:100%}
-.ticker a{color:#C9A227;text-decoration:none;font-weight:bold;margin:0 8px}
-.ticker a:hover{text-decoration:underline}
-@keyframes move{to{transform:translateX(-100%)}}
-
-/* ===== DONATE SECTION ===== */
+ 
+/* Donate */
 .donate-section{text-align:center;margin:50px 0 30px;padding:30px 20px}
 .donate-title{color:#C9A227;font-size:22px;margin:0 0 6px;font-weight:bold}
 .donate-subtitle{color:#aaa;font-size:14px;margin:0 0 24px}
-.donate-btn{display:inline-block;text-decoration:none;cursor:pointer;transition:transform .2s,filter .2s;position:relative}
+.donate-btn{display:inline-block;text-decoration:none;cursor:pointer;transition:transform .2s,filter .2s}
 .donate-btn:hover{transform:scale(1.08);filter:brightness(1.15)}
 .donate-btn:active{transform:scale(0.97)}
-.donate-btn svg{display:block;margin:0 auto}
 .donate-label{color:#C9A227;font-size:15px;font-weight:bold;margin-top:10px;text-shadow:0 0 8px rgba(201,162,39,.5)}
 .donate-legal{background:#0a0a0a;border:1px solid #2a2a2a;border-radius:10px;max-width:560px;margin:20px auto 0;padding:16px 20px;text-align:left}
 .donate-legal p{color:#666;font-size:11px;line-height:1.6;margin:0 0 6px}
 .donate-legal p:last-child{margin:0}
 .donate-legal strong{color:#888}
-
-@media (max-width: 768px){
+ 
+/* Footer */
+footer{background:#000;border-top:1px solid #222;padding:25px;text-align:center;color:#888;margin-top:40px}
+footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
+ 
+/* Ticker */
+.ticker{background:#000;border-top:1px solid #C9A227;color:#C9A227;padding:8px 0;position:fixed;bottom:0;left:0;right:0;white-space:nowrap;overflow:hidden;font-size:13px;z-index:100}
+.ticker-inner{display:flex;width:max-content;animation:tickMove var(--ticker-duration,80s) linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+.ticker-segment{display:inline-block;padding-right:80px}
+.ticker a{color:#C9A227;text-decoration:none;font-weight:bold;margin:0 6px}
+.ticker a:hover{text-decoration:underline}
+.ticker .local-item{color:#7dcfff}
+.ticker .local-item a{color:#7dcfff}
+.ticker-label{display:inline-block;background:#C9A227;color:#000;font-size:10px;font-weight:bold;padding:1px 5px;border-radius:3px;margin-right:6px;vertical-align:middle}
+.ticker-label.local{background:#7dcfff;color:#000}
+@keyframes tickMove{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+ 
+@media(max-width:768px){
 .logo{font-size:36px}
 .lang-switch{position:static;justify-content:center;margin-bottom:15px}
 .unity-btn{position:static;margin-top:15px}
 .video-card{width:100%}
+.qr{width:100%}
+.news-header{justify-content:center}
 }
 </style>
 </head>
 <body class="age-lock">
+ 
+<!-- Age Gate -->
 <div class="age-gate" id="ageGate">
   <div class="age-box">
     <h2 data-i18n="age_title">Altersprüfung 18+</h2>
     <p data-i18n="age_text">Diese Website enthält Informationen zu Cannabis nach CanG. Der Zugang ist nur für volljährige Personen gestattet. Bist du mindestens 18 Jahre alt?</p>
-    <div class="buttons">
+    <div class="age-buttons">
       <button class="age-yes" onclick="acceptAge()" data-i18n="age_yes">Ja, ich bin 18+</button>
       <button class="age-no" onclick="denyAge()" data-i18n="age_no">Nein</button>
     </div>
     <p style="font-size:11px;color:#666;margin-top:15px" data-i18n="age_disclaimer">Aufklärung nach Art. 5 GG. Keine Werbung, keine Abgabe.</p>
   </div>
 </div>
+ 
+<!-- Header -->
 <div class="top">
   <div class="lang-switch">
     <span data-i18n="lang_hint">Sprache wählen:</span>
@@ -137,15 +179,28 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
     </select>
   </div>
   <div class="unity-btn">
-    <a href="unitycard.html" data-i18n="unity_btn" aria-label="Join the Chillaz Unity Card"><span class="leaf">🌿</span> Join the Chillaz • UNITYCARD</a>
+    <a href="unitycard.html" data-i18n="unity_btn" aria-label="Join the Chillaz Unity Card"><span>🌿</span> Join the Chillaz • UNITYCARD</a>
   </div>
   <h1 class="logo" data-i18n="logo">NaturalBornChillaz</h1>
   <div class="tag" data-i18n="tag">WORLDWIDE CANNABIS NEWS • 2026</div>
 </div>
+ 
 <div class="wrap">
-  <h2 data-i18n="highlights">Aktuelle Highlights</h2>
-  <div class="grid" id="newsGrid"></div>
-
+ 
+  <!-- News Section -->
+  <div class="news-header">
+    <h2 data-i18n="highlights" style="text-align:left">Aktuelle Highlights</h2>
+    <button class="refresh-btn" id="refreshBtn" onclick="manualRefresh()">↻ Aktualisieren</button>
+  </div>
+  <div style="text-align:center;margin-bottom:12px">
+    <span class="ai-badge"><span class="ai-dot"></span> KI-generierte News • Live</span>
+  </div>
+  <div class="grid" id="newsGrid">
+    <div class="card loading"><div class="kicker">Laden…</div><h3>Nachrichten werden geladen</h3><p>KI generiert aktuelle Cannabis-News…</p></div>
+  </div>
+  <div class="next-update" id="nextUpdateLabel"></div>
+ 
+  <!-- Ad Banners -->
   <div class="banner-row">
     <div class="ad">
       <h3 data-i18n="ad1_t">Höher als deine Toleranz? Dein Spot hier!</h3>
@@ -163,7 +218,8 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
       <p><a href="mailto:infotonbc@gmail.com" data-i18n="ad_btn">Anfragen</a></p>
     </div>
   </div>
-
+ 
+  <!-- Videos -->
   <div class="video-row">
     <div class="video-card">
       <div class="kicker">VIDEO NEWS</div>
@@ -180,27 +236,20 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
       <iframe id="videoFeed2" src="" title="YouTube Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
     </div>
   </div>
-
-  <!-- ===== SPENDENBEREICH ===== -->
+ 
+  <!-- Donate -->
   <div class="donate-section">
     <h2 class="donate-title">🌿 Unterstütze NaturalBornChillaz</h2>
     <p class="donate-subtitle">Gefällt dir unser Content? Wirf eine Münze in den Topf!</p>
-
     <a href="https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN" target="_blank" rel="noopener noreferrer" class="donate-btn" aria-label="Jetzt via PayPal spenden">
-      <!-- Goldtopf SVG -->
       <svg width="140" height="160" viewBox="0 0 140 160" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <!-- Schatten -->
         <ellipse cx="70" cy="152" rx="52" ry="8" fill="#7a5500" opacity="0.35"/>
-        <!-- Topf Körper -->
         <path d="M22 88 Q18 148 70 150 Q122 148 118 88 Z" fill="#2a1800"/>
         <path d="M20 86 Q16 146 70 148 Q124 146 120 86 Z" fill="#3d2200"/>
         <path d="M22 88 Q18 146 70 148 Q122 146 118 88 Z" fill="#4d2e00"/>
-        <!-- Topf Rand oben -->
         <ellipse cx="70" cy="88" rx="52" ry="14" fill="#5c3600"/>
         <ellipse cx="70" cy="88" rx="48" ry="11" fill="#7a4e00"/>
         <ellipse cx="70" cy="88" rx="44" ry="9" fill="#8B6914"/>
-        <!-- Goldmünzen Stapel -->
-        <!-- Hintere Reihe -->
         <circle cx="40" cy="78" r="12" fill="#C9A227" stroke="#a07d10" stroke-width="1"/>
         <circle cx="40" cy="78" r="10" fill="#F0C040"/>
         <text x="40" y="83" text-anchor="middle" font-size="12" font-family="Arial" font-weight="bold" fill="#7a5000">$</text>
@@ -210,45 +259,37 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
         <circle cx="100" cy="78" r="12" fill="#C9A227" stroke="#a07d10" stroke-width="1"/>
         <circle cx="100" cy="78" r="10" fill="#F0C040"/>
         <text x="100" y="83" text-anchor="middle" font-size="12" font-family="Arial" font-weight="bold" fill="#7a5000">$</text>
-        <!-- Mittlere Reihe -->
         <circle cx="55" cy="67" r="11" fill="#DAA520" stroke="#a07d10" stroke-width="1"/>
         <circle cx="55" cy="67" r="9" fill="#F5D060"/>
         <text x="55" y="72" text-anchor="middle" font-size="11" font-family="Arial" font-weight="bold" fill="#7a5000">$</text>
         <circle cx="85" cy="65" r="11" fill="#DAA520" stroke="#a07d10" stroke-width="1"/>
         <circle cx="85" cy="65" r="9" fill="#F5D060"/>
         <text x="85" y="70" text-anchor="middle" font-size="11" font-family="Arial" font-weight="bold" fill="#7a5000">$</text>
-        <!-- Vordere / oberste -->
         <circle cx="70" cy="58" r="12" fill="#C9A227" stroke="#a07d10" stroke-width="1"/>
         <circle cx="70" cy="58" r="10" fill="#FFD700"/>
         <text x="70" y="63" text-anchor="middle" font-size="12" font-family="Arial" font-weight="bold" fill="#7a5000">$</text>
-        <!-- Glanz-Effekt auf Münze oben -->
         <ellipse cx="66" cy="54" rx="4" ry="2" fill="#fff" opacity="0.35" transform="rotate(-20 66 54)"/>
-        <!-- Topf Henkel links -->
         <path d="M22 100 Q4 100 4 116 Q4 130 22 130" fill="none" stroke="#5c3600" stroke-width="8" stroke-linecap="round"/>
         <path d="M22 100 Q6 100 6 116 Q6 128 22 128" fill="none" stroke="#8B6914" stroke-width="5" stroke-linecap="round"/>
-        <!-- Topf Henkel rechts -->
         <path d="M118 100 Q136 100 136 116 Q136 130 118 130" fill="none" stroke="#5c3600" stroke-width="8" stroke-linecap="round"/>
         <path d="M118 100 Q134 100 134 116 Q134 128 118 128" fill="none" stroke="#8B6914" stroke-width="5" stroke-linecap="round"/>
-        <!-- Glanzstreifen am Topf -->
         <path d="M32 95 Q36 140 42 145" fill="none" stroke="#7a5500" stroke-width="3" opacity="0.4" stroke-linecap="round"/>
       </svg>
       <div class="donate-label">🪙 Jetzt spenden via PayPal</div>
     </a>
-
-    <!-- Rechtliche Hinweise -->
     <div class="donate-legal">
       <p><strong>Rechtlicher Hinweis zur Spende:</strong></p>
       <p>Diese Schaltfläche führt zu einer freiwilligen Spende an eine <strong>Privatperson</strong> (NaturalBornChillaz / Betreiber dieser Website). Es handelt sich <strong>nicht</strong> um eine Spende an einen gemeinnützigen Verein oder eine steuerbegünstigte Organisation.</p>
-      <p>⚠️ <strong>Keine Steuerabzugsfähigkeit:</strong> Für diese Spende kann <strong>keine Spendenquittung</strong> ausgestellt werden. Der Betrag ist steuerlich nicht absetzbar (§ 10b EStG gilt nur für gemeinnützige Einrichtungen).</p>
-      <p>💶 <strong>Schenkungssteuer:</strong> Spenden an Privatpersonen können ab einem Betrag von <strong>20.000 € innerhalb von 10 Jahren</strong> schenkungssteuerpflichtig sein (§ 16 ErbStG). Kleinbeträge sind in aller Regel steuerlich irrelevant.</p>
-      <p>🔒 <strong>Freiwilligkeit:</strong> Jede Zahlung ist vollkommen freiwillig. Es besteht keinerlei Verpflichtung. Eine Spende begründet keinen Anspruch auf Gegenleistungen, Inhalte oder Vorteile.</p>
-      <p>📋 <strong>Zahlungsabwicklung:</strong> Die Zahlung wird über PayPal (PayPal (Europe) S.à r.l. et Cie, S.C.A.) abgewickelt. Es gelten die <a href="https://www.paypal.com/de/webapps/mpp/ua/useragreement-full" target="_blank" rel="noopener" style="color:#C9A227">PayPal-Nutzungsbedingungen</a>. Rückbuchungen sind gemäß PayPal-Richtlinien möglich.</p>
-      <p>📬 Bei Fragen: <a href="mailto:infotonbc@gmail.com" style="color:#C9A227">infotonbc@gmail.com</a></p>
+      <p>⚠️ <strong>Keine Steuerabzugsfähigkeit:</strong> Keine Spendenquittung möglich. Der Betrag ist steuerlich nicht absetzbar (§ 10b EStG).</p>
+      <p>💶 <strong>Schenkungssteuer:</strong> Ab 20.000 € in 10 Jahren ggf. schenkungssteuerpflichtig (§ 16 ErbStG). Kleinbeträge sind in aller Regel irrelevant.</p>
+      <p>🔒 <strong>Freiwilligkeit:</strong> Vollkommen freiwillig. Keine Verpflichtung. Kein Anspruch auf Gegenleistungen.</p>
+      <p>📋 <strong>Zahlungsabwicklung:</strong> Über PayPal (PayPal Europe S.à r.l.). Es gelten die <a href="https://www.paypal.com/de/webapps/mpp/ua/useragreement-full" target="_blank" rel="noopener" style="color:#C9A227">PayPal-Nutzungsbedingungen</a>.</p>
+      <p>📬 Fragen: <a href="mailto:infotonbc@gmail.com" style="color:#C9A227">infotonbc@gmail.com</a></p>
     </div>
   </div>
-  <!-- ===== ENDE SPENDENBEREICH ===== -->
-
+ 
 </div>
+ 
 <footer>
   <a href="Impressum.html" data-i18n="imprint">Impressum</a>
   <a href="Datenschutz.html" data-i18n="privacy">Datenschutz</a>
@@ -257,40 +298,82 @@ footer a{color:#C9A227;margin:0 12px;text-decoration:none;font-weight:bold}
   <div style="margin-top:12px;font-size:12px;white-space:pre-line" data-i18n="footer_txt">© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz klärt auf
 Aufklärung 18+ | CanG-konform
 Keine Werbung. Keine Abgabe.
-Kunst & Info nach Art. 5 GG</div>
+Kunst &amp; Info nach Art. 5 GG</div>
 </footer>
-<div class="ticker"><span id="tickerContent"></span></div>
-<script>const translations = {
-  de:{lang_hint:"Sprache wählen:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WORLDWIDE CANNABIS NEWS • 2026",highlights:"Aktuelle Highlights",age_title:"Altersprüfung 18+",age_text:"Diese Website enthält Informationen zu Cannabis nach CanG. Der Zugang ist nur für volljährige Personen gestattet. Bist du mindestens 18 Jahre alt?",age_yes:"Ja, ich bin 18+",age_no:"Nein",age_disclaimer:"Aufklärung nach Art. 5 GG. Keine Werbung, keine Abgabe.",country_de:"Deutschland",country_us:"USA",country_th:"Thailand",country_mt:"Malta",country_ch:"Schweiz",country_ca:"Kanada",ad1_t:"Höher als deine Toleranz? Dein Spot hier!",ad1_d:"Seeds • Shops • CBD • Lass die Chiller dich finden",ad2_t:"Günstiger als Amsterdam, näher als dein Dealer",ad2_d:"Werbung die kleben bleibt – ganz legal",ad3_t:"Hier könnte dein Gras… äh, deine Brand wachsen",ad3_d:"18+ Aufklärung | CanG-konform | High-Reichweite",ad_btn:"Jetzt buchen",imprint:"Impressum",privacy:"Datenschutz",disclaimer:"Disclaimer 18+",contact:"Kontakt",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz klärt auf\nAufklärung 18+ | CanG-konform\nKeine Werbung. Keine Abgabe.\nKunst & Info nach Art. 5 GG"},
-  en:{lang_hint:"Choose language:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WORLDWIDE CANNABIS NEWS • 2026",highlights:"Latest Highlights",age_title:"Age Verification 18+",age_text:"This website contains information about cannabis under CanG. Access is only permitted for adults. Are you at least 18 years old?",age_yes:"Yes, I'm 18+",age_no:"No",age_disclaimer:"Education under Art. 5 GG. No advertising, no distribution.",country_de:"Germany",country_us:"USA",country_th:"Thailand",country_mt:"Malta",country_ch:"Switzerland",country_ca:"Canada",ad1_t:"Higher than your tolerance? Your spot here!",ad1_d:"Seeds • Shops • CBD • Let the chillers find you",ad2_t:"Cheaper than Amsterdam, closer than your dealer",ad2_d:"Advertising that sticks – totally legal",ad3_t:"Your grass… uh, your brand could grow here",ad3_d:"18+ Education | CanG-compliant | High-reach",ad_btn:"Book now",imprint:"Imprint",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz educates\nEducation 18+ | CanG-compliant\nNo advertising. No distribution.\nArt & Info under Art. 5 GG"},
-  nl:{lang_hint:"Kies taal:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WERELDWIJD CANNABIS NIEUWS • 2026",highlights:"Actuele Highlights",age_title:"Leeftijdscontrole 18+",age_text:"Deze website bevat informatie over cannabis volgens CanG. Toegang is alleen toegestaan voor volwassenen. Ben je minstens 18 jaar oud?",age_yes:"Ja, ik ben 18+",age_no:"Nee",age_disclaimer:"Voorlichting volgens Art. 5 GG. Geen reclame, geen verstrekking.",country_de:"Duitsland",country_us:"VS",country_th:"Thailand",country_mt:"Malta",country_ch:"Zwitserland",country_ca:"Canada",ad1_t:"Hoger dan je tolerantie? Jouw spot hier!",ad1_d:"Zaden • Shops • CBD • Laat de chille mensen je vinden",ad2_t:"Goedkoper dan Amsterdam, dichterbij dan je dealer",ad2_d:"Reclame die blijft plakken – helemaal legaal",ad3_t:"Hier kan je gras… uh, je merk groeien",ad3_d:"18+ Voorlichting | CanG-conform | High-bereik",ad_btn:"Nu boeken",imprint:"Colofon",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informeert\nVoorlichting 18+ | CanG-conform\nGeen reclame. Geen verstrekking.\nKunst & Info volgens Art. 5 GG"},
-  fr:{lang_hint:"Choisir la langue:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ACTUALITÉS CANNABIS MONDIALES • 2026",highlights:"À la Une",age_title:"Vérification d'âge 18+",age_text:"Ce site contient des informations sur le cannabis selon CanG. L'accès est réservé aux adultes. Avez-vous au moins 18 ans?",age_yes:"Oui, j'ai 18+",age_no:"Non",age_disclaimer:"Information selon Art. 5 GG. Pas de pub, pas de cession.",country_de:"Allemagne",country_us:"États-Unis",country_th:"Thaïlande",country_mt:"Malte",country_ch:"Suisse",country_ca:"Canada",ad1_t:"Plus haut que ta tolérance? Ton spot ici!",ad1_d:"Graines • Shops • CBD • Laisse les chillers te trouver",ad2_t:"Moins cher qu'Amsterdam, plus près que ton dealer",ad2_d:"Pub qui colle – 100% légale",ad3_t:"Ici ton herbe… euh, ta marque pourrait pousser",ad3_d:"18+ Sensibilisation | Conforme CanG | Haute portée",ad_btn:"Réserver",imprint:"Mentions légales",privacy:"Confidentialité",disclaimer:"Avertissement 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informe\nSensibilisation 18+ | Conforme CanG\nPas de pub. Pas de cession.\nArt & Info selon Art. 5 GG"},
-  bg:{lang_hint:"Избери език:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"СВЕТОВНИ НОВИНИ ЗА КАНАБИС • 2026",highlights:"Актуални акценти",age_title:"Проверка на възраст 18+",age_text:"Този уебсайт съдържа информация за канабис според CanG. Достъпът е разрешен само за пълнолетни. Навършили ли сте 18 години?",age_yes:"Да, на 18+",age_no:"Не",age_disclaimer:"Просвета по чл. 5 GG. Без реклама, без предоставяне.",country_de:"Германия",country_us:"САЩ",country_th:"Тайланд",country_mt:"Малта",country_ch:"Швейцария",country_ca:"Канада",ad1_t:"По-високо от толеранса ти? Твоето място тук!",ad1_d:"Семена • Магазини • CBD • Нека чилърите те намерят",ad2_t:"По-евтино от Амстердам, по-близо от дилъра ти",ad2_d:"Реклама, която залепва – напълно легално",ad3_t:"Тук може да расте твоята трева… ах, твоята марка",ad3_d:"18+ Просвета | Съобразено с CanG | Висок обхват",ad_btn:"Резервирай",imprint:"Импресум",privacy:"Поверителност",disclaimer:"Отказ 18+",contact:"Контакт",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz информира\nПросвета 18+ | Съобразено с CanG\nБез реклама. Без предоставяне.\nИзкуство & инфо по чл. 5 GG"},
-  pl:{lang_hint:"Wybierz język:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ŚWIATOWE WIADOMOŚCI O KONOPIACH • 2026",highlights:"Aktualne wydarzenia",age_title:"Weryfikacja wieku 18+",age_text:"Ta strona zawiera informacje o konopiach wg CanG. Dostęp tylko dla pełnoletnich. Czy masz ukończone 18 lat?",age_yes:"Tak, mam 18+",age_no:"Nie",age_disclaimer:"Edukacja wg Art. 5 GG. Brak reklamy, brak wydawania.",country_de:"Niemcy",country_us:"USA",country_th:"Tajlandia",country_mt:"Malta",country_ch:"Szwajcaria",country_ca:"Kanada",ad1_t:"Wyżej niż twoja tolerancja? Twój spot tutaj!",ad1_d:"Nasiona • Sklepy • CBD • Niech chillersi cię znajdą",ad2_t:"Taniej niż Amsterdam, bliżej niż twój diler",ad2_d:"Reklama, która się klei – w pełni legalna",ad3_t:"Tutaj może rosnąć twoja trawa… tzn. marka",ad3_d:"18+ Edukacja | Zgodne z CanG | High-zasięg",ad_btn:"Rezerwuj",imprint:"Impressum",privacy:"Prywatność",disclaimer:"Oświadczenie 18+",contact:"Kontakt",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz edukuje\nEdukacja 18+ | Zgodne z CanG\nBrak reklamy. Brak wydawania.\nSztuka i info wg Art. 5 GG"},
-  es:{lang_hint:"Elegir idioma:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"NOTICIAS MUNDIALES DE CANNABIS • 2026",highlights:"Destacados Actuales",age_title:"Verificación de edad 18+",age_text:"Este sitio contiene información sobre cannabis según CanG. Acceso solo para adultos. ¿Tienes al menos 18 años?",age_yes:"Sí, tengo 18+",age_no:"No",age_disclaimer:"Educación según Art. 5 GG. Sin publicidad, sin cesión.",country_de:"Alemania",country_us:"EE.UU.",country_th:"Tailandia",country_mt:"Malta",country_ch:"Suiza",country_ca:"Canadá",ad1_t:"¿Más alto que tu tolerancia? ¡Tu spot aquí!",ad1_d:"Semillas • Tiendas • CBD • Deja que los chillers te encuentren",ad2_t:"Más barato que Ámsterdam, más cerca que tu dealer",ad2_d:"Publicidad que se pega – 100% legal",ad3_t:"Aquí podría crecer tu hierba… digo, tu marca",ad3_d:"18+ Educación | Conforme a CanG | Alto alcance",ad_btn:"Reservar",imprint:"Aviso legal",privacy:"Privacidad",disclaimer:"Aviso 18+",contact:"Contacto",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz informa\nEducación 18+ | Conforme a CanG\nSin publicidad. Sin cesión.\nArte e Info según Art. 5 GG"}
+ 
+<!-- Ticker -->
+<div class="ticker" id="tickerBar" role="marquee" aria-live="off">
+  <div class="ticker-inner" id="tickerInner">
+    <div class="ticker-segment" id="tickerSeg1"></div>
+    <div class="ticker-segment" id="tickerSeg2"></div>
+  </div>
+</div>
+ 
+<script>
+// ============================================================
+// TRANSLATIONS
+// ============================================================
+const translations = {
+  de:{lang_hint:"Sprache wählen:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WORLDWIDE CANNABIS NEWS • 2026",highlights:"Aktuelle Highlights",age_title:"Altersprüfung 18+",age_text:"Diese Website enthält Informationen zu Cannabis nach CanG. Der Zugang ist nur für volljährige Personen gestattet. Bist du mindestens 18 Jahre alt?",age_yes:"Ja, ich bin 18+",age_no:"Nein",age_disclaimer:"Aufklärung nach Art. 5 GG. Keine Werbung, keine Abgabe.",ad1_t:"Höher als deine Toleranz? Dein Spot hier!",ad1_d:"Seeds • Shops • CBD • Lass die Chiller dich finden",ad2_t:"Günstiger als Amsterdam, näher als dein Dealer",ad2_d:"Werbung die kleben bleibt – ganz legal",ad3_t:"Hier könnte dein Gras… äh, deine Brand wachsen",ad3_d:"18+ Aufklärung | CanG-konform | High-Reichweite",ad_btn:"Jetzt buchen",imprint:"Impressum",privacy:"Datenschutz",disclaimer:"Disclaimer 18+",contact:"Kontakt",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz klärt auf\nAufklärung 18+ | CanG-konform\nKeine Werbung. Keine Abgabe.\nKunst & Info nach Art. 5 GG"},
+  en:{lang_hint:"Choose language:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WORLDWIDE CANNABIS NEWS • 2026",highlights:"Latest Highlights",age_title:"Age Verification 18+",age_text:"This website contains information about cannabis under CanG. Access is only permitted for adults. Are you at least 18 years old?",age_yes:"Yes, I'm 18+",age_no:"No",age_disclaimer:"Education under Art. 5 GG. No advertising, no distribution.",ad1_t:"Higher than your tolerance? Your spot here!",ad1_d:"Seeds • Shops • CBD • Let the chillers find you",ad2_t:"Cheaper than Amsterdam, closer than your dealer",ad2_d:"Advertising that sticks – totally legal",ad3_t:"Your grass… uh, your brand could grow here",ad3_d:"18+ Education | CanG-compliant | High-reach",ad_btn:"Book now",imprint:"Imprint",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz – 🌿 NaturalBornChillaz educates\nEducation 18+ | CanG-compliant\nNo advertising. No distribution.\nArt & Info under Art. 5 GG"},
+  nl:{lang_hint:"Kies taal:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"WERELDWIJD CANNABIS NIEUWS • 2026",highlights:"Actuele Highlights",age_title:"Leeftijdscontrole 18+",age_text:"Deze website bevat informatie over cannabis. Ben je minstens 18 jaar oud?",age_yes:"Ja, ik ben 18+",age_no:"Nee",age_disclaimer:"Voorlichting. Geen reclame.",ad1_t:"Hoger dan je tolerantie? Jouw spot hier!",ad1_d:"Zaden • Shops • CBD",ad2_t:"Goedkoper dan Amsterdam",ad2_d:"Legale reclame",ad3_t:"Jouw merk hier",ad3_d:"18+ | CanG-conform",ad_btn:"Nu boeken",imprint:"Colofon",privacy:"Privacy",disclaimer:"Disclaimer 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz"},
+  fr:{lang_hint:"Choisir la langue:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ACTUALITÉS CANNABIS MONDIALES • 2026",highlights:"À la Une",age_title:"Vérification d'âge 18+",age_text:"Avez-vous au moins 18 ans?",age_yes:"Oui, j'ai 18+",age_no:"Non",age_disclaimer:"Information selon Art. 5 GG.",ad1_t:"Plus haut que ta tolérance?",ad1_d:"Graines • Shops • CBD",ad2_t:"Moins cher qu'Amsterdam",ad2_d:"Pub légale",ad3_t:"Ta marque pourrait pousser ici",ad3_d:"18+ | Conforme CanG",ad_btn:"Réserver",imprint:"Mentions légales",privacy:"Confidentialité",disclaimer:"Avertissement 18+",contact:"Contact",footer_txt:"© 2026 NaturalBornChillaz"},
+  bg:{lang_hint:"Избери език:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"СВЕТОВНИ НОВИНИ ЗА КАНАБИС • 2026",highlights:"Актуални акценти",age_title:"Проверка на възраст 18+",age_text:"Навършили ли сте 18 години?",age_yes:"Да, на 18+",age_no:"Не",age_disclaimer:"Просвета по чл. 5 GG.",ad1_t:"По-високо от толеранса ти?",ad1_d:"Семена • Магазини • CBD",ad2_t:"По-евтино от Амстердам",ad2_d:"Легална реклама",ad3_t:"Твоята марка тук",ad3_d:"18+ | CanG",ad_btn:"Резервирай",imprint:"Импресум",privacy:"Поверителност",disclaimer:"Отказ 18+",contact:"Контакт",footer_txt:"© 2026 NaturalBornChillaz"},
+  pl:{lang_hint:"Wybierz język:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"ŚWIATOWE WIADOMOŚCI O KONOPIACH • 2026",highlights:"Aktualne wydarzenia",age_title:"Weryfikacja wieku 18+",age_text:"Czy masz ukończone 18 lat?",age_yes:"Tak, mam 18+",age_no:"Nie",age_disclaimer:"Edukacja wg Art. 5 GG.",ad1_t:"Wyżej niż twoja tolerancja?",ad1_d:"Nasiona • Sklepy • CBD",ad2_t:"Taniej niż Amsterdam",ad2_d:"Legalna reklama",ad3_t:"Twoja marka tutaj",ad3_d:"18+ | CanG",ad_btn:"Rezerwuj",imprint:"Impressum",privacy:"Prywatność",disclaimer:"Oświadczenie 18+",contact:"Kontakt",footer_txt:"© 2026 NaturalBornChillaz"},
+  es:{lang_hint:"Elegir idioma:",unity_btn:"🌿 Join the Chillaz • UNITYCARD",logo:"NaturalBornChillaz",tag:"NOTICIAS MUNDIALES DE CANNABIS • 2026",highlights:"Destacados Actuales",age_title:"Verificación de edad 18+",age_text:"¿Tienes al menos 18 años?",age_yes:"Sí, tengo 18+",age_no:"No",age_disclaimer:"Educación según Art. 5 GG.",ad1_t:"¿Más alto que tu tolerancia?",ad1_d:"Semillas • Tiendas • CBD",ad2_t:"Más barato que Ámsterdam",ad2_d:"Publicidad legal",ad3_t:"Tu marca aquí",ad3_d:"18+ | CanG",ad_btn:"Reservar",imprint:"Aviso legal",privacy:"Privacidad",disclaimer:"Aviso 18+",contact:"Contacto",footer_txt:"© 2026 NaturalBornChillaz"}
 };
-const newsData = {
-  de: [
-    [{country:"Deutschland",title:"Social Clubs Ausbau 2026",desc:"Erweiterung nach CanG – erste Lizenzen vergeben.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"Schedule III seit 28.04.2026",desc:"DEA stuft Cannabis herab – historischer Schritt.",url:"https://www.reuters.com"},{country:"Thailand",title:"Zurück zu Medical-Only",desc:"Neue Lizenz stoppt Freizeit-Shops ab 2025.",url:"https://www.bangkokpost.com"},{country:"Malta",title:"Erste Clubs öffnen",desc:"Non-Profit Abgabe offiziell gestartet.",url:"https://timesofmalta.com"},{country:"Schweiz",title:"Zürich Pilot stabil",desc:"Über 2.100 Teilnehmer im Modellversuch.",url:"https://www.bag.admin.ch"},{country:"Kanada",title:"72 Tonnen nach Deutschland",desc:"Exportrekord hält 2026 weiter an.",url:"https://www.canada.ca"}],
-    [{country:"Deutschland",title:"CanG Bußgeld-Katalog Update",desc:"Neue Regeln für Besitz & Anbau seit Q2/2026.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"Banking Act Fortschritt",desc:"Cannabis-Firmen bekommen Kontozugang.",url:"https://www.reuters.com"},{country:"Schweiz",title:"Basel Studie Phase 3",desc:"Apotheken-Abgabe läuft erfolgreich.",url:"https://www.bag.admin.ch"},{country:"Kanada",title:"THC-Grenzwerte diskutiert",desc:"Health Canada prüft 10mg-Regel.",url:"https://www.canada.ca"},{country:"Malta",title:"Tourismus & Clubs",desc:"Urlauber dürfen nicht konsumieren.",url:"https://timesofmalta.com"},{country:"Thailand",title:"Export-Lizenz Boom",desc:"Medical CBD für EU stark nachgefragt.",url:"https://www.bangkokpost.com"}],
-    [{country:"Deutschland",title:"Eigenanbau: 3 Pflanzen",desc:"Gerichte bestätigen CanG Auslegung.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"Kalifornien Steuersenkung",desc:"Legal Market soll gestärkt werden.",url:"https://www.reuters.com"},{country:"Schweiz",title:"Genf startet 2026",desc:"Zweites Pilotprojekt mit 1.000 Personen.",url:"https://www.bag.admin.ch"},{country:"Kanada",title:"CBD-Getränke Trend",desc:"Markt wächst um 40% YoY.",url:"https://www.canada.ca"},{country:"Malta",title:"HRZA Kontrollen",desc:"Behörde prüft Clubs unangekündigt.",url:"https://timesofmalta.com"},{country:"Thailand",title:"Tourismus-Warnung",desc:"Freizeitkonsum bleibt illegal.",url:"https://www.bangkokpost.com"}],
-    [{country:"Deutschland",title:"Führerschein & THC",desc:"Neue Grenzwerte nach CanG beschlossen.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"NYC Lizenzen",desc:"500 neue Shops für Social Equity.",url:"https://www.reuters.com"},{country:"Schweiz",title:"Lausanne Cannabis",desc:"Stadt plant eigenes Pilotprojekt.",url:"https://www.bag.admin.ch"},{country:"Kanada",title:"Ontario Umsatz",desc:"2,1 Mrd CAD im Q1 2026.",url:"https://www.canada.ca"},{country:"Malta",title:"Werbung verboten",desc:"Clubs dürfen nicht öffentlich inserieren.",url:"https://timesofmalta.com"},{country:"Thailand",title:"Krankenhaus-Programm",desc:"Gratis Medical Cannabis für Patienten.",url:"https://www.bangkokpost.com"}]
+ 
+// ============================================================
+// VIDEO FEEDS
+// ============================================================
+const videoFeeds = {
+  de:{feed1:{title:"Medical Cannabis DE",playlist:"PLnq4f1LUqbYj9FFKGDnY-BOZy79WUKMGe"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  en:{feed1:{title:"Canna Legalization News",playlist:"PLeAIUVGqrqOtZkZxXohKcEtA5W6QdMHVd"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  nl:{feed1:{title:"Cannabis News NL",playlist:"PL6culvOP2rJshlcJAGBP4KrF2aKtQ32QW"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  fr:{feed1:{title:"Cannabis France",playlist:"PLjSNx6BBM7OHved88WcwVQTnw6taNvXxl"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  bg:{feed1:{title:"Canna Roots BG",playlist:"PLnyQXwjoPEnWCNC53tuDPUgFFuxVW1X6r"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  pl:{feed1:{title:"Cannabis News PL",playlist:"PLI_rj-Rv8ftMGfj9HZHIqbAq95sQxGZlI"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
+  es:{feed1:{title:"Fundacion Cana España",playlist:"PLDujEKEpaOdTAGp0sl79sM9xT3SzjACqn"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}}
+};
+ 
+// ============================================================
+// FALLBACK NEWS (wenn API nicht verfügbar)
+// ============================================================
+const fallbackNews = {
+  de:[
+    {country:"Deutschland",title:"CanG 2026: Social Clubs im Ausbau",desc:"Erste Lizenzen vergeben – über 300 Clubs bundesweit aktiv.",url:"https://www.bundesgesundheitsministerium.de",time:"Heute"},
+    {country:"USA",title:"Schedule III seit April 2026",desc:"DEA stuft Cannabis herab – historischer Wendepunkt.",url:"https://www.reuters.com",time:"Heute"},
+    {country:"Schweiz",title:"Zürich Pilotprojekt stabil",desc:"Über 2.100 Teilnehmer – Apotheken-Abgabe läuft.",url:"https://www.bag.admin.ch",time:"Heute"},
+    {country:"Kanada",title:"72 Tonnen Export nach DE",desc:"Exportrekord hält in 2026 weiter an.",url:"https://www.canada.ca",time:"Heute"},
+    {country:"Malta",title:"Non-Profit Clubs geöffnet",desc:"Touristen dürfen nicht konsumieren – strikte Kontrollen.",url:"https://timesofmalta.com",time:"Heute"},
+    {country:"Thailand",title:"Zurück zu Medical-Only",desc:"Freizeitkonsum bleibt illegal – neue Lizenzpflicht.",url:"https://www.bangkokpost.com",time:"Heute"}
   ],
-  en: [
-    [{country:"Germany",title:"Social Clubs Expansion 2026",desc:"Expansion under CanG – first licenses issued.",url:"https://www.bundesgesundheitsministerium.de"},{country:"USA",title:"Schedule III since 04/28/2026",desc:"DEA downgrades cannabis – historic step.",url:"https://www.reuters.com"},{country:"Thailand",title:"Back to Medical-Only",desc:"New license stops recreational shops from 2025.",url:"https://www.bangkokpost.com"},{country:"Malta",title:"First Clubs Open",desc:"Non-profit distribution officially started.",url:"https://timesofmalta.com"},{country:"Switzerland",title:"Zurich Pilot Stable",desc:"Over 2,100 participants in the trial.",url:"https://www.bag.admin.ch"},{country:"Canada",title:"72 Tons to Germany",desc:"Export record continues in 2026.",url:"https://www.canada.ca"}]
+  en:[
+    {country:"Germany",title:"CanG 2026: Social Clubs expanding",desc:"First licenses issued – 300+ clubs active nationwide.",url:"https://www.bundesgesundheitsministerium.de",time:"Today"},
+    {country:"USA",title:"Schedule III since April 2026",desc:"DEA downgrades cannabis – historic milestone.",url:"https://www.reuters.com",time:"Today"},
+    {country:"Switzerland",title:"Zurich pilot stable",desc:"2,100+ participants – pharmacy dispensing running.",url:"https://www.bag.admin.ch",time:"Today"},
+    {country:"Canada",title:"72 tons exported to Germany",desc:"Export record continues in 2026.",url:"https://www.canada.ca",time:"Today"},
+    {country:"Malta",title:"Non-profit clubs open",desc:"Tourists banned from consumption – strict checks.",url:"https://timesofmalta.com",time:"Today"},
+    {country:"Thailand",title:"Back to medical-only",desc:"Recreational use remains illegal – new licensing rules.",url:"https://www.bangkokpost.com",time:"Today"}
   ]
 };
-const videoFeeds = {
-  de: {feed1:{title:"Medical Cannabis DE",playlist:"PLnq4f1LUqbYj9FFKGDnY-BOZy79WUKMGe"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
-  en: {feed1:{title:"Canna Legalization News",playlist:"PLeAIUVGqrqOtZkZxXohKcEtA5W6QdMHVd"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
-  nl: {feed1:{title:"Cannabis News NL",playlist:"PL6culvOP2rJshlcJAGBP4KrF2aKtQ32QW"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
-  fr: {feed1:{title:"Cannabis France",playlist:"PLjSNx6BBM7OHved88WcwVQTnw6taNvXxl"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
-  bg: {feed1:{title:"Canna Roots BG",playlist:"PLnyQXwjoPEnWCNC53tuDPUgFFuxVW1X6r"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
-  pl: {feed1:{title:"Cannabis News PL",playlist:"PLI_rj-Rv8ftMGfj9HZHIqbAq95sQxGZlI"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}},
-  es: {feed1:{title:"Fundation Cana España",playlist:"PLDujEKEpaOdTAGp0sl79sM9xT3SzjACqn"},feed2:{title:"Global Cannabis",playlist:"PLrEnWoR732-BHrPp_Pm8_VleD68f9s14-"}}
-};
-let tickerMinuteCounter = 0;
-let currentNewsSet = [];
+ 
+// ============================================================
+// STATE
+// ============================================================
+let currentLang = 'de';
+let currentNews = [];
+let localTickerItems = [];
+let userCity = '';
+let userCountry = '';
+let newsRefreshInterval = null;
+let tickerRefreshInterval = null;
+let nextRefreshTime = null;
+let countdownInterval = null;
+ 
+// ============================================================
+// AGE GATE
+// ============================================================
 function acceptAge(){
   localStorage.setItem('nbc_age_verified','true');
   document.getElementById('ageGate').style.display='none';
@@ -308,66 +391,372 @@ function checkAge(){
   }
   return false;
 }
-function renderNews(lang) {
-  const sets = newsData[lang] || newsData['de'];
-  const hourIndex = new Date().getHours() % sets.length;
-  currentNewsSet = sets[hourIndex];
+ 
+// ============================================================
+// GEOLOCATION
+// ============================================================
+async function detectLocation(){
+  try{
+    const r = await fetch('https://ipapi.co/json/',{signal:AbortSignal.timeout(4000)});
+    if(!r.ok) throw new Error('geo fail');
+    const d = await r.json();
+    userCity = d.city || '';
+    userCountry = d.country_name || '';
+    return {city:userCity, country:userCountry, country_code:d.country_code||'DE', region:d.region||''};
+  }catch(e){
+    userCity = '';
+    userCountry = 'Deutschland';
+    return {city:'',country:'Deutschland',country_code:'DE',region:''};
+  }
+}
+ 
+// ============================================================
+// AI NEWS GENERATION
+// ============================================================
+async function fetchAINews(lang, location){
+  const langNames = {de:'Deutsch',en:'English',nl:'Nederlands',fr:'Français',bg:'Български',pl:'Polski',es:'Español'};
+  const langName = langNames[lang] || 'Deutsch';
+  const locString = location.city ? `${location.city}, ${location.country}` : location.country;
+  const now = new Date();
+  const dateStr = now.toLocaleDateString(lang==='de'?'de-DE':'en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const hour = now.getHours();
+  const slot = Math.floor(hour/6); // 0-3 → 4 slots per day
+ 
+  const prompt = `Du bist ein Cannabis-News-Redakteur für NaturalBornChillaz, eine deutschsprachige Cannabis-News-Seite (18+, Aufklärung nach Art. 5 GG).
+ 
+Heute ist ${dateStr}. News-Slot: ${slot+1} von 4.
+Besucher-Standort: ${locString}
+ 
+Erstelle GENAU 6 aktuelle Cannabis-Nachrichten auf ${langName}. Nutze reale, plausible Entwicklungen aus 2025-2026.
+ 
+Antworte NUR mit einem JSON-Array, kein Markdown, kein Text davor oder danach:
+[
+  {"country":"Ländername","title":"Schlagzeile (max 50 Zeichen)","desc":"Kurzbeschreibung (max 90 Zeichen)","url":"https://echte-quelle.de","time":"Zeitangabe z.B. Heute • 08:00"},
+  ...
+]
+ 
+Regeln:
+- Slot 1 (00-06h): Nacht-News, internationale Updates
+- Slot 2 (06-12h): Morgen-News, politische Meldungen
+- Slot 3 (12-18h): Nachmittags-News, Markt & Wirtschaft
+- Slot 4 (18-24h): Abend-News, Community & Events
+- Variiere die 6 Länder: Deutschland, USA, Schweiz, Kanada, Malta, Niederlande, Thailand, Australien, Spanien usw.
+- Jede News muss sich von vorherigen Slots unterscheiden
+- URLs müssen zu realen Nachrichtenquellen zeigen (bundesgesundheitsministerium.de, reuters.com, bbc.com, leafly.com etc.)
+- Zeitangaben realistisch für Slot ${slot+1}`;
+ 
+  try{
+    const response = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    if(!response.ok) throw new Error('API error '+response.status);
+    const data = await response.json();
+    const text = data.content.map(b=>b.text||'').join('');
+    const clean = text.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(clean);
+    if(Array.isArray(parsed)&&parsed.length>0) return parsed;
+    throw new Error('bad parse');
+  }catch(e){
+    console.warn('AI news fallback:',e.message);
+    return null;
+  }
+}
+ 
+// ============================================================
+// AI TICKER NEWS (local + global)
+// ============================================================
+async function fetchAITickerNews(lang, location){
+  const locString = location.city ? `${location.city}, ${location.country}` : location.country;
+  const langNames = {de:'Deutsch',en:'English',nl:'Nederlands',fr:'Français',bg:'Български',pl:'Polski',es:'Español'};
+  const langName = langNames[lang]||'Deutsch';
+  const now = new Date();
+  const mins = now.getMinutes();
+  const segment = Math.floor(mins/15); // 0-3 → 4x pro Stunde
+ 
+  const prompt = `Cannabis-News-Ticker für NaturalBornChillaz (18+, Aufklärung). Segment ${segment+1}/4 der aktuellen Stunde (${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')} Uhr).
+ 
+Standort des Besuchers: ${locString}
+ 
+Erstelle 8 kurze Ticker-Meldungen auf ${langName}:
+- 3 LOKALE Meldungen zu Cannabis in der Region ${locString} (markiere mit "LOCAL")
+- 5 GLOBALE Cannabis-Meldungen international
+ 
+Antworte NUR mit JSON:
+[
+  {"type":"local","text":"Kurze Meldung max 80 Zeichen","url":"https://quelle.de"},
+  {"type":"global","text":"Kurze Meldung max 80 Zeichen","url":"https://quelle.com"},
+  ...
+]
+ 
+Jedes Segment soll andere Inhalte haben. Realistische, aktuelle Cannabis-News 2025-2026.`;
+ 
+  try{
+    const response = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:800,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    if(!response.ok) throw new Error('ticker API '+response.status);
+    const data = await response.json();
+    const text = data.content.map(b=>b.text||'').join('');
+    const clean = text.replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(clean);
+    if(Array.isArray(parsed)&&parsed.length>0) return parsed;
+    throw new Error('bad ticker parse');
+  }catch(e){
+    console.warn('Ticker fallback:',e.message);
+    return null;
+  }
+}
+ 
+// ============================================================
+// RENDER NEWS CARDS
+// ============================================================
+function renderNewsCards(newsItems){
   const grid = document.getElementById('newsGrid');
   grid.innerHTML = '';
-  currentNewsSet.forEach(n => {
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString(currentLang==='de'?'de-DE':'en-US',{hour:'2-digit',minute:'2-digit'});
+  newsItems.forEach((n,i)=>{
     const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `<a href="${n.url}" target="_blank" rel="noopener"><div class="kicker">${n.country}</div><h3>${n.title}</h3><p>${n.desc}</p></a>`;
+    card.className = 'card fresh';
+    card.style.animationDelay = (i*0.06)+'s';
+    card.innerHTML = `
+      <span class="timestamp">${n.time||timeStr}</span>
+      <a href="${n.url}" target="_blank" rel="noopener">
+        <div class="kicker">${n.country}</div>
+        <h3>${n.title}</h3>
+        <p>${n.desc}</p>
+      </a>`;
     grid.appendChild(card);
   });
+  currentNews = newsItems;
 }
-function updateTicker(lang) {
-  if (!currentNewsSet.length) {
-    const sets = newsData[lang] || newsData['de'];
-    currentNewsSet = sets[new Date().getHours() % sets.length];
+ 
+// ============================================================
+// RENDER TICKER
+// ============================================================
+function renderTicker(items){
+  if(!items||items.length===0) return;
+  const makeSegment = ()=>{
+    return items.map(item=>{
+      const isLocal = item.type==='local';
+      const label = isLocal
+        ? `<span class="ticker-label local">${userCity||userCountry||'LOKAL'}</span>`
+        : `<span class="ticker-label">NEWS</span>`;
+      const cls = isLocal ? ' class="local-item"' : '';
+      return `<span${cls}>${label}<a href="${item.url}" target="_blank" rel="noopener">${item.text}</a></span>`;
+    }).join(' ••• ');
+  };
+  const seg = makeSegment();
+  document.getElementById('tickerSeg1').innerHTML = seg;
+  document.getElementById('tickerSeg2').innerHTML = seg;
+  // Adjust speed based on content length
+  const totalChars = items.reduce((s,i)=>s+i.text.length,0);
+  const duration = Math.max(60, totalChars * 0.5);
+  document.getElementById('tickerInner').style.setProperty('--ticker-duration', duration+'s');
+  document.getElementById('tickerInner').style.animationDuration = duration+'s';
+}
+ 
+// ============================================================
+// COUNTDOWN
+// ============================================================
+function startCountdown(){
+  if(countdownInterval) clearInterval(countdownInterval);
+  countdownInterval = setInterval(()=>{
+    if(!nextRefreshTime) return;
+    const diff = Math.max(0, nextRefreshTime - Date.now());
+    const mins = Math.floor(diff/60000);
+    const secs = Math.floor((diff%60000)/1000);
+    const lbl = document.getElementById('nextUpdateLabel');
+    if(lbl){
+      const lang = currentLang;
+      const txt = lang==='en'
+        ? `Next update in ${mins}:${String(secs).padStart(2,'0')}`
+        : `Nächste Aktualisierung in ${mins}:${String(secs).padStart(2,'0')}`;
+      lbl.textContent = txt;
+    }
+  },1000);
+}
+ 
+// ============================================================
+// MAIN NEWS LOAD
+// ============================================================
+let locationData = {city:'',country:'Deutschland',country_code:'DE',region:''};
+ 
+async function loadNews(lang, force=false){
+  const btn = document.getElementById('refreshBtn');
+  if(btn) btn.disabled = true;
+ 
+  // Cache key: lang + slot (6h block)
+  const slot = Math.floor(new Date().getHours()/6);
+  const cacheKey = `nbc_news_${lang}_${new Date().toDateString()}_slot${slot}`;
+ 
+  if(!force){
+    try{
+      const cached = localStorage.getItem(cacheKey);
+      if(cached){
+        const {items, ts} = JSON.parse(cached);
+        // use cache if < 90 min old
+        if(Date.now()-ts < 90*60*1000){
+          renderNewsCards(items);
+          if(btn) btn.disabled=false;
+          return;
+        }
+      }
+    }catch(e){}
   }
-  let tickerHTML = currentNewsSet.map(n =>
-    `<a href="${n.url}" target="_blank" rel="noopener">${n.country.toUpperCase()}: ${n.title}</a>`
-  ).join(' ••• ');
-  document.getElementById('tickerContent').innerHTML = tickerHTML;
+ 
+  // Show skeleton
+  document.getElementById('newsGrid').innerHTML = Array(6).fill(0).map((_,i)=>
+    `<div class="card loading" style="animation-delay:${i*0.1}s"><div class="kicker">⟳</div><h3 style="background:#222;color:transparent;border-radius:4px">Loading news headline</h3><p style="background:#1a1a1a;color:transparent;border-radius:4px">Loading description text here</p></div>`
+  ).join('');
+ 
+  const items = await fetchAINews(lang, locationData);
+  if(items){
+    renderNewsCards(items);
+    try{ localStorage.setItem(cacheKey, JSON.stringify({items, ts:Date.now()})); }catch(e){}
+  }else{
+    const fallback = fallbackNews[lang] || fallbackNews['de'];
+    renderNewsCards(fallback);
+  }
+ 
+  if(btn) btn.disabled=false;
 }
-function updateVideos(lang) {
-  const feeds = videoFeeds[lang] || videoFeeds['de'];
+ 
+// ============================================================
+// TICKER LOAD
+// ============================================================
+async function loadTicker(lang){
+  const now = new Date();
+  const segment = Math.floor(now.getMinutes()/15);
+  const cacheKey = `nbc_ticker_${lang}_${now.getHours()}_seg${segment}`;
+ 
+  try{
+    const cached = localStorage.getItem(cacheKey);
+    if(cached){
+      const {items,ts} = JSON.parse(cached);
+      if(Date.now()-ts < 16*60*1000){
+        renderTicker(items);
+        return;
+      }
+    }
+  }catch(e){}
+ 
+  const items = await fetchAITickerNews(lang, locationData);
+  if(items){
+    renderTicker(items);
+    try{ localStorage.setItem(cacheKey, JSON.stringify({items,ts:Date.now()})); }catch(e){}
+  }else{
+    // Static fallback ticker
+    const fallbackItems = (fallbackNews[lang]||fallbackNews['de']).map(n=>({
+      type:'global', text:`${n.country}: ${n.title}`, url:n.url
+    }));
+    if(userCity||userCountry){
+      fallbackItems.unshift({type:'local', text:`${userCity||userCountry}: Cannabis-News aktuell`, url:'#'});
+    }
+    renderTicker(fallbackItems);
+  }
+}
+ 
+// ============================================================
+// MANUAL REFRESH
+// ============================================================
+async function manualRefresh(){
+  await loadNews(currentLang, true);
+  await loadTicker(currentLang);
+}
+ 
+// ============================================================
+// VIDEOS
+// ============================================================
+function updateVideos(lang){
+  const feeds = videoFeeds[lang]||videoFeeds['de'];
   document.getElementById('feed1Title').textContent = feeds.feed1.title;
   document.getElementById('feed2Title').textContent = feeds.feed2.title;
   document.getElementById('videoFeed1').src = `https://www.youtube.com/embed/videoseries?list=${feeds.feed1.playlist}&autoplay=0&mute=1`;
   document.getElementById('videoFeed2').src = `https://www.youtube.com/embed/videoseries?list=${feeds.feed2.playlist}&autoplay=0&mute=1`;
 }
-function setLang(lang) {
+ 
+// ============================================================
+// LANGUAGE
+// ============================================================
+function setLang(lang){
+  currentLang = lang;
   localStorage.setItem('nbc_lang', lang);
   document.documentElement.lang = lang;
   document.getElementById('langSelect').value = lang;
-  const t = translations[lang];
-  document.querySelectorAll('[data-i18n]').forEach(el => {
+  const t = translations[lang]||translations['de'];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
     const key = el.getAttribute('data-i18n');
-    if (t[key]) el.textContent = t[key];
+    if(t[key] !== undefined) el.textContent = t[key];
   });
-  renderNews(lang);
-  updateTicker(lang);
   updateVideos(lang);
+  loadNews(lang);
+  loadTicker(lang);
 }
-function initPage() {
-  const savedLang = localStorage.getItem('nbc_lang') || 'de';
-  setLang(savedLang);
-  setInterval(() => {
-    tickerMinuteCounter++;
-    if (tickerMinuteCounter % 5 === 0) {
-      const lang = localStorage.getItem('nbc_lang') || 'de';
-      renderNews(lang);
-      updateTicker(lang);
-    }
-  }, 60000);
+ 
+// ============================================================
+// INIT
+// ============================================================
+async function initPage(){
+  // Detect location first
+  locationData = await detectLocation();
+  userCity = locationData.city;
+  userCountry = locationData.country;
+ 
+  const savedLang = localStorage.getItem('nbc_lang')||'de';
+  currentLang = savedLang;
+  document.getElementById('langSelect').value = savedLang;
+  const t = translations[savedLang]||translations['de'];
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.textContent = t[key];
+  });
+  updateVideos(savedLang);
+ 
+  await loadNews(savedLang);
+  await loadTicker(savedLang);
+ 
+  // News: refresh every 6 hours (4x daily)
+  const msTo6h = (6 - (new Date().getHours()%6)) * 3600000 - new Date().getMinutes()*60000 - new Date().getSeconds()*1000;
+  nextRefreshTime = Date.now() + msTo6h;
+  startCountdown();
+ 
+  newsRefreshInterval = setInterval(async()=>{
+    await loadNews(currentLang, true);
+    nextRefreshTime = Date.now() + 6*3600000;
+  }, 6*3600000);
+ 
+  // Ticker: refresh every 15 min (4x per hour)
+  const msTo15min = (15 - (new Date().getMinutes()%15))*60000 - new Date().getSeconds()*1000;
+  tickerRefreshInterval = setInterval(()=>{
+    loadTicker(currentLang);
+  }, 15*60*1000);
+ 
+  // Initial ticker delay to next 15-min mark
+  setTimeout(()=>{
+    loadTicker(currentLang);
+    tickerRefreshInterval = setInterval(()=>loadTicker(currentLang), 15*60*1000);
+  }, msTo15min);
 }
-window.onload = function() {
-  if (checkAge()) {
-    initPage();
-  }
-};
+ 
+// ============================================================
+// BOOT
+// ============================================================
+window.addEventListener('load',()=>{
+  if(checkAge()) initPage();
+});
 </script>
 </body>
 </html>
