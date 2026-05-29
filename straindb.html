@@ -604,6 +604,9 @@ body::after {
                     <div class="absolute bottom-0 left-2 text-[10px] font-orbitron text-green-400/70 bg-black/40 px-2 py-0.5 rounded-full border border-green-500/30 backdrop-blur-sm">
                         Saved: <span id="savedCount" class="text-yellow-400 font-bold">0</span>
                     </div>
+                    <button id="lemmingsStop" class="absolute bottom-0 right-2 text-[10px] font-orbitron bg-black/60 hover:bg-red-900/60 text-gray-300 hover:text-white px-2.5 py-0.5 rounded-full border border-gray-600/50 hover:border-red-500/70 backdrop-blur-sm transition-all">
+                        ⏸ STOP
+                    </button>
                 </div>
                 <div class="joke-ticker-header">
                     <div class="ticker-track" id="headerJokeTrack">
@@ -1657,6 +1660,7 @@ Chillige Gruesse`;
 // ===== LEMMINGS GAME =====
 let lemmingsGame = {
     spawnRate: 10000,
+    paused: false,
     consecutiveSaves: 0,
     totalSaved: parseInt(localStorage.getItem('nbc_saved_lemmings') || '0'),
     level: parseInt(localStorage.getItem('nbc_lemming_level') || '0'),
@@ -1664,8 +1668,66 @@ let lemmingsGame = {
     maxLemmings: 8,
     spawnTimer: null,
     
+
+    playSound(type) {
+        if(this.paused) return;
+        try {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const play = (freq, duration, vol = 0.18, type = 'sine', start = 0) => {
+                const o = ctx.createOscillator();
+                const g = ctx.createGain();
+                o.connect(g); g.connect(ctx.destination);
+                o.type = type;
+                o.frequency.value = freq;
+                g.gain.setValueAtTime(0, ctx.currentTime + start);
+                g.gain.linearRampToValueAtTime(vol, ctx.currentTime + start + 0.01);
+                g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + start + duration);
+                o.start(ctx.currentTime + start);
+                o.stop(ctx.currentTime + start + duration);
+            };
+            
+            switch(type) {
+                case 'parachute':
+                    play(600, 0.12, 0.15, 'sine');
+                    play(900, 0.1, 0.12, 'sine', 0.05);
+                    break;
+                case 'save':
+                    // Jubel: C-E-G-C
+                    [523,659,784,1046].forEach((f,i) => play(f, 0.15, 0.17, 'triangle', i*0.07));
+                    break;
+                case 'splat':
+                    play(180, 0.35, 0.24, 'sawtooth');
+                    setTimeout(() => play(90, 0.2, 0.18, 'square'), 80);
+                    break;
+                case 'ohno':
+                    // "Oh no" - fallend
+                    [400,350,300,250].forEach((f,i) => play(f, 0.12, 0.13, 'sawtooth', i*0.06));
+                    break;
+                case 'levelup':
+                    // Arcade Level Up
+                    [400,600,800,1000,1200].forEach((f,i) => play(f, 0.09, 0.15, 'square', i*0.09));
+                    break;
+            }
+        } catch(e) {}
+    },
+    togglePause() {
+        this.paused = !this.paused;
+        const btn = document.getElementById('lemmingsStop');
+        if(this.paused) {
+            if(this.spawnTimer) clearInterval(this.spawnTimer);
+            btn.innerHTML = '▶️ START';
+            btn.classList.add('text-green-400', 'border-green-500/70');
+            btn.classList.remove('text-gray-300', 'border-gray-600/50');
+        } else {
+            this.startSpawning();
+            btn.innerHTML = '⏸ STOP';
+            btn.classList.remove('text-green-400', 'border-green-500/70');
+            btn.classList.add('text-gray-300', 'border-gray-600/50');
+        }
+    },
     init() {
         document.getElementById('savedCount').textContent = this.totalSaved;
+        document.getElementById('lemmingsStop')?.addEventListener('click', () => this.togglePause());
         this.startSpawning();
         // Update level display
         if(this.level > 0) {
@@ -1681,7 +1743,7 @@ let lemmingsGame = {
     },
     
     spawnLemming() {
-        if(this.activeLemmings >= this.maxLemmings) return;
+        if(this.paused || this.activeLemmings >= this.maxLemmings) return;
         
         const sky = document.getElementById('lemmings-sky');
         if(!sky) return;
@@ -1718,6 +1780,7 @@ let lemmingsGame = {
                 if(!lemming.classList.contains('has-parachute') && !lemming.classList.contains('parachuting')) {
                     lemming.classList.add('has-parachute');
                     lemming.innerHTML = '🪂' + lemming.innerHTML;
+                    this.playSound('parachute');
                     // Visual feedback
                     lemming.style.filter = 'drop-shadow(0 0 8px #00FF00)';
                 }
@@ -1752,6 +1815,7 @@ let lemmingsGame = {
                 lemming.classList.remove('parachuting');
                 lemming.classList.add('cheering');
                 lemming.innerHTML = '🎉';
+                this.playSound('save');
                 
                 // Check level up
                 if(this.consecutiveSaves > 0 && this.consecutiveSaves % 5 === 0) {
@@ -1768,6 +1832,8 @@ let lemmingsGame = {
             
             lemming.classList.remove('walking');
             lemming.classList.add('splatted');
+            this.playSound('ohno');
+            setTimeout(() => this.playSound('splat'), 150);
             
             // Dust effect
             const dust = document.createElement('div');
@@ -1793,6 +1859,7 @@ let lemmingsGame = {
     levelUp() {
         this.level++;
         localStorage.setItem('nbc_lemming_level', this.level);
+        this.playSound('levelup');
         
         // Increase spawn rate
         this.spawnRate = Math.max(2000, 10000 - (this.level * 1500));
