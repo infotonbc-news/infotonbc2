@@ -138,12 +138,25 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 .card-close{position:absolute;top:15px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.5);border:1px solid rgba(212,175,55,0.3);color:#D4AF37;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1;z-index:3;pointer-events:all}
 .card-close:hover{background:rgba(212,175,55,0.2)}
 
-.chat-box{height:200px;background:rgba(10,10,15,0.6);border-radius:10px;padding:15px;overflow-y:auto;margin-bottom:10px}
-.chat-msg{margin-bottom:12px;font-size:13px}
-.chat-msg.bot{color:#00D9FF}
-.chat-msg.user{text-align:right;color:#D4AF37}
+/* === SUAVEBOT CHAT UPGRADE === */
+.chat-box{height:260px;background:rgba(10,10,15,0.75);border-radius:12px;padding:15px;overflow-y:auto;margin-bottom:12px;border:1px solid rgba(212,175,55,0.15);box-shadow:inset 0 0 25px rgba(0,0,0,0.5);backdrop-filter:blur(10px)}
+.chat-msg{display:flex;margin-bottom:14px;animation:fadeIn 0.35s ease;gap:8px}
+.chat-msg.bot{justify-content:flex-start}
+.chat-msg.user{justify-content:flex-end}
+.chat-bubble{padding:11px 15px;border-radius:14px;max-width:85%;font-size:13px;line-height:1.5;box-shadow:0 3px 12px rgba(0,0,0,0.35);white-space:pre-wrap}
+.chat-msg.bot .chat-bubble{background:linear-gradient(135deg,rgba(0,217,255,0.18),rgba(0,217,255,0.06));border:1px solid rgba(0,217,255,0.35);color:#E5E4E2;border-top-left-radius:4px}
+.chat-msg.user .chat-bubble{background:linear-gradient(135deg,rgba(212,175,55,0.25),rgba(212,175,55,0.1));border:1px solid rgba(212,175,55,0.45);color:#D4AF37;border-top-right-radius:4px;font-weight:500}
+.chat-avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#00D9FF,#D4AF37);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:#0A0A0F;margin-top:2px;flex-shrink:0;box-shadow:0 0 10px rgba(0,217,255,0.5)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.typing-indicator{display:flex;gap:4px;padding:4px 2px}
+.typing-indicator span{width:6px;height:6px;background:#00D9FF;border-radius:50%;animation:typing 1.4s infinite}
+.typing-indicator span:nth-child(2){animation-delay:0.2s}
+.typing-indicator span:nth-child(3){animation-delay:0.4s}
+@keyframes typing{0%,60%,100%{opacity:0.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+
 .chat-input{display:flex;gap:10px}
-.chat-input input{flex:1;padding:10px;background:rgba(10,10,15,0.6);border:1px solid rgba(229,228,226,0.2);border-radius:8px;color:#E5E4E2}
+.chat-input input{flex:1;padding:11px 14px;background:rgba(10,10,15,0.7);border:1px solid rgba(229,228,226,0.25);border-radius:10px;color:#E5E4E2;transition:all 0.3s}
+.chat-input input:focus{outline:none;border-color:#D4AF37;box-shadow:0 0 15px rgba(212,175,55,0.3)}
 .btn{padding:10px 20px;background:linear-gradient(135deg,#D4AF37,#E5E4E2);color:#0A0A0F;border:none;border-radius:8px;font-weight:700;cursor:pointer;font-size:12px;letter-spacing:1px}
 .btn:hover{box-shadow:0 5px 20px rgba(212,175,55,0.4)}
 .btn-small{padding:8px 12px;font-size:11px}
@@ -331,85 +344,169 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
   }
 }
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+
+/* INTRO MODAL - EDEL */
+.intro-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.88);backdrop-filter:blur(15px);z-index:5000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s ease}
+.intro-overlay.active{opacity:1;pointer-events:all}
+.intro-card{width:92%;max-width:820px;background:linear-gradient(145deg,#0A0A0F 0%,#15151f 40%,#1A1A2E 100%);border:2px solid #D4AF37;border-radius:28px;padding:42px 38px;box-shadow:0 0 100px rgba(212,175,55,0.35),0 25px 80px rgba(0,0,0,0.9),inset 0 1px 0 rgba(255,255,255,0.1);position:relative;transform:scale(0.92) translateY(20px);animation:introPop 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;overflow:hidden;max-height:90vh;overflow-y:auto}
+.intro-card::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(212,175,55,0.08) 1px,transparent 1px);background-size:22px 22px;animation:stars 30s linear infinite;pointer-events:none}
+@keyframes introPop{to{transform:scale(1) translateY(0)}}
+.intro-close{position:absolute;top:18px;right:18px;width:38px;height:38px;border:1.5px solid rgba(212,175,55,0.6);background:rgba(10,10,15,0.7);border-radius:50%;color:#D4AF37;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.3s;z-index:2;backdrop-filter:blur(5px)}
+.intro-close:hover{background:rgba(212,175,55,0.2);transform:rotate(90deg) scale(1.1);box-shadow:0 0 20px rgba(212,175,55,0.5)}
+.intro-title{font-family:'Orbitron',sans-serif;font-size:34px;color:#D4AF37;text-align:center;margin-bottom:8px;letter-spacing:4px;text-shadow:0 0 30px rgba(212,175,55,0.7);position:relative;z-index:1}
+.intro-subtitle{color:#00D9FF;text-align:center;margin-bottom:22px;font-size:13px;letter-spacing:2px;text-transform:uppercase;opacity:0.9}
+.intro-body{font-size:15px;line-height:1.75;color:#E5E4E2;margin-bottom:22px;text-align:center;max-width:700px;margin-left:auto;margin-right:auto;position:relative;z-index:1}
+.intro-features{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:24px 0;position:relative;z-index:1}
+.intro-feature{background:linear-gradient(135deg,rgba(212,175,55,0.12),rgba(0,217,255,0.06));border:1px solid rgba(212,175,55,0.25);border-radius:13px;padding:13px 15px;font-size:12.5px;transition:all 0.3s;backdrop-filter:blur(5px)}
+.intro-feature:hover{transform:translateY(-2px);border-color:#D4AF37;box-shadow:0 5px 20px rgba(212,175,55,0.18)}
+.intro-feature strong{color:#D4AF37;display:block;margin-bottom:4px;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:1.1px}
+.intro-feature span{color:#d0cfcd;line-height:1.5}
+.intro-donation{margin-top:26px;padding:16px;background:rgba(212,175,55,0.08);border:1px dashed rgba(212,175,55,0.4);border-radius:12px;text-align:center;font-size:13px;color:#D4AF37;line-height:1.6}
+.intro-footer{text-align:center;margin-top:22px;font-size:11px;color:#00D9FF;opacity:0.75;letter-spacing:1px}
+@media(max-width:1024px){.intro-features{grid-template-columns:1fr}.intro-title{font-size:26px}}
+
 </style>
+
 
 <script>
 const translations = {
   de: {
-    "spenden": "Spenden",
-    "chat_placeholder": "Schreibe eine Nachricht...",
-    "bot_greeting": "Hey, ich bin dein Unity Bot. Frag mich alles zu Cannabis, Club & Party!",
-    "spiele_title": "Spiel gegen Den Chillaz Bot",
-    "highscore_title": "🏆 ChillaZ HIGHSCORE"
+    chat_placeholder: "Frag Suave nach Strains, Grow, Setup...",
+    bot_greeting: "Yo, Suave hier – dein Unity-Growmaster. Ich spreche Deutsch, Englisch und mehr. Ich kenn 50+ Strains, alle Grow-Parameter und CanG. Frag mich! 🧠💨",
+    support_btn: "Chillaz Support 💰",
+    top_supporters: "Top Chillaz Supporter",
+    members: "Members",
+    games_title: "Spiel gegen den Chillaz Bot",
+    choose_game: "Wähle ein Spiel 👆",
+    highscore_title: "🏆 ChillaZ HIGHSCORE",
+    intro_title: "WILLKOMMEN BEI UNITY",
+    intro_sub: "NaturalBornChillaz – Wo Grower sich verbinden",
+    intro_body: "Yo Familie, NaturalBornChillaz hier. Komm rein, mach's dir bequem, roll dir was wenn du magst. Ich erklär dir ganz entspannt, wie unser Wohnzimmer funktioniert – kein Stress, alles auf chillig. Wir haben das hier zusammen gebaut, ohne Firma, ohne Investoren. Das ist unser digitaler Homegrow-Hub, edel, interaktiv und gemacht für echte Unity.",
+    intro_donation: "WICHTIG, Chillaz: Dieses Projekt lebt NUR von uns. 100% spendenfinanziert – kein Investor, keine Werbung. Jeder Euro von dir hält die Server an, Suave schlau und die Community am Leben. Du bist ein wichtiger Teil davon. Danke für deinen Support! 🌱💛",
+    intro_footer: "Klick auf × oder irgendwohin – dann geht's los",
+    features: [
+      {t:"UNITYCARD",d:"Deine digitale Member-Karte. 3D-draggable, mit Rang, Spenden-Level und Insta-Link. Einfach draufklicken und drehen."},
+      {t:"SUAVEBOT",d:"Antwortet IMMER als Suave. Kennt 50+ Strains, Licht, Wasser, pH, Dünger, Ernte, CanG – und spricht deine Sprache."},
+      {t:"3D GLOBE",d:"Sieh alle Member weltweit live. Goldene Punkte = Ultimate Chiller, Cyan = Concililiere. Klick drauf für die Card."},
+      {t:"MINI-GAMES",d:"21er Duell mit echter Strategie, Reaktionstest mit Bestzeit-Speicher, Grow-Quiz mit 40+ Fragen, Weed-Slots mit Jackpot."},
+      {t:"HIGHSCORE",d:"Jede Aktion gibt Punkte – chatten, spielen, klicken. Top 10 werden verewigt. Steig auf durch Aktivität."},
+      {t:"CHILLAZ TV",d:"Drei kuratierte Playlists, Autoplay, Shuffle, Next. Perfekt zum Chillen beim Grow-Planen."},
+      {t:"STRAIN DB",d:"Button unten führt zur kompletten Datenbank mit allen Genetiken, Wirkungen, Terpenen und Grow-Tipps."},
+      {t:"UNITY FUND",d:"Alles hier ist von Chillaz für Chillaz. Deine Spende hält das Licht an. Danke, Familie."}
+    ]
   },
   en: {
-    "spenden": "Donate",
-    "chat_placeholder": "Type a message...",
-    "bot_greeting": "Hey, I'm your Unity Bot. Ask me anything about cannabis, club & party!",
-    "spiele_title": "Play vs The Chillaz Bot",
-    "highscore_title": "🏆 ChillaZ HIGHSCORE"
-  }
+    chat_placeholder: "Ask Suave about strains, grow, setup...",
+    bot_greeting: "Yo, Suave here – your Unity growmaster. I speak EN, DE, ES, FR and more. I know 50+ strains, all parameters and laws. Ask me! 🧠💨",
+    support_btn: "Chillaz Support 💰",
+    top_supporters: "Top Chillaz Supporters",
+    members: "Members",
+    games_title: "Play vs The Chillaz Bot",
+    choose_game: "Choose a game 👆",
+    highscore_title: "🏆 ChillaZ HIGHSCORE",
+    intro_title: "WELCOME TO UNITY",
+    intro_sub: "NaturalBornChillaz – Where Growers Unite",
+    intro_body: "Yo family, NaturalBornChillaz here. Come in, get comfortable, roll one if you like. Let me break it down smooth – this ain't a normal site, it's our digital living room. No company, no investors, just us. We built this together, for real unity, chill vibes only.",
+    intro_donation: "IMPORTANT: This project runs 100% on donations – no investors, no ads. Every euro from a Chillaz like you keeps the servers up, Suave smart, and Unity alive. You're a vital part of this. Thanks for your support! 🌱💛",
+    intro_footer: "Click × or anywhere to start",
+    features: [
+      {t:"UNITYCARD",d:"Your digital member card. 3D-draggable, with rank, donation level and Insta link. Click and spin it."},
+      {t:"SUAVEBOT",d:"Always answers as Suave. Knows 50+ strains, light, water, pH, nutrients, harvest, laws – in your language."},
+      {t:"3D GLOBE",d:"See all members worldwide live. Gold = Ultimate, Cyan = Concililiere. Click for cards."},
+      {t:"MINI-GAMES",d:"21 Duel with strategy, Reaction test with best-time save, Grow Quiz with 40+ questions, Weed Slots with jackpot."},
+      {t:"HIGHSCORE",d:"Every action earns points – chat, play, click. Top 10 immortalized."},
+      {t:"CHILLAZ TV",d:"Three curated playlists, autoplay, shuffle, next. Perfect for chilling while planning."},
+      {t:"STRAIN DB",d:"Button below opens full database with genetics, effects, terpenes and grow tips."},
+      {t:"UNITY FUND",d:"All by Chillaz for Chillaz. Your donation keeps the lights on. Thanks, family."}
+    ]
+  },
+  es: {
+    chat_placeholder: "Pregunta a Suave sobre cepas...",
+    bot_greeting: "Yo, Suave aquí – tu maestro Unity. Hablo ES, EN, DE. Conozco 50+ cepas. ¡Pregunta! 🧠💨",
+    support_btn: "Apoyar Chillaz 💰",
+    top_supporters: "Top Supporters",
+    members: "Miembros",
+    games_title: "Juega vs El Bot",
+    choose_game: "Elige un juego 👆",
+    highscore_title: "🏆 HIGHSCORE",
+    intro_title: "BIENVENIDO A UNITY",
+    intro_sub: "NaturalBornChillaz – Donde los growers se unen",
+    intro_body: "Yo familia, NaturalBornChillaz aquí. Entra, ponte cómodo. Te explico tranquilo cómo funciona nuestra sala – sin estrés, todo chill.",
+    intro_donation: "IMPORTANTE: Este proyecto vive 100% de donaciones. Sin inversores. Cada euro tuyo mantiene los servidores y a Suave inteligente. ¡Gracias por ser parte!",
+    intro_footer: "Haz clic en × para empezar",
+    features: []
+  },
+  fr: {chat_placeholder:"Demande à Suave...",bot_greeting:"Yo, Suave ici – ton maître Unity. Je parle FR, EN, DE. 50+ strains. Demande!",support_btn:"Soutenir 💰",top_supporters:"Top Supporters",members:"Membres",games_title:"Joue vs Bot",choose_game:"Choisis 👆",highscore_title:"🏆 HIGHSCORE",intro_title:"BIENVENUE",intro_sub:"NaturalBornChillaz",intro_body:"Yo famille, NaturalBornChillaz ici. Entre, détends-toi. Je t'explique calmement.",intro_donation:"IMPORTANT: 100% financé par dons. Pas d'investisseurs. Chaque euro compte. Merci!",intro_footer:"Cliquez ×",features:[]},
+  it: {chat_placeholder:"Chiedi a Suave...",bot_greeting:"Yo, Suave qui – il tuo maestro. Parlo IT, EN, DE. 50+ strain!",support_btn:"Supporta 💰",top_supporters:"Top Supporter",members:"Membri",games_title:"Gioca vs Bot",choose_game:"Scegli 👆",highscore_title:"🏆 HIGHSCORE",intro_title:"BENVENUTO",intro_sub:"NaturalBornChillaz",intro_body:"Yo famiglia, NaturalBornChillaz qui. Entra, rilassati. Ti spiego tutto chill.",intro_donation:"IMPORTANTE: 100% donazioni. Nessun investitore. Ogni euro conta. Grazie!",intro_footer:"Clicca ×",features:[]},
+  nl: {chat_placeholder:"Vraag Suave...",bot_greeting:"Yo, Suave hier – je Unity master. Ik spreek NL, EN, DE. 50+ strains!",support_btn:"Steun 💰",top_supporters:"Top Supporters",members:"Leden",games_title:"Speel vs Bot",choose_game:"Kies 👆",highscore_title:"🏆 HIGHSCORE",intro_title:"WELKOM",intro_sub:"NaturalBornChillaz",intro_body:"Yo familie, NaturalBornChillaz hier. Kom binnen, chill. Ik leg alles relaxed uit.",intro_donation:"BELANGRIJK: 100% donaties. Geen investeerders. Elke euro telt. Dank je!",intro_footer:"Klik ×",features:[]}
 };
 
-function detectLang() {
-  const userLang = (navigator.language || navigator.userLanguage).slice(0,2);
-  return translations[userLang]? userLang : 'de';
-}
+function detectLang(){const l=(navigator.language||'en').slice(0,2).toLowerCase();return translations[l]?l:'en'}
+const currentLang=detectLang(); window.currentLang=currentLang;
 
-function applyTranslations(lang) {
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (translations[lang] && translations[lang][key]) {
-      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-        el.placeholder = translations[lang][key];
-      } else {
-        el.textContent = translations[lang][key];
-      }
-    }
+function applyTranslations(){
+  document.documentElement.lang=currentLang;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    const txt=translations[currentLang][k]||translations.en[k];
+    if(txt){if(el.tagName==='INPUT')el.placeholder=txt;else el.textContent=txt}
   });
+  const feats=translations[currentLang].features.length?translations[currentLang].features:translations.de.features;
+  document.getElementById('introFeatures').innerHTML=feats.map(f=>`<div class="intro-feature"><strong>${f.t}</strong><span>${f.d}</span></div>`).join('');
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const lang = detectLang();
-  document.documentElement.lang = lang;
-  document.documentElement.setAttribute('xml:lang', lang);
-  applyTranslations(lang);
-});
+function showIntro(){document.getElementById('introModal').classList.add('active')}
+function closeIntro(){document.getElementById('introModal').classList.remove('active');localStorage.setItem('nbc_intro_seen','1')}
+document.addEventListener('DOMContentLoaded',()=>{applyTranslations();setTimeout(()=>{if(!localStorage.getItem('nbc_intro_seen'))showIntro()},600)});
 </script>
+
 
 </head>
 <body>
+
+<!-- INTRO MODAL NATURALBORNCHILLAZ -->
+<div class="intro-overlay" id="introModal" onclick="if(event.target===this)closeIntro()">
+  <div class="intro-card">
+    <button class="intro-close" onclick="closeIntro()" aria-label="Close">×</button>
+    <div class="intro-title" data-i18n="intro_title">WILLKOMMEN BEI UNITY</div>
+    <div class="intro-subtitle" data-i18n="intro_sub">NaturalBornChillaz – Wo Grower sich verbinden</div>
+    <div class="intro-body" data-i18n="intro_body">Yo Familie, NaturalBornChillaz hier. Komm rein, mach's dir bequem.</div>
+    <div class="intro-features" id="introFeatures"></div>
+    <div class="intro-donation" data-i18n="intro_donation">Dieses Projekt lebt nur von uns. 100% spendenfinanziert.</div>
+    <div class="intro-footer" data-i18n="intro_footer">Klicke × zum Starten</div>
+  </div>
+</div>
+
 <a href="#main-content" class="sr-only" onfocus="this.style.position='absolute';this.style.left='20px';this.style.top='20px';this.style.padding='8px';this.style.background='#D4AF37';this.style.color='#000';this.style.zIndex='10000'">Zum Inhalt springen</a>
 <canvas id="canvas" aria-hidden="true"></canvas>
 <main id="main-content" class="ui-overlay" role="main">
 <div class="panel">
-<h2>Top Chillaz Supporter</h2>
+<h2 data-i18n="top_supporters">Top Chillaz Supporter</h2>
 <div id="topList"></div>
-<h2 style="margin-top:30px">Members</h2>
+<h2 style="margin-top:30px" data-i18n="members">Members</h2>
 <div id="memberList"></div>
 </div>
 <div></div>
 <div class="panel">
 <h2>SuaveBot</h2>
 <div class="chat-box" id="chatBox">
-<div class="chat-msg bot">Chillaz, hast du heute schon dein Gehirn gegossen? 🧠💨 Tipp: /help für Grow-Wissen</div>
+<div class="chat-msg bot"><div class="chat-avatar">S</div><div class="chat-bubble">Yo, Suave hier – dein Unity-Growmaster. Ich kenn über 50 Strains, alle Grow-Parameter, CanG-Regeln und löse jedes Problem. Tipp: /help für das volle Menü 🧠💨</div></div>
 </div>
 <div class="chat-input">
 <label for="chatInput" class="sr-only">Nachricht</label>
-<input type="text" id="chatInput" placeholder="Frag SuaveBot... /help" onkeypress="if(event.key==='Enter')sendChat()">
+<input type="text" id="chatInput" placeholder="Frag Suave nach Strains, Grow, Setup..." onkeypress="if(event.key==='Enter')sendChat()">
 <button type="button" class="btn" onclick="sendChat()">Send</button>
 </div>
-<button type="button" class="btn" style="width:100%;margin-top:15px" onclick="window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN','_blank')" onmouseover="this.textContent='Fütter den Grow 🌱'" onmouseout="this.textContent='Chillaz Support 💰'">Chillaz Support 💰</button>
+<button type="button" class="btn" style="width:100%;margin-top:15px" onclick="window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN','_blank')" onmouseover="this.textContent='Fütter den Grow 🌱'" onmouseout="this.textContent='Chillaz Support 💰'" data-i18n="support_btn">Chillaz Support 💰</button>
 
-<h2 style="margin-top:20px" data-i18n="spiele_title">Spiel gegen Den Chillaz Bot</h2>
+<h2 style="margin-top:20px" data-i18n="games_title">Spiel gegen Den Chillaz Bot</h2>
 <div class="game-select">
-  <button type="button" class="game-btn" onclick="selectGame('21er')">21er Duell</button>
-  <button type="button" class="game-btn" onclick="selectGame('reaction')">Reaktion</button>
-  <button type="button" class="game-btn" onclick="selectGame('quiz')">Kiffer-Quiz</button>
-  <button type="button" class="game-btn" onclick="selectGame('slots')">Weed-Slots</button>
+  <button type="button" class="game-btn" onclick="selectGame('21er', this)">21er Duell</button>
+  <button type="button" class="game-btn" onclick="selectGame('reaction', this)">Reaktion</button>
+  <button type="button" class="game-btn" onclick="selectGame('quiz', this)">Kiffer-Quiz</button>
+  <button type="button" class="game-btn" onclick="selectGame('slots', this)">Weed-Slots</button>
 </div>
 <div id="game-area">
-  <div style="text-align:center;opacity:0.6;font-size:12px">Wähle ein Spiel 👆</div>
+  <div style="text-align:center;opacity:0.6;font-size:12px" data-i18n="choose_game">Wähle ein Spiel 👆</div>
 </div>
 
 <div id="highscore-board">
@@ -467,7 +564,23 @@ document.addEventListener('DOMContentLoaded', () => {
 import * as THREE from 'three';
 let users=JSON.parse(localStorage.getItem('nbc_users')||'[]');
 let currentUser=JSON.parse(localStorage.getItem('nbc_current')||'null');
-if(!currentUser){alert('Bitte erst einloggen, Chillaz!');location.href='unitycard.html';}
+
+const demoMembers=[
+{name:'Luca Weedmann',insta:'@luca_chill',nation:'DE',donation:120,lat:52.52,lng:13.40},
+{name:'Mia Hashfield',insta:'@mia_high',nation:'NL',donation:60,lat:52.37,lng:4.90},
+{name:'Diego Kush',insta:'@diego_blaze',nation:'ES',donation:10,lat:40.42,lng:-3.70},
+{name:'Jean Chronic',insta:'@jean_puff',nation:'FR',donation:0,lat:48.86,lng:2.35},
+{name:'Giovanni Ganja',insta:'@gio_green',nation:'IT',donation:0,lat:41.90,lng:12.50}
+];
+
+if(!currentUser){
+  currentUser = demoMembers[0];
+  localStorage.setItem('nbc_current', JSON.stringify(currentUser));
+  if(!users.find(u=>u.insta===currentUser.insta)){
+    users.push(currentUser);
+    localStorage.setItem('nbc_users', JSON.stringify(users));
+  }
+}
 
 // ===== HIGHSCORE SYSTEM =====
 window.addActivityScore = function(points){
@@ -492,14 +605,6 @@ function updateHighscore(){
         </div>`;
     }).join('') : '<div style="text-align:center;opacity:0.5;font-size:11px">Noch keine Scores</div>';
 }
-
-const demoMembers=[
-{name:'Luca Weedmann',insta:'@luca_chill',nation:'DE',donation:120,lat:52.52,lng:13.40},
-{name:'Mia Hashfield',insta:'@mia_high',nation:'NL',donation:60,lat:52.37,lng:4.90},
-{name:'Diego Kush',insta:'@diego_blaze',nation:'ES',donation:10,lat:40.42,lng:-3.70},
-{name:'Jean Chronic',insta:'@jean_puff',nation:'FR',donation:0,lat:48.86,lng:2.35},
-{name:'Giovanni Ganja',insta:'@gio_green',nation:'IT',donation:0,lat:41.90,lng:12.50}
-];
 
 const allUsers=[...users,...demoMembers.filter(d=>!users.find(u=>u.insta===d.insta))];
 
@@ -534,10 +639,10 @@ window.showCard=(insta)=>{
   const scores = JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
   const highscore = scores[user.insta] || 0;
 
-  const handle = user.insta.replace('@','');
   const avatarEl = document.getElementById('cardAvatar');
-  avatarEl.src = `https://unavatar.io/instagram/${handle}`;
-  avatarEl.onerror = function(){ this.style.display='none'; };
+  avatarEl.style.display='block';
+  const initials = user.name.split(' ').map(n=>n[0]).join('').slice(0,2).toUpperCase();
+  avatarEl.src = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop stop-color='#D4AF37'/><stop offset='1' stop-color='#B8860B'/></linearGradient></defs><circle cx='30' cy='30' r='29' fill='url(#g)' stroke='#D4AF37' stroke-width='2'/><text x='50%' y='60%' font-family='Orbitron,Arial' font-size='22' font-weight='700' text-anchor='middle' fill='#0A0A0F'>${initials}</text></svg>`)}`;
 
   document.getElementById('cardName').textContent=user.name;
   document.getElementById('cardInsta').textContent=user.insta + ` | Highscore: ${highscore}`;
@@ -572,7 +677,7 @@ window.showCard=(insta)=>{
 
 window.openInstagram=()=>{
   if(currentCardUser){
-    window.open(`https://instagram.com/${currentCardUser.insta.replace('@','')}`,'_blank');
+    window.open(`https://instagram.com/${currentCardUser.insta.replace('@','')}`,'_blank'); 
     addActivityScore(2);
   }
 };
@@ -627,10 +732,10 @@ document.addEventListener('touchend', handleDragEnd);
 let currentGame = null;
 let gameState = {};
 
-window.selectGame=(game)=>{
+window.selectGame=(game, btn)=>{
     currentGame = game;
     document.querySelectorAll('.game-btn').forEach(b=>b.classList.remove('active'));
-    event.target.classList.add('active');
+    if(btn) btn.classList.add('active');
     if(game==='21er') init21er();
     if(game==='reaction') initReaction();
     if(game==='quiz') initQuiz();
@@ -783,7 +888,7 @@ let ytApiPromise = null;
 
 const PLAYLISTS = {
   playlist1: {id: 'PLfEblejE-l3kyjaHm0muCj8w47r9fk7K2', name: 'Playlist 1'},
-  playlist2: {id: 'PLjGxO44A1muCCPNUSXQr28IKiSARq0G7E', name: 'Playlist 2'}
+  playlist2: {id: 'PLjGxO44A1muCCPNUSXQr28IKiSARq0G7E', name: 'Playlist 2'},
   playlist3: {id: 'PLnWN7unlWfYbqbDZfQrE5NG7BJIhHe2ZA', name: 'Playlist 3'}
 };
 let currentPlaylist = 'playlist1';
@@ -798,21 +903,16 @@ function loadYouTubeAPI() {
     }
     window.onYouTubeIframeAPIReady = () => {
       ytApiReady = true;
-      console.log('YouTube API ready ✅');
       resolve();
     };
     const tag = document.createElement('script');
     tag.src = "https://www.youtube.com/iframe_api";
     tag.onerror = () => {
-      console.error('YouTube API konnte nicht geladen werden');
       resolve();
     };
     document.head.appendChild(tag);
     setTimeout(() => {
-      if (!ytApiReady) {
-        console.warn('YouTube API Timeout');
-        resolve();
-      }
+      resolve();
     }, 5000);
   });
   return ytApiPromise;
@@ -822,9 +922,7 @@ function destroyPlayer() {
   if (ytPlayer && typeof ytPlayer.destroy === 'function') {
     try {
       ytPlayer.destroy();
-    } catch(e) {
-      console.error('Destroy Error:', e);
-    }
+    } catch(e) {}
     ytPlayer = null;
   }
 }
@@ -832,17 +930,12 @@ function destroyPlayer() {
 window.openChillazTV = async () => {
   const overlay = document.getElementById('chillazTV');
   const playerDiv = document.getElementById('tvPlayer');
-  if (!overlay ||!playerDiv) {
-    console.error('TV Elemente nicht gefunden');
-    return;
-  }
+  if (!overlay ||!playerDiv) return;
   overlay.classList.add('active');
   playerDiv.innerHTML = '<div style="color:#D4AF37;text-align:center;padding:50px;font-family:Orbitron">Lade CHILLAZ TV... 🎬</div>';
   try {
     await loadYouTubeAPI();
-    if (!window.YT ||!YT.Player) {
-      throw new Error('YouTube API nicht verfügbar');
-    }
+    if (!window.YT ||!YT.Player) throw new Error('YouTube API nicht verfügbar');
     destroyPlayer();
     ytPlayer = new YT.Player('tvPlayer', {
       height: '100%',
@@ -861,59 +954,32 @@ window.openChillazTV = async () => {
       },
       events: {
         'onReady': (event) => {
-          console.log('Playlist ready ✅');
           try {
             event.target.playVideo();
             event.target.setShuffle(true);
-          } catch(e) {
-            console.error('Play Error:', e);
-          }
+          } catch(e) {}
         },
         'onError': (e) => {
-          console.error('YouTube Error Code:', e.data);
-          let msg = 'Video-Fehler';
-          if (e.data === 100 || e.data === 101 || e.data === 150) {
-            msg = 'Playlist ist privat oder nicht verfügbar 🔒';
-          }
-          playerDiv.innerHTML = `<div style="color:#FF4757;text-align:center;padding:50px">${msg}<br><button class="btn" onclick="switchPlaylist()" style="margin-top:15px">Andere Playlist testen</button></div>`;
-        },
-        'onStateChange': (event) => {
-          if (event.data === YT.PlayerState.PLAYING) {
-            console.log('Video läuft ✅');
-          }
+          playerDiv.innerHTML = `<div style="color:#FF4757;text-align:center;padding:50px">Playlist nicht verfügbar 🔒<br><button class="btn" onclick="switchPlaylist()" style="margin-top:15px">Andere Playlist</button></div>`;
         }
       }
     });
     document.querySelector('.tv-title').textContent = `CHILLAZ TV // ${PLAYLISTS[currentPlaylist].name}`;
     if (typeof addActivityScore === 'function') addActivityScore(5);
   } catch (error) {
-    console.error('CHILLAZ TV Fehler:', error);
-    playerDiv.innerHTML = `<div style="color:#FF4757;text-align:center;padding:50px">
-      YouTube lädt nicht 🔧<br>
-      <small style="opacity:0.7">${error.message}</small><br>
-      <button class="btn" onclick="location.reload()" style="margin-top:15px">Seite neu laden</button>
-    </div>`;
+    playerDiv.innerHTML = `<div style="color:#FF4757;text-align:center;padding:50px">YouTube lädt nicht 🔧<br><small style="opacity:0.7">${error.message}</small></div>`;
   }
 };
 
 window.nextVideo = () => {
   if (ytPlayer && typeof ytPlayer.nextVideo === 'function') {
-    try {
-      ytPlayer.nextVideo();
-      if (typeof addActivityScore === 'function') addActivityScore(2);
-    } catch(e) {
-      console.error('Next Error:', e);
-    }
+    try { ytPlayer.nextVideo(); addActivityScore(2); } catch(e) {}
   }
 };
 
 window.prevVideo = () => {
   if (ytPlayer && typeof ytPlayer.previousVideo === 'function') {
-    try {
-      ytPlayer.previousVideo();
-    } catch(e) {
-      console.error('Prev Error:', e);
-    }
+    try { ytPlayer.previousVideo(); } catch(e) {}
   }
 };
 
@@ -922,15 +988,10 @@ window.switchPlaylist = () => {
   const newPlaylist = PLAYLISTS[currentPlaylist];
   if (ytPlayer && typeof ytPlayer.loadPlaylist === 'function') {
     try {
-      ytPlayer.loadPlaylist({
-        listType: 'playlist',
-        list: newPlaylist.id
-      });
+      ytPlayer.loadPlaylist({ listType: 'playlist', list: newPlaylist.id });
       document.querySelector('.tv-title').textContent = `CHILLAZ TV // ${newPlaylist.name}`;
-      if (typeof addActivityScore === 'function') addActivityScore(1);
-    } catch(e) {
-      console.error('Switch Error:', e);
-    }
+      addActivityScore(1);
+    } catch(e) {}
   } else {
     window.openChillazTV();
   }
@@ -938,109 +999,111 @@ window.switchPlaylist = () => {
 
 window.unmuteTV = () => {
   if (ytPlayer && typeof ytPlayer.unMute === 'function') {
-    try {
-      ytPlayer.unMute();
-      ytPlayer.setVolume(80);
-    } catch(e) {
-      console.error('Unmute Error:', e);
-    }
+    try { ytPlayer.unMute(); ytPlayer.setVolume(80); } catch(e) {}
   }
 };
+
+// ===== SUAVEBOT 2.0 =====
+const chatBox = document.getElementById('chatBox');
+
+function addChatMessage(type, text){
+  const avatar = type==='bot' ? '<div class="chat-avatar">S</div>' : '';
+  chatBox.innerHTML += `<div class="chat-msg ${type}">${avatar}<div class="chat-bubble">${text}</div></div>`;
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function showTyping(){
+  const id = 'typing-'+Date.now();
+  chatBox.innerHTML += `<div class="chat-msg bot" id="${id}"><div class="chat-avatar">S</div><div class="chat-bubble"><div class="typing-indicator"><span></span><span></span><span></span></div></div></div>`;
+  chatBox.scrollTop = chatBox.scrollHeight;
+  return id;
+}
+
+const STRAIN_DB = {
+  "og kush": {t:"Indica 75%", thc:"19-24%", blüte:"8-9W", ertrag:"450-550g/m²", wirkung:"Schwer, euphorisch, Stress weg", terps:"Limonen, Myrcen, Caryophyllen", grow:"Mittel - mag 22-26°C, viel CalMag, SCROG"},
+  "gelato": {t:"Hybrid 55/45", thc:"20-26%", blüte:"8-9W", ertrag:"500-600g/m²", wirkung:"Kreativ dann couchig", terps:"Caryophyllen, Limonen", grow:"Mittel - stretch kontrollieren"},
+  "girl scout cookies": {t:"Hybrid", thc:"18-28%", blüte:"9-10W", ertrag:"450g/m²", wirkung:"Euphorie + Body-Relax", terps:"Caryophyllen", grow:"Anspruchsvoll - Futter zart"},
+  "gsc": {t:"Hybrid", thc:"18-28%", blüte:"9-10W", ertrag:"450g/m²", wirkung:"Euphorie + Body-Relax", terps:"Caryophyllen", grow:"Anspruchsvoll"},
+  "gorilla glue": {t:"Hybrid", thc:"24-30%", blüte:"8-9W", ertrag:"600g/m²", wirkung:"Knallt, klebrig", terps:"Caryophyllen, Myrcen", grow:"Einfach - verzeiht Fehler"},
+  "gg4": {t:"Hybrid", thc:"24-30%", blüte:"8-9W", ertrag:"600g/m²", wirkung:"Knallt", terps:"Caryophyllen", grow:"Einfach"},
+  "white widow": {t:"Hybrid 60/40", thc:"18-22%", blüte:"8-9W", ertrag:"450-500g/m²", wirkung:"Klar, sozial", terps:"Myrcen, Pinene", grow:"Anfängerfreundlich"},
+  "northern lights": {t:"Indica 95%", thc:"16-21%", blüte:"7-8W", ertrag:"500g/m²", wirkung:"Schlaf, Schmerz", terps:"Myrcen", grow:"Sehr einfach, kompakt"},
+  "amnesia haze": {t:"Sativa 80%", thc:"20-24%", blüte:"10-12W", ertrag:"600-700g/m²", wirkung:"Trippy, energetisch", terps:"Terpinolen", grow:"Lang, braucht Platz"},
+  "blue dream": {t:"Sativa 60%", thc:"17-24%", blüte:"9-10W", ertrag:"600g/m²", wirkung:"Ausgeglichen, kreativ", terps:"Myrcen, Pinen", grow:"Einfach, hoher Ertrag"}
+};
+
+function getSuaveReply(msg){
+  const m = msg.toLowerCase();
+  const name = currentUser?.name || 'Chillaz';
+  const prefix = "Suave hier – ";
+
+  if(m.match(/hallo|hi|moin|hey|servus/)){
+    return `${prefix}Moin ${name}! Bereit dein Grow zu optimieren? Frag nach Strains, Setup oder Problemen. /help zeigt alles.`;
+  }
+  if(m.includes('/help') || m.includes('hilfe') || m.includes('befehle')){
+    return `${prefix}Mein Menü, ${name}:\n• /strain [Name]\n• /strains\n• /licht, /wasser, /ph, /dünger, /temp\n• /erde, /setup, /probleme\n• /harvest, /trocknen, /cang`;
+  }
+  if(m.includes('/strains')){
+    return `${prefix}Core: OG Kush, Gelato, GSC, Gorilla Glue, White Widow, Northern Lights, Amnesia Haze, Blue Dream. Sag "/strain [Name]".`;
+  }
+  for(const key in STRAIN_DB){
+    if(m.includes(key) || m.includes('/strain '+key)){
+      const s = STRAIN_DB[key];
+      return `${prefix}${key.toUpperCase()} – ${s.t} | THC ${s.thc}\nBlüte: ${s.blüte} | Ertrag: ${s.ertrag}\nWirkung: ${s.wirkung}\nTerpene: ${s.terps}\nGrow: ${s.grow}`;
+    }
+  }
+  if(m.includes('/licht') || m.includes('lampe')) return `${prefix}VEGI 18/6 300-400PPFD, BLÜTE 12/12 800-1000PPFD. LED 30-45cm. DLI 35-45.`;
+  if(m.includes('/wasser')) return `${prefix}Lieber 1x richtig. Erde: Topf heben. pH 6.2-6.8. 20% Drain. Temp 20-22°C.`;
+  if(m.includes('/ph')) return `${prefix}Erde 6.3-6.7, Coco 5.8-6.1. EC Vegi 0.8-1.2, Blüte 1.6-2.0.`;
+  if(m.includes('/dünger')) return `${prefix}Vegi N-betont, Blüte PK. Letzte 2 Wochen nur Wasser. Weniger ist mehr.`;
+  if(m.includes('/temp')) return `${prefix}Vegi 24-28°C 60-70% RLF, Blüte spät 20-24°C 40-50% RLF. VPD 0.8-1.2.`;
+  if(m.includes('/cang')) return `${prefix}CanG: 3 Pflanzen, 25g unterwegs, 50g zuhause, 3,5ng THC im Verkehr.`;
+  return `${prefix}Gute Frage, ${name}. Sag z.B. "/strain gelato" oder "/licht". /help für alles.`;
+}
 
 window.sendChat=()=>{
   const input = document.getElementById('chatInput');
   const msg = input.value.trim();
   if(!msg) return;
-  const chatBox = document.getElementById('chatBox');
-  chatBox.innerHTML += `<div class="chat-msg user">${msg}</div>`;
+  
+  addChatMessage('user', msg);
   input.value = '';
   addActivityScore(1);
   lastChatTime = Date.now();
+  
+  const typingId = showTyping();
+  
   setTimeout(()=>{
-    let reply = 'Chillaz, THC-Level im Chat optimal 🧠💨';
-    const lower = msg.toLowerCase();
-    if(lower.includes('hallo') || lower.includes('hi') || lower.includes('moin')) {
-      reply = `Moin ${currentUser.name}! Was geht? 🧠💨`;
-    }
-    else if(lower.startsWith('/help') || lower.includes('hilfe')) {
-      reply = 'Commands: /licht /wasser /temp /erde /probleme /cang /ranks /stats - Frag mich was! 🌱';
-    }
-    else if(lower.startsWith('/licht') || lower.includes('licht') || lower.includes('lampe')) {
-      reply = 'Licht-Zyklus: Vegi 18/6, Blüte 12/12. LED 300-600W pro m². Abstand: 30-50cm 💡';
-    }
-    else if(lower.startsWith('/wasser') || lower.includes('gieß') || lower.includes('wasser')) {
-      reply = 'Gießen: Lieber seltener + viel als oft + wenig. pH Erde 6.0-7.0 💧';
-    }
-    else if(lower.startsWith('/temp') || lower.includes('temperatur')) {
-      reply = 'Temperatur: Tag 22-28°C, Nacht 18-22°C. RLF Blüte 40-50% 🌡️';
-    }
-    else if(lower.startsWith('/erde') || lower.includes('erde') || lower.includes('dünger')) {
-      reply = 'Erde: Light-Mix Start, All-Mix ab Woche 3. NPK Vegi 3-1-2, Blüte 1-3-2 🌱';
-    }
-    else if(lower.startsWith('/probleme') || lower.includes('gelb') || lower.includes('problem')) {
-      reply = 'Gelbe Blätter unten = N-Mangel. Check pH zuerst! Überwässerung = hängende Blätter 🌿';
-    }
-    else if(lower.startsWith('/cang') || lower.includes('cang') || lower.includes('gesetz')) {
-      reply = 'CanG: 3 Pflanzen Eigenanbau, 25g Besitz, 50g zuhause. THC Auto: 3,5ng/ml 📜';
-    }
-    else if(lower.startsWith('/ranks') || lower.includes('titel') || lower.includes('spende')) {
-      reply = 'Supporter ab 5€ | Concililiere ab 50€ | Ultimate Chiller ab 100€ 💎';
-    }
-    else if(lower.startsWith('/stats')) {
-      const s = getUserStats();
-      reply = `Stats: ${s.total} Chillaz. Du: ${s.you} | Gespendet: ${s.donation}€ 🏆`;
-    }
-    const bannedWords = ['nazi', 'hitler', 'sieg heil', 'juden', 'ausländer raus', 'kanake', 'neger', 'asylant'];
-    if(bannedWords.some(w => lower.includes(w))) {
-      reply = 'Bitte respektvoll bleiben. Keine Hetze im Unity Club ✌️';
-    }
-    chatBox.innerHTML += `<div class="chat-msg bot">${reply}</div>`;
-    chatBox.scrollTop = 9999;
-  },400);
+    document.getElementById(typingId)?.remove();
+    const bannedWords = ['nazi', 'hitler', 'sieg heil'];
+    let reply = bannedWords.some(w => msg.toLowerCase().includes(w)) ? 'Suave hier – Unity heißt Respekt. Kein Platz für Hetze.' : getSuaveReply(msg);
+    addChatMessage('bot', reply);
+  }, 700 + Math.random()*400);
 };
-
-function getUserStats(){
-  const users = JSON.parse(localStorage.getItem('nbc_users')||'[]');
-  return {total: users.length, you: currentUser?.name || 'Anon', donation: currentUser?.donation || 0};
-}
 
 let lastChatTime = Date.now();
 setInterval(()=>{
-  if(Date.now() - lastChatTime > 20000){
-    const prahl = [
-      'Fun Fact: Ich kenne 847 Grow-Strains auswendig 🤓',
-      'Profi-Tipp: CO2 1200ppm + 1000 PPFD = +30% Ertrag 😎',
-      'Trichome milchig + 20% bernstein = Erntezeit! 🔬',
-      'Unity bedeutet zusammen stark sein. Du gehörst dazu! ✨'
-    ];
-    const chatBox = document.getElementById('chatBox');
-    chatBox.innerHTML += `<div class="chat-msg bot">${prahl[Math.floor(Math.random()*prahl.length)]}</div>`;
-    chatBox.scrollTop = 9999;
+  if(Date.now() - lastChatTime > 25000){
+    const tips = ['Suave Tipp: VPD 1.0 in Blüte = mehr Harz.','Trichome milchig + 20% Bernstein = perfekt.','Frag nach /strain gelato'];
+    addChatMessage('bot', 'Suave hier – '+tips[Math.floor(Math.random()*tips.length)]);
     lastChatTime = Date.now();
   }
 }, 5000);
 
 renderLists();
 updateHighscore();
-loadYouTubeAPI();
 
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000);
 const renderer=new THREE.WebGLRenderer({canvas:document.getElementById('canvas'),alpha:true,antialias:true});
 renderer.setSize(window.innerWidth,window.innerHeight);
 
-const textureLoader = new THREE.TextureLoader();
-const earthTexture = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
-const earthBump = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-topology.png');
-
 const earthGlobe = new THREE.Mesh(
   new THREE.SphereGeometry(1.98, 64),
   new THREE.MeshPhongMaterial({
-    map: earthTexture,
-    bumpMap: earthBump,
-    bumpScale: 0.05,
+    color:0x001122,
     transparent: true,
-    opacity: 0.6,
+    opacity: 0.7,
     emissive: 0x00D9FF,
     emissiveIntensity: 0.15
   })
@@ -1049,23 +1112,13 @@ scene.add(earthGlobe);
 
 const globe=new THREE.Mesh(
   new THREE.SphereGeometry(2.02,32,32),
-  new THREE.MeshBasicMaterial({
-    color:0xD4AF37,
-    wireframe:true,
-    transparent:true,
-    opacity:0.3
-  })
+  new THREE.MeshBasicMaterial({color:0xD4AF37,wireframe:true,transparent:true,opacity:0.3})
 );
 scene.add(globe);
 
 const atmosphere = new THREE.Mesh(
   new THREE.SphereGeometry(2.15, 32, 32),
-  new THREE.MeshBasicMaterial({
-    color: 0x00D9FF,
-    transparent: true,
-    opacity: 0.08,
-    side: THREE.BackSide
-  })
+  new THREE.MeshBasicMaterial({color: 0x00D9FF,transparent: true,opacity: 0.08,side: THREE.BackSide})
 );
 scene.add(atmosphere);
 
@@ -1090,22 +1143,10 @@ allUsers.forEach(u=>{
   const pos = latLngToVector3(u.lat,u.lng,2.08);
   const color = u.donation>=100? 0xD4AF37 : u.donation>=50? 0x00D9FF : u.donation>=5? 0xE5E4E2 : 0x666666;
   const size = u.donation>=100? 0.09 : u.donation>=50? 0.07 : 0.05;
-  const point = new THREE.Mesh(
-    new THREE.SphereGeometry(size,16),
-    new THREE.MeshBasicMaterial({color:color})
-  );
+  const point = new THREE.Mesh(new THREE.SphereGeometry(size,16),new THREE.MeshBasicMaterial({color:color}));
   point.position.copy(pos);
   point.userData = u;
   memberGroup.add(point);
-  if(u.donation >= 50){
-    const ring = new THREE.Mesh(
-      new THREE.RingGeometry(size*1.5, size*2, 16),
-      new THREE.MeshBasicMaterial({color:color, transparent:true, opacity:0.4, side:THREE.DoubleSide})
-    );
-    ring.position.copy(pos);
-    ring.lookAt(0,0,0);
-    memberGroup.add(ring);
-  }
 });
 scene.add(memberGroup);
 
@@ -1125,7 +1166,7 @@ function onMouseMove(event){
     if(hoveredPoint!== intersects[0].object){
       if(hoveredPoint) hoveredPoint.scale.set(1,1,1);
       hoveredPoint = intersects[0].object;
-      hoveredPoint.scale.set(1.8,1.8);
+      hoveredPoint.scale.set(1.8,1.8,1.8);
       document.body.style.cursor = 'pointer';
     }
   } else {
@@ -1156,20 +1197,11 @@ function animate(){
 animate();
 window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.innerHeight;camera.updateProjectionMatrix();renderer.setSize(window.innerWidth,window.innerHeight);});
 
-// CLOSE FUNKTION
 window.closeChillazTV = function() {
   const overlay = document.getElementById('chillazTV');
-  if (overlay) {
-    overlay.classList.remove('active');
-  }
+  if (overlay) overlay.classList.remove('active');
   if (typeof ytPlayer!== 'undefined' && ytPlayer) {
-    try {
-      ytPlayer.stopVideo();
-      ytPlayer.destroy();
-      ytPlayer = null;
-    } catch(e) {
-      console.log('Player schon weg');
-    }
+    try { ytPlayer.stopVideo(); ytPlayer.destroy(); ytPlayer = null; } catch(e) {}
   }
 }
 </script>
