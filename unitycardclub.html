@@ -1292,7 +1292,7 @@ window.closeChillazTV = function() {
         <button class="arcade-game-btn active" onclick="loadArcadeGame('book')" id="btn-book">📖 BOOK OF CHILLAZ<span>5 Reels • Free Spins</span></button>
         <button class="arcade-game-btn" onclick="loadArcadeGame('blackjack')" id="btn-blackjack">🃏 21 DUEL<span>Beat the Dealer</span></button>
         <button class="arcade-game-btn" onclick="loadArcadeGame('quiz')" id="btn-quiz">🧠 GROW QUIZ<span>40+ Questions</span></button>
-        <button class="arcade-game-btn" onclick="loadArcadeGame('reaction')" id="btn-reaction">⚡ REACTION<span>Test Reflexes</span></button>
+        <button class="arcade-game-btn" onclick="loadArcadeGame('river')" id="btn-river">🌴 RIVER RUN<span>Jungle Frogger</span></button>
         <div style="margin-top:auto;padding-top:15px;border-top:1px solid rgba(212,175,55,0.2);font-size:11px;color:#888">
           <div style="color:#D4AF37;font-family:Orbitron;margin-bottom:5px">HIGHSCORE</div>
           <div id="arcade-highscore">Loading...</div>
@@ -1317,7 +1317,7 @@ function loadArcadeGame(game){
   if(game==='book') loadBookOfChillaz();
   else if(game==='blackjack') loadBlackjack();
   else if(game==='quiz') loadArcadeQuiz();
-  else if(game==='reaction') loadArcadeReaction();
+  else if(game==='river') loadRiverRun();
 }
 function updateArcadeHighscore(){
   const scores=JSON.parse(localStorage.getItem('nbc_highscores')||'{}');
@@ -1328,7 +1328,8 @@ function updateArcadeHighscore(){
 // BOOK OF CHILLAZ - 5 reel slot
 let slotCredits=1000, slotSpinning=false, freeSpins=0;
 const slotSymbols = [
-  {s:'📖',w:2,v:0,name:'BOOK'}, // scatter/wild
+  {s:'📖',w:2,v:0,name:'BOOK'},
+  {s:'NBC',w:1,v:2000,name:'NBC'},
   {s:'👑',w:3,v:500,name:'CROWN'},
   {s:'🦁',w:4,v:200,name:'LION'},
   {s:'🪲',w:5,v:150,name:'SCARAB'},
@@ -1369,7 +1370,7 @@ function initReels(){
     for(let j=0;j<3;j++){
       const sym=getRandomSymbol();
       const div=document.createElement('div'); div.className='slot-symbol'; div.innerHTML=sym.s; div.dataset.val=sym.v; div.dataset.name=sym.name;
-      if(sym.name==='BOOK')div.classList.add('book');
+      if(sym.name==='BOOK')div.classList.add('book'); if(sym.name==='NBC'){div.style.background='radial-gradient(circle,#FFD700,#B8860B)';div.style.color='#000';div.style.fontWeight='900';div.style.fontSize='18px';div.style.fontFamily='Orbitron'}
       col.appendChild(div);
     }
     reels.appendChild(col);
@@ -1437,6 +1438,68 @@ function renderBJ(){
 function bjHit(){if(bjGameOver)return;bjDeal();renderBJ();if(bjValue(bjPlayer)>21)bjEnd('BUST!');}
 function bjStand(){if(bjGameOver)return;bjGameOver=true;while(bjValue(bjDealer)<17)bjDeal(true);renderBJ();const pv=bjValue(bjPlayer),dv=bjValue(bjDealer);if(dv>21||pv>dv)bjEnd('YOU WIN!');else if(pv<dv)bjEnd('DEALER WINS');else bjEnd('PUSH');}
 function bjEnd(msg){bjGameOver=true;const m=document.getElementById('bjMessage');m.textContent=msg;m.classList.add('show');addActivityScore(msg.includes('WIN')?30:5);renderBJ();setTimeout(()=>m.classList.remove('show'),2000)}
+
+
+// RIVER RUN - Frogger style
+function loadRiverRun(){
+  document.getElementById('gameContainer').innerHTML = `
+    <div style="width:100%;max-width:800px;text-align:center">
+      <div style="font-family:Orbitron;color:#00FF88;font-size:20px;margin-bottom:10px;letter-spacing:3px">CHILLAZ RIVER RUN</div>
+      <canvas id="riverCanvas" width="720" height="540" style="border:3px solid #D4AF37;border-radius:12px;background:#000;image-rendering:pixelated;box-shadow:0 0 30px rgba(0,255,136,0.3)"></canvas>
+      <div style="margin-top:10px;font-family:Orbitron;font-size:12px;color:#00D9FF">LEVEL <span id="riverLevel">1</span> • SCORE <span id="riverScore">0</span> • LIVES <span id="riverLives">3</span></div>
+      <div style="margin-top:5px;font-size:10px;opacity:0.7">Nutze ← → ↑ ↓ oder WASD • Erreiche den Dschungel!</div>
+    </div>
+  `;
+  startRiverGame();
+}
+let riverGame=null;
+function startRiverGame(){
+  const canvas=document.getElementById('riverCanvas'); const ctx=canvas.getContext('2d'); ctx.imageSmoothingEnabled=false;
+  let player={x:360,y:500,w:28,h:28}, level=1, score=0, lives=3, keys={}, logs=[], gameRunning=true;
+  
+  function resetLevel(){player.x=360;player.y=500;logs=[];const speeds=[1.2,1.5,1.8,2.1,2.4];for(let i=0;i<5;i++){const y=120+i*70;const dir=i%2===0?1:-1;const speed=speeds[i]*(0.7+level*0.15);for(let j=0;j<3;j++){logs.push({x:j*280*dir + (dir>0?-200:920),y,w:140,h:30,speed:dir*speed})}}}
+  
+  resetLevel();
+  
+  window.onkeydown=e=>keys[e.key.toLowerCase()]=true;
+  window.onkeyup=e=>keys[e.key.toLowerCase()]=false;
+  
+  function update(){
+    if(!gameRunning)return;
+    // move player
+    if(keys['arrowleft']||keys['a']){player.x=Math.max(20,player.x-4);keys['arrowleft']=keys['a']=false}
+    if(keys['arrowright']||keys['d']){player.x=Math.min(672,player.x+4);keys['arrowright']=keys['d']=false}
+    if(keys['arrowup']||keys['w']){player.y=Math.max(20,player.y-36);keys['arrowup']=keys['w']=false;score+=10}
+    if(keys['arrowdown']||keys['s']){player.y=Math.min(500,player.y+36);keys['arrowdown']=keys['s']=false}
+    
+    // move logs
+    logs.forEach(log=>{log.x+=log.speed;if(log.speed>0&&log.x>760)log.x=-160;if(log.speed<0&&log.x<-160)log.x=760});
+    
+    // check water
+    const inWater=player.y>100&&player.y<460;
+    let onLog=false;
+    if(inWater){logs.forEach(log=>{if(player.x+player.w>log.x&&player.x<log.x+log.w&&player.y+player.h>log.y&&player.y<log.y+log.h){onLog=true;player.x+=log.speed}});if(!onLog){lives--;player.x=360;player.y=500;if(lives<=0){gameRunning=false;addActivityScore(score);setTimeout(()=>{alert('Game Over! Score: '+score);startRiverGame()},500)}}}
+    
+    // win
+    if(player.y<60){level++;score+=100*level;addActivityScore(50);resetLevel()}
+    
+    // draw
+    ctx.fillStyle='#0a3d0a';ctx.fillRect(0,0,720,100);ctx.fillRect(0,470,720,70); // jungle
+    ctx.fillStyle='#004466';ctx.fillRect(0,100,720,370); // water
+    // logs
+    logs.forEach(log=>{ctx.fillStyle='#8B4513';ctx.fillRect(log.x,log.y,log.w,log.h);ctx.fillStyle='#654321';for(let i=0;i<3;i++)ctx.fillRect(log.x+10+i*40,log.y+8,24,14)});
+    // player - chillaz
+    ctx.fillStyle='#00FF88';ctx.fillRect(player.x,player.y,player.w,player.h);ctx.fillStyle='#000';ctx.fillRect(player.x+6,player.y+6,6,6);ctx.fillRect(player.x+16,player.y+6,6,6);ctx.fillRect(player.x+8,player.y+18,12,4); // simple face
+    ctx.fillStyle='#D4AF37';ctx.font='10px monospace';ctx.fillText('CHILLAZ',player.x-2,player.y-4);
+    
+    document.getElementById('riverLevel').textContent=level;
+    document.getElementById('riverScore').textContent=score;
+    document.getElementById('riverLives').textContent=lives;
+    
+    if(gameRunning)requestAnimationFrame(update);
+  }
+  update();
+}
 
 // ARCADE QUIZ & REACTION reuse existing but in arcade style
 function loadArcadeQuiz(){document.getElementById('gameContainer').innerHTML='<div id="arcadeQuiz" style="width:100%;max-width:700px"></div>';initQuiz();const old=document.getElementById('game-area');if(old){document.getElementById('arcadeQuiz').appendChild(old.cloneNode(true));initQuiz()}}
