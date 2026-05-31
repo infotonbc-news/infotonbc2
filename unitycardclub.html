@@ -2112,21 +2112,34 @@ function bjStand(){
   if(!bjPlaying) return;
   if(!bjNextHand()) bjFinish();
 }
-$('#bjHit').onclick=bjHit;
-$('#bjStand').onclick=bjStand;
+// Fixed BJ handlers - use correct bjHands/bjFinish/bjNextHand flow
+$('#bjHit').onclick=()=>{
+  if(!bjPlaying) return;
+  nbcSound('deal');
+  bjHit();
+};
+$('#bjStand').onclick=()=>{
+  if(!bjPlaying) return;
+  nbcSound('click');
+  bjStand();
+};
 $('#bjDouble').onclick=()=>{
   if(!bjPlaying) return;
   const hand=bjHands[bjCurrent];
   if(hand.length!==2 || balance<bjBets[bjCurrent]) return;
+  nbcSound('deal');
   balance-=bjBets[bjCurrent]; bjBets[bjCurrent]*=2; syncBalance();
   hand.push(randCard());
   bjRender();
-  if(!bjNextHand()) bjFinish();
+  if(val(hand)>21){ if(!bjNextHand()) bjFinish(); }
+  else if(val(hand)===21){ if(!bjNextHand()) bjFinish(); }
+  else if(!bjNextHand()) bjFinish();
 };
 $('#bjSplit').onclick=()=>{
   if(!bjPlaying) return;
   const hand=bjHands[bjCurrent];
   if(hand.length!==2 || hand[0].v!==hand[1].v || balance<bjBet || bjHands.length>=4) return;
+  nbcSound('deal');
   balance-=bjBet; syncBalance();
   const c2=hand.pop();
   hand.push(randCard());
@@ -2136,10 +2149,6 @@ $('#bjSplit').onclick=()=>{
   $('#bjSplit').disabled = !(hand[0].v===hand[1].v && balance>=bjBet);
   bjRender();
 };
-
-$('#bjHit').onclick=()=>{ if(!bjPlaying) return; bjPlayer.push(randCard()); bjRender(); if(val(bjPlayer)>21) bjEnd(-1); };
-function bjStand(){ if(!bjPlaying) return; bjPlaying=false; while(val(bjDealer)<17) bjDealer.push(randCard()); const p=val(bjPlayer), d=val(bjDealer); let win=-1; if(d>21||p>d) win = bjBet*2 + (p===21 && bjPlayer.length===2 ? bjBet*0.5:0); else if(p===d) win=0; bjEnd(win); }
-$('#bjStand').onclick=bjStand;
 bjSync();
 
 /* ===== RIVER RUN ===== */
@@ -2342,18 +2351,29 @@ function closeGamez(){document.getElementById('gamezOverlay').style.display='non
     }
   }catch(e){}
 }
-</script>r(15px);z-index:5000;display:none;align-items:center;justify-content:center">
+</div>
+</div>
+</div>
+
+<!-- CHILLAZ GAMEZ OVERLAY - Fixed -->
+<div id="gamezOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);backdrop-filter:blur(15px);z-index:5000;display:none;align-items:center;justify-content:center">
   <div style="width:94%;max-width:1100px;height:88vh;background:linear-gradient(145deg,#0A0A0F,#1a0033);border:3px solid #D4AF37;border-radius:24px;box-shadow:0 0 80px rgba(212,175,55,0.4);display:flex;flex-direction:column;overflow:hidden">
     <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:linear-gradient(90deg,#FF00FF,#D4AF37,#00D9FF);border-bottom:2px solid #000">
       <div style="font-family:Orbitron;font-size:24px;font-weight:900;color:#000;letter-spacing:3px">CHILLAZ GAMEZ</div>
-      <button onclick="closeGamez()" style="width:36px;height:36px;background:#000;border:2px solid #D4AF37;border-radius:50%;color:#D4AF37;font-size:20px;cursor:pointer">×</button>
+      <button onclick="closeGamez()" style="width:36px;height:36px;background:#000;border:2px solid #D4AF37;border-radius:50%;color:#D4AF37;font-size:20px;cursor:pointer">&#215;</button>
     </div>
     <div style="display:flex;flex:1;overflow:hidden">
-      <div style="width:220px;background:rgba(0,0,0,0.7);border-right:2px solid rgba(212,175,55,0.3);padding:18px;display:flex;flex-direction:column;gap:10px">
-        <button onclick="loadG('book')" id="gb" style="padding:12px;background:rgba(212,175,55,0.2);border:1px solid #D4AF37;border-radius:8px;color:#D4AF37;font-family:Orbitron;font-size:11px;cursor:pointer;text-align:left">📖 BOOK OF CHILLAZ</button>
-        <button onclick="loadG('bj')" id="gbj" style="padding:12px;background:rgba(0,217,255,0.1);border:1px solid #00D9FF;border-radius:8px;color:#00D9FF;font-family:Orbitron;font-size:11px;cursor:pointer;text-align:left">🃏 21 DUEL</button>
-        <button onclick="loadG('quiz')" id="gq" style="padding:12px;background:rgba(0,217,255,0.1);border:1px solid #00D9FF;border-radius:8px;color:#00D9FF;font-family:Orbitron;font-size:11px;cursor:pointer;text-align:left">🧠 QUIZ (30)</button>
-        <button onclick="loadG('river')" id="gr" style="padding:12px;background:rgba(0,217,255,0.1);border:1px solid #00D9FF;border-radius:8px;color:#00D9FF;font-family:Orbitron;font-size:11px;cursor:pointer;text-align:left">🌴 RIVER RUN</button>
+      <div style="width:220px;background:rgba(0,0,0,0.7);border-right:2px solid rgba(212,175,55,0.3);padding:18px;display:flex;flex-direction:column;gap:10px;overflow-y:auto">
+        <div id="gamezUserName" style="font-family:Orbitron;font-size:13px;color:#D4AF37;font-weight:900;margin-bottom:4px;text-align:center">NBC</div>
+        <div id="gamezCardInfo" style="font-size:10px;color:#aaa;text-align:center;margin-bottom:10px"></div>
+        <button onclick="loadG('book')" id="gb" style="padding:12px;background:rgba(212,175,55,0.2);border:1px solid #D4AF37;border-radius:8px;color:#D4AF37;font-family:Orbitron;font-size:11px;cursor:pointer;text-align:left">&#128214; BOOK OF CHILLAZ</button>
+        <button onclick="loadG('bj')" id="gbj" style="padding:12px;background:rgba(0,217,255,0.1);border:1px solid #00D9FF;border-radius:8px;color:#00D9FF;font-family:Orbitron;font-size:11px;cursor:pointer;text-align:left">&#127183; 21 DUEL</button>
+        <button onclick="loadG('quiz')" id="gq" style="padding:12px;background:rgba(0,217,255,0.1);border:1px solid #00D9FF;border-radius:8px;color:#00D9FF;font-family:Orbitron;font-size:11px;cursor:pointer;text-align:left">&#129504; QUIZ (30)</button>
+        <button onclick="loadG('river')" id="gr" style="padding:12px;background:rgba(0,217,255,0.1);border:1px solid #00D9FF;border-radius:8px;color:#00D9FF;font-family:Orbitron;font-size:11px;cursor:pointer;text-align:left">&#127812; RIVER RUN</button>
+        <div style="margin-top:auto;padding-top:10px;border-top:1px solid rgba(212,175,55,0.2)">
+          <div style="font-size:10px;color:#888;margin-bottom:4px">BALANCE</div>
+          <div id="gamezBalance" style="font-family:Orbitron;font-size:18px;color:#D4AF37;font-weight:700">5,000</div>
+        </div>
       </div>
       <div style="flex:1;background:#000;position:relative;display:flex;align-items:center;justify-content:center;overflow:auto;padding:20px">
         <div id="gameBox" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center"></div>
@@ -2361,20 +2381,98 @@ function closeGamez(){document.getElementById('gamezOverlay').style.display='non
     </div>
   </div>
 </div>
+
 <script>
-function openGamez(){document.getElementById('gamezOverlay').style.display='flex';document.body.style.overflow='hidden';
+/* ===== NBC SOUND ENGINE (Web Audio API - no external files needed) ===== */
+const nbcAudio = (function(){
+  let ctx = null;
+  function getCtx(){ if(!ctx) ctx = new (window.AudioContext||window.webkitAudioContext)(); return ctx; }
+  function tone(freq, type, dur, vol, delay=0){
+    try{
+      const c = getCtx();
+      const o = c.createOscillator();
+      const g = c.createGain();
+      o.connect(g); g.connect(c.destination);
+      o.type = type; o.frequency.value = freq;
+      g.gain.setValueAtTime(0, c.currentTime + delay);
+      g.gain.linearRampToValueAtTime(vol, c.currentTime + delay + 0.01);
+      g.gain.exponentialRampToValueAtTime(0.001, c.currentTime + delay + dur);
+      o.start(c.currentTime + delay); o.stop(c.currentTime + delay + dur + 0.05);
+    }catch(e){}
+  }
+  function noise(dur, vol, delay=0){
+    try{
+      const c = getCtx();
+      const buf = c.createBuffer(1, c.sampleRate*dur, c.sampleRate);
+      const d = buf.getChannelData(0);
+      for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*0.5;
+      const src = c.createBufferSource();
+      const g = c.createGain();
+      const f = c.createBiquadFilter(); f.type='bandpass'; f.frequency.value=800;
+      src.buffer=buf; src.connect(f); f.connect(g); g.connect(c.destination);
+      g.gain.setValueAtTime(vol, c.currentTime+delay);
+      g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+delay+dur);
+      src.start(c.currentTime+delay); src.stop(c.currentTime+delay+dur+0.05);
+    }catch(e){}
+  }
+  return {
+    deal:   ()=>{ tone(440,  'triangle', 0.12, 0.18); tone(660, 'triangle', 0.10, 0.12, 0.08); },
+    win:    ()=>{ tone(523,'square',0.10,0.15); tone(659,'square',0.10,0.15,0.12); tone(784,'square',0.18,0.18,0.24); tone(1047,'sine',0.3,0.2,0.38); },
+    lose:   ()=>{ tone(300,'sawtooth',0.08,0.15); tone(220,'sawtooth',0.12,0.15,0.10); tone(150,'sawtooth',0.18,0.12,0.22); },
+    push:   ()=>{ tone(440,'sine',0.08,0.1); tone(440,'sine',0.08,0.1,0.15); },
+    click:  ()=>{ tone(880,'sine',0.04,0.08); },
+    spin:   ()=>{ noise(0.08,0.12); tone(200,'sawtooth',0.06,0.1,0.02); },
+    jackpot:()=>{ [523,659,784,1047,1319].forEach((f,i)=>{ tone(f,'square',0.12,0.2,i*0.12); }); tone(2093,'sine',0.5,0.3,0.7); },
+    flip:   ()=>{ tone(660,'sine',0.05,0.1); tone(880,'sine',0.05,0.1,0.07); },
+    correct:()=>{ tone(880,'sine',0.08,0.15); tone(1100,'sine',0.12,0.15,0.09); },
+    wrong:  ()=>{ tone(220,'sawtooth',0.15,0.15); },
+    jump:   ()=>{ tone(400,'sine',0.04,0.12); tone(600,'sine',0.06,0.1,0.04); },
+    gameover:()=>{ tone(300,'sawtooth',0.1,0.2); tone(200,'sawtooth',0.15,0.2,0.15); tone(150,'sawtooth',0.2,0.15,0.3); }
+  };
+})();
+window.nbcSound = (name)=>{ try{ nbcAudio[name]&&nbcAudio[name](); }catch(e){} };
+
+/* ===== GAMEZ OVERLAY FUNCTIONS ===== */
+function openGamez(){
+  nbcSound('click');
+  document.getElementById('gamezOverlay').style.display='flex';
+  document.body.style.overflow='hidden';
   try{
     const name = (document.getElementById('cardName')?.textContent || 'NATURALBORNCHILLAZ').trim();
-    const insta = (document.getElementById('cardInsta')?.textContent || '@nbc').trim();
     const rank = (document.getElementById('cardRankText')?.textContent || 'MEMBER').trim();
-    const num = (document.getElementById('cardNumber')?.textContent || 'UNITY • 001').trim();
+    const num = (document.getElementById('cardNumber')?.textContent || 'UNITY \u2022 001').trim();
     const userEl = document.getElementById('gamezUserName');
     if(userEl){ userEl.innerHTML = name.split(' ')[0] + '<br/>' + (name.split(' ')[1]||'CHILLAZ'); }
     const infoEl = document.getElementById('gamezCardInfo');
-    if(infoEl){ infoEl.textContent = num + ' • ' + rank; }
+    if(infoEl){ infoEl.textContent = num + ' \u2022 ' + rank; }
+    const bal = localStorage.getItem('nbc_balance')||'5000';
+    const balEl = document.getElementById('gamezBalance');
+    if(balEl) balEl.textContent = parseInt(bal).toLocaleString();
+  }catch(e){}
+  // Per-member balance persistence
+  try{
+    const i=(document.getElementById('cardInsta')?.textContent||'@nbc').trim();
+    window.currentMember=i.replace(/[^a-z0-9]/gi,'_');
+    ['balance','wins','plays','bestrun'].forEach(k=>{
+      const v=localStorage.getItem('nbc_'+k+'_'+window.currentMember);
+      if(v!==null) localStorage.setItem('nbc_'+k,v);
+    });
+    if(typeof syncBalance==='function') syncBalance();
   }catch(e){}
 }
-function closeGamez(){document.getElementById('gamezOverlay').style.display='none';document.body.style.overflow='';
+
+function closeGamez(){
+  nbcSound('click');
+  document.getElementById('gamezOverlay').style.display='none';
+  document.body.style.overflow='';
+  try{
+    if(window.currentMember){
+      ['balance','wins','plays','bestrun'].forEach(k=>{
+        const v=localStorage.getItem('nbc_'+k);
+        if(v!==null) localStorage.setItem('nbc_'+k+'_'+window.currentMember,v);
+      });
+    }
+  }catch(e){}
   try{
     const bal = localStorage.getItem('nbc_balance')||'5000';
     const wins = localStorage.getItem('nbc_wins')||'0';
@@ -2383,17 +2481,357 @@ function closeGamez(){document.getElementById('gamezOverlay').style.display='non
     const list = document.getElementById('highscore-list');
     if(list){
       list.innerHTML = `<div style="display:grid;grid-template-columns:1fr auto;gap:6px;font-size:12px">
-        <div>💰 Balance</div><div style="color:#D4AF37;text-align:right;font-weight:700">${bal}</div>
-        <div>🏆 Total Wins</div><div style="color:#00D9FF;text-align:right">${wins}</div>
-        <div>🎮 Spiele gespielt</div><div style="text-align:right">${plays}</div>
-        <div>🏃 River Best</div><div style="text-align:right">${best}m</div>
+        <div>&#128176; Balance</div><div style="color:#D4AF37;text-align:right;font-weight:700">${bal}</div>
+        <div>&#127942; Total Wins</div><div style="color:#00D9FF;text-align:right">${wins}</div>
+        <div>&#127918; Spiele gespielt</div><div style="text-align:right">${plays}</div>
+        <div>&#127939; River Best</div><div style="text-align:right">${best}m</div>
       </div>`;
     }
   }catch(e){}
 }
-<script>
-const _oG=openGamez; openGamez=function(){_oG(); try{const i=(document.getElementById('cardInsta')?.textContent||'@nbc').trim(); window.currentMember=i.replace(/[^a-z0-9]/gi,'_'); ['balance','wins','plays','bestrun'].forEach(k=>{const v=localStorage.getItem('nbc_'+k+'_'+window.currentMember); if(v!==null) localStorage.setItem('nbc_'+k,v);}); if(typeof syncBalance==='function') syncBalance();}catch(e){}};
-const _cG=closeGamez; closeGamez=function(){try{if(window.currentMember){['balance','wins','plays','bestrun'].forEach(k=>{const v=localStorage.getItem('nbc_'+k); if(v!==null) localStorage.setItem('nbc_'+k+'_'+window.currentMember,v);});}}catch(e){} _cG();};
+
+/* ===== LOAD GAME into gamezOverlay ===== */
+function loadG(game){
+  const box = document.getElementById('gameBox');
+  if(!box) return;
+  nbcSound('click');
+  // Highlight active button
+  ['book','bj','quiz','river'].forEach(g=>{
+    const btn = document.getElementById('g'+g==='book'?'b':g==='bj'?'bj':g==='quiz'?'q':'r');
+    if(btn) btn.style.background = g===game ? 'rgba(212,175,55,0.35)' : 'rgba(0,217,255,0.1)';
+  });
+  document.getElementById('gb') && (document.getElementById('gb').style.background = game==='book' ? 'rgba(212,175,55,0.35)':'rgba(212,175,55,0.1)');
+  document.getElementById('gbj') && (document.getElementById('gbj').style.background = game==='bj' ? 'rgba(0,217,255,0.25)':'rgba(0,217,255,0.1)');
+  document.getElementById('gq') && (document.getElementById('gq').style.background = game==='quiz' ? 'rgba(0,217,255,0.25)':'rgba(0,217,255,0.1)');
+  document.getElementById('gr') && (document.getElementById('gr').style.background = game==='river' ? 'rgba(0,217,255,0.25)':'rgba(0,217,255,0.1)');
+
+  if(game==='book'){
+    box.innerHTML = `<div style="text-align:center;color:#D4AF37;font-family:Orbitron;padding:20px">
+      <div style="font-size:18px;margin-bottom:12px">&#128214; BOOK OF CHILLAZ</div>
+      <p style="color:#aaa;font-size:13px;margin-bottom:20px">Spin im Hauptfenster &#8593; (Tab: Book of Chillaz)</p>
+      <button onclick="closeGamez();document.querySelector('[data-tab=slot]')?.click()" style="padding:12px 28px;background:linear-gradient(135deg,#D4AF37,#B8860B);border:none;border-radius:10px;color:#000;font-family:Orbitron;font-weight:900;cursor:pointer;font-size:13px">&#9654; ZUM SLOT</button>
+    </div>`;
+  } else if(game==='bj'){
+    box.innerHTML = bjBuildUI();
+    bjInitInBox();
+  } else if(game==='quiz'){
+    box.innerHTML = quizBuildUI();
+    quizInitInBox();
+  } else if(game==='river'){
+    box.innerHTML = riverBuildUI();
+    riverInitInBox();
+  }
+}
+
+/* ===== BLACKJACK IN GAMEZ BOX ===== */
+function bjBuildUI(){
+  const bal = localStorage.getItem('nbc_balance')||'5000';
+  return `<div style="width:100%;max-width:700px;font-family:'Inter',sans-serif;color:#fff">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div style="font-family:Orbitron;font-size:20px;color:#D4AF37">&#127183; 21 DUEL</div>
+      <div style="font-size:13px;color:#aaa">Balance: <span id="g_bjBal" style="color:#D4AF37;font-weight:700">${parseInt(bal).toLocaleString()}</span></div>
+    </div>
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(212,175,55,0.3);border-radius:16px;padding:20px;margin-bottom:12px">
+      <div style="font-size:11px;color:#aaa;margin-bottom:8px">DEALER</div>
+      <div id="g_dealerHand" style="display:flex;gap:8px;min-height:110px;flex-wrap:wrap"></div>
+      <div style="font-size:11px;color:#aaa;margin:12px 0 8px">YOU</div>
+      <div id="g_playerHand" style="display:flex;gap:8px;min-height:110px;flex-wrap:wrap"></div>
+    </div>
+    <div id="g_bjStatus" style="text-align:center;font-size:14px;color:#aaa;margin-bottom:12px;min-height:20px"></div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;justify-content:center">
+      <button id="g_bjMinus" style="width:32px;height:32px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;cursor:pointer;font-size:18px">-</button>
+      <span style="font-family:Orbitron;font-size:16px;color:#D4AF37">Bet: <span id="g_bjBetAmt">10</span></span>
+      <button id="g_bjPlus" style="width:32px;height:32px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;cursor:pointer;font-size:18px">+</button>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+      <button id="g_bjDeal" style="padding:10px 24px;background:linear-gradient(135deg,#7c3aed,#2563eb);border:none;border-radius:10px;color:#fff;font-weight:700;cursor:pointer;font-size:14px">Deal</button>
+      <button id="g_bjHit" style="padding:10px 20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:#fff;font-weight:700;cursor:pointer" disabled>Hit</button>
+      <button id="g_bjStand" style="padding:10px 20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:#fff;font-weight:700;cursor:pointer" disabled>Stand</button>
+      <button id="g_bjDouble" style="padding:10px 20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:#fff;font-weight:700;cursor:pointer" disabled>Double</button>
+      <button id="g_bjSplit" style="padding:10px 20px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:#fff;font-weight:700;cursor:pointer" disabled>Split</button>
+    </div>
+    <div id="g_bjMsg" style="text-align:center;font-family:Orbitron;font-size:22px;color:#D4AF37;margin-top:16px;min-height:32px"></div>
+  </div>`;
+}
+
+function bjInitInBox(){
+  const $ = id => document.getElementById(id);
+  const suits = ['&#9824;','&#9829;','&#9830;','&#9827;'];
+  const suitColors = {'&#9824;':'#D4AF37','&#9829;':'#ff3b5c','&#9830;':'#00D9FF','&#9827;':'#22c55e'};
+  let gBal = parseInt(localStorage.getItem('nbc_balance')||'5000');
+  let gBet = 10, gHands=[], gDealer=[], gBets=[], gPlaying=false, gCurrent=0;
+
+  function saveGBal(){ localStorage.setItem('nbc_balance', gBal); const el=$('g_bjBal'); if(el) el.textContent=gBal.toLocaleString(); const ge=document.getElementById('gamezBalance'); if(ge) ge.textContent=gBal.toLocaleString(); }
+  function rCard(){ return {v:Math.floor(Math.random()*13)+1, s:suits[Math.floor(Math.random()*4)]}; }
+  function vHand(hand){ let t=0,a=0; hand.forEach(c=>{ let v=c.v>10?10:c.v; if(c.v===1){a++;v=11;} t+=v; }); while(t>21&&a>0){t-=10;a--;} return t; }
+  function cardHTML(c, hidden){
+    if(hidden) return `<div style="width:72px;height:100px;border-radius:10px;background:linear-gradient(135deg,#D4AF37,#FF00FF,#00D9FF);border:2px solid #D4AF37;display:flex;align-items:center;justify-content:center;font-family:Orbitron;font-size:16px;color:#000;font-weight:900;box-shadow:0 4px 15px rgba(0,0,0,0.5)">NBC</div>`;
+    const v = c.v===1?'A':c.v===11?'J':c.v===12?'Q':c.v===13?'K':c.v;
+    const col = suitColors[c.s]||'#fff';
+    return `<div style="width:72px;height:100px;border-radius:10px;background:rgba(255,255,255,0.05);border:2px solid ${col};display:flex;flex-direction:column;justify-content:space-between;padding:6px;box-shadow:0 0 15px ${col}44;position:relative;overflow:hidden">
+      <div style="color:${col};font-weight:900;font-size:16px">${v}${c.s}</div>
+      <div style="text-align:center;font-size:28px;color:${col}">${c.s}</div>
+      <div style="color:${col};font-weight:900;font-size:16px;transform:rotate(180deg);text-align:right">${v}</div>
+    </div>`;
+  }
+  function render(){
+    $('g_playerHand').innerHTML=gHands.map((hand,hi)=>`<div style="display:flex;gap:6px;margin-right:12px;padding:6px;border-radius:10px;${hi===gCurrent&&gPlaying?'outline:2px solid #D4AF37':''}">${hand.map(c=>cardHTML(c,false)).join('')}</div>`).join('');
+    $('g_dealerHand').innerHTML=gDealer.map((c,i)=>cardHTML(c,gPlaying&&i===1)).join('');
+    const ps=gHands[gCurrent]?vHand(gHands[gCurrent]):0;
+    const ds=gPlaying?'?':vHand(gDealer);
+    $('g_bjStatus').textContent=gPlaying?`Hand ${gCurrent+1}/${gHands.length} \u2022 You: ${ps}`:`You: ${ps} \u2022 Dealer: ${ds}`;
+  }
+  function finish(){
+    gPlaying=false;
+    while(vHand(gDealer)<17) gDealer.push(rCard());
+    let profit=0;
+    gHands.forEach((h,i)=>{
+      const pv=vHand(h),dv=vHand(gDealer),bet=gBets[i];
+      if(pv>21) profit-=bet;
+      else if(dv>21||pv>dv) profit+=(pv===21&&h.length===2?Math.floor(bet*1.5):bet);
+      else if(pv===dv) profit+=0;
+      else profit-=bet;
+    });
+    gBal+=gBets.reduce((a,b)=>a+b,0)+profit;
+    saveGBal(); render();
+    ['g_bjHit','g_bjStand','g_bjDouble','g_bjSplit'].forEach(id=>{ if($(id)) $(id).disabled=true; });
+    if($('g_bjDeal')) $('g_bjDeal').disabled=false;
+    if($('g_bjMsg')){
+      if(profit>0){ nbcSound('win'); $('g_bjMsg').style.color='#D4AF37'; $('g_bjMsg').textContent='+'+profit.toLocaleString()+' WIN! &#127942;'; }
+      else if(profit<0){ nbcSound('lose'); $('g_bjMsg').style.color='#ff4444'; $('g_bjMsg').textContent=profit.toLocaleString()+' Lose &#128542;'; }
+      else { nbcSound('push'); $('g_bjMsg').style.color='#aaa'; $('g_bjMsg').textContent='PUSH &#129309;'; }
+    }
+  }
+  function nextHand(){
+    gCurrent++;
+    if(gCurrent<gHands.length){
+      if($('g_bjDouble')) $('g_bjDouble').disabled=gBal<gBets[gCurrent]||gHands[gCurrent].length!==2;
+      if($('g_bjSplit')) $('g_bjSplit').disabled=true;
+      render(); if(vHand(gHands[gCurrent])===21) setTimeout(nextHand,400); return true;
+    }
+    return false;
+  }
+  function hit(){
+    if(!gPlaying) return;
+    nbcSound('deal');
+    gHands[gCurrent].push(rCard());
+    if($('g_bjDouble')) $('g_bjDouble').disabled=true;
+    if($('g_bjSplit')) $('g_bjSplit').disabled=true;
+    render(); if(vHand(gHands[gCurrent])>=21){ if(!nextHand()) finish(); }
+  }
+  function stand(){ if(!gPlaying) return; nbcSound('click'); if(!nextHand()) finish(); }
+
+  $('g_bjMinus').onclick=()=>{ gBet=Math.max(1,gBet-1); $('g_bjBetAmt').textContent=gBet; };
+  $('g_bjPlus').onclick=()=>{ gBet=Math.min(500,Math.min(gBal,gBet+1)); $('g_bjBetAmt').textContent=gBet; };
+  $('g_bjDeal').onclick=()=>{
+    if(gPlaying) return;
+    if(gBal<gBet){ if($('g_bjMsg')){ $('g_bjMsg').style.color='#ff4444'; $('g_bjMsg').textContent='Kein Guthaben!'; } return; }
+    nbcSound('deal');
+    gBal-=gBet; saveGBal();
+    gHands=[[rCard(),rCard()]]; gBets=[gBet]; gDealer=[rCard(),rCard()]; gCurrent=0; gPlaying=true;
+    if($('g_bjMsg')) $('g_bjMsg').textContent='';
+    ['g_bjHit','g_bjStand'].forEach(id=>{ if($(id)) $(id).disabled=false; });
+    if($('g_bjDeal')) $('g_bjDeal').disabled=true;
+    if($('g_bjDouble')) $('g_bjDouble').disabled=gBal<gBet;
+    if($('g_bjSplit')) $('g_bjSplit').disabled=!(gHands[0][0].v===gHands[0][1].v&&gBal>=gBet&&gHands.length<4);
+    render(); if(vHand(gHands[0])===21) setTimeout(()=>{ if(!nextHand()) finish(); },600);
+  };
+  $('g_bjHit').onclick=hit;
+  $('g_bjStand').onclick=stand;
+  $('g_bjDouble').onclick=()=>{
+    if(!gPlaying) return;
+    const hand=gHands[gCurrent];
+    if(hand.length!==2||gBal<gBets[gCurrent]) return;
+    nbcSound('deal');
+    gBal-=gBets[gCurrent]; gBets[gCurrent]*=2; saveGBal();
+    hand.push(rCard()); render();
+    if(!nextHand()) finish();
+  };
+  $('g_bjSplit').onclick=()=>{
+    if(!gPlaying) return;
+    const hand=gHands[gCurrent];
+    if(hand.length!==2||hand[0].v!==hand[1].v||gBal<gBet||gHands.length>=4) return;
+    nbcSound('deal');
+    gBal-=gBet; saveGBal();
+    const c2=hand.pop(); hand.push(rCard());
+    gHands.splice(gCurrent+1,0,[c2,rCard()]); gBets.splice(gCurrent+1,0,gBet);
+    if($('g_bjDouble')) $('g_bjDouble').disabled=gBal<gBets[gCurrent];
+    if($('g_bjSplit')) $('g_bjSplit').disabled=!(hand[0].v===hand[1].v&&gBal>=gBet);
+    render();
+  };
+  render();
+}
+
+/* ===== QUIZ IN GAMEZ BOX ===== */
+function quizBuildUI(){
+  return `<div style="width:100%;max-width:600px;color:#fff;font-family:'Inter',sans-serif">
+    <div style="font-family:Orbitron;font-size:20px;color:#00D9FF;margin-bottom:16px;text-align:center">&#129504; NBC GROW QUIZ</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px">
+      <div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:12px;text-align:center"><div style="font-size:10px;color:#aaa">ZEIT</div><div id="gqTime" style="font-size:24px;font-weight:700;color:#00D9FF">90</div></div>
+      <div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:12px;text-align:center"><div style="font-size:10px;color:#aaa">SCORE</div><div id="gqScore" style="font-size:24px;font-weight:700">0</div></div>
+      <div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:12px;text-align:center"><div style="font-size:10px;color:#aaa">FRAGE</div><div id="gqNum" style="font-size:24px;font-weight:700">0/5</div></div>
+    </div>
+    <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(0,217,255,0.2);border-radius:16px;padding:20px">
+      <div id="gqContent">
+        <div style="text-align:center;padding:20px">
+          <div style="font-size:40px;margin-bottom:12px">&#10067;</div>
+          <div style="font-size:18px;font-weight:700;margin-bottom:8px">NBC Grow Quiz</div>
+          <div style="color:#aaa;font-size:13px;margin-bottom:20px">5 Fragen &#8226; 90 Sekunden &#8226; +50 CHILL pro Antwort</div>
+          <button id="gqStart" style="padding:12px 32px;background:linear-gradient(135deg,#7c3aed,#2563eb);border:none;border-radius:12px;color:#fff;font-weight:700;cursor:pointer;font-size:15px">Start Quiz</button>
+        </div>
+      </div>
+    </div>
+    <div id="gqMsg" style="text-align:center;font-family:Orbitron;font-size:20px;margin-top:12px;min-height:28px"></div>
+  </div>`;
+}
+function quizInitInBox(){
+  const _Q = window._NBC_QUIZ || [];
+  let gqIdx=0, gqScore=0, gqTime=90, gqTimer=null;
+  const $ = id=>document.getElementById(id);
+  function gqRender(){
+    if(gqIdx>=5){ gqEnd(); return; }
+    const pool = _Q.length>=5 ? _Q : [];
+    if(!pool.length){ $('gqContent').innerHTML='<div style="text-align:center;color:#aaa;padding:20px">Keine Fragen geladen</div>'; return; }
+    const cur = pool[gqIdx % pool.length];
+    $('gqNum').textContent=(gqIdx+1)+'/5';
+    $('gqContent').innerHTML=`<div style="font-size:15px;font-weight:600;margin-bottom:16px;line-height:1.5">${cur.q}</div>`
+      +cur.a.map((opt,i)=>`<button onclick="window._gqAns(${i})" style="display:block;width:100%;text-align:left;padding:12px 16px;margin:6px 0;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);border-radius:10px;color:#fff;cursor:pointer;font-size:14px;transition:background 0.2s" onmouseover="this.style.background='rgba(0,217,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">${opt}</button>`).join('');
+  }
+  window._gqAns=(i)=>{
+    const pool = _Q.length>=5 ? _Q : [];
+    const cur = pool[gqIdx % pool.length];
+    if(i===cur.c){ gqScore++; nbcSound('correct'); $('gqScore').textContent=gqScore; $('gqMsg').style.color='#22c55e'; $('gqMsg').textContent='&#10003; Richtig! +50'; }
+    else { nbcSound('wrong'); $('gqMsg').style.color='#ff4444'; $('gqMsg').textContent='&#10007; Falsch'; }
+    setTimeout(()=>{ $('gqMsg').textContent=''; gqIdx++; gqRender(); },700);
+  };
+  function gqEnd(){
+    clearInterval(gqTimer);
+    const earned=gqScore*50;
+    if(earned>0){ let b=parseInt(localStorage.getItem('nbc_balance')||'5000')+earned; localStorage.setItem('nbc_balance',b); }
+    nbcSound(gqScore>=4?'win':'push');
+    $('gqContent').innerHTML=`<div style="text-align:center;padding:20px">
+      <div style="font-size:36px">&#127942;</div>
+      <div style="font-size:20px;font-weight:700;margin:8px 0">${gqScore}/5 Richtig!</div>
+      <div style="color:#D4AF37;font-size:16px;margin-bottom:16px">+${earned} CHILL verdient</div>
+      <button onclick="window._gqRestart()" style="padding:10px 24px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:10px;color:#fff;cursor:pointer">Nochmal</button>
+    </div>`;
+  }
+  window._gqRestart=()=>{ gqIdx=0; gqScore=0; gqTime=90; clearInterval(gqTimer); $('gqScore').textContent='0'; $('gqTime').textContent='90'; gqTimer=setInterval(()=>{ gqTime--; $('gqTime').textContent=gqTime; if(gqTime<=0) gqEnd(); },1000); gqRender(); };
+  if($('gqStart')) $('gqStart').onclick=()=>{ window._gqRestart(); };
+}
+
+/* ===== RIVER RUN IN GAMEZ BOX ===== */
+function riverBuildUI(){
+  return `<div style="width:100%;max-width:800px;color:#fff;font-family:'Inter',sans-serif">
+    <div style="font-family:Orbitron;font-size:18px;color:#8b5cf6;margin-bottom:12px;text-align:center">&#127812; RIVER RUN</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">
+      <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;color:#aaa">SCORE</div><div id="gr_score" style="font-size:22px;font-weight:700">0</div></div>
+      <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;color:#aaa">BEST</div><div id="gr_best" style="font-size:22px;font-weight:700;color:#8b5cf6">0</div></div>
+      <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:10px;text-align:center"><div style="font-size:10px;color:#aaa">COINS</div><div id="gr_coins" style="font-size:22px;font-weight:700;color:#D4AF37">0</div></div>
+    </div>
+    <div style="position:relative;border-radius:16px;overflow:hidden;background:#050914;border:1px solid rgba(139,92,246,0.3)">
+      <canvas id="gr_canvas" width="760" height="220" style="width:100%;display:block"></canvas>
+      <div id="gr_overlay" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);backdrop-filter:blur(4px)">
+        <div style="text-align:center">
+          <div style="font-size:22px;font-weight:700;margin-bottom:8px">River Run</div>
+          <p style="color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:16px">SPACE oder Tippen zum Springen &#8226; Hindernissen ausweichen</p>
+          <button id="gr_start" style="padding:10px 28px;background:linear-gradient(135deg,#7c3aed,#2563eb);border:none;border-radius:10px;color:#fff;font-weight:700;cursor:pointer;font-size:14px">Start</button>
+        </div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:8px;text-align:center">1 CHILL pro 10 Punkte (max 50) &#8226; Free to play</div>
+  </div>`;
+}
+function riverInitInBox(){
+  const $ = id=>document.getElementById(id);
+  const can = $('gr_canvas'), ctx = can.getContext('2d');
+  let running=false, score=0, speed=2.2, obs=[], player={y:0,vy:0}, best=parseInt(localStorage.getItem('nbc_bestrun')||'0'), startTime=0;
+  $('gr_best').textContent=best;
+  const ground = can.height - 50;
+  function reset(){ obs=[]; score=0; speed=2.2; startTime=Date.now(); player={y:0,vy:0}; $('gr_score').textContent='0'; $('gr_coins').textContent='0'; }
+  function draw(){
+    ctx.clearRect(0,0,can.width,can.height);
+    const g=ctx.createLinearGradient(0,0,0,can.height); g.addColorStop(0,'#0b1024'); g.addColorStop(1,'#050714'); ctx.fillStyle=g; ctx.fillRect(0,0,can.width,can.height);
+    ctx.fillStyle='#10172a'; ctx.fillRect(0,ground+30,can.width,40);
+    ctx.fillStyle='rgba(139,92,246,0.4)'; ctx.fillRect(0,ground+30,can.width,2);
+    const px=90, py=ground-player.y;
+    ctx.save(); ctx.translate(px,py);
+    ctx.fillStyle='#8b5cf6'; ctx.beginPath(); ctx.roundRect(-14,-28,28,28,6); ctx.fill();
+    ctx.fillStyle='#e2e8f0'; ctx.beginPath(); ctx.arc(0,-34,10,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    ctx.fillStyle='#f43f5e';
+    obs.forEach(o=>{ ctx.beginPath(); ctx.moveTo(o.x,ground+30); ctx.lineTo(o.x+14,ground-o.h); ctx.lineTo(o.x+28,ground+30); ctx.fill(); });
+    ctx.fillStyle='rgba(255,255,255,0.5)'; ctx.font='11px Inter'; ctx.fillText('SPACE / TAP to jump',12,18);
+  }
+  function update(){
+    if(!running) return;
+    score+=0.16*speed; $('gr_score').textContent=Math.floor(score);
+    const elapsed=(Date.now()-startTime)/1000; speed=2.2+Math.min(4,elapsed*0.04);
+    player.vy+=0.72; player.y-=player.vy; if(player.y<0){player.y=0;player.vy=0;}
+    if(Math.random()<0.01+speed*0.0006) obs.push({x:can.width+20,h:22+Math.random()*28});
+    obs.forEach(o=>o.x-=speed*2.8); obs=obs.filter(o=>o.x>-40);
+    const px=90, py=ground-player.y;
+    for(const o of obs){ if(o.x<px+14&&o.x+28>px-14&&py+12>ground-o.h+8){ gameOver(); return; } }
+    draw(); requestAnimationFrame(update);
+  }
+  function gameOver(){
+    running=false; nbcSound('gameover');
+    const earned=Math.min(50,Math.floor(score/10));
+    if(earned>0){ let b=parseInt(localStorage.getItem('nbc_balance')||'5000')+earned; localStorage.setItem('nbc_balance',b); $('gr_coins').textContent=earned; }
+    best=Math.max(best,Math.floor(score)); localStorage.setItem('nbc_bestrun',best); $('gr_best').textContent=best;
+    const ov=$('gr_overlay'); if(ov){ ov.style.display='flex'; ov.innerHTML=`<div style="text-align:center"><div style="font-size:22px;font-weight:700;margin-bottom:8px">Game Over</div><p style="color:rgba(255,255,255,0.6);font-size:13px;margin-bottom:4px">Score ${Math.floor(score)}</p><p style="color:#D4AF37;margin-bottom:16px">+${earned} CHILL</p><button id="gr_again" style="padding:10px 28px;background:linear-gradient(135deg,#7c3aed,#2563eb);border:none;border-radius:10px;color:#fff;font-weight:700;cursor:pointer">Nochmal</button></div>`; $('gr_again').onclick=startRiver; }
+  }
+  function startRiver(){
+    const ov=$('gr_overlay'); if(ov) ov.style.display='none';
+    reset(); running=true; draw(); update(); nbcSound('click');
+  }
+  window.addEventListener('keydown', e=>{ if(e.code==='Space'&&running){ e.preventDefault(); if(player.y===0){ player.vy=-14; nbcSound('jump'); } } });
+  can.addEventListener('pointerdown', ()=>{ if(running&&player.y===0){ player.vy=-14; nbcSound('jump'); } });
+  if($('gr_start')) $('gr_start').onclick=startRiver;
+  draw();
+}
+
+// Store quiz questions for gamez box
+window._NBC_QUIZ = [
+  {q:"Wie viele Pflanzen erlaubt das deutsche CanG pro Erwachsenem?", a:["3","1","5","Unbegrenzt"], c:0},
+  {q:"Idealer pH-Wert für Cannabis in Erde?", a:["6.0-7.0","5.0-5.5","7.5-8.5","4.0-4.5"], c:0},
+  {q:"Was bedeutet 18/6 in der Grow-Phase?", a:["18h Licht / 6h Dunkel","18 Tage Wachstum","18% Luftfeuchte","18 Grad"], c:0},
+  {q:"Welches Terpen riecht nach Zitrone?", a:["Limonen","Myrcen","Pinen","Caryophyllen"], c:0},
+  {q:"THC wird durch was aktiviert?", a:["Hitze (Decarboxylierung)","Kälte","Wasser","Dunkelheit"], c:0},
+  {q:"Was ist LST?", a:["Low Stress Training","Leaf Surface Temp","Light Spectrum Test","Late Stage Trichomes"], c:0},
+  {q:"Ideale Luftfeuchte in Blüte spät?", a:["40-50%","70-80%","90%","20%"], c:0},
+  {q:"Was sind Terpene?", a:["Aromastoffe","Cannabinoide","Zucker","Chlorophyll"], c:0},
+  {q:"Was ist SCROG?", a:["Screen of Green","Super Crop Root","Seed Clone Regrow","Soil Carbon Ratio"], c:0},
+  {q:"Was ist die NBC Mission?", a:["Unity, Chill, Grow","Profit only","Verkauf","Geheim"], c:0}
+];
+
+// Add sounds to existing main-game spin
+const _origSpin = typeof spin==='function' ? spin : null;
+if(_origSpin){
+  const _s = spin;
+  window.spin = function(){ nbcSound('spin'); _s(); };
+  document.getElementById('spinBtn') && (document.getElementById('spinBtn').onclick = window.spin);
+}
+
+// Add sounds to main BJ deal
+const _bjDealBtn = document.getElementById('bjDeal');
+if(_bjDealBtn){ const _orig = _bjDealBtn.onclick; _bjDealBtn.onclick = e=>{ nbcSound('deal'); if(_orig) _orig.call(this,e); }; }
+
+// Add sound to flip card
+const _hc = document.getElementById('holoCard');
+if(_hc){ const _ohc = _hc.onclick; _hc.onclick = e=>{ nbcSound('flip'); if(_ohc) _ohc.call(this,e); }; }
+
+// Patch finishSpin to add sounds
+const _origFinish = typeof finishSpin==='function' ? finishSpin : null;
+if(_origFinish){
+  window.finishSpin = function(result){
+    _origFinish(result);
+    const lastW = typeof lastWin!=='undefined'?lastWin:0;
+    if(typeof jackpot!=='undefined'&&jackpot>=100) nbcSound('jackpot');
+    else if(lastW>0) nbcSound('win');
+    else nbcSound('lose');
+  };
+}
 </script>
 </body>
 </html>
