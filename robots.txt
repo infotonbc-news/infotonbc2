@@ -9,6 +9,7 @@ Allow: /unitycardclub.html$
 Allow: /Disclaimer.html$
 Allow: /Datenschutz.html$
 Allow: /Impressum.html$
+Allow: /Instagram-Banner-mit-Shop.html
 
 # Duplikate / alte Versionen nicht indexieren
 Disallow: /index.html
