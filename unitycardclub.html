@@ -2022,23 +2022,8 @@ function randCard(){ const v = Math.floor(Math.random()*13)+1; const s=suits[Mat
 function val(hand){ let t=0,a=0; hand.forEach(c=>{ let v=c.v>10?10:c.v; if(c.v===1){a++; v=11;} t+=v; }); while(t>21&&a>0){t-=10;a--;} return t; }
 function cardEl(c,hidden=false){
   const d=document.createElement('div');
-  d.className='w-[82px] h-[110px] rounded-2xl flex flex-col justify-between p-2.5 border-2 shadow-xl relative overflow-hidden';
-  d.style.transition='transform 0.3s';
-  if(hidden){ 
-    d.style.background='linear-gradient(135deg,#D4AF37,#FF00FF,#00D9FF)';
-    d.style.borderColor='#D4AF37';
-    d.innerHTML='<div class="w-full h-full rounded-xl bg-black/70 grid place-items-center text-3xl" style="color:#D4AF37">NBC</div>'; 
-    return d; 
-  }
-  const suits = {'♥':'#ff3b5c','♦':'#00D9FF','♣':'#22c55e','♠':'#D4AF37'};
-  const bg = {'♥':'linear-gradient(135deg,#ff3b5c33,#ff005533)','♦':'linear-gradient(135deg,#00D9FF33,#0066ff33)','♣':'linear-gradient(135deg,#22c55e33,#00ff8833)','♠':'linear-gradient(135deg,#D4AF3733,#ffaa0033)'};
-  const v = c.v===1?'A':c.v===11?'J':c.v===12?'Q':c.v===13?'K':c.v;
-  d.style.background = bg[c.s] || '#111';
-  d.style.borderColor = suits[c.s] || '#fff';
-  d.style.boxShadow = '0 0 20px '+ (suits[c.s]||'#fff') +'66, inset 0 0 20px rgba(0,0,0,0.5)';
-  d.innerHTML = '<div style="color:'+suits[c.s]+';font-weight:900;font-size:18px">'+v+'<span style="margin-left:2px">'+c.s+'</span></div><div style="text-align:center;font-size:36px;color:'+suits[c.s]+';text-shadow:0 0 10px '+suits[c.s]+'">'+c.s+'</div><div style="color:'+suits[c.s]+';font-weight:900;font-size:18px;transform:rotate(180deg);text-align:right">'+v+'</div>';
-  return d;
-}
+  d.className='w-[82px] h-[110px] rounded-2xl glass flex-col justify-between p-2.5 border border-white/15 shadow-lg';
+  if(hidden){ d.innerHTML=`<div class="w-full h-full rounded-xl bg-[repeating-linear-gradient(45deg,rgba(139,92,246,0.3)0 8px,rgba(59,130,246,0.3)8px16px)] grid place-items-center text-2xl">?</div>`; return d; }
   const red = c.s==='♥'||c.s==='♦'; const v = c.v===1?'A':c.v===11?'J':c.v===12?'Q':c.v===13?'K':c.v;
   d.innerHTML=`<div class="flex justify-between text-[11px] ${red?'text-red-400':'text-white/80'}"><span>${v}</span><span>${c.s}</span></div><div class="text-3xl text-center ${red?'text-red-400':'text-white'}">${c.s}</div><div class="rotate-180 flex justify-between text-[11px] ${red?'text-red-400':'text-white/80'}"><span>${v}</span><span>${c.s}</span></div>`;
   return d;
@@ -2193,13 +2178,9 @@ const QUIZ = [
 ];
 let qIdx=0, qScore=0, qTime=30, qTimer=null;
 function qRender(){
-  $('#quizQ').textContent= (qIdx+1)+'/50'; $('#quizNum').textContent=qIdx+1;
+  $('#quizQ').textContent=`${qIdx+1}/50`; $('#quizNum').textContent=qIdx+1;
   const cur=QUIZ[qIdx]; $('#quizQuestion').textContent=cur.q;
   const box=$('#quizOptions'); box.innerHTML='';
-  const imgWrap = document.createElement('div');
-  imgWrap.className='mb-4 rounded-xl overflow-hidden border border-white/10';
-  imgWrap.innerHTML = '<img src="https://picsum.photos/seed/nbc'+qIdx+'/600/200" alt="" style="width:100%;height:120px;object-fit:cover;filter:saturate(1.2)">';
-  box.appendChild(imgWrap);
   cur.a.forEach((opt,i)=>{
     const b=document.createElement('button');
     b.className='w-full text-left px-4 py-3 rounded-xl glass hover:bg-white/10 transition';
@@ -2256,21 +2237,22 @@ function openGamez(){document.getElementById('gamezOverlay').style.display='flex
     if(userEl){ userEl.innerHTML = name.split(' ')[0] + '<br/>' + (name.split(' ')[1]||'CHILLAZ'); }
     const infoEl = document.getElementById('gamezCardInfo');
     if(infoEl){ infoEl.textContent = num + ' • ' + rank; }
-    window.currentMember = insta.replace(/[^a-z0-9]/gi,'_');
-    ['balance','wins','plays','bestrun'].forEach(k=>{
-      const v = localStorage.getItem('nbc_'+k+'_'+window.currentMember);
-      if(v!==null) localStorage.setItem('nbc_'+k, v);
-    });
-    if(typeof syncBalance==='function') syncBalance();
   }catch(e){}
 }
 function closeGamez(){document.getElementById('gamezOverlay').style.display='none';document.body.style.overflow='';
   try{
-    if(window.currentMember){
-      ['balance','wins','plays','bestrun'].forEach(k=>{
-        const v = localStorage.getItem('nbc_'+k);
-        if(v!==null) localStorage.setItem('nbc_'+k+'_'+window.currentMember, v);
-      });
+    const bal = localStorage.getItem('nbc_balance')||'5000';
+    const wins = localStorage.getItem('nbc_wins')||'0';
+    const plays = localStorage.getItem('nbc_plays')||'0';
+    const best = localStorage.getItem('nbc_bestrun')||'0';
+    const list = document.getElementById('highscore-list');
+    if(list){
+      list.innerHTML = `<div style="display:grid;grid-template-columns:1fr auto;gap:6px;font-size:12px">
+        <div>💰 Balance</div><div style="color:#D4AF37;text-align:right;font-weight:700">${bal}</div>
+        <div>🏆 Total Wins</div><div style="color:#00D9FF;text-align:right">${wins}</div>
+        <div>🎮 Spiele gespielt</div><div style="text-align:right">${plays}</div>
+        <div>🏃 River Best</div><div style="text-align:right">${best}m</div>
+      </div>`;
     }
   }catch(e){}
 }
@@ -2304,21 +2286,22 @@ function openGamez(){document.getElementById('gamezOverlay').style.display='flex
     if(userEl){ userEl.innerHTML = name.split(' ')[0] + '<br/>' + (name.split(' ')[1]||'CHILLAZ'); }
     const infoEl = document.getElementById('gamezCardInfo');
     if(infoEl){ infoEl.textContent = num + ' • ' + rank; }
-    window.currentMember = insta.replace(/[^a-z0-9]/gi,'_');
-    ['balance','wins','plays','bestrun'].forEach(k=>{
-      const v = localStorage.getItem('nbc_'+k+'_'+window.currentMember);
-      if(v!==null) localStorage.setItem('nbc_'+k, v);
-    });
-    if(typeof syncBalance==='function') syncBalance();
   }catch(e){}
 }
 function closeGamez(){document.getElementById('gamezOverlay').style.display='none';document.body.style.overflow='';
   try{
-    if(window.currentMember){
-      ['balance','wins','plays','bestrun'].forEach(k=>{
-        const v = localStorage.getItem('nbc_'+k);
-        if(v!==null) localStorage.setItem('nbc_'+k+'_'+window.currentMember, v);
-      });
+    const bal = localStorage.getItem('nbc_balance')||'5000';
+    const wins = localStorage.getItem('nbc_wins')||'0';
+    const plays = localStorage.getItem('nbc_plays')||'0';
+    const best = localStorage.getItem('nbc_bestrun')||'0';
+    const list = document.getElementById('highscore-list');
+    if(list){
+      list.innerHTML = `<div style="display:grid;grid-template-columns:1fr auto;gap:6px;font-size:12px">
+        <div>💰 Balance</div><div style="color:#D4AF37;text-align:right;font-weight:700">${bal}</div>
+        <div>🏆 Total Wins</div><div style="color:#00D9FF;text-align:right">${wins}</div>
+        <div>🎮 Spiele gespielt</div><div style="text-align:right">${plays}</div>
+        <div>🏃 River Best</div><div style="text-align:right">${best}m</div>
+      </div>`;
     }
   }catch(e){}
 }
@@ -2329,6 +2312,85 @@ function initBookSlot(){/* code from sub-agent would go here - simplified for de
 const quiz30=[{q:'Wie viele Pflanzen erlaubt CanG?',a:['3','1','5','7'],c:0,e:'CanG: 3 Pflanzen'},{q:'Idealer pH Erde?',a:['6.0-7.0','5.0','8.0'],c:0,e:'6.3-6.7'},{q:'Was ist Photosynthese?',a:['Licht zu Zucker','Wasseraufnahme'],c:0,e:'CO2+H2O→Glucose'}];function initQuiz30(){const q=quiz30[Math.floor(Math.random()*quiz30.length)];document.getElementById('quizBox').innerHTML=`<h3 style="color:#D4AF37">${q.q}</h3>${q.a.map((a,i)=>`<button onclick="alert('${q.e}')" style="display:block;width:100%;margin:5px 0;padding:8px;background:#111;color:white;border:1px solid #444;cursor:pointer;text-align:left">${a}</button>`).join('')}`}
 // River Run simplified
 function initRiver(){const c=document.getElementById('rv'),x=c.getContext('2d');let px=320,py=440;function draw(){x.fillStyle='#004';x.fillRect(0,0,640,480);x.fillStyle='#0a0';x.fillRect(0,0,640,80);x.fillRect(0,400,640,80);x.fillStyle='#0f0';x.fillRect(px,py,20,20);requestAnimationFrame(draw)}draw();window.onkeydown=e=>{if(e.key==='ArrowUp')py-=20;if(e.key==='ArrowDown')py+=20;if(e.key==='ArrowLeft')px-=20;if(e.key==='ArrowRight')px+=20}}
+</script>
+
+
+<script>
+// === NBC SAFE PATCHES v1 ===
+(function(){
+  // 1. Bunte Karten für 21 Duel
+  if(typeof cardEl === 'function'){
+    const _origCardEl = cardEl;
+    window.cardEl = function(c,hidden=false){
+      const d=document.createElement('div');
+      d.className='w-[82px] h-[110px] rounded-2xl flex flex-col justify-between p-2.5 border-2 shadow-xl relative overflow-hidden';
+      d.style.transition='transform 0.3s';
+      if(hidden){ 
+        d.style.background='linear-gradient(135deg,#D4AF37,#FF00FF,#00D9FF)';
+        d.style.borderColor='#D4AF37';
+        d.innerHTML='<div class="w-full h-full rounded-xl bg-black/70 grid place-items-center text-3xl" style="color:#D4AF37">NBC</div>'; 
+        return d; 
+      }
+      const suits = {'♥':'#ff3b5c','♦':'#00D9FF','♣':'#22c55e','♠':'#D4AF37'};
+      const bg = {'♥':'linear-gradient(135deg,#ff3b5c33,#ff005533)','♦':'linear-gradient(135deg,#00D9FF33,#0066ff33)','♣':'linear-gradient(135deg,#22c55e33,#00ff8833)','♠':'linear-gradient(135deg,#D4AF3733,#ffaa0033)'};
+      const v = c.v===1?'A':c.v===11?'J':c.v===12?'Q':c.v===13?'K':c.v;
+      d.style.background = bg[c.s] || '#111';
+      d.style.borderColor = suits[c.s] || '#fff';
+      d.style.boxShadow = '0 0 20px '+ (suits[c.s]||'#fff') +'66, inset 0 0 20px rgba(0,0,0,0.5)';
+      d.innerHTML = '<div style="color:'+suits[c.s]+';font-weight:900;font-size:18px">'+v+'<span style="margin-left:2px">'+c.s+'</span></div><div style="text-align:center;font-size:36px;color:'+suits[c.s]+';text-shadow:0 0 10px '+suits[c.s]+'">'+c.s+'</div><div style="color:'+suits[c.s]+';font-weight:900;font-size:18px;transform:rotate(180deg);text-align:right">'+v+'</div>';
+      return d;
+    }
+  }
+
+  // 2. Quiz mit Bildern
+  if(typeof qRender === 'function'){
+    window.qRender = function(){
+      document.getElementById('quizQ').textContent= (window.qIdx+1)+'/50'; 
+      document.getElementById('quizNum').textContent=window.qIdx+1;
+      const cur=window.QUIZ[window.qIdx]; 
+      document.getElementById('quizQuestion').textContent=cur.q;
+      const box=document.getElementById('quizOptions'); box.innerHTML='';
+      const imgWrap = document.createElement('div');
+      imgWrap.className='mb-4 rounded-xl overflow-hidden border border-white/10';
+      imgWrap.innerHTML = '<img src="https://picsum.photos/seed/nbc'+window.qIdx+'/600/200" alt="" style="width:100%;height:120px;object-fit:cover;filter:saturate(1.2)">';
+      box.appendChild(imgWrap);
+      cur.a.forEach((opt,i)=>{
+        const b=document.createElement('button');
+        b.className='w-full text-left px-4 py-3 rounded-xl glass hover:bg-white/10 transition';
+        b.textContent=opt;
+        b.onclick=()=>window.qAnswer(i);
+        box.appendChild(b);
+      });
+    }
+  }
+
+  // 3. Scores pro Member (ohne openGamez zu ersetzen)
+  const origOpen = window.openGamez;
+  window.openGamez = function(){
+    origOpen();
+    try{
+      const insta = (document.getElementById('cardInsta')?.textContent || '@nbc').trim();
+      window.currentMember = insta.replace(/[^a-z0-9]/gi,'_');
+      ['balance','wins','plays','bestrun'].forEach(k=>{
+        const v = localStorage.getItem('nbc_'+k+'_'+window.currentMember);
+        if(v!==null) localStorage.setItem('nbc_'+k, v);
+      });
+      if(typeof syncBalance==='function') syncBalance();
+    }catch(e){}
+  };
+  const origClose = window.closeGamez;
+  window.closeGamez = function(){
+    try{
+      if(window.currentMember){
+        ['balance','wins','plays','bestrun'].forEach(k=>{
+          const v = localStorage.getItem('nbc_'+k);
+          if(v!==null) localStorage.setItem('nbc_'+k+'_'+window.currentMember, v);
+        });
+      }
+    }catch(e){}
+    origClose();
+  };
+})();
 </script>
 
 </body>
