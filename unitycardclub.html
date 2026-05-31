@@ -2040,10 +2040,6 @@ function cardEl(c,hidden=false){
   d.innerHTML = '<div style="color:'+suits[c.s]+';font-weight:900;font-size:18px">'+v+'<span style="margin-left:2px">'+c.s+'</span></div><div style="text-align:center;font-size:36px;color:'+suits[c.s]+';text-shadow:0 0 10px '+suits[c.s]+'">'+c.s+'</div><div style="color:'+suits[c.s]+';font-weight:900;font-size:18px;transform:rotate(180deg);text-align:right">'+v+'</div>';
   return d;
 }
-  const red = c.s==='♥'||c.s==='♦'; const v = c.v===1?'A':c.v===11?'J':c.v===12?'Q':c.v===13?'K':c.v;
-  d.innerHTML=`<div class="flex justify-between text-[11px] ${red?'text-red-400':'text-white/80'}"><span>${v}</span><span>${c.s}</span></div><div class="text-3xl text-center ${red?'text-red-400':'text-white'}">${c.s}</div><div class="rotate-180 flex justify-between text-[11px] ${red?'text-red-400':'text-white/80'}"><span>${v}</span><span>${c.s}</span></div>`;
-  return d;
-}
 let bjBet=10, bjHands=[], bjDealer=[], bjPlaying=false, bjCurrent=0, bjBets=[];
 function bjSync(){ $('#bjBet').textContent=bjBet; $('#bjBalance').textContent=fmt(balance); }
 $('#bjMinus').onclick=()=>{ bjBet=Math.max(1,bjBet-1); bjSync(); };
@@ -2380,15 +2376,6 @@ function closeGamez(){document.getElementById('gamezOverlay').style.display='non
     }
   }catch(e){}
 }
-function loadG(g){document.querySelectorAll('#gamezOverlay button').forEach(b=>b.style.background='rgba(0,217,255,0.1)');document.getElementById('g'+(g==='book'?'b':g==='bj'?'bj':g==='quiz'?'q':'r')).style.background='rgba(212,175,55,0.3)';const box=document.getElementById('gameBox');if(g==='book'){box.innerHTML='<div id="bookSlotContainer"></div>';initBookSlot()}if(g==='bj'){box.innerHTML='<div style="color:white">21 Duel - Lädt...</div>';}if(g==='quiz'){box.innerHTML='<div id="quizBox" style="color:white;max-width:600px"></div>';initQuiz30()}if(g==='river'){box.innerHTML='<canvas id="rv" width="640" height="480" style="border:2px solid #D4AF37"></canvas>';initRiver()}}
-// Book of Chillaz (simplified from sub-agent)
-function initBookSlot(){/* code from sub-agent would go here - simplified for demo */ document.getElementById('bookSlotContainer').innerHTML='<div style="color:#D4AF37;font-family:Orbitron;text-align:center"><h2>BOOK OF CHILLAZ</h2><p>NBC Jackpot aktiv • 3+ NBC = 5000 Credits</p><button onclick="alert('Spin!')" style="padding:12px 30px;background:gold;border:none;border-radius:20px;margin-top:20px;cursor:pointer">SPIN</button></div>'}
-// Quiz 30 questions
-const quiz30=[{q:'Wie viele Pflanzen erlaubt CanG?',a:['3','1','5','7'],c:0,e:'CanG: 3 Pflanzen'},{q:'Idealer pH Erde?',a:['6.0-7.0','5.0','8.0'],c:0,e:'6.3-6.7'},{q:'Was ist Photosynthese?',a:['Licht zu Zucker','Wasseraufnahme'],c:0,e:'CO2+H2O→Glucose'}];function initQuiz30(){const q=quiz30[Math.floor(Math.random()*quiz30.length)];document.getElementById('quizBox').innerHTML=`<h3 style="color:#D4AF37">${q.q}</h3>${q.a.map((a,i)=>`<button onclick="alert('${q.e}')" style="display:block;width:100%;margin:5px 0;padding:8px;background:#111;color:white;border:1px solid #444;cursor:pointer;text-align:left">${a}</button>`).join('')}`}
-// River Run simplified
-function initRiver(){const c=document.getElementById('rv'),x=c.getContext('2d');let px=320,py=440;function draw(){x.fillStyle='#004';x.fillRect(0,0,640,480);x.fillStyle='#0a0';x.fillRect(0,0,640,80);x.fillRect(0,400,640,80);x.fillStyle='#0f0';x.fillRect(px,py,20,20);requestAnimationFrame(draw)}draw();window.onkeydown=e=>{if(e.key==='ArrowUp')py-=20;if(e.key==='ArrowDown')py+=20;if(e.key==='ArrowLeft')px-=20;if(e.key==='ArrowRight')px+=20}}
-</script>
-
 <script>
 const _oG=openGamez; openGamez=function(){_oG(); try{const i=(document.getElementById('cardInsta')?.textContent||'@nbc').trim(); window.currentMember=i.replace(/[^a-z0-9]/gi,'_'); ['balance','wins','plays','bestrun'].forEach(k=>{const v=localStorage.getItem('nbc_'+k+'_'+window.currentMember); if(v!==null) localStorage.setItem('nbc_'+k,v);}); if(typeof syncBalance==='function') syncBalance();}catch(e){}};
 const _cG=closeGamez; closeGamez=function(){try{if(window.currentMember){['balance','wins','plays','bestrun'].forEach(k=>{const v=localStorage.getItem('nbc_'+k); if(v!==null) localStorage.setItem('nbc_'+k+'_'+window.currentMember,v);});}}catch(e){} _cG();};
