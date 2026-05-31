@@ -2044,51 +2044,88 @@ function cardEl(c,hidden=false){
   d.innerHTML=`<div class="flex justify-between text-[11px] ${red?'text-red-400':'text-white/80'}"><span>${v}</span><span>${c.s}</span></div><div class="text-3xl text-center ${red?'text-red-400':'text-white'}">${c.s}</div><div class="rotate-180 flex justify-between text-[11px] ${red?'text-red-400':'text-white/80'}"><span>${v}</span><span>${c.s}</span></div>`;
   return d;
 }
-let bjBet=10, bjPlayer=[], bjDealer=[], bjPlaying=false;
+let bjBet=10, bjHands=[], bjDealer=[], bjPlaying=false, bjCurrent=0, bjBets=[];
 function bjSync(){ $('#bjBet').textContent=bjBet; $('#bjBalance').textContent=fmt(balance); }
 $('#bjMinus').onclick=()=>{ bjBet=Math.max(1,bjBet-1); bjSync(); };
 $('#bjPlus').onclick=()=>{ bjBet=Math.min(500,Math.min(balance,bjBet+1)); bjSync(); };
 function bjRender(){
-  const ph=$('#playerHand'); ph.innerHTML=''; bjPlayer.forEach(c=>ph.appendChild(cardEl(c)));
+  const ph=$('#playerHand'); ph.innerHTML='';
+  bjHands.forEach((hand,hi)=>{
+    const wrap=document.createElement('div');
+    wrap.className='flex gap-2 mr-4 p-2 rounded-xl '+(hi===bjCurrent && bjPlaying ? 'ring-2 ring-amber-400' : '');
+    hand.forEach(c=>wrap.appendChild(cardEl(c)));
+    ph.appendChild(wrap);
+  });
   const dh=$('#dealerHand'); dh.innerHTML=''; bjDealer.forEach((c,i)=>dh.appendChild(cardEl(c, bjPlaying && i===1)));
-  const ps=val(bjPlayer), ds= bjPlaying? '?' : val(bjDealer);
-  $('#bjStatus').textContent = bjPlaying? `You: ${ps} • Dealer: ?` : `You: ${ps} • Dealer: ${ds}`;
+  const ps = bjHands[bjCurrent] ? val(bjHands[bjCurrent]) : 0;
+  const ds = bjPlaying? '?' : val(bjDealer);
+  $('#bjStatus').textContent = bjPlaying? `Hand ${bjCurrent+1}/${bjHands.length} • You: ${ps} • Dealer: ?` : `You: ${ps} • Dealer: ${ds}`;
 }
 $('#bjDeal').onclick=()=>{
   if(bjPlaying) return;
   if(balance<bjBet){toast('No balance'); return;}
   balance-=bjBet; totalPlays++; syncBalance(); bjSync();
-  bjPlayer=[randCard(),randCard()]; bjDealer=[randCard(),randCard()];
-  bjPlaying=true;
+  bjHands=[[randCard(),randCard()]]; bjBets=[bjBet]; bjDealer=[randCard(),randCard()]; bjCurrent=0; bjPlaying=true;
   $('#bjHit').disabled=false; $('#bjStand').disabled=false; $('#bjDeal').disabled=true;
-  $('#bjDouble').disabled=false; 
-  $('#bjSplit').disabled = !(bjPlayer[0].v===bjPlayer[1].v && balance>=bjBet);
+  $('#bjDouble').disabled = balance < bjBet;
+  $('#bjSplit').disabled = !(bjHands[0][0].v===bjHands[0][1].v && balance>=bjBet);
   bjRender();
-  if(val(bjPlayer)===21){ setTimeout(()=>bjStand(),400); }
+  if(val(bjHands[0])===21){ setTimeout(()=>bjStand(),400); }
+};
+function bjHit(){
+  const hand=bjHands[bjCurrent]; hand.push(randCard()); bjRender();
+  if(val(hand)>=21) bjStand();
+}
+function bjStand(){
+  const hand=bjHands[bjCurrent];
+  if(val(hand)>21){ /* bust handled later */ }
+  bjCurrent++;
+  if(bjCurrent < bjHands.length){
+    $('#bjDouble').disabled = balance < bjBets[bjCurrent];
+    $('#bjSplit').disabled = true;
+    bjRender();
+    if(val(bjHands[bjCurrent])===21) setTimeout(bjStand,300);
+    return;
+  }
+  // dealer play
+  bjPlaying=false;
+  while(val(bjDealer)<17){ bjDealer.push(randCard()); }
+  let totalWin=0;
+  bjHands.forEach((h,i)=>{
+    const pv=val(h), dv=val(bjDealer), bet=bjBets[i];
+    let win=0;
+    if(pv>21) win=0;
+    else if(dv>21 || pv>dv) win = (pv===21 && h.length===2) ? Math.floor(bet*2.5) : bet*2;
+    else if(pv===dv) win = bet;
+    totalWin+=win;
+  });
+  if(totalWin>0){ balance+=totalWin; totalWins++; toast('Win '+fmt(totalWin-bjBets.reduce((a,b)=>a+b,0))); }
+  else toast('Lose');
+  syncBalance(); bjSync();
+  $('#bjHit').disabled=true; $('#bjStand').disabled=true; $('#bjDouble').disabled=true; $('#bjSplit').disabled=true; $('#bjDeal').disabled=false;
+  bjRender();
+}
+$('#bjHit').onclick=bjHit;
+$('#bjStand').onclick=bjStand;
+$('#bjDouble').onclick=()=>{
+  if(!bjPlaying) return;
+  if(balance<bjBets[bjCurrent]) return;
+  balance-=bjBets[bjCurrent]; bjBets[bjCurrent]*=2; syncBalance();
+  bjHit(); if(bjPlaying) bjStand();
 };
 $('#bjSplit').onclick=()=>{
-  if(!bjPlaying || bjPlayer.length!==2 || bjPlayer[0].v!==bjPlayer[1].v) return;
-  if(balance<bjBet){toast('No balance for split'); return;}
+  if(!bjPlaying) return;
+  const hand=bjHands[bjCurrent];
+  if(hand.length!==2 || hand[0].v!==hand[1].v) return;
+  if(balance<bjBet) return;
   balance-=bjBet; syncBalance();
-  // simple split: play first hand, then second automatically
-  const secondCard = bjPlayer.pop();
-  bjPlayer.push(randCard());
-  const secondHand = [secondCard, randCard()];
-  // store second hand temporarily
-  window.bjSecondHand = secondHand;
-  toast('Split! Playing first hand...');
-  bjRender();
+  const c2=hand.pop();
+  hand.push(randCard());
+  bjHands.splice(bjCurrent+1,0,[c2,randCard()]);
+  bjBets.splice(bjCurrent+1,0,bjBet);
   $('#bjSplit').disabled=true;
-};
-
-};
-function bjEnd(win){
-  bjPlaying=false;
-  $('#bjHit').disabled=true; $('#bjStand').disabled=true; $('#bjDeal').disabled=false;
   bjRender();
-  if(win>0){ balance+=win; totalWins+=win; toast(`Win +${fmt(win)}`); } else if(win===0){ balance+=bjBet; toast('Push'); } else { toast('Lose'); }
-  syncBalance(); bjSync();
-}
+};
 $('#bjHit').onclick=()=>{ if(!bjPlaying) return; bjPlayer.push(randCard()); bjRender(); if(val(bjPlayer)>21) bjEnd(-1); };
 function bjStand(){ if(!bjPlaying) return; bjPlaying=false; while(val(bjDealer)<17) bjDealer.push(randCard()); const p=val(bjPlayer), d=val(bjDealer); let win=-1; if(d>21||p>d) win = bjBet*2 + (p===21 && bjPlayer.length===2 ? bjBet*0.5:0); else if(p===d) win=0; bjEnd(win); }
 $('#bjStand').onclick=bjStand;
@@ -2098,7 +2135,7 @@ bjSync();
 const rcan=$('#runCanvas'), rctx=rcan.getContext('2d');
 let runRunning=false, runScore=0, runSpeed=5, runObs=[], runPlayer={y:0,vy:0,ground:0}, runCoinsEarned=0;
 function rReset(){
-  runObs=[]; runScore=0; runSpeed=2.5; runPlayer={y:0,vy:0,ground:rcan.height-56}; runCoinsEarned=0;
+  runObs=[]; runScore=0; runSpeed=2.2; runStartTime=Date.now(); runPlayer={y:0,vy:0,ground:rcan.height-56}; runCoinsEarned=0;
   $('#runScore').textContent='0'; $('#runCoins').textContent='0';
 }
 function rDraw(){
@@ -2125,12 +2162,12 @@ function rDraw(){
 function rUpdate(){
   if(!runRunning) return;
   runScore+=0.16*runSpeed; $('#runScore').textContent=Math.floor(runScore);
-  runSpeed += 0.0007;
+  const elapsed=(Date.now()-runStartTime)/1000; runSpeed = 2.2 + Math.min(4, elapsed*0.04);
   // player physics
   runPlayer.vy += 0.72; runPlayer.y -= runPlayer.vy; if(runPlayer.y<0){runPlayer.y=0; runPlayer.vy=0;}
   // obstacles
-  if(Math.random()<0.012 + runSpeed*0.0008) runObs.push({x:rcan.width+20,h:22+Math.random()*28});
-  runObs.forEach(o=> o.x -= runSpeed*2.6);
+  if(Math.random()<0.01 + runSpeed*0.0006) runObs.push({x:rcan.width+20,h:22+Math.random()*28});
+  runObs.forEach(o=> o.x -= runSpeed*2.8);
   runObs = runObs.filter(o=> o.x>-40);
   // collision
   const px=90, py=runPlayer.ground - runPlayer.y;
@@ -2217,7 +2254,7 @@ function qRender(){
   const box=$('#quizOptions'); box.innerHTML='';
   const imgWrap = document.createElement('div');
   imgWrap.className='mb-4 rounded-xl overflow-hidden border border-white/10';
-  imgWrap.innerHTML = '<img src="https://picsum.photos/seed/nbc'+qIdx+'/600/200" alt="" style="width:100%;height:120px;object-fit:cover;filter:saturate(1.2)">';
+  imgWrap.innerHTML = '<img src="https://picsum.photos/seed/nbcquiz'+qIdx+'/600/200" alt="" style="width:100%;height:120px;object-fit:cover;filter:saturate(1.2)">';
   box.appendChild(imgWrap);
   cur.a.forEach((opt,i)=>{
     const b=document.createElement('button');
@@ -2352,6 +2389,9 @@ const quiz30=[{q:'Wie viele Pflanzen erlaubt CanG?',a:['3','1','5','7'],c:0,e:'C
 function initRiver(){const c=document.getElementById('rv'),x=c.getContext('2d');let px=320,py=440;function draw(){x.fillStyle='#004';x.fillRect(0,0,640,480);x.fillStyle='#0a0';x.fillRect(0,0,640,80);x.fillRect(0,400,640,80);x.fillStyle='#0f0';x.fillRect(px,py,20,20);requestAnimationFrame(draw)}draw();window.onkeydown=e=>{if(e.key==='ArrowUp')py-=20;if(e.key==='ArrowDown')py+=20;if(e.key==='ArrowLeft')px-=20;if(e.key==='ArrowRight')px+=20}}
 </script>
 
-<script>const _origOpenGamez=openGamez; openGamez=function(){_origOpenGamez(); try{const insta=(document.getElementById('cardInsta')?.textContent||'@nbc').trim(); window.currentMember=insta.replace(/[^a-z0-9]/gi,'_'); ['balance','wins','plays','bestrun'].forEach(k=>{const v=localStorage.getItem('nbc_'+k+'_'+window.currentMember); if(v!==null) localStorage.setItem('nbc_'+k,v);}); if(typeof syncBalance==='function') syncBalance();}catch(e){}};const _origCloseGamez=closeGamez; closeGamez=function(){try{if(window.currentMember){['balance','wins','plays','bestrun'].forEach(k=>{const v=localStorage.getItem('nbc_'+k); if(v!==null) localStorage.setItem('nbc_'+k+'_'+window.currentMember,v);});}}catch(e){} _origCloseGamez();};</script>
+<script>
+const _oG=openGamez; openGamez=function(){_oG(); try{const i=(document.getElementById('cardInsta')?.textContent||'@nbc').trim(); window.currentMember=i.replace(/[^a-z0-9]/gi,'_'); ['balance','wins','plays','bestrun'].forEach(k=>{const v=localStorage.getItem('nbc_'+k+'_'+window.currentMember); if(v!==null) localStorage.setItem('nbc_'+k,v);}); if(typeof syncBalance==='function') syncBalance();}catch(e){}};
+const _cG=closeGamez; closeGamez=function(){try{if(window.currentMember){['balance','wins','plays','bestrun'].forEach(k=>{const v=localStorage.getItem('nbc_'+k); if(v!==null) localStorage.setItem('nbc_'+k+'_'+window.currentMember,v);});}}catch(e){} _cG();};
+</script>
 </body>
 </html>
