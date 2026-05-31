@@ -2022,23 +2022,8 @@ function randCard(){ const v = Math.floor(Math.random()*13)+1; const s=suits[Mat
 function val(hand){ let t=0,a=0; hand.forEach(c=>{ let v=c.v>10?10:c.v; if(c.v===1){a++; v=11;} t+=v; }); while(t>21&&a>0){t-=10;a--;} return t; }
 function cardEl(c,hidden=false){
   const d=document.createElement('div');
-  d.className='w-[82px] h-[110px] rounded-2xl flex flex-col justify-between p-2.5 border-2 shadow-xl relative overflow-hidden';
-  d.style.transition='transform 0.3s';
-  if(hidden){ 
-    d.style.background='linear-gradient(135deg,#D4AF37,#FF00FF,#00D9FF)';
-    d.style.borderColor='#D4AF37';
-    d.innerHTML='<div class="w-full h-full rounded-xl bg-black/70 grid place-items-center text-3xl" style="color:#D4AF37">NBC</div>'; 
-    return d; 
-  }
-  const suits = {'♥':'#ff3b5c','♦':'#00D9FF','♣':'#22c55e','♠':'#D4AF37'};
-  const bg = {'♥':'linear-gradient(135deg,#ff3b5c33,#ff005533)','♦':'linear-gradient(135deg,#00D9FF33,#0066ff33)','♣':'linear-gradient(135deg,#22c55e33,#00ff8833)','♠':'linear-gradient(135deg,#D4AF3733,#ffaa0033)'};
-  const v = c.v===1?'A':c.v===11?'J':c.v===12?'Q':c.v===13?'K':c.v;
-  d.style.background = bg[c.s] || '#111';
-  d.style.borderColor = suits[c.s] || '#fff';
-  d.style.boxShadow = '0 0 20px '+ (suits[c.s]||'#fff') +'66, inset 0 0 20px rgba(0,0,0,0.5)';
-  d.innerHTML = '<div style="color:'+suits[c.s]+';font-weight:900;font-size:18px">'+v+'<span style="margin-left:2px">'+c.s+'</span></div><div style="text-align:center;font-size:36px;color:'+suits[c.s]+';text-shadow:0 0 10px '+suits[c.s]+'">'+c.s+'</div><div style="color:'+suits[c.s]+';font-weight:900;font-size:18px;transform:rotate(180deg);text-align:right">'+v+'</div>';
-  return d;
-}
+  d.className='w-[82px] h-[110px] rounded-2xl glass flex-col justify-between p-2.5 border border-white/15 shadow-lg';
+  if(hidden){ d.innerHTML=`<div class="w-full h-full rounded-xl bg-[repeating-linear-gradient(45deg,rgba(139,92,246,0.3)0 8px,rgba(59,130,246,0.3)8px16px)] grid place-items-center text-2xl">?</div>`; return d; }
   const red = c.s==='♥'||c.s==='♦'; const v = c.v===1?'A':c.v===11?'J':c.v===12?'Q':c.v===13?'K':c.v;
   d.innerHTML=`<div class="flex justify-between text-[11px] ${red?'text-red-400':'text-white/80'}"><span>${v}</span><span>${c.s}</span></div><div class="text-3xl text-center ${red?'text-red-400':'text-white'}">${c.s}</div><div class="rotate-180 flex justify-between text-[11px] ${red?'text-red-400':'text-white/80'}"><span>${v}</span><span>${c.s}</span></div>`;
   return d;
@@ -2193,13 +2178,9 @@ const QUIZ = [
 ];
 let qIdx=0, qScore=0, qTime=30, qTimer=null;
 function qRender(){
-  $('#quizQ').textContent= (qIdx+1)+'/50'; $('#quizNum').textContent=qIdx+1;
+  $('#quizQ').textContent=`${qIdx+1}/50`; $('#quizNum').textContent=qIdx+1;
   const cur=QUIZ[qIdx]; $('#quizQuestion').textContent=cur.q;
   const box=$('#quizOptions'); box.innerHTML='';
-  const imgWrap = document.createElement('div');
-  imgWrap.className='mb-4 rounded-xl overflow-hidden border border-white/10';
-  imgWrap.innerHTML = '<img src="https://picsum.photos/seed/nbc'+qIdx+'/600/200" alt="" style="width:100%;height:120px;object-fit:cover;filter:saturate(1.2)">';
-  box.appendChild(imgWrap);
   cur.a.forEach((opt,i)=>{
     const b=document.createElement('button');
     b.className='w-full text-left px-4 py-3 rounded-xl glass hover:bg-white/10 transition';
@@ -2246,67 +2227,18 @@ document.addEventListener('touchend', e=>{ const now=Date.now(); if(now-lastTouc
   </div>
 </div>
 <script>
-function openGamez(){
-  const overlay = document.getElementById('gamezOverlay');
-  if(overlay){ overlay.style.display='flex'; }
-  document.body.style.overflow='hidden';
-  try{
-    const name = (document.getElementById('cardName')?.textContent || 'NATURALBORNCHILLAZ').trim();
-    const insta = (document.getElementById('cardInsta')?.textContent || '@nbc').trim();
-    const rank = (document.getElementById('cardRankText')?.textContent || 'MEMBER').trim();
-    const num = (document.getElementById('cardNumber')?.textContent || 'UNITY • 001').trim();
-    const userEl = document.getElementById('gamezUserName');
-    if(userEl){ const parts=name.split(' '); userEl.innerHTML = parts[0] + '<br/>' + (parts[1]||'CHILLAZ'); }
+function openGamez(){document.getElementById('gamezOverlay').style.display='flex';document.body.style.overflow='hidden';try{const n=document.getElementById('cardName')?.textContent||'NBC';document.getElementById('gamezUserName').innerHTML=n.split(' ')[0]+'<br>'+ (n.split(' ')[1]||'CHILLAZ');}catch(e){}}
     const infoEl = document.getElementById('gamezCardInfo');
     if(infoEl){ infoEl.textContent = num + ' • ' + rank; }
-    window.currentMember = insta.replace(/[^a-z0-9]/gi,'_');
-    ['balance','wins','plays','bestrun','jackpot'].forEach(k=>{
-      const v = localStorage.getItem('nbc_'+k+'_'+window.currentMember);
-      if(v!==null) localStorage.setItem('nbc_'+k, v); else localStorage.setItem('nbc_'+k, k==='balance'?'5000':'0');
-    });
-    if(typeof syncBalance==='function') syncBalance();
-    setTimeout(initHoloDrag, 100);
-  }catch(e){ console.log(e); }
+  }catch(e){}
 }
-
-function initHoloDrag(){
-  const tilt = document.getElementById('cardTilt');
-  const glare = document.getElementById('cardGlare');
-  if(!tilt || tilt.dataset.dragInit) return;
-  tilt.dataset.dragInit='1';
-  let isDown=false, sx=0, sy=0;
-  tilt.addEventListener('pointerdown', e=>{isDown=true; sx=e.clientX; sy=e.clientY; tilt.setPointerCapture(e.pointerId);});
-  window.addEventListener('pointermove', e=>{
-    if(!isDown) return;
-    const dx = e.clientX - sx; const dy = e.clientY - sy;
-    const ry = dx*0.12; const rx = -dy*0.08;
-    tilt.style.transform = 'rotateX('+rx+'deg) rotateY('+ry+'deg)';
-    if(glare){ glare.style.setProperty('--mx', (50+dx*0.1)+'%'); glare.style.setProperty('--my', (50+dy*0.1)+'%'); glare.style.opacity='0.6'; }
-  });
-  window.addEventListener('pointerup', ()=>{isDown=false; tilt.style.transform='rotateX(0) rotateY(0)'; if(glare) glare.style.opacity='0';});
-}
-
-function closeGamez(){
-  const overlay = document.getElementById('gamezOverlay');
-  if(overlay){ overlay.style.display='none'; }
-  document.body.style.overflow='';
-  try{
-    if(window.currentMember){
-      ['balance','wins','plays','bestrun','jackpot'].forEach(k=>{
-        const v = localStorage.getItem('nbc_'+k);
-        if(v!==null) localStorage.setItem('nbc_'+k+'_'+window.currentMember, v);
-      });
+function closeGamez(){document.getElementById('gamezOverlay').style.display='none';document.body.style.overflow='';}</div>
+        <div>🏆 Total Wins</div><div style="color:#00D9FF;text-align:right">${wins}</div>
+        <div>🎮 Spiele gespielt</div><div style="text-align:right">${plays}</div>
+        <div>🏃 River Best</div><div style="text-align:right">${best}m</div>
+      </div>`;
     }
-    const bal = localStorage.getItem('nbc_balance')||'5000';
-    const wins = localStorage.getItem('nbc_wins')||'0';
-    const plays = localStorage.getItem('nbc_plays')||'0';
-    const best = localStorage.getItem('nbc_bestrun')||'0';
-    const member = (document.getElementById('cardName')?.textContent || 'NBC').trim();
-    const list = document.getElementById('highscore-list');
-    if(list){
-      list.innerHTML = '<div style="display:grid;grid-template-columns:1fr auto;gap:6px;font-size:12px"><div style="grid-column:1/-1;color:#D4AF37;font-weight:700;margin-bottom:4px">👤 '+member+'</div><div>💰 Balance</div><div style="color:#D4AF37;text-align:right;font-weight:700">'+bal+'</div><div>🏆 Total Wins</div><div style="color:#00D9FF;text-align:right">'+wins+'</div><div>🎮 Spiele</div><div style="text-align:right">'+plays+'</div><div>🏃 River Best</div><div style="text-align:right">'+best+'m</div></div>';
-    }
-  }catch(e){ console.log(e); }
+  }catch(e){}
 }
 </script>r(15px);z-index:5000;display:none;align-items:center;justify-content:center">
   <div style="width:94%;max-width:1100px;height:88vh;background:linear-gradient(145deg,#0A0A0F,#1a0033);border:3px solid #D4AF37;border-radius:24px;box-shadow:0 0 80px rgba(212,175,55,0.4);display:flex;flex-direction:column;overflow:hidden">
@@ -2328,67 +2260,18 @@ function closeGamez(){
   </div>
 </div>
 <script>
-function openGamez(){
-  const overlay = document.getElementById('gamezOverlay');
-  if(overlay){ overlay.style.display='flex'; }
-  document.body.style.overflow='hidden';
-  try{
-    const name = (document.getElementById('cardName')?.textContent || 'NATURALBORNCHILLAZ').trim();
-    const insta = (document.getElementById('cardInsta')?.textContent || '@nbc').trim();
-    const rank = (document.getElementById('cardRankText')?.textContent || 'MEMBER').trim();
-    const num = (document.getElementById('cardNumber')?.textContent || 'UNITY • 001').trim();
-    const userEl = document.getElementById('gamezUserName');
-    if(userEl){ const parts=name.split(' '); userEl.innerHTML = parts[0] + '<br/>' + (parts[1]||'CHILLAZ'); }
+function openGamez(){document.getElementById('gamezOverlay').style.display='flex';document.body.style.overflow='hidden';try{const n=document.getElementById('cardName')?.textContent||'NBC';document.getElementById('gamezUserName').innerHTML=n.split(' ')[0]+'<br>'+ (n.split(' ')[1]||'CHILLAZ');}catch(e){}}
     const infoEl = document.getElementById('gamezCardInfo');
     if(infoEl){ infoEl.textContent = num + ' • ' + rank; }
-    window.currentMember = insta.replace(/[^a-z0-9]/gi,'_');
-    ['balance','wins','plays','bestrun','jackpot'].forEach(k=>{
-      const v = localStorage.getItem('nbc_'+k+'_'+window.currentMember);
-      if(v!==null) localStorage.setItem('nbc_'+k, v); else localStorage.setItem('nbc_'+k, k==='balance'?'5000':'0');
-    });
-    if(typeof syncBalance==='function') syncBalance();
-    setTimeout(initHoloDrag, 100);
-  }catch(e){ console.log(e); }
+  }catch(e){}
 }
-
-function initHoloDrag(){
-  const tilt = document.getElementById('cardTilt');
-  const glare = document.getElementById('cardGlare');
-  if(!tilt || tilt.dataset.dragInit) return;
-  tilt.dataset.dragInit='1';
-  let isDown=false, sx=0, sy=0;
-  tilt.addEventListener('pointerdown', e=>{isDown=true; sx=e.clientX; sy=e.clientY; tilt.setPointerCapture(e.pointerId);});
-  window.addEventListener('pointermove', e=>{
-    if(!isDown) return;
-    const dx = e.clientX - sx; const dy = e.clientY - sy;
-    const ry = dx*0.12; const rx = -dy*0.08;
-    tilt.style.transform = 'rotateX('+rx+'deg) rotateY('+ry+'deg)';
-    if(glare){ glare.style.setProperty('--mx', (50+dx*0.1)+'%'); glare.style.setProperty('--my', (50+dy*0.1)+'%'); glare.style.opacity='0.6'; }
-  });
-  window.addEventListener('pointerup', ()=>{isDown=false; tilt.style.transform='rotateX(0) rotateY(0)'; if(glare) glare.style.opacity='0';});
-}
-
-function closeGamez(){
-  const overlay = document.getElementById('gamezOverlay');
-  if(overlay){ overlay.style.display='none'; }
-  document.body.style.overflow='';
-  try{
-    if(window.currentMember){
-      ['balance','wins','plays','bestrun','jackpot'].forEach(k=>{
-        const v = localStorage.getItem('nbc_'+k);
-        if(v!==null) localStorage.setItem('nbc_'+k+'_'+window.currentMember, v);
-      });
+function closeGamez(){document.getElementById('gamezOverlay').style.display='none';document.body.style.overflow='';}</div>
+        <div>🏆 Total Wins</div><div style="color:#00D9FF;text-align:right">${wins}</div>
+        <div>🎮 Spiele gespielt</div><div style="text-align:right">${plays}</div>
+        <div>🏃 River Best</div><div style="text-align:right">${best}m</div>
+      </div>`;
     }
-    const bal = localStorage.getItem('nbc_balance')||'5000';
-    const wins = localStorage.getItem('nbc_wins')||'0';
-    const plays = localStorage.getItem('nbc_plays')||'0';
-    const best = localStorage.getItem('nbc_bestrun')||'0';
-    const member = (document.getElementById('cardName')?.textContent || 'NBC').trim();
-    const list = document.getElementById('highscore-list');
-    if(list){
-      list.innerHTML = '<div style="display:grid;grid-template-columns:1fr auto;gap:6px;font-size:12px"><div style="grid-column:1/-1;color:#D4AF37;font-weight:700;margin-bottom:4px">👤 '+member+'</div><div>💰 Balance</div><div style="color:#D4AF37;text-align:right;font-weight:700">'+bal+'</div><div>🏆 Total Wins</div><div style="color:#00D9FF;text-align:right">'+wins+'</div><div>🎮 Spiele</div><div style="text-align:right">'+plays+'</div><div>🏃 River Best</div><div style="text-align:right">'+best+'m</div></div>';
-    }
-  }catch(e){ console.log(e); }
+  }catch(e){}
 }
 function loadG(g){document.querySelectorAll('#gamezOverlay button').forEach(b=>b.style.background='rgba(0,217,255,0.1)');document.getElementById('g'+(g==='book'?'b':g==='bj'?'bj':g==='quiz'?'q':'r')).style.background='rgba(212,175,55,0.3)';const box=document.getElementById('gameBox');if(g==='book'){box.innerHTML='<div id="bookSlotContainer"></div>';initBookSlot()}if(g==='bj'){box.innerHTML='<div style="color:white">21 Duel - Lädt...</div>';}if(g==='quiz'){box.innerHTML='<div id="quizBox" style="color:white;max-width:600px"></div>';initQuiz30()}if(g==='river'){box.innerHTML='<canvas id="rv" width="640" height="480" style="border:2px solid #D4AF37"></canvas>';initRiver()}}
 // Book of Chillaz (simplified from sub-agent)
