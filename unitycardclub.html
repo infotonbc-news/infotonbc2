@@ -375,6 +375,21 @@ h2{font-family:'Orbitron',sans-serif;font-size:18px;color:#D4AF37;margin-bottom:
 #holoCard .holo-shine { opacity:0.2 !important; }
 #cardTilt { filter: drop-shadow(0 0 25px rgba(212,175,55,0.3)); }
 
+/* === FIX: GAMEZ OVERLAY === */
+#gamezOverlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.95);
+  backdrop-filter: blur(15px);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+}
+#gamezOverlay.open {
+  display: flex !important;
+}
 </style>
 
 
@@ -764,7 +779,7 @@ window.showCard=(insta)=>{
 
 window.openInstagram=()=>{
   if(currentCardUser){
-    window.open(`https://instagram.com/${currentCardUser.insta.replace('@','')}`,'_blank'); 
+    window.open(`https://instagram.com/${currentCardUser.insta.replace('@','')}`, '_blank');
     addActivityScore(2);
   }
 };
@@ -1017,12 +1032,12 @@ function destroyPlayer() {
 window.openChillazTV = async () => {
   const overlay = document.getElementById('chillazTV');
   const playerDiv = document.getElementById('tvPlayer');
-  if (!overlay ||!playerDiv) return;
+  if (!overlay || !playerDiv) return;
   overlay.classList.add('active');
   playerDiv.innerHTML = '<div style="color:#D4AF37;text-align:center;padding:50px;font-family:Orbitron">Lade CHILLAZ TV... 🎬</div>';
   try {
     await loadYouTubeAPI();
-    if (!window.YT ||!YT.Player) throw new Error('YouTube API nicht verfügbar');
+    if (!window.YT || !YT.Player) throw new Error('YouTube API nicht verfügbar');
     destroyPlayer();
     ytPlayer = new YT.Player('tvPlayer', {
       height: '100%',
@@ -1071,7 +1086,7 @@ window.prevVideo = () => {
 };
 
 window.switchPlaylist = () => {
-  currentPlaylist = currentPlaylist === 'playlist1'? 'playlist2' : 'playlist1';
+  currentPlaylist = currentPlaylist === 'playlist1' ? 'playlist2' : 'playlist1';
   const newPlaylist = PLAYLISTS[currentPlaylist];
   if (ytPlayer && typeof ytPlayer.loadPlaylist === 'function') {
     try {
@@ -1226,7 +1241,7 @@ function latLngToVector3(lat,lng,radius){
 
 const memberGroup = new THREE.Group();
 allUsers.forEach(u=>{
-  if(!u.lat ||!u.lng) return;
+  if(!u.lat || !u.lng) return;
   const pos = latLngToVector3(u.lat,u.lng,2.08);
   const color = u.donation>=100? 0xD4AF37 : u.donation>=50? 0x00D9FF : u.donation>=5? 0xE5E4E2 : 0x666666;
   const size = u.donation>=100? 0.09 : u.donation>=50? 0.07 : 0.05;
@@ -1250,7 +1265,7 @@ function onMouseMove(event){
   raycaster.setFromCamera(mouse, camera);
   const intersects = raycaster.intersectObjects(memberGroup.children);
   if(intersects.length > 0){
-    if(hoveredPoint!== intersects[0].object){
+    if(hoveredPoint !== intersects[0].object){
       if(hoveredPoint) hoveredPoint.scale.set(1,1,1);
       hoveredPoint = intersects[0].object;
       hoveredPoint.scale.set(1.8,1.8,1.8);
@@ -1287,7 +1302,7 @@ window.addEventListener('resize',()=>{camera.aspect=window.innerWidth/window.inn
 window.closeChillazTV = function() {
   const overlay = document.getElementById('chillazTV');
   if (overlay) overlay.classList.remove('active');
-  if (typeof ytPlayer!== 'undefined' && ytPlayer) {
+  if (typeof ytPlayer !== 'undefined' && ytPlayer) {
     try { ytPlayer.stopVideo(); ytPlayer.destroy(); ytPlayer = null; } catch(e) {}
   }
 }
@@ -1310,12 +1325,8 @@ window.closeChillazTV = function() {
   <button class="tv-next-btn" onclick="nextVideo()">NÄCHSTES →</button>
 </div>
 
-
-
-</div>
-
-<!-- CHILLAZ GAMEZ OVERLAY - Fixed -->
-<div id="gamezOverlay" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);backdrop-filter:blur(15px);z-index:5000;display:none;align-items:center;justify-content:center">
+<!-- CHILLAZ GAMEZ OVERLAY -->
+<div id="gamezOverlay" role="dialog" aria-modal="true">
   <div style="width:94%;max-width:1100px;height:88vh;background:linear-gradient(145deg,#0A0A0F,#1a0033);border:3px solid #D4AF37;border-radius:24px;box-shadow:0 0 80px rgba(212,175,55,0.4);display:flex;flex-direction:column;overflow:hidden">
     <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:linear-gradient(90deg,#FF00FF,#D4AF37,#00D9FF);border-bottom:2px solid #000">
       <div style="font-family:Orbitron;font-size:24px;font-weight:900;color:#000;letter-spacing:3px">CHILLAZ GAMEZ</div>
@@ -1392,37 +1403,46 @@ const nbcAudio = (function(){
 window.nbcSound = (name)=>{ try{ nbcAudio[name]&&nbcAudio[name](); }catch(e){} };
 
 /* ===== GAMEZ OVERLAY FUNCTIONS ===== */
+// FIX: openGamez verwendet nun classList.add('open') statt style.display
 function openGamez(){
   nbcSound('click');
-  document.getElementById('gamezOverlay').style.display='flex';
+  const overlay = document.getElementById('gamezOverlay');
+  if(overlay) overlay.classList.add('open');
   document.body.style.overflow='hidden';
   try{
-    const name = (document.getElementById('cardName')?.textContent || 'NATURALBORNCHILLAZ').trim();
-    const rank = (document.getElementById('cardRankText')?.textContent || 'MEMBER').trim();
-    const num = (document.getElementById('cardNumber')?.textContent || 'UNITY \u2022 001').trim();
+    const cu = JSON.parse(localStorage.getItem('nbc_current')||'null');
+    const name = cu ? cu.name : 'NATURALBORNCHILLAZ';
+    const donation = cu ? (cu.donation||0) : 0;
+    const rank = donation>=100?'ULTIMATE CHILLER':donation>50?'CONCILILIERE':donation>=5?'SUPPORTER':'MEMBER';
     const userEl = document.getElementById('gamezUserName');
-    if(userEl){ userEl.innerHTML = name.split(' ')[0] + '<br/>' + (name.split(' ')[1]||'CHILLAZ'); }
+    if(userEl){
+      const parts = name.split(' ');
+      userEl.innerHTML = parts[0] + '<br/>' + (parts[1]||'CHILLAZ');
+    }
     const infoEl = document.getElementById('gamezCardInfo');
-    if(infoEl){ infoEl.textContent = num + ' \u2022 ' + rank; }
+    if(infoEl){ infoEl.textContent = rank + ' • ' + donation + '€'; }
     const bal = localStorage.getItem('nbc_balance')||'5000';
     const balEl = document.getElementById('gamezBalance');
     if(balEl) balEl.textContent = parseInt(bal).toLocaleString();
   }catch(e){}
-  // Per-member balance persistence
   try{
-    const i=(document.getElementById('cardInsta')?.textContent||'@nbc').trim();
-    window.currentMember=i.replace(/[^a-z0-9]/gi,'_');
+    const cu = JSON.parse(localStorage.getItem('nbc_current')||'null');
+    const insta = cu ? cu.insta : '@nbc';
+    window.currentMember = insta.replace(/[^a-z0-9]/gi,'_');
     ['balance','wins','plays','bestrun'].forEach(k=>{
       const v=localStorage.getItem('nbc_'+k+'_'+window.currentMember);
       if(v!==null) localStorage.setItem('nbc_'+k,v);
     });
-    if(typeof syncBalance==='function') syncBalance();
+    const balEl = document.getElementById('gamezBalance');
+    const bal = localStorage.getItem('nbc_balance')||'5000';
+    if(balEl) balEl.textContent = parseInt(bal).toLocaleString();
   }catch(e){}
 }
 
 function closeGamez(){
   nbcSound('click');
-  document.getElementById('gamezOverlay').style.display='none';
+  const overlay = document.getElementById('gamezOverlay');
+  if(overlay) overlay.classList.remove('open');
   document.body.style.overflow='';
   try{
     if(window.currentMember){
@@ -1454,11 +1474,6 @@ function loadG(game){
   const box = document.getElementById('gameBox');
   if(!box) return;
   nbcSound('click');
-  // Highlight active button
-  ['book','bj','quiz','river'].forEach(g=>{
-    const btn = document.getElementById('g'+g==='book'?'b':g==='bj'?'bj':g==='quiz'?'q':'r');
-    if(btn) btn.style.background = g===game ? 'rgba(212,175,55,0.35)' : 'rgba(0,217,255,0.1)';
-  });
   document.getElementById('gb') && (document.getElementById('gb').style.background = game==='book' ? 'rgba(212,175,55,0.35)':'rgba(212,175,55,0.1)');
   document.getElementById('gbj') && (document.getElementById('gbj').style.background = game==='bj' ? 'rgba(0,217,255,0.25)':'rgba(0,217,255,0.1)');
   document.getElementById('gq') && (document.getElementById('gq').style.background = game==='quiz' ? 'rgba(0,217,255,0.25)':'rgba(0,217,255,0.1)');
@@ -1538,7 +1553,7 @@ function bjInitInBox(){
     $('g_dealerHand').innerHTML=gDealer.map((c,i)=>cardHTML(c,gPlaying&&i===1)).join('');
     const ps=gHands[gCurrent]?vHand(gHands[gCurrent]):0;
     const ds=gPlaying?'?':vHand(gDealer);
-    $('g_bjStatus').textContent=gPlaying?`Hand ${gCurrent+1}/${gHands.length} \u2022 You: ${ps}`:`You: ${ps} \u2022 Dealer: ${ds}`;
+    $('g_bjStatus').textContent=gPlaying?`Hand ${gCurrent+1}/${gHands.length} • You: ${ps}`:`You: ${ps} • Dealer: ${ds}`;
   }
   function finish(){
     gPlaying=false;
@@ -1763,34 +1778,6 @@ window._NBC_QUIZ = [
   {q:"Was ist SCROG?", a:["Screen of Green","Super Crop Root","Seed Clone Regrow","Soil Carbon Ratio"], c:0},
   {q:"Was ist die NBC Mission?", a:["Unity, Chill, Grow","Profit only","Verkauf","Geheim"], c:0}
 ];
-
-// Add sounds to existing main-game spin
-const _origSpin = typeof spin==='function' ? spin : null;
-if(_origSpin){
-  const _s = spin;
-  window.spin = function(){ nbcSound('spin'); _s(); };
-  document.getElementById('spinBtn') && (document.getElementById('spinBtn').onclick = window.spin);
-}
-
-// Add sounds to main BJ deal
-const _bjDealBtn = document.getElementById('bjDeal');
-if(_bjDealBtn){ const _orig = _bjDealBtn.onclick; _bjDealBtn.onclick = e=>{ nbcSound('deal'); if(_orig) _orig.call(this,e); }; }
-
-// Add sound to flip card
-const _hc = document.getElementById('holoCard');
-if(_hc){ const _ohc = _hc.onclick; _hc.onclick = e=>{ nbcSound('flip'); if(_ohc) _ohc.call(this,e); }; }
-
-// Patch finishSpin to add sounds
-const _origFinish = typeof finishSpin==='function' ? finishSpin : null;
-if(_origFinish){
-  window.finishSpin = function(result){
-    _origFinish(result);
-    const lastW = typeof lastWin!=='undefined'?lastWin:0;
-    if(typeof jackpot!=='undefined'&&jackpot>=100) nbcSound('jackpot');
-    else if(lastW>0) nbcSound('win');
-    else nbcSound('lose');
-  };
-}
 </script>
 </body>
 </html>
