@@ -2017,129 +2017,72 @@ $('#betMinus').onclick = ()=>{ bet=Math.max(0.2, +(bet-0.2).toFixed(2)); $('#bet
 $('#betPlus').onclick = ()=>{ bet=Math.min(100, +(bet+0.2).toFixed(2)); $('#betAmount').textContent=bet.toFixed(2); $('#bjBet').textContent=Math.max(1,Math.floor(bet*5)); };
 $('#autoBtn').onclick = ()=>{ auto=!auto; $('#autoBtn').classList.toggle('bg-violet-600/30',auto); toast(auto?'AUTO ON':'AUTO OFF'); if(auto && !isSpinning) spin(); };
 
-/* ===== 21 DUEL ===== */
+/* ===== 21 DUEL – FIXED ===== */
 const suits=['♠','♥','♦','♣'];
-function randCard(){ const v = Math.floor(Math.random()*13)+1; const s=suits[Math.floor(Math.random()*4)]; return {v,s}; }
-function val(hand){ let t=0,a=0; hand.forEach(c=>{ let v=c.v>10?10:c.v; if(c.v===1){a++; v=11;} t+=v; }); while(t>21&&a>0){t-=10;a--;} return t; }
+function randCard(){ const v=Math.floor(Math.random()*13)+1; return {v,s:suits[Math.floor(Math.random()*4)]}; }
+function val(hand){ let t=0,a=0; hand.forEach(c=>{let v=c.v>10?10:c.v; if(c.v===1){a++;v=11;} t+=v;}); while(t>21&&a>0){t-=10;a--;} return t; }
 function cardEl(c,hidden=false){
   const d=document.createElement('div');
-  d.className='w-[82px] h-[110px] rounded-2xl flex flex-col justify-between p-2.5 border-2 shadow-xl relative overflow-hidden';
-  d.style.transition='transform 0.3s';
-  if(hidden){ 
-    d.style.background='linear-gradient(135deg,#D4AF37,#FF00FF,#00D9FF)';
-    d.style.borderColor='#D4AF37';
-    d.innerHTML='<div class="w-full h-full rounded-xl bg-black/70 grid place-items-center text-3xl" style="color:#D4AF37">NBC</div>'; 
-    return d; 
-  }
-  const suits = {'♥':'#ff3b5c','♦':'#00D9FF','♣':'#22c55e','♠':'#D4AF37'};
-  const bg = {'♥':'linear-gradient(135deg,#ff3b5c33,#ff005533)','♦':'linear-gradient(135deg,#00D9FF33,#0066ff33)','♣':'linear-gradient(135deg,#22c55e33,#00ff8833)','♠':'linear-gradient(135deg,#D4AF3733,#ffaa0033)'};
-  const v = c.v===1?'A':c.v===11?'J':c.v===12?'Q':c.v===13?'K':c.v;
-  d.style.background = bg[c.s] || '#111';
-  d.style.borderColor = suits[c.s] || '#fff';
-  d.style.boxShadow = '0 0 20px '+ (suits[c.s]||'#fff') +'66, inset 0 0 20px rgba(0,0,0,0.5)';
-  d.innerHTML = '<div style="color:'+suits[c.s]+';font-weight:900;font-size:18px">'+v+'<span style="margin-left:2px">'+c.s+'</span></div><div style="text-align:center;font-size:36px;color:'+suits[c.s]+';text-shadow:0 0 10px '+suits[c.s]+'">'+c.s+'</div><div style="color:'+suits[c.s]+';font-weight:900;font-size:18px;transform:rotate(180deg);text-align:right">'+v+'</div>';
+  d.className='w-[82px] h-[110px] rounded-2xl flex flex-col justify-between p-2.5 border-2 shadow-xl';
+  if(hidden){ d.style.background='linear-gradient(135deg,#D4AF37,#FF00FF)'; d.innerHTML='<div class="w-full h-full grid place-items-center text-2xl">NBC</div>'; return d; }
+  const col=c.s==='♥'||c.s==='♦'?'#ff3b5c':'#D4AF37';
+  const v=c.v===1?'A':c.v===11?'J':c.v===12?'Q':c.v===13?'K':c.v;
+  d.style.borderColor=col; d.style.background='#0a0f1f';
+  d.innerHTML=`<div style="color:${col};font-weight:900">${v}${c.s}</div><div style="font-size:32px;color:${col};text-align:center">${c.s}</div><div style="color:${col};font-weight:900;transform:rotate(180deg);text-align:right">${v}</div>`;
   return d;
 }
-let bjBet=10, bjHands=[], bjDealer=[], bjPlaying=false, bjCurrent=0, bjBets=[];
+
+let bjBet=10, bjHand=[], bjDealer=[], bjPlaying=false;
+
 function bjSync(){ $('#bjBet').textContent=bjBet; $('#bjBalance').textContent=fmt(balance); }
 $('#bjMinus').onclick=()=>{ bjBet=Math.max(1,bjBet-1); bjSync(); };
 $('#bjPlus').onclick=()=>{ bjBet=Math.min(500,Math.min(balance,bjBet+1)); bjSync(); };
+
 function bjRender(){
-  const ph=$('#playerHand'); ph.innerHTML='';
-  bjHands.forEach((hand,hi)=>{
-    const wrap=document.createElement('div');
-    wrap.className='flex gap-2 mr-4 p-2 rounded-xl '+(hi===bjCurrent && bjPlaying ? 'ring-2 ring-amber-400' : '');
-    hand.forEach(c=>wrap.appendChild(cardEl(c)));
-    ph.appendChild(wrap);
-  });
-  const dh=$('#dealerHand'); dh.innerHTML=''; bjDealer.forEach((c,i)=>dh.appendChild(cardEl(c, bjPlaying && i===1)));
-  const ps = bjHands[bjCurrent] ? val(bjHands[bjCurrent]) : 0;
-  const ds = bjPlaying? '?' : val(bjDealer);
-  $('#bjStatus').textContent = bjPlaying? `Hand ${bjCurrent+1}/${bjHands.length} • You: ${ps}` : `You: ${ps} • Dealer: ${ds}`;
+  $('#playerHand').innerHTML=''; bjHand.forEach(c=>$('#playerHand').appendChild(cardEl(c)));
+  $('#dealerHand').innerHTML=''; bjDealer.forEach((c,i)=>$('#dealerHand').appendChild(cardEl(c, bjPlaying && i===1)));
+  const ps=val(bjHand), ds=bjPlaying?'?':val(bjDealer);
+  $('#bjStatus').textContent = bjPlaying? `You: ${ps} – Hit or Stand` : `You: ${ps} Dealer: ${ds}`;
 }
+
 $('#bjDeal').onclick=()=>{
-  if(bjPlaying) return;
-  if(balance<bjBet){toast('No balance'); return;}
+  if(bjPlaying || balance<bjBet) return;
   balance-=bjBet; totalPlays++; syncBalance(); bjSync();
-  bjHands=[[randCard(),randCard()]]; bjBets=[bjBet]; bjDealer=[randCard(),randCard()]; bjCurrent=0; bjPlaying=true;
-  $('#bjHit').disabled=false; $('#bjStand').disabled=false; $('#bjDeal').disabled=true;
-  $('#bjDouble').disabled = balance < bjBet;
-  $('#bjSplit').disabled = !(bjHands[0][0].v===bjHands[0][1].v && balance>=bjBet && bjHands.length<4);
+  bjHand=[randCard(),randCard()]; bjDealer=[randCard(),randCard()]; bjPlaying=true;
+  $('#bjHit').disabled=false; $('#bjStand').disabled=false; $('#bjDouble').disabled=balance<bjBet; $('#bjDeal').disabled=true;
   bjRender();
-  if(val(bjHands[0])===21){ setTimeout(bjStand,500); }
-};
-function bjNextHand(){
-  bjCurrent++;
-  if(bjCurrent < bjHands.length){
-    $('#bjDouble').disabled = balance < bjBets[bjCurrent] || bjHands[bjCurrent].length!==2;
-    $('#bjSplit').disabled = true;
-    bjRender();
-    if(val(bjHands[bjCurrent])===21) setTimeout(bjNextHand,400);
-    return true;
-  }
-  return false;
-}
-function bjFinish(){
-  bjPlaying=false;
-  while(val(bjDealer)<17){ bjDealer.push(randCard()); }
-  let profit=0;
-  bjHands.forEach((h,i)=>{
-    const pv=val(h), dv=val(bjDealer), bet=bjBets[i];
-    if(pv>21) profit-=bet;
-    else if(dv>21 || pv>dv) profit += (pv===21 && h.length===2 ? Math.floor(bet*1.5) : bet);
-    else if(pv===dv) profit+=0;
-    else profit-=bet;
-  });
-  balance+=bjBets.reduce((a,b)=>a+b,0)+profit;
-  if(profit>0){ totalWins++; toast('Win +'+fmt(profit)); }
-  else if(profit<0) toast('Lose '+fmt(profit));
-  else toast('Push');
-  syncBalance(); bjSync();
-  $('#bjHit').disabled=true; $('#bjStand').disabled=true; $('#bjDouble').disabled=true; $('#bjSplit').disabled=true; $('#bjDeal').disabled=false;
-  bjRender();
-}
-function bjHit(){
-  if(!bjPlaying) return;
-  const hand=bjHands[bjCurrent];
-  hand.push(randCard());
-  $('#bjDouble').disabled=true; $('#bjSplit').disabled=true;
-  bjRender();
-  if(val(hand)>=21){
-    if(!bjNextHand()) bjFinish();
-  }
-}
-function bjStand(){
-  if(!bjPlaying) return;
-  if(!bjNextHand()) bjFinish();
-}
-$('#bjHit').onclick=bjHit;
-$('#bjStand').onclick=bjStand;
-$('#bjDouble').onclick=()=>{
-  if(!bjPlaying) return;
-  const hand=bjHands[bjCurrent];
-  if(hand.length!==2 || balance<bjBets[bjCurrent]) return;
-  balance-=bjBets[bjCurrent]; bjBets[bjCurrent]*=2; syncBalance();
-  hand.push(randCard());
-  bjRender();
-  if(!bjNextHand()) bjFinish();
-};
-$('#bjSplit').onclick=()=>{
-  if(!bjPlaying) return;
-  const hand=bjHands[bjCurrent];
-  if(hand.length!==2 || hand[0].v!==hand[1].v || balance<bjBet || bjHands.length>=4) return;
-  balance-=bjBet; syncBalance();
-  const c2=hand.pop();
-  hand.push(randCard());
-  bjHands.splice(bjCurrent+1,0,[c2,randCard()]);
-  bjBets.splice(bjCurrent+1,0,bjBet);
-  $('#bjDouble').disabled = balance < bjBets[bjCurrent];
-  $('#bjSplit').disabled = !(hand[0].v===hand[1].v && balance>=bjBet);
-  bjRender();
+  if(val(bjHand)===21) setTimeout(()=>$('#bjStand').click(),600);
 };
 
-$('#bjHit').onclick=()=>{ if(!bjPlaying) return; bjPlayer.push(randCard()); bjRender(); if(val(bjPlayer)>21) bjEnd(-1); };
-function bjStand(){ if(!bjPlaying) return; bjPlaying=false; while(val(bjDealer)<17) bjDealer.push(randCard()); const p=val(bjPlayer), d=val(bjDealer); let win=-1; if(d>21||p>d) win = bjBet*2 + (p===21 && bjPlayer.length===2 ? bjBet*0.5:0); else if(p===d) win=0; bjEnd(win); }
-$('#bjStand').onclick=bjStand;
+$('#bjHit').onclick=()=>{
+  if(!bjPlaying) return;
+  bjHand.push(randCard()); bjRender();
+  if(val(bjHand)>21) bjEnd(false);
+};
+$('#bjStand').onclick=()=>{
+  if(!bjPlaying) return;
+  bjPlaying=false;
+  while(val(bjDealer)<17) bjDealer.push(randCard());
+  const p=val(bjHand), d=val(bjDealer);
+  bjEnd(d>21 || p>d);
+};
+$('#bjDouble').onclick=()=>{
+  if(!bjPlaying || balance<bjBet) return;
+  balance-=bjBet; bjBet*=2; syncBalance(); bjSync();
+  bjHand.push(randCard()); bjRender();
+  $('#bjStand').click();
+};
+
+function bjEnd(win){
+  bjPlaying=false;
+  let payout=0;
+  if(win){ payout=bjBet*2; if(val(bjHand)===21 && bjHand.length===2) payout+=bjBet*0.5; balance+=payout; totalWins++; toast('Blackjack Win +'+fmt(payout-bjBet)); }
+  else if(val(bjHand)===val(bjDealer)){ balance+=bjBet; toast('Push'); }
+  else { toast('Dealer wins'); }
+  syncBalance(); bjSync();
+  $('#bjHit').disabled=true; $('#bjStand').disabled=true; $('#bjDouble').disabled=true; $('#bjDeal').disabled=false;
+  bjRender(); bjBet=Math.min(bjBet, balance); bjSync();
+}
 bjSync();
 
 /* ===== RIVER RUN ===== */
