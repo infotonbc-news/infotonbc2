@@ -82,7 +82,7 @@
         "email": "infotonbc@gmail.com",
         "contactType": "customer support"
       },
-      "sameAs": ["https://www.instagram.com/infotonbc"]
+      "sameAs": ["https://www.instagram.com/infotonbc"] 
     }
   ]
 }
@@ -98,16 +98,16 @@
     --gold: #D4AF37;
     --smoke: #F8FAF9;
   }
-
+  
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
+  
   body {
     background: var(--wood-dark);
     color: var(--smoke);
     font-family: 'Outfit', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
-    background-image:
+    background-image: 
       linear-gradient(90deg, rgba(20,14,12,0.85) 0%, transparent 50%, rgba(20,14,12,0.85) 100%),
       repeating-linear-gradient(90deg, #0C0A09, #0C0A09 2px, #1A1411 2px, #1A1411 4px),
       radial-gradient(ellipse at 30% 20%, rgba(196,245,224,0.04) 0%, transparent 50%);
@@ -119,9 +119,9 @@
     pointer-events: none; z-index: 1; opacity: 0.65;
   }
 
- .wrap { position: relative; z-index: 2; max-width: 540px; margin: 0 auto; padding: 50px 18px 80px; }
+  .wrap { position: relative; z-index: 2; max-width: 540px; margin: 0 auto; padding: 50px 18px 80px; }
 
- .glass-plate {
+  .glass-plate {
     background: var(--glass);
     backdrop-filter: blur(20px) saturate(150%);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
@@ -130,7 +130,7 @@
     box-shadow: 0 35px 70px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05);
   }
 
- .glass-plate::before {
+  .glass-plate::before {
     content: ''; position: absolute; inset: 0; border-radius: 26px; padding: 1.2px;
     background: linear-gradient(135deg, var(--neon-purple), var(--gold), var(--glow-green));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -139,82 +139,82 @@
   }
   @keyframes borderGlow { 0% { opacity: 0.45; } 100% { opacity: 0.85; } }
 
- .hero { text-align: center; padding: 42px 28px 36px; }
- .logo-img {
+  .hero { text-align: center; padding: 42px 28px 36px; }
+  .logo-img {
     width: 112px; height: 112px; margin: 0 auto 18px; border-radius: 50%;
     object-fit: cover; border: 2px solid rgba(212,175,55,0.45);
     box-shadow: 0 0 45px rgba(199,125,255,0.22), inset 0 0 22px rgba(0,0,0,0.5);
   }
- .nbc-title { width: 100%; max-width: 400px; height: auto; margin: 0 auto 10px; display: block; filter: drop-shadow(0 18px rgba(196,245,224,0.18)); }
- .tagline { font-weight: 300; color: var(--sage); font-size: 0.95rem; letter-spacing: 2.2px; text-transform: uppercase; }
+  .nbc-title { width: 100%; max-width: 400px; height: auto; margin: 0 auto 10px; display: block; filter: drop-shadow(0 0 18px rgba(196,245,224,0.18)); }
+  .tagline { font-weight: 300; color: var(--sage); font-size: 0.95rem; letter-spacing: 2.2px; text-transform: uppercase; }
 
- .inner-section { padding: 0 28px 32px; }
- .section-block { margin-bottom: 38px; padding-bottom: 36px; border-bottom: 1px solid rgba(196,245,224,0.09); }
- .section-block:last-child { border: none; margin: 0; padding: 0; }
- .section-block h2 {
+  .inner-section { padding: 0 28px 32px; }
+  .section-block { margin-bottom: 38px; padding-bottom: 36px; border-bottom: 1px solid rgba(196,245,224,0.09); }
+  .section-block:last-child { border: none; margin: 0; padding: 0; }
+  .section-block h2 {
     font-family: 'Marcellus', serif; font-size: 1.55rem; color: var(--glow-green);
     margin-bottom: 16px; font-weight: 400; display: flex; align-items: center; gap: 10px;
   }
- .section-block h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(212,175,55,0.45), transparent); }
- .section-block p { color: var(--sage); font-weight: 300; line-height: 1.85; margin-bottom: 20px; font-size: 0.97rem; }
- .quote { font-style: italic; color: var(--glow-green); padding: 16px 0 16px 20px; border-left: 2px solid var(--gold); margin: 22px 0; background: rgba(212,175,55,0.035); }
+  .section-block h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(212,175,55,0.45), transparent); }
+  .section-block p { color: var(--sage); font-weight: 300; line-height: 1.85; margin-bottom: 20px; font-size: 0.97rem; }
+  .quote { font-style: italic; color: var(--glow-green); padding: 16px 0 16px 20px; border-left: 2px solid var(--gold); margin: 22px 0; background: rgba(212,175,55,0.035); }
 
- .manifesto-list { list-style: none; margin: 18px 0; }
- .manifesto-list li { margin: 14px 0; padding-left: 26px; position: relative; color: var(--sage); line-height: 1.7; }
- .manifesto-list li::before { content: '•'; position: absolute; left: 0; color: var(--gold); font-size: 1.2rem; }
- .manifesto-list strong { color: var(--glow-green); font-weight: 500; }
+  .manifesto-list { list-style: none; margin: 18px 0; }
+  .manifesto-list li { margin: 14px 0; padding-left: 26px; position: relative; color: var(--sage); line-height: 1.7; }
+  .manifesto-list li::before { content: '•'; position: absolute; left: 0; color: var(--gold); font-size: 1.2rem; }
+  .manifesto-list strong { color: var(--glow-green); font-weight: 500; }
 
- .btn {
+  .btn {
     display: block; width: 100%; padding: 17px; margin: 12px 0;
     background: rgba(196,245,224,0.045); color: var(--smoke); text-align: center; text-decoration: none;
     border-radius: 14px; border: 1px solid rgba(199,125,255,0.28);
     transition: all 0.5s cubic-bezier(0.23,1,0.32,1); font-weight: 400; letter-spacing: 0.8px;
     position: relative; overflow: hidden; cursor: pointer;
   }
- .btn::before { content: ''; position: absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.12), transparent); transition: left 0.6s; }
- .btn:hover::before { left:100%; }
- .btn:hover { background: rgba(199,125,255,0.11); border-color: rgba(212,175,55,0.55); box-shadow: 0 0 26px rgba(199,125,255,0.22); transform: translateY(-3px); }
+  .btn::before { content: ''; position: absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.12), transparent); transition: left 0.6s; }
+  .btn:hover::before { left:100%; }
+  .btn:hover { background: rgba(199,125,255,0.11); border-color: rgba(212,175,55,0.55); box-shadow: 0 0 26px rgba(199,125,255,0.22); transform: translateY(-3px); }
 
- .shop { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
- .item { background: rgba(12,10,9,0.52); border: 1px solid rgba(157,180,166,0.12); border-radius: 18px; padding: 20px 16px; text-align: center; transition: all 0.4s ease; cursor: pointer; }
- .item:hover { border-color: rgba(212,175,55,0.34); background: rgba(12,10,9,0.72); box-shadow: 0 12px 32px rgba(0,0,0,0.35); transform: translateY(-2px); }
- .item-img { width: 100%; aspect-ratio: 1; border-radius: 14px; background: var(--jungle); margin-bottom: 14px; object-fit: cover; border: 1px solid rgba(196,245,224,0.12); }
- .item h3 { font-size: 1.02rem; color: var(--glow-green); font-weight: 400; margin-bottom: 6px; font-family: 'Marcellus', serif; }
- .item.price { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; font-weight: 300; }
- .item.subtext { font-size: 0.82rem; color: var(--sage); margin-bottom: 14px; line-height: 1.45; }
- .item.btn { padding: 11px; font-size: 0.86rem; margin: 0; }
-
+  .shop { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
+  .item { background: rgba(12,10,9,0.52); border: 1px solid rgba(157,180,166,0.12); border-radius: 18px; padding: 20px 16px; text-align: center; transition: all 0.4s ease; cursor: pointer; }
+  .item:hover { border-color: rgba(212,175,55,0.34); background: rgba(12,10,9,0.72); box-shadow: 0 12px 32px rgba(0,0,0,0.35); transform: translateY(-2px); }
+  .item-img { width: 100%; aspect-ratio: 1; border-radius: 14px; background: var(--jungle); margin-bottom: 14px; object-fit: cover; border: 1px solid rgba(196,245,224,0.12); }
+  .item h3 { font-size: 1.02rem; color: var(--glow-green); font-weight: 400; margin-bottom: 6px; font-family: 'Marcellus', serif; }
+  .item .price { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; font-weight: 300; }
+  .item .subtext { font-size: 0.82rem; color: var(--sage); margin-bottom: 14px; line-height: 1.45; }
+  .item .btn { padding: 11px; font-size: 0.86rem; margin: 0; }
+  
   /* Banner items */
- .item.banner-item { padding: 0; overflow: hidden; grid-column: span 2; background: rgba(12,10,9,0.7); height: 260px; display: flex; flex-direction: column; }
- .banner-wrap { width: 100%; height: 100%; border-radius: 14px; overflow: hidden; position: relative; cursor: pointer; border: none; display: flex; flex-direction: column; }
- .banner-svg { display: block; width: 100%; height: 180px; object-fit: cover; }
- .banner-label { background: rgba(0,0,0,0.85); padding: 12px 16px; text-align: center; border-top: 1px solid rgba(212,175,55,0.2); }
- .banner-label h3 { color: var(--gold); font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; font-family: 'Outfit', sans-serif; }
- .banner-label p { color: var(--sage); font-size: 0.8rem; margin-bottom: 8px; }
- .book-btn { background: var(--gold); color: #000; border: none; padding: 7px 18px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: transform.15s; }
- .book-btn:hover { transform: scale(1.05); }
+  .item.banner-item { padding: 0; overflow: hidden; grid-column: span 2; background: rgba(12,10,9,0.7); height: 260px; display: flex; flex-direction: column; }
+  .banner-wrap { width: 100%; height: 100%; border-radius: 14px; overflow: hidden; position: relative; cursor: pointer; border: none; display: flex; flex-direction: column; }
+  .banner-svg { display: block; width: 100%; height: 180px; object-fit: cover; }
+  .banner-label { background: rgba(0,0,0,0.85); padding: 12px 16px; text-align: center; border-top: 1px solid rgba(212,175,55,0.2); }
+  .banner-label h3 { color: var(--gold); font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; font-family: 'Outfit', sans-serif; }
+  .banner-label p { color: var(--sage); font-size: 0.8rem; margin-bottom: 8px; }
+  .book-btn { background: var(--gold); color: #000; border: none; padding: 7px 18px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: transform .15s; }
+  .book-btn:hover { transform: scale(1.05); }
 
- .footer { text-align: center; margin-top: 48px; font-size: 0.76rem; color: var(--sage); opacity: 0.55; line-height: 1.75; }
+  .footer { text-align: center; margin-top: 48px; font-size: 0.76rem; color: var(--sage); opacity: 0.55; line-height: 1.75; }
 
   /* MODAL */
- .modal { display: none; position: fixed; z-index: 999; left:0; top:0; width:100%; height:100%; background: rgba(12,10,9,0.92); backdrop-filter: blur(12px); animation: fadeIn 0.3s ease; }
- .modal.active { display: flex; align-items: center; justify-content: center; }
+  .modal { display: none; position: fixed; z-index: 999; left:0; top:0; width:100%; height:100%; background: rgba(12,10,9,0.92); backdrop-filter: blur(12px); animation: fadeIn 0.3s ease; }
+  .modal.active { display: flex; align-items: center; justify-content: center; }
   @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
- .pokemon-card { width: 90%; max-width: 390px; background: linear-gradient(135deg,#1a1a2e 0%,#16213e 100%); border-radius: 22px; padding: 3px; position: relative; box-shadow: 0 0 65px rgba(199,125,255,0.45); animation: cardPop 0.42s cubic-bezier(0.34,1.56,0.64,1); }
+  .pokemon-card { width: 90%; max-width: 390px; background: linear-gradient(135deg,#1a1a2e 0%,#16213e 100%); border-radius: 22px; padding: 3px; position: relative; box-shadow: 0 0 65px rgba(199,125,255,0.45); animation: cardPop 0.42s cubic-bezier(0.34,1.56,0.64,1); }
   @keyframes cardPop { from { transform: scale(0.85); opacity:0 } to { transform: scale(1); opacity:1 } }
- .pokemon-card::before { content:''; position:absolute; inset:0; border-radius:22px; padding:3px; background: linear-gradient(135deg,var(--gold),var(--neon-purple),var(--glow-green)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
- .card-inner { background: linear-gradient(135deg,#0f1729 0%,#1a1a2e 100%); border-radius: 19px; padding: 22px; }
- .card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
- .card-title { font-family:'Marcellus',serif; font-size:1.32rem; color:var(--gold); }
- .card-hp { color:var(--glow-green); font-weight:500; font-size:0.92rem; }
- .card-image { width:100%; aspect-ratio:4/3; background:var(--jungle); border-radius:12px; margin-bottom:15px; border:3px solid rgba(212,175,55,0.32); object-fit:cover; }
- .card-desc { background: rgba(196,245,224,0.055); padding:15px; border-radius:10px; margin-bottom:15px; font-size:0.87rem; line-height:1.62; color:var(--sage); }
- .card-stats { display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid rgba(212,175,55,0.22); border-bottom:1px solid rgba(212,175,55,0.22); margin-bottom:15px; }
- .stat { text-align:center; }.stat-label { font-size:0.7rem; color:var(--sage); text-transform:uppercase; letter-spacing:1px; }.stat-value { font-size:1.12rem; color:var(--glow-green); font-weight:500; }
- .card-footer { text-align:center; font-size:0.76rem; color:var(--sage); opacity:0.75; margin-bottom:15px; }
- .modal-close { position:absolute; top:-12px; right:-12px; width:38px; height:38px; background:var(--neon-purple); border:2px solid var(--gold); border-radius:50%; color:var(--smoke); font-size:1.25rem; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 22px rgba(199,125,255,0.55); }
+  .pokemon-card::before { content:''; position:absolute; inset:0; border-radius:22px; padding:3px; background: linear-gradient(135deg,var(--gold),var(--neon-purple),var(--glow-green)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+  .card-inner { background: linear-gradient(135deg,#0f1729 0%,#1a1a2e 100%); border-radius: 19px; padding: 22px; }
+  .card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
+  .card-title { font-family:'Marcellus',serif; font-size:1.32rem; color:var(--gold); }
+  .card-hp { color:var(--glow-green); font-weight:500; font-size:0.92rem; }
+  .card-image { width:100%; aspect-ratio:4/3; background:var(--jungle); border-radius:12px; margin-bottom:15px; border:3px solid rgba(212,175,55,0.32); object-fit:cover; }
+  .card-desc { background: rgba(196,245,224,0.055); padding:15px; border-radius:10px; margin-bottom:15px; font-size:0.87rem; line-height:1.62; color:var(--sage); }
+  .card-stats { display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid rgba(212,175,55,0.22); border-bottom:1px solid rgba(212,175,55,0.22); margin-bottom:15px; }
+  .stat { text-align:center; } .stat-label { font-size:0.7rem; color:var(--sage); text-transform:uppercase; letter-spacing:1px; } .stat-value { font-size:1.12rem; color:var(--glow-green); font-weight:500; }
+  .card-footer { text-align:center; font-size:0.76rem; color:var(--sage); opacity:0.75; margin-bottom:15px; }
+  .modal-close { position:absolute; top:-12px; right:-12px; width:38px; height:38px; background:var(--neon-purple); border:2px solid var(--gold); border-radius:50%; color:var(--smoke); font-size:1.25rem; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 0 22px rgba(199,125,255,0.55); }
 
- .joke-ticker-wrap {
+  .joke-ticker-wrap {
     margin: 22px 0;
     padding: 14px 0;
     border-left: 2px solid var(--gold);
@@ -222,7 +222,7 @@
     overflow: hidden;
     position: relative;
   }
- .joke-ticker {
+  .joke-ticker {
     font-style: italic;
     color: var(--glow-green);
     padding-left: 20px;
@@ -238,26 +238,27 @@
   @keyframes shimmer {
     0% { background-position: -200% center; }
     100% { background-position: 200% center; }
+  }
   @keyframes fadeInOut {
     0% { opacity: 0; transform: translateY(5px); }
     100% { opacity: 1; transform: translateY(0); }
   }
 
   /* === NEU: SUPPORTERS LAUFBAND === */
- .supporter-ticker-wrap {
+  .supporter-ticker-wrap {
     margin-top: 18px;
     position: relative;
     overflow: hidden;
     border-radius: 14px;
     background: rgba(12,10,9,0.65);
     border: 1px solid rgba(196,245,224,0.12);
-    box-shadow: inset 0 0 20px rgba(0,0,0.4);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
     height: 64px;
     display: flex;
     align-items: center;
   }
- .supporter-ticker-wrap::before,
- .supporter-ticker-wrap::after {
+  .supporter-ticker-wrap::before,
+  .supporter-ticker-wrap::after {
     content: '';
     position: absolute;
     top: 0;
@@ -266,15 +267,15 @@
     z-index: 3;
     pointer-events: none;
   }
- .supporter-ticker-wrap::before {
+  .supporter-ticker-wrap::before {
     left: 0;
     background: linear-gradient(90deg, rgba(12,10,9,0.9), transparent);
   }
- .supporter-ticker-wrap::after {
+  .supporter-ticker-wrap::after {
     right: 0;
     background: linear-gradient(270deg, rgba(12,10,9,0.9), transparent);
   }
- .supporter-ticker {
+  .supporter-ticker {
     display: flex;
     align-items: center;
     gap: 52px;
@@ -282,12 +283,12 @@
     animation: supporterScroll 35s linear infinite;
     padding-left: 52px;
   }
- .supporter-ticker:hover { animation-play-state: paused; }
+  .supporter-ticker:hover { animation-play-state: paused; }
   @keyframes supporterScroll {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
- .ticker-item {
+  .ticker-item {
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -299,13 +300,13 @@
     transition: all 0.3s ease;
     opacity: 0.85;
   }
- .ticker-item:hover {
+  .ticker-item:hover {
     color: var(--gold);
     opacity: 1;
     transform: translateY(-2px);
     text-shadow: 0 0 12px rgba(212,175,55,0.4);
   }
- .ticker-item img {
+  .ticker-item img {
     height: 32px;
     width: auto;
     max-width: 110px;
@@ -314,10 +315,10 @@
     filter: brightness(0.95) contrast(1.05);
     transition: filter 0.3s;
   }
- .ticker-item:hover img {
-    filter: brightness(1.1) drop-shadow(0 8px rgba(199,125,255,0.3));
+  .ticker-item:hover img {
+    filter: brightness(1.1) drop-shadow(0 0 8px rgba(199,125,255,0.3));
   }
- .ticker-slogan {
+  .ticker-slogan {
     display: inline-flex;
     align-items: center;
     padding: 7px 16px;
@@ -331,31 +332,32 @@
     transition: all 0.3s ease;
     white-space: nowrap;
   }
- .ticker-slogan:hover {
+  .ticker-slogan:hover {
     background: rgba(199,125,255,0.12);
     border-color: var(--neon-purple);
     color: var(--smoke);
     box-shadow: 0 0 18px rgba(199,125,255,0.22);
   }
- .ticker-divider {
+  .ticker-divider {
     width: 1px;
     height: 24px;
     background: linear-gradient(to bottom, transparent, var(--gold), transparent);
     opacity: 0.4;
   }
 
- .lang-bar{position:relative;z-index:5;margin-bottom:18px;background:rgba(12,10,9,0.7);backdrop-filter:blur(12px);border:1px solid rgba(199,125,255,0.25);border-radius:16px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.4)}
- .lang-prompt{font-size:0.85rem;color:var(--glow-green);font-style:italic;white-space:nowrap}
- .lang-flags{display:flex;gap:8px;flex-wrap:wrap}
- .lang-flags button{background:rgba(196,245,224,0.06);border:1px solid rgba(157,180,166,0.2);border-radius:10px;padding:6px 8px;font-size:1.1rem;cursor:pointer;transition:all.2s}
- .lang-flags button:hover,.lang-flags button.active{border-color:var(--gold);background:rgba(212,175,55,0.15);transform:translateY(-2px);box-shadow:0 0 12px rgba(212,175,55,0.3)}
-  html[dir="rtl"].quote{border-left:none;border-right:2px solid var(--gold);padding:16px 20px 16px 0}
+
+  .lang-bar{position:relative;z-index:5;margin-bottom:18px;background:rgba(12,10,9,0.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(199,125,255,0.25);border-radius:16px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+  .lang-prompt{font-size:0.85rem;color:var(--glow-green);font-style:italic;white-space:nowrap}
+  .lang-flags{display:flex;gap:8px;flex-wrap:wrap}
+  .lang-flags button{background:rgba(196,245,224,0.06);border:1px solid rgba(157,180,166,0.2);border-radius:10px;padding:6px 8px;font-size:1.1rem;cursor:pointer;transition:all .2s}
+  .lang-flags button:hover,.lang-flags button.active{border-color:var(--gold);background:rgba(212,175,55,0.15);transform:translateY(-2px);box-shadow:0 0 12px rgba(212,175,55,0.3)}
+  html[dir="rtl"] .quote{border-left:none;border-right:2px solid var(--gold);padding:16px 20px 16px 0}
 
 </style>
 </head>
 <body>
   <canvas id="smoke-canvas" aria-hidden="true"></canvas>
-
+  
     <main class="wrap" id="main-content">
     <div class="lang-bar">
       <span class="lang-prompt" data-i18n="lang_prompt">🌍 Lies es in deiner Chill-Sprache, Bratan:</span>
@@ -370,7 +372,7 @@
       </div>
     </div>
     <article class="glass-plate" itemscope itemtype="https://schema.org/Organization">
-
+      
       <header class="hero">
         <img src="LogoNeu.jpg" alt="NaturalBornChillaz NBC Logo – Cannabis News Community" class="logo-img" width="112" height="112" loading="eager" itemprop="logo">
         <img src="NBC_Schriftzug_Natur.png" alt="NaturalBornChillaz – Tägliche Cannabis Video-News" class="nbc-title" loading="eager">
@@ -382,21 +384,21 @@
         <div class="section-block">
           <h2 data-i18n="sinn_title">🌐 Sinn des Projekts</h2>
           <p>Yo, <strong>NBC News</strong> ist kein Konzern, keine Agentur, kein Bullshit – wir sind ein Haufen NaturalBornChillaz, die Bock haben, Wissen zu teilen ohne erhobenen Zeigefinger. Unabhängig, freiwillig, komplett auf Ehrenbasis. Wir verbinden Info mit Kunst, damit Aufklärung nicht nach Schulunterricht schmeckt, sondern nach nem guten Zug am Abend.</p>
-
+          
           <p class="quote" style="margin-top:20px;">„Freiheit wächst nicht auf Bäumen – aber das Wissen darüber schon.“</p>
-
+          
           <p style="margin-top:18px; color: var(--glow-green); font-weight:400;">Was wir hier bauen, Bratan:</p>
-
+          
           <ul class="manifesto-list">
             <li><strong>CanG Real Talk:</strong> Kein Behördendeutsch. Wir brechen dir das neue Gesetz, Medizinalcannabis und deine Rechte runter – so dass du's auch high noch checkst. Fakten statt Panik.</li>
             <li><strong>Community statt Algorithmus:</strong> Echte Vernetzung. Keine Likes-Jagd, keine Datenkrake. Exklusive Drops, Unitycard, Member Tank – nur für die, die's fühlen. Wächst täglich.</li>
             <li><strong>Kunst gegen Vorurteile:</strong> Wir malen, coden und bauen, damit Oma versteht warum du chillst. Spielerisch, visuell, mit Augenzwinkern. Vorbehalte abbauen, Vibes aufbauen.</li>
             <li><strong>100% freiwillig:</strong> Kein Investor im Nacken, keine Paywall. Wenn du supportest, geht's direkt in Server, Artworks und die nächsten Seeds. Ehrenwort.</li>
           </ul>
-
+          
           <p style="font-size:0.9rem; opacity:0.9; margin-top:18px;">📍 Das volle Programm findest du auf der Hauptbase: <a href="https://infotonbc-news.github.io/infotonbc2/" style="color:var(--gold); text-decoration:none; border-bottom:1px dotted var(--gold);">infotonbc-news.github.io</a> <em style="opacity:0.7;">(Nur für 18+ Chillaz)</em></p>
         </div>
-
+        
         <div class="section-block">
           <h2 data-i18n="unity_title">Unitycard Club</h2>
           <div class="joke-ticker-wrap">
@@ -409,7 +411,7 @@
           <h2 data-i18n="drops_title">Sanctum Drops</h2>
           <p>Handverlesene Relikte aus dem Neo-Jungle.</p>
           <div class="shop">
-
+            
             <div class="item" onclick="openStickerCard()">
               <img src="sticker.png" alt="Unity Sticker" class="item-img" onerror="this.style.background='#0B2A1F'">
               <h3>kleb Dir einen</h3>
@@ -431,36 +433,46 @@
         <div class="section-block">
           <h2 data-i18n="supporters_title">🤝 Supporters</h2>
           <p>Diese Brands halten NBC am Laufen. Dein Logo könnte hier rollen – 100% CanG-konform, 100% Community.</p>
-
+          
           <div class="supporter-ticker-wrap">
             <div class="supporter-ticker" id="supporterTicker">
-              <!-- Original Set (wird via JS dupliziert für nahtlosen Loop) -->
               <a href="https://www.instagram.com/infotonbc" target="_blank" class="ticker-item" title="NaturalBornChillaz">
-                <img src="https://naturalbornchillaz.de/nbc262.webp" alt="NaturalBornChillaz" onerror="this.style.display='none'">
+                <img src="https://naturalbornchillaz.de/nbc262.webp" alt="NaturalBornChillaz">
                 <span>NaturalBornChillaz</span>
               </a>
-
               <div class="ticker-divider"></div>
+              <a href="https://infotonbc-news.github.io/infotonbc2/" target="_blank" class="ticker-item" title="NBC News">
+                <img src="LogoNeu.jpg" alt="NBC News" onerror="this.src='https://naturalbornchillaz.de/nbc262.webp'">
+                <span>NBC News</span>
+              </a>
+              <div class="ticker-divider"></div>
+              <a href="mailto:infotonbc@gmail.com?subject=Supporter%20werden" class="ticker-slogan">„Dein Logo hier – Support the Culture“</a>
+              <div class="ticker-divider"></div>
+              <a href="mailto:infotonbc@gmail.com?subject=Werbung" class="ticker-slogan">„Werbung die wirkt, nicht nervt“</a>
+              <div class="ticker-divider"></div>
+              <a href="mailto:infotonbc@gmail.com?subject=Partnerschaft" class="ticker-slogan">„Werde Teil des Jungles“</a>
 
+            </div>
+              
               <a href="mailto:infotonbc@gmail.com?subject=Supporter%20werden%20bei%20NBC" class="ticker-slogan">„Dein Logo hier – Support the Culture“</a>
-
+              
               <div class="ticker-divider"></div>
-
+              
               <a href="mailto:infotonbc@gmail.com?subject=Werbung%20auf%20NBC" class="ticker-slogan">„Werbung die wirkt, nicht nervt“</a>
-
+              
               <div class="ticker-divider"></div>
-
+              
               <a href="https://www.instagram.com/infotonbc" target="_blank" class="ticker-item">
                 <span style="color: var(--gold);">✦</span>
                 <span>NBC News</span>
               </a>
-
+              
               <div class="ticker-divider"></div>
-
+              
               <a href="mailto:infotonbc@gmail.com?subject=Partnerschaft" class="ticker-slogan">„Werde Teil des Jungles“</a>
             </div>
           </div>
-
+          
           <p style="font-size:0.82rem; margin-top:14px; opacity:0.7; text-align:center;">Klick aufs Logo → Supporter-Seite • Klick auf Spruch → Mail an uns</p>
         </div>
 
@@ -493,7 +505,7 @@
             <!-- BANNER 2: Gracht -->
             <div class="item banner-item">
               <div class="banner-wrap">
-                <svg class="banner-svg" viewBox="0 320 180" xmlns="http://www.w3.org/2000/svg">
+                <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
                   <defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d2a1a"/><stop offset="100%" stop-color="#050e0a"/></linearGradient></defs>
                   <rect width="320" height="180" fill="url(#wg)"/>
                   <rect x="0" y="125" width="320" height="20" fill="#1a1a0d"/><rect x="0" y="145" width="320" height="35" fill="#0a1510"/>
@@ -568,7 +580,7 @@
             <!-- BANNER 4: Couch Locked -->
             <div class="item banner-item">
               <div class="banner-wrap">
-                <svg class="banner-svg" viewBox="0 320 180" xmlns="http://www.w3.org/2000/svg">
+                <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="roomG" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#1a0f0a"/>
@@ -624,6 +636,7 @@
 
   <div id="stickerModal" class="modal"><div class="pokemon-card"><button class="modal-close" onclick="closeStickerCard()">×</button><div class="card-inner"><div class="card-header"><div class="card-title">Unity Sticker</div><div class="card-hp">NBC 026</div></div><div class="card-desc">Offizieller NBC Sticker. Holographic.</div><a href="#" class="btn">Sticker sichern</a></div></div></div>
 
+
 <script>
 const translations = {
 de:{tagline:"NBC News – Unabhängig. Freiwillig.",sinn_title:"🌐 Sinn des Projekts",unity_title:"Unitycard Club",unity_btn:"Unitycard aktivieren",drops_title:"Sanctum Drops",supporters_title:"🤝 Supporters",werbe_title:"Werbeflächen",lang_prompt:"🌍 Lies es in deiner Chill-Sprache, Bratan:"},
@@ -634,12 +647,12 @@ bg:{tagline:"NBC News – Независимо. Доброволно.",sinn_titl
 ja:{tagline:"NBC News – 独立。自主。",sinn_title:"🌐 存在理由",unity_title:"Unitycardクラブ",unity_btn:"Unitycardを有効化",drops_title:"Sanctum Drops",supporters_title:"🤝 サポーター",werbe_title:"広告枠",lang_prompt:"🌍 君のチル言語で読もうぜ:"},
 ar:{tagline:"NBC News – مستقل. تطوعي.",sinn_title:"🌐 لماذا نحن هنا",unity_title:"نادي Unitycard",unity_btn:"تفعيل Unitycard",drops_title:"Sanctum Drops",supporters_title:"🤝 الداعمون",werbe_title:"مساحات إعلانية",lang_prompt:"🌍 اقرأها بلغتك المريحة يا برو:"}
 };
-const jokesByLang={de:["„Chillaz, hast du heute schon dein Gehirn gegossen?“","„CanG ist da – Panik ist out.“"],en:["“Yo, watered your brain today?”","“CanG is here – panic out.”"],es:["“¿Ya regaste tu cerebro?”"],pl:["„Podlałeś dziś mózg?”"],bg:["„Поляхте ли мозъка?”"],ja:["「脳に水やった？」"],ar:["“هل سقيت دماغك؟”"]};
-function setLanguage(lang){const t=translations[lang]||translations.de;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k])el.innerHTML=t[k]});document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';localStorage.setItem('nbc_lang',lang);document.querySelectorAll('.lang-flags button').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));window.currentJokes=jokesByLang[lang]||jokesByLang.de;document.getElementById('jokeTicker').textContent=window.currentJokes[0]}
+const jokesByLang={de:["„Chillaz, hast du heute schon dein Gehirn gegossen?“","„CanG ist da – Panik ist out.“","„Kein Stress, nur Terpene.“"],en:["“Yo, watered your brain today?”","“CanG is here – panic out.”"],es:["“¿Ya regaste tu cerebro?”"],pl:["„Podlałeś dziś mózg?”"],bg:["„Поляхте ли мозъка?”"],ja:["「脳に水やった？」"],ar:["“هل سقيت دماغك؟”"]};
+function setLanguage(lang){const t=translations[lang]||translations.de;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k])el.innerHTML=t[k]});document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';localStorage.setItem('nbc_lang',lang);document.querySelectorAll('.lang-flags button').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));window.currentJokes=jokesByLang[lang]||jokesByLang.de;const jt=document.getElementById('jokeTicker');if(jt)jt.textContent=window.currentJokes[0];}
 const canvas=document.getElementById('smoke-canvas');const ctx=canvas.getContext('2d');function resize(){canvas.width=innerWidth;canvas.height=innerHeight}resize();addEventListener('resize',resize);
 function openStickerCard(){document.getElementById('stickerModal').classList.add('active')}
 function closeStickerCard(){document.getElementById('stickerModal').classList.remove('active')}
-document.addEventListener('DOMContentLoaded',()=>{const saved=localStorage.getItem('nbc_lang')||navigator.language.slice(0,2);const lang=['de','en','es','pl','bg','ja','ar'].includes(saved)?saved:'de';setLanguage(lang);document.querySelectorAll('.lang-flags button').forEach(b=>b.onclick=()=>setLanguage(b.dataset.lang));const ticker=document.getElementById('supporterTicker');if(ticker)ticker.innerHTML+=ticker.innerHTML;let idx=0;setInterval(()=>{const el=document.getElementById('jokeTicker');if(!el)return;idx=(idx+1)%window.currentJokes.length;el.style.animation='none';void el.offsetWidth;el.textContent=window.currentJokes[idx];el.style.animation='shimmer 4s linear infinite,fadeInOut.8s ease'},4000)});
+document.addEventListener('DOMContentLoaded',()=>{const saved=localStorage.getItem('nbc_lang')||navigator.language.slice(0,2);const lang=['de','en','es','pl','bg','ja','ar'].includes(saved)?saved:'de';setLanguage(lang);document.querySelectorAll('.lang-flags button').forEach(b=>b.onclick=()=>setLanguage(b.dataset.lang));const ticker=document.getElementById('supporterTicker');if(ticker){ticker.innerHTML+=ticker.innerHTML;}let idx=0;setInterval(()=>{const el=document.getElementById('jokeTicker');if(!el||!window.currentJokes)return;idx=(idx+1)%window.currentJokes.length;el.style.animation='none';void el.offsetWidth;el.textContent=window.currentJokes[idx];el.style.animation='shimmer 4s linear infinite, fadeInOut 0.8s ease';},4000);});
 </script>
 
 </body>
