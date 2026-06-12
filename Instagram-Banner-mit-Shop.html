@@ -82,7 +82,7 @@
         "email": "infotonbc@gmail.com",
         "contactType": "customer support"
       },
-      "sameAs": ["https://www.instagram.com/infotonbc"]
+      "sameAs": ["https://www.instagram.com/infotonbc"] 
     }
   ]
 }
@@ -98,16 +98,16 @@
     --gold: #D4AF37;
     --smoke: #F8FAF9;
   }
-
+  
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
+  
   body {
     background: var(--wood-dark);
     color: var(--smoke);
     font-family: 'Outfit', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
-    background-image:
+    background-image: 
       linear-gradient(90deg, rgba(20,14,12,0.85) 0%, transparent 50%, rgba(20,14,12,0.85) 100%),
       repeating-linear-gradient(90deg, #0C0A09, #0C0A09 2px, #1A1411 2px, #1A1411 4px),
       radial-gradient(ellipse at 30% 20%, rgba(196,245,224,0.04) 0%, transparent 50%);
@@ -119,9 +119,9 @@
     pointer-events: none; z-index: 1; opacity: 0.65;
   }
 
- .wrap { position: relative; z-index: 2; max-width: 540px; margin: 0 auto; padding: 50px 18px 80px; }
+  .wrap { position: relative; z-index: 2; max-width: 540px; margin: 0 auto; padding: 50px 18px 80px; }
 
- .glass-plate {
+  .glass-plate {
     background: var(--glass);
     backdrop-filter: blur(20px) saturate(150%);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
@@ -130,7 +130,7 @@
     box-shadow: 0 35px 70px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05);
   }
 
- .glass-plate::before {
+  .glass-plate::before {
     content: ''; position: absolute; inset: 0; border-radius: 26px; padding: 1.2px;
     background: linear-gradient(135deg, var(--neon-purple), var(--gold), var(--glow-green));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -139,82 +139,82 @@
   }
   @keyframes borderGlow { 0% { opacity: 0.45; } 100% { opacity: 0.85; } }
 
- .hero { text-align: center; padding: 42px 28px 36px; }
- .logo-img {
+  .hero { text-align: center; padding: 42px 28px 36px; }
+  .logo-img {
     width: 112px; height: 112px; margin: 0 auto 18px; border-radius: 50%;
     object-fit: cover; border: 2px solid rgba(212,175,55,0.45);
-    box-shadow: 0 0 45px rgba(199,125,255,0.22), inset 0 22px rgba(0,0,0.5);
+    box-shadow: 0 0 45px rgba(199,125,255,0.22), inset 0 0 22px rgba(0,0,0,0.5);
   }
- .nbc-title { width: 100%; max-width: 400px; height: auto; margin: 0 auto 10px; display: block; filter: drop-shadow(0 0 18px rgba(196,245,224,0.18)); }
- .tagline { font-weight: 300; color: var(--sage); font-size: 0.95rem; letter-spacing: 2.2px; text-transform: uppercase; }
+  .nbc-title { width: 100%; max-width: 400px; height: auto; margin: 0 auto 10px; display: block; filter: drop-shadow(0 0 18px rgba(196,245,224,0.18)); }
+  .tagline { font-weight: 300; color: var(--sage); font-size: 0.95rem; letter-spacing: 2.2px; text-transform: uppercase; }
 
- .inner-section { padding: 0 28px 32px; }
- .section-block { margin-bottom: 38px; padding-bottom: 36px; border-bottom: 1px solid rgba(196,245,224,0.09); }
- .section-block:last-child { border: none; margin: 0; padding: 0; }
- .section-block h2 {
+  .inner-section { padding: 0 28px 32px; }
+  .section-block { margin-bottom: 38px; padding-bottom: 36px; border-bottom: 1px solid rgba(196,245,224,0.09); }
+  .section-block:last-child { border: none; margin: 0; padding: 0; }
+  .section-block h2 {
     font-family: 'Marcellus', serif; font-size: 1.55rem; color: var(--glow-green);
     margin-bottom: 16px; font-weight: 400; display: flex; align-items: center; gap: 10px;
   }
- .section-block h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(212,175,55,0.45), transparent); }
- .section-block p { color: var(--sage); font-weight: 300; line-height: 1.85; margin-bottom: 20px; font-size: 0.97rem; }
- .quote { font-style: italic; color: var(--glow-green); padding: 16px 0 16px 20px; border-left: 2px solid var(--gold); margin: 22px 0; background: rgba(212,175,55,0.035); }
+  .section-block h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(212,175,55,0.45), transparent); }
+  .section-block p { color: var(--sage); font-weight: 300; line-height: 1.85; margin-bottom: 20px; font-size: 0.97rem; }
+  .quote { font-style: italic; color: var(--glow-green); padding: 16px 0 16px 20px; border-left: 2px solid var(--gold); margin: 22px 0; background: rgba(212,175,55,0.035); }
 
- .manifesto-list { list-style: none; margin: 18px 0; }
- .manifesto-list li { margin: 14px 0; padding-left: 26px; position: relative; color: var(--sage); line-height: 1.7; }
- .manifesto-list li::before { content: '•'; position: absolute; left: 0; color: var(--gold); font-size: 1.2rem; }
- .manifesto-list strong { color: var(--glow-green); font-weight: 500; }
+  .manifesto-list { list-style: none; margin: 18px 0; }
+  .manifesto-list li { margin: 14px 0; padding-left: 26px; position: relative; color: var(--sage); line-height: 1.7; }
+  .manifesto-list li::before { content: '•'; position: absolute; left: 0; color: var(--gold); font-size: 1.2rem; }
+  .manifesto-list strong { color: var(--glow-green); font-weight: 500; }
 
- .btn {
+  .btn {
     display: block; width: 100%; padding: 17px; margin: 12px 0;
     background: rgba(196,245,224,0.045); color: var(--smoke); text-align: center; text-decoration: none;
     border-radius: 14px; border: 1px solid rgba(199,125,255,0.28);
     transition: all 0.5s cubic-bezier(0.23,1,0.32,1); font-weight: 400; letter-spacing: 0.8px;
     position: relative; overflow: hidden; cursor: pointer;
   }
- .btn::before { content: ''; position: absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.12), transparent); transition: left 0.6s; }
- .btn:hover::before { left:100%; }
- .btn:hover { background: rgba(199,125,255,0.11); border-color: rgba(212,175,55,0.55); box-shadow: 0 0 26px rgba(199,125,255,0.22); transform: translateY(-3px); }
+  .btn::before { content: ''; position: absolute; top:0; left:-100%; width:100%; height:100%; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.12), transparent); transition: left 0.6s; }
+  .btn:hover::before { left:100%; }
+  .btn:hover { background: rgba(199,125,255,0.11); border-color: rgba(212,175,55,0.55); box-shadow: 0 0 26px rgba(199,125,255,0.22); transform: translateY(-3px); }
 
- .shop { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
- .item { background: rgba(12,10,9,0.52); border: 1px solid rgba(157,180,166,0.12); border-radius: 18px; padding: 20px 16px; text-align: center; transition: all 0.4s ease; cursor: pointer; }
- .item:hover { border-color: rgba(212,175,55,0.34); background: rgba(12,10,9,0.72); box-shadow: 0 12px 32px rgba(0,0,0,0.35); transform: translateY(-2px); }
- .item-img { width: 100%; aspect-ratio: 1; border-radius: 14px; background: var(--jungle); margin-bottom: 14px; object-fit: cover; border: 1px solid rgba(196,245,224,0.12); }
- .item h3 { font-size: 1.02rem; color: var(--glow-green); font-weight: 400; margin-bottom: 6px; font-family: 'Marcellus', serif; }
- .item.price { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; font-weight: 300; }
- .item.subtext { font-size: 0.82rem; color: var(--sage); margin-bottom: 14px; line-height: 1.45; }
- .item.btn { padding: 11px; font-size: 0.86rem; margin: 0; }
-
+  .shop { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
+  .item { background: rgba(12,10,9,0.52); border: 1px solid rgba(157,180,166,0.12); border-radius: 18px; padding: 20px 16px; text-align: center; transition: all 0.4s ease; cursor: pointer; }
+  .item:hover { border-color: rgba(212,175,55,0.34); background: rgba(12,10,9,0.72); box-shadow: 0 12px 32px rgba(0,0,0,0.35); transform: translateY(-2px); }
+  .item-img { width: 100%; aspect-ratio: 1; border-radius: 14px; background: var(--jungle); margin-bottom: 14px; object-fit: cover; border: 1px solid rgba(196,245,224,0.12); }
+  .item h3 { font-size: 1.02rem; color: var(--glow-green); font-weight: 400; margin-bottom: 6px; font-family: 'Marcellus', serif; }
+  .item .price { font-size: 0.9rem; color: var(--gold); margin-bottom: 12px; font-weight: 300; }
+  .item .subtext { font-size: 0.82rem; color: var(--sage); margin-bottom: 14px; line-height: 1.45; }
+  .item .btn { padding: 11px; font-size: 0.86rem; margin: 0; }
+  
   /* Banner items */
- .item.banner-item { padding: 0; overflow: hidden; grid-column: span 2; background: rgba(12,10,9,0.7); height: 260px; display: flex; flex-direction: column; }
- .banner-wrap { width: 100%; height: 100%; border-radius: 14px; overflow: hidden; position: relative; cursor: pointer; border: none; display: flex; flex-direction: column; }
- .banner-svg { display: block; width: 100%; height: 180px; object-fit: cover; }
- .banner-label { background: rgba(0,0,0,0.85); padding: 12px 16px; text-align: center; border-top: 1px solid rgba(212,175,55,0.2); }
- .banner-label h3 { color: var(--gold); font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; font-family: 'Outfit', sans-serif; }
- .banner-label p { color: var(--sage); font-size: 0.8rem; margin-bottom: 8px; }
- .book-btn { background: var(--gold); color: #000; border: none; padding: 7px 18px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: transform.15s; }
- .book-btn:hover { transform: scale(1.05); }
+  .item.banner-item { padding: 0; overflow: hidden; grid-column: span 2; background: rgba(12,10,9,0.7); height: 260px; display: flex; flex-direction: column; }
+  .banner-wrap { width: 100%; height: 100%; border-radius: 14px; overflow: hidden; position: relative; cursor: pointer; border: none; display: flex; flex-direction: column; }
+  .banner-svg { display: block; width: 100%; height: 180px; object-fit: cover; }
+  .banner-label { background: rgba(0,0,0,0.85); padding: 12px 16px; text-align: center; border-top: 1px solid rgba(212,175,55,0.2); }
+  .banner-label h3 { color: var(--gold); font-size: 0.95rem; font-weight: 600; margin-bottom: 4px; font-family: 'Outfit', sans-serif; }
+  .banner-label p { color: var(--sage); font-size: 0.8rem; margin-bottom: 8px; }
+  .book-btn { background: var(--gold); color: #000; border: none; padding: 7px 18px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: transform .15s; }
+  .book-btn:hover { transform: scale(1.05); }
 
- .footer { text-align: center; margin-top: 48px; font-size: 0.76rem; color: var(--sage); opacity: 0.55; line-height: 1.75; }
+  .footer { text-align: center; margin-top: 48px; font-size: 0.76rem; color: var(--sage); opacity: 0.55; line-height: 1.75; }
 
   /* MODAL */
- .modal { display: none; position: fixed; z-index: 999; left:0; top:0; width:100%; height:100%; background: rgba(12,10,9,0.92); backdrop-filter: blur(12px); animation: fadeIn 0.3s ease; }
- .modal.active { display: flex; align-items: center; justify-content: center; }
+  .modal { display: none; position: fixed; z-index: 999; left:0; top:0; width:100%; height:100%; background: rgba(12,10,9,0.92); backdrop-filter: blur(12px); animation: fadeIn 0.3s ease; }
+  .modal.active { display: flex; align-items: center; justify-content: center; }
   @keyframes fadeIn { from { opacity:0 } to { opacity:1 } }
- .pokemon-card { width: 90%; max-width: 390px; background: linear-gradient(135deg,#1a1a2e 0%,#16213e 100%); border-radius: 22px; padding: 3px; position: relative; box-shadow: 0 0 65px rgba(199,125,255,0.45); animation: cardPop 0.42s cubic-bezier(0.34,1.56,0.64,1); }
+  .pokemon-card { width: 90%; max-width: 390px; background: linear-gradient(135deg,#1a1a2e 0%,#16213e 100%); border-radius: 22px; padding: 3px; position: relative; box-shadow: 0 0 65px rgba(199,125,255,0.45); animation: cardPop 0.42s cubic-bezier(0.34,1.56,0.64,1); }
   @keyframes cardPop { from { transform: scale(0.85); opacity:0 } to { transform: scale(1); opacity:1 } }
- .pokemon-card::before { content:''; position:absolute; inset:0; border-radius:22px; padding:3px; background: linear-gradient(135deg,var(--gold),var(--neon-purple),var(--glow-green)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
- .card-inner { background: linear-gradient(135deg,#0f1729 0%,#1a1a2e 100%); border-radius: 19px; padding: 22px; }
- .card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
- .card-title { font-family:'Marcellus',serif; font-size:1.32rem; color:var(--gold); }
- .card-hp { color:var(--glow-green); font-weight:500; font-size:0.92rem; }
- .card-image { width:100%; aspect-ratio:4/3; background:var(--jungle); border-radius:12px; margin-bottom:15px; border:3px solid rgba(212,175,55,0.32); object-fit:cover; }
- .card-desc { background: rgba(196,245,224,0.055); padding:15px; border-radius:10px; margin-bottom:15px; font-size:0.87rem; line-height:1.62; color:var(--sage); }
- .card-stats { display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid rgba(212,175,55,0.22); border-bottom:1px solid rgba(212,175,55,0.22); margin-bottom:15px; }
- .stat { text-align:center; }.stat-label { font-size:0.7rem; color:var(--sage); text-transform:uppercase; letter-spacing:1px; }.stat-value { font-size:1.12rem; color:var(--glow-green); font-weight:500; }
- .card-footer { text-align:center; font-size:0.76rem; color:var(--sage); opacity:0.75; margin-bottom:15px; }
- .modal-close { position:absolute; top:-12px; right:-12px; width:38px; height:38px; background:var(--neon-purple); border:2px solid var(--gold); border-radius:50%; color:var(--smoke); font-size:1.25rem; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 22px rgba(199,125,255,0.55); }
+  .pokemon-card::before { content:''; position:absolute; inset:0; border-radius:22px; padding:3px; background: linear-gradient(135deg,var(--gold),var(--neon-purple),var(--glow-green)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+  .card-inner { background: linear-gradient(135deg,#0f1729 0%,#1a1a2e 100%); border-radius: 19px; padding: 22px; }
+  .card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; }
+  .card-title { font-family:'Marcellus',serif; font-size:1.32rem; color:var(--gold); }
+  .card-hp { color:var(--glow-green); font-weight:500; font-size:0.92rem; }
+  .card-image { width:100%; aspect-ratio:4/3; background:var(--jungle); border-radius:12px; margin-bottom:15px; border:3px solid rgba(212,175,55,0.32); object-fit:cover; }
+  .card-desc { background: rgba(196,245,224,0.055); padding:15px; border-radius:10px; margin-bottom:15px; font-size:0.87rem; line-height:1.62; color:var(--sage); }
+  .card-stats { display:flex; justify-content:space-between; padding:12px 0; border-top:1px solid rgba(212,175,55,0.22); border-bottom:1px solid rgba(212,175,55,0.22); margin-bottom:15px; }
+  .stat { text-align:center; } .stat-label { font-size:0.7rem; color:var(--sage); text-transform:uppercase; letter-spacing:1px; } .stat-value { font-size:1.12rem; color:var(--glow-green); font-weight:500; }
+  .card-footer { text-align:center; font-size:0.76rem; color:var(--sage); opacity:0.75; margin-bottom:15px; }
+  .modal-close { position:absolute; top:-12px; right:-12px; width:38px; height:38px; background:var(--neon-purple); border:2px solid var(--gold); border-radius:50%; color:var(--smoke); font-size:1.25rem; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 0 22px rgba(199,125,255,0.55); }
 
- .joke-ticker-wrap {
+  .joke-ticker-wrap {
     margin: 22px 0;
     padding: 14px 0;
     border-left: 2px solid var(--gold);
@@ -222,7 +222,7 @@
     overflow: hidden;
     position: relative;
   }
- .joke-ticker {
+  .joke-ticker {
     font-style: italic;
     color: var(--glow-green);
     padding-left: 20px;
@@ -245,7 +245,7 @@
   }
 
   /* === NEU: SUPPORTERS LAUFBAND === */
- .supporter-ticker-wrap {
+  .supporter-ticker-wrap {
     margin-top: 18px;
     position: relative;
     overflow: hidden;
@@ -257,8 +257,8 @@
     display: flex;
     align-items: center;
   }
- .supporter-ticker-wrap::before,
- .supporter-ticker-wrap::after {
+  .supporter-ticker-wrap::before,
+  .supporter-ticker-wrap::after {
     content: '';
     position: absolute;
     top: 0;
@@ -267,15 +267,15 @@
     z-index: 3;
     pointer-events: none;
   }
- .supporter-ticker-wrap::before {
+  .supporter-ticker-wrap::before {
     left: 0;
     background: linear-gradient(90deg, rgba(12,10,9,0.9), transparent);
   }
- .supporter-ticker-wrap::after {
+  .supporter-ticker-wrap::after {
     right: 0;
     background: linear-gradient(270deg, rgba(12,10,9,0.9), transparent);
   }
- .supporter-ticker {
+  .supporter-ticker {
     display: flex;
     align-items: center;
     gap: 52px;
@@ -283,12 +283,12 @@
     animation: supporterScroll 35s linear infinite;
     padding-left: 52px;
   }
- .supporter-ticker:hover { animation-play-state: paused; }
+  .supporter-ticker:hover { animation-play-state: paused; }
   @keyframes supporterScroll {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
   }
- .ticker-item {
+  .ticker-item {
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -300,13 +300,13 @@
     transition: all 0.3s ease;
     opacity: 0.85;
   }
- .ticker-item:hover {
+  .ticker-item:hover {
     color: var(--gold);
     opacity: 1;
     transform: translateY(-2px);
     text-shadow: 0 0 12px rgba(212,175,55,0.4);
   }
- .ticker-item img {
+  .ticker-item img {
     height: 32px;
     width: auto;
     max-width: 110px;
@@ -315,10 +315,10 @@
     filter: brightness(0.95) contrast(1.05);
     transition: filter 0.3s;
   }
- .ticker-item:hover img {
-    filter: brightness(1.1) drop-shadow(0 8px rgba(199,125,255,0.3));
+  .ticker-item:hover img {
+    filter: brightness(1.1) drop-shadow(0 0 8px rgba(199,125,255,0.3));
   }
- .ticker-slogan {
+  .ticker-slogan {
     display: inline-flex;
     align-items: center;
     padding: 7px 16px;
@@ -332,31 +332,32 @@
     transition: all 0.3s ease;
     white-space: nowrap;
   }
- .ticker-slogan:hover {
+  .ticker-slogan:hover {
     background: rgba(199,125,255,0.12);
     border-color: var(--neon-purple);
     color: var(--smoke);
     box-shadow: 0 0 18px rgba(199,125,255,0.22);
   }
- .ticker-divider {
+  .ticker-divider {
     width: 1px;
     height: 24px;
     background: linear-gradient(to bottom, transparent, var(--gold), transparent);
     opacity: 0.4;
   }
 
- .lang-bar{position:relative;z-index:5;margin-bottom:18px;background:rgba(12,10,9,0.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(199,125,255,0.25);border-radius:16px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.4)}
- .lang-prompt{font-size:0.85rem;color:var(--glow-green);font-style:italic;white-space:nowrap}
- .lang-flags{display:flex;gap:8px;flex-wrap:wrap}
- .lang-flags button{background:rgba(196,245,224,0.06);border:1px solid rgba(157,180,166,0.2);border-radius:10px;padding:6px 8px;font-size:1.1rem;cursor:pointer;transition:all.2s}
- .lang-flags button:hover,.lang-flags button.active{border-color:var(--gold);background:rgba(212,175,55,0.15);transform:translateY(-2px);box-shadow:0 0 12px rgba(212,175,55,0.3)}
-  html[dir="rtl"].quote{border-left:none;border-right:2px solid var(--gold);padding:16px 20px 16px 0}
+
+  .lang-bar{position:relative;z-index:5;margin-bottom:18px;background:rgba(12,10,9,0.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(199,125,255,0.25);border-radius:16px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,0.4)}
+  .lang-prompt{font-size:0.85rem;color:var(--glow-green);font-style:italic;white-space:nowrap}
+  .lang-flags{display:flex;gap:8px;flex-wrap:wrap}
+  .lang-flags button{background:rgba(196,245,224,0.06);border:1px solid rgba(157,180,166,0.2);border-radius:10px;padding:6px 8px;font-size:1.1rem;cursor:pointer;transition:all .2s}
+  .lang-flags button:hover,.lang-flags button.active{border-color:var(--gold);background:rgba(212,175,55,0.15);transform:translateY(-2px);box-shadow:0 0 12px rgba(212,175,55,0.3)}
+  html[dir="rtl"] .quote{border-left:none;border-right:2px solid var(--gold);padding:16px 20px 16px 0}
 
 </style>
 </head>
 <body>
   <canvas id="smoke-canvas" aria-hidden="true"></canvas>
-
+  
     <main class="wrap" id="main-content">
     <div class="lang-bar">
       <span class="lang-prompt" data-i18n="lang_prompt">🌍 Lies es in deiner Chill-Sprache, Bratan:</span>
@@ -371,7 +372,7 @@
       </div>
     </div>
     <article class="glass-plate" itemscope itemtype="https://schema.org/Organization">
-
+      
       <header class="hero">
         <img src="LogoNeu.jpg" alt="NaturalBornChillaz NBC Logo – Cannabis News Community" class="logo-img" width="112" height="112" loading="eager" itemprop="logo">
         <img src="NBC_Schriftzug_Natur.png" alt="NaturalBornChillaz – Tägliche Cannabis Video-News" class="nbc-title" loading="eager">
@@ -382,22 +383,22 @@
 
         <div class="section-block">
           <h2 data-i18n="sinn_title">🌐 Sinn des Projekts</h2>
-          <p>Yo, <strong>NBC News</strong> ist kein Konzern, keine Agentur, kein Bullshit – wir sind ein Haufen NaturalBornChillaz, die Bock haben, Wissen zu teilen ohne erhobenen Zeigefinger. Unabhängig, freiwillig, komplett auf Ehrenbasis. Wir verbinden Info mit Kunst, damit Aufklärung nicht nach Schulunterricht schmeckt, sondern nach nem guten Zug am Abend.</p>
-
-          <p class="quote" style="margin-top:20px;">„Freiheit wächst nicht auf Bäumen – aber das Wissen darüber schon.“</p>
-
-          <p style="margin-top:18px; color: var(--glow-green); font-weight:400;">Was wir hier bauen, Bratan:</p>
-
+          <p data-i18n="sinn_p1">Yo, <strong>NBC News</strong> ist kein Konzern, keine Agentur, kein Bullshit – wir sind ein Haufen NaturalBornChillaz, die Bock haben, Wissen zu teilen ohne erhobenen Zeigefinger. Unabhängig, freiwillig, komplett auf Ehrenbasis. Wir verbinden Info mit Kunst, damit Aufklärung nicht nach Schulunterricht schmeckt, sondern nach nem guten Zug am Abend.</p>
+          
+          <p class="quote" style="margin-top:20px;" data-i18n="quote">„Freiheit wächst nicht auf Bäumen – aber das Wissen darüber schon.“</p>
+          
+          <p style="margin-top:18px; color: var(--glow-green); font-weight:400;" data-i18n="manifesto_intro">Was wir hier bauen, Bratan:</p>
+          
           <ul class="manifesto-list">
-            <li><strong>CanG Real Talk:</strong> Kein Behördendeutsch. Wir brechen dir das neue Gesetz, Medizinalcannabis und deine Rechte runter – so dass du's auch high noch checkst. Fakten statt Panik.</li>
-            <li><strong>Community statt Algorithmus:</strong> Echte Vernetzung. Keine Likes-Jagd, keine Datenkrake. Exklusive Drops, Unitycard, Member Tank – nur für die, die's fühlen. Wächst täglich.</li>
-            <li><strong>Kunst gegen Vorurteile:</strong> Wir malen, coden und bauen, damit Oma versteht warum du chillst. Spielerisch, visuell, mit Augenzwinkern. Vorbehalte abbauen, Vibes aufbauen.</li>
-            <li><strong>100% freiwillig:</strong> Kein Investor im Nacken, keine Paywall. Wenn du supportest, geht's direkt in Server, Artworks und die nächsten Seeds. Ehrenwort.</li>
+            <li data-i18n="manifesto1"><strong>CanG Real Talk:</strong> Kein Behördendeutsch. Wir brechen dir das neue Gesetz, Medizinalcannabis und deine Rechte runter – so dass du's auch high noch checkst. Fakten statt Panik.</li>
+            <li data-i18n="manifesto2"><strong>Community statt Algorithmus:</strong> Echte Vernetzung. Keine Likes-Jagd, keine Datenkrake. Exklusive Drops, Unitycard, Member Tank – nur für die, die's fühlen. Wächst täglich.</li>
+            <li data-i18n="manifesto3"><strong>Kunst gegen Vorurteile:</strong> Wir malen, coden und bauen, damit Oma versteht warum du chillst. Spielerisch, visuell, mit Augenzwinkern. Vorbehalte abbauen, Vibes aufbauen.</li>
+            <li data-i18n="manifesto4"><strong>100% freiwillig:</strong> Kein Investor im Nacken, keine Paywall. Wenn du supportest, geht's direkt in Server, Artworks und die nächsten Seeds. Ehrenwort.</li>
           </ul>
-
-          <p style="font-size:0.9rem; opacity:0.9; margin-top:18px;">📍 Das volle Programm findest du auf der Hauptbase: <a href="https://infotonbc-news.github.io/infotonbc2/" style="color:var(--gold); text-decoration:none; border-bottom:1px dotted var(--gold);">infotonbc-news.github.io</a> <em style="opacity:0.7;">(Nur für 18+ Chillaz)</em></p>
+          
+          <p style="font-size:0.9rem; opacity:0.9; margin-top:18px;" data-i18n="manifesto_footer">📍 Das volle Programm findest du auf der Hauptbase: <a href="https://infotonbc-news.github.io/infotonbc2/" style="color:var(--gold); text-decoration:none; border-bottom:1px dotted var(--gold);">infotonbc-news.github.io</a> <em style="opacity:0.7;">(Nur für 18+ Chillaz)</em></p>
         </div>
-
+        
         <div class="section-block">
           <h2 data-i18n="unity_title">Unitycard Club</h2>
           <div class="joke-ticker-wrap">
@@ -408,21 +409,21 @@
 
         <div class="section-block">
           <h2 data-i18n="drops_title">Sanctum Drops</h2>
-          <p>Handverlesene Relikte aus dem Neo-Jungle.</p>
+          <p data-i18n="drops_sub">Handverlesene Relikte aus dem Neo-Jungle.</p>
           <div class="shop">
-
+            
             <div class="item" onclick="openStickerCard()">
               <img src="sticker.png" alt="Unity Sticker" class="item-img" onerror="this.style.background='#0B2A1F'">
-              <h3>kleb Dir einen</h3>
-              <p class="price">ab 6€</p>
-              <div class="btn">Details</div>
+              <h3 data-i18n="sticker_title">kleb Dir einen</h3>
+              <p class="price" data-i18n="sticker_price">ab 6€</p>
+              <div class="btn" data-i18n="sticker_btn">Details</div>
             </div>
 
             <div class="item" onclick="window.open('https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN', '_blank')">
               <img src="spendenlogo.jpg" alt="Support" class="item-img" onerror="this.style.background='#0B2A1F'">
-              <h3>Feed Da Chillaz</h3>
-              <p class="subtext">Der Chilla braucht mehr als Luft.</p>
-              <div class="btn">Supporten</div>
+              <h3 data-i18n="feed_title">Feed Da Chillaz</h3>
+              <p class="subtext" data-i18n="feed_sub">Der Chilla braucht mehr als Luft.</p>
+              <div class="btn" data-i18n="feed_btn">Supporten</div>
             </div>
 
           </div>
@@ -431,8 +432,8 @@
         <!-- === NEU: SUPPORTERS LAUFBAND === -->
         <div class="section-block">
           <h2 data-i18n="supporters_title">🤝 Supporters</h2>
-          <p>Diese Brands halten NBC am Laufen. Dein Logo könnte hier rollen – 100% CanG-konform, 100% Community.</p>
-
+          <p data-i18n="supporters_p">Diese Brands halten NBC am Laufen. Dein Logo könnte hier rollen – 100% CanG-konform, 100% Community.</p>
+          
           <div class="supporter-ticker-wrap">
             <div class="supporter-ticker" id="supporterTicker">
               <a href="https://www.instagram.com/infotonbc" target="_blank" class="ticker-item" title="NaturalBornChillaz">
@@ -452,37 +453,37 @@
               <a href="mailto:infotonbc@gmail.com?subject=Partnerschaft" class="ticker-slogan">„Werde Teil des Jungles“</a>
 
             </div>
-
+              
               <a href="mailto:infotonbc@gmail.com?subject=Supporter%20werden%20bei%20NBC" class="ticker-slogan">„Dein Logo hier – Support the Culture“</a>
-
+              
               <div class="ticker-divider"></div>
-
+              
               <a href="mailto:infotonbc@gmail.com?subject=Werbung%20auf%20NBC" class="ticker-slogan">„Werbung die wirkt, nicht nervt“</a>
-
+              
               <div class="ticker-divider"></div>
-
+              
               <a href="https://www.instagram.com/infotonbc" target="_blank" class="ticker-item">
                 <span style="color: var(--gold);">✦</span>
                 <span>NBC News</span>
               </a>
-
+              
               <div class="ticker-divider"></div>
-
+              
               <a href="mailto:infotonbc@gmail.com?subject=Partnerschaft" class="ticker-slogan">„Werde Teil des Jungles“</a>
             </div>
           </div>
-
-          <p style="font-size:0.82rem; margin-top:14px; opacity:0.7; text-align:center;">Klick aufs Logo → Supporter-Seite • Klick auf Spruch → Mail an uns</p>
+          
+          <p style="font-size:0.82rem; margin-top:14px; opacity:0.7; text-align:center;" data-i18n="supporters_note">Klick aufs Logo → Supporter-Seite • Klick auf Spruch → Mail an uns</p>
         </div>
 
         <div class="section-block">
           <h2 data-i18n="werbe_title">Werbeflächen</h2>
-          <p>Premium Spots direkt in der Community – ohne Tracking, ohne Bullshit.</p>
+          <p data-i18n="werbe_p">Premium Spots direkt in der Community – ohne Tracking, ohne Bullshit.</p>
           <div class="shop">
             <!-- BANNER 1: Gärtner -->
             <div class="item banner-item">
               <div class="banner-wrap">
-                <svg class="banner-svg" viewBox="0 320 180" xmlns="http://www.w3.org/2000/svg">
+                <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
                   <defs><radialGradient id="skyG1" cx="50%" cy="0%" r="100%"><stop offset="0%" stop-color="#0d2a0d"/><stop offset="100%" stop-color="#050e05"/></radialGradient></defs>
                   <rect width="320" height="180" fill="url(#skyG1)"/>
                   <rect x="0" y="140" width="320" height="40" fill="#0a1a08"/>
@@ -494,9 +495,9 @@
                   <g><animateTransform attributeName="transform" type="translate" values="240,60;200,55;240,60" dur="6s" repeatCount="indefinite"/><rect x="0" y="0" width="38" height="28" rx="5" fill="#D4AF37"/><circle cx="-28" cy="30" r="2.5" fill="#7dcfff"><animate attributeName="cy" values="30;90" dur="1s" repeatCount="indefinite"/></circle></g>
                 </svg>
                 <div class="banner-label">
-                  <h3>🌱 Grow With Us – Dein Spot im Jungle</h3>
-                  <p>Premium Plätze für Grower & Headshops</p>
-                  <button class="book-btn" onclick="window.open('mailto:infotonbc@gmail.com?subject=Werbung Gärtner', '_blank')">Anfragen</button>
+                  <h3 data-i18n="banner1_title">🌱 Grow With Us – Dein Spot im Jungle</h3>
+                  <p data-i18n="banner1_p">Premium Plätze für Grower & Headshops</p>
+                  <button class="book-btn" onclick="window.open('mailto:infotonbc@gmail.com?subject=Werbung Gärtner', '_blank')" data-i18n="banner1_btn">Anfragen</button>
                 </div>
               </div>
             </div>
@@ -504,18 +505,18 @@
             <!-- BANNER 2: Gracht -->
             <div class="item banner-item">
               <div class="banner-wrap">
-                <svg class="banner-svg" viewBox="0 320 180" xmlns="http://www.w3.org/2000/svg">
+                <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
                   <defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#0d2a1a"/><stop offset="100%" stop-color="#050e0a"/></linearGradient></defs>
                   <rect width="320" height="180" fill="url(#wg)"/>
-                  <rect x="0" y="125" width="320" height="20" fill="#1a0d"/><rect x="0" y="145" width="320" height="35" fill="#0a1510"/>
+                  <rect x="0" y="125" width="320" height="20" fill="#1a1a0d"/><rect x="0" y="145" width="320" height="35" fill="#0a1510"/>
                   <circle cx="250" cy="72" r="6" fill="#D4AF37"><animate attributeName="opacity" values="0.9;0.7;0.9" dur="3s" repeatCount="indefinite"/></circle>
                   <rect x="148" y="118" width="24" height="8" rx="3" fill="#3d2200"/><rect x="152" y="95" width="20" height="26" rx="6" fill="#1a3a1a"/><circle cx="162" cy="88" r="11" fill="#c8a882"/>
                   <g><animateTransform attributeName="transform" type="rotate" values="0 162 105;5 162 105;0 162 105" dur="4s" repeatCount="indefinite"/><line x1="162" y1="105" x2="140" y2="100" stroke="#c8a882" stroke-width="5"/><rect x="126" y="97" width="18" height="5" rx="2.5" fill="#f5e6c8"/><circle cx="144" cy="99.5" r="2.5" fill="#ff6b35"><animate attributeName="opacity" values="1;0.4;1" dur="2s" repeatCount="indefinite"/></circle></g>
                 </svg>
                 <div class="banner-label">
-                  <h3>🌉 Chill an der Gracht – Werbung für Kenner</h3>
-                  <p>Hochwertig, entspannt, direkt zur Community</p>
-                  <button class="book-btn" onclick="window.open('mailto:infotonbc@gmail.com?subject=Werbung Gracht', '_blank')">Anfragen ✉</button>
+                  <h3 data-i18n="banner2_title">🌉 Chill an der Gracht – Werbung für Kenner</h3>
+                  <p data-i18n="banner2_p">Hochwertig, entspannt, direkt zur Community</p>
+                  <button class="book-btn" onclick="window.open('mailto:infotonbc@gmail.com?subject=Werbung Gracht', '_blank')" data-i18n="banner2_btn">Anfragen ✉</button>
                 </div>
               </div>
             </div>
@@ -526,7 +527,7 @@
                 <svg class="banner-svg" viewBox="0 0 320 180" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="tentG" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#0a"/>
+      <stop offset="0%" stop-color="#0a0a0a"/>
       <stop offset="100%" stop-color="#050505"/>
     </linearGradient>
     <radialGradient id="ledGlow" cx="50%" cy="30%" r="60%">
@@ -569,9 +570,9 @@
   <rect x="220" y="150" width="40" height="15" fill="#3d2814" rx="2"/>
 </svg>
                 <div class="banner-label">
-                  <h3>💡 Grow Lights On – Dein Shop hier?</h3>
-                  <p>LEDs, Seeds, Equipment – direkt zur Zielgruppe</p>
-                  <button class="book-btn" onclick="window.open('mailto:infotonbc@gmail.com?subject=Werbung Grow', '_blank')">Spot buchen</button>
+                  <h3 data-i18n="banner3_title">💡 Grow Lights On – Dein Shop hier?</h3>
+                  <p data-i18n="banner3_p">LEDs, Seeds, Equipment – direkt zur Zielgruppe</p>
+                  <button class="book-btn" onclick="window.open('mailto:infotonbc@gmail.com?subject=Werbung Grow', '_blank')" data-i18n="banner3_btn">Spot buchen</button>
                 </div>
               </div>
             </div>
@@ -617,9 +618,9 @@
   <text x="160" y="155" font-size="24" text-anchor="middle" opacity="0.15">💨</text>
 </svg>
                 <div class="banner-label">
-                  <h3>🍕 Munchies Approved – Werbung die ankommt</h3>
-                  <p>Kiffer kaufen hier, weil sie eh schon hier chillen</p>
-                  <button class="book-btn" onclick="window.open('mailto:infotonbc@gmail.com?subject=Werbung Munchies', '_blank')">Jetzt platzieren</button>
+                  <h3 data-i18n="banner4_title">🍕 Munchies Approved – Werbung die ankommt</h3>
+                  <p data-i18n="banner4_p">Kiffer kaufen hier, weil sie eh schon hier chillen</p>
+                  <button class="book-btn" onclick="window.open('mailto:infotonbc@gmail.com?subject=Werbung Munchies', '_blank')" data-i18n="banner4_btn">Jetzt platzieren</button>
                 </div>
               </div>
             </div>
@@ -635,16 +636,21 @@
 
   <div id="stickerModal" class="modal"><div class="pokemon-card"><button class="modal-close" onclick="closeStickerCard()">×</button><div class="card-inner"><div class="card-header"><div class="card-title">Unity Sticker</div><div class="card-hp">NBC 026</div></div><div class="card-desc">Offizieller NBC Sticker. Holographic.</div><a href="#" class="btn">Sticker sichern</a></div></div></div>
 
+
 <script>
 const translations = {
-de:{tagline:"NBC News – Unabhängig. Freiwillig.",sinn_title:"🌐 Sinn des Projekts",unity_title:"Unitycard Club",unity_btn:"Unitycard aktivieren",drops_title:"Sanctum Drops",supporters_title:"🤝 Supporters",werbe_title:"Werbeflächen",lang_prompt:"🌍 Lies es in deiner Chill-Sprache, Bratan:"},
-en:{tagline:"NBC News – Independent. Voluntary.",sinn_title:"🌐 Why We Exist",unity_title:"Unitycard Club",unity_btn:"Activate Unitycard",drops_title:"Sanctum Drops",supporters_title:"🤝 Supporters",werbe_title:"Ad Spaces",lang_prompt:"🌍 Read it in your chill language, bro:"},
-es:{tagline:"NBC News – Independiente. Voluntario.",sinn_title:"🌐 Por qué existimos",unity_title:"Club Unitycard",unity_btn:"Activar Unitycard",drops_title:"Sanctum Drops",supporters_title:"🤝 Supporters",werbe_title:"Espacios publicitarios",lang_prompt:"🌍 Léelo en tu idioma chill, hermano:"},
-pl:{tagline:"NBC News – Niezależnie. Dobrowolnie.",sinn_title:"🌐 Po co istniejemy",unity_title:"Klub Unitycard",unity_btn:"Aktywuj Unitycard",drops_title:"Sanctum Drops",supporters_title:"🤝 Supporterzy",werbe_title:"Powierzchnie reklamowe",lang_prompt:"🌍 Przeczytaj w swoim chill języku, bracie:"},
-bg:{tagline:"NBC News – Независимо. Доброволно.",sinn_title:"🌐 Защо съществуваме",unity_title:"Unitycard Клуб",unity_btn:"Активирай",drops_title:"Sanctum Drops",supporters_title:"🤝 Поддръжници",werbe_title:"Рекламни площи",lang_prompt:"🌍 Прочети на твоя chill език, брат:"},
-ja:{tagline:"NBC News – 独立。自主。",sinn_title:"🌐 存在理由",unity_title:"Unitycardクラブ",unity_btn:"Unitycardを有効化",drops_title:"Sanctum Drops",supporters_title:"🤝 サポーター",werbe_title:"広告枠",lang_prompt:"🌍 君のチル言語で読もうぜ:"},
-ar:{tagline:"NBC News – مستقل. تطوعي.",sinn_title:"🌐 لماذا نحن هنا",unity_title:"نادي Unitycard",unity_btn:"تفعيل Unitycard",drops_title:"Sanctum Drops",supporters_title:"🤝 الداعمون",werbe_title:"مساحات إعلانية",lang_prompt:"🌍 اقرأها بلغتك المريحة يا برو:"}
+de:{
+tagline:"NBC News – Unabhängig. Freiwillig.",sinn_title:"🌐 Sinn des Projekts",sinn_p1:"Yo, <strong>NBC News</strong> ist kein Konzern, keine Agentur, kein Bullshit – wir sind ein Haufen NaturalBornChillaz, die Bock haben, Wissen zu teilen ohne erhobenen Zeigefinger. Unabhängig, freiwillig, komplett auf Ehrenbasis. Wir verbinden Info mit Kunst, damit Aufklärung nicht nach Schulunterricht schmeckt, sondern nach nem guten Zug am Abend.",quote:"„Freiheit wächst nicht auf Bäumen – aber das Wissen darüber schon.“",manifesto_intro:"Was wir hier bauen, Bratan:",manifesto1:"<strong>CanG Real Talk:</strong> Kein Behördendeutsch. Wir brechen dir das neue Gesetz, Medizinalcannabis und deine Rechte runter – so dass du's auch high noch checkst. Fakten statt Panik.",manifesto2:"<strong>Community statt Algorithmus:</strong> Echte Vernetzung. Keine Likes-Jagd, keine Datenkrake. Exklusive Drops, Unitycard, Member Tank – nur für die, die's fühlen. Wächst täglich.",manifesto3:"<strong>Kunst gegen Vorurteile:</strong> Wir malen, coden und bauen, damit Oma versteht warum du chillst. Spielerisch, visuell, mit Augenzwinkern. Vorbehalte abbauen, Vibes aufbauen.",manifesto4:"<strong>100% freiwillig:</strong> Kein Investor im Nacken, keine Paywall. Wenn du supportest, geht's direkt in Server, Artworks und die nächsten Seeds. Ehrenwort.",manifesto_footer:"📍 Das volle Programm findest du auf der Hauptbase: <a href='https://infotonbc-news.github.io/infotonbc2/' style='color:var(--gold); text-decoration:none; border-bottom:1px dotted var(--gold);'>infotonbc-news.github.io</a> <em style='opacity:0.7;'>(Nur für 18+ Chillaz)</em>",unity_title:"Unitycard Club",unity_btn:"Unitycard aktivieren",drops_title:"Sanctum Drops",drops_sub:"Handverlesene Relikte aus dem Neo-Jungle.",sticker_title:"kleb Dir einen",sticker_price:"ab 6€",sticker_btn:"Details",feed_title:"Feed Da Chillaz",feed_sub:"Der Chilla braucht mehr als Luft.",feed_btn:"Supporten",supporters_title:"🤝 Supporters",supporters_p:"Diese Brands halten NBC am Laufen. Dein Logo könnte hier rollen – 100% CanG-konform, 100% Community.",supporters_note:"Klick aufs Logo → Supporter-Seite • Klick auf Spruch → Mail an uns",werbe_title:"Werbeflächen",werbe_p:"Premium Spots direkt in der Community – ohne Tracking, ohne Bullshit.",banner1_title:"🌱 Grow With Us – Dein Spot im Jungle",banner1_p:"Premium Plätze für Grower & Headshops",banner1_btn:"Anfragen",banner2_title:"🌉 Chill an der Gracht – Werbung für Kenner",banner2_p:"Hochwertig, entspannt, direkt zur Community",banner2_btn:"Anfragen ✉",banner3_title:"💡 Grow Lights On – Dein Shop hier?",banner3_p:"LEDs, Seeds, Equipment – direkt zur Zielgruppe",banner3_btn:"Spot buchen",banner4_title:"🍕 Munchies Approved – Werbung die ankommt",banner4_p:"Kiffer kaufen hier, weil sie eh schon hier chillen",banner4_btn:"Jetzt platzieren",lang_prompt:"🌍 Lies es in deiner Chill-Sprache, Bratan:",slogan1:"„Dein Logo hier – Support the Culture“",slogan2:"„Werbung die wirkt, nicht nervt“",slogan3:"„Werde Teil des Jungles“"},
+en:{
+tagline:"NBC News – Independent. Voluntary.",sinn_title:"🌐 Why We Exist",sinn_p1:"Yo, <strong>NBC News</strong> isn't a corp, not an agency, no bullshit – we're a bunch of NaturalBornChillaz sharing knowledge without preaching. Independent, voluntary, completely on honor. We mix info with art so education doesn't taste like school, but like a good evening puff.",quote:"“Freedom doesn't grow on trees – but knowledge about it does.”",manifesto_intro:"What we're building, bro:",manifesto1:"<strong>CanG Real Talk:</strong> No bureaucratic German. We break down the new law, medical cannabis and your rights so you get it even when high. Facts over panic.",manifesto2:"<strong>Community over Algorithm:</strong> Real connections. No like-hunting, no data kraken. Exclusive drops, Unitycard, member tank – only for those who feel it. Growing daily.",manifesto3:"<strong>Art vs Prejudice:</strong> We paint, code and build so grandma gets why you chill. Playful, visual, with a wink. Break down bias, build up vibes.",manifesto4:"<strong>100% voluntary:</strong> No investors, no paywall. If you support, it goes straight to servers, artworks and next seeds. Word of honor.",manifesto_footer:"📍 Full program at our homebase: <a href='https://infotonbc-news.github.io/infotonbc2/' style='color:var(--gold); text-decoration:none; border-bottom:1px dotted var(--gold);'>infotonbc-news.github.io</a> <em style='opacity:0.7;'>(18+ only)</em>",unity_title:"Unitycard Club",unity_btn:"Activate Unitycard",drops_title:"Sanctum Drops",drops_sub:"Handpicked relics from the neo-jungle.",sticker_title:"stick one on",sticker_price:"from €6",sticker_btn:"Details",feed_title:"Feed Da Chillaz",feed_sub:"The chilla needs more than air.",feed_btn:"Support",supporters_title:"🤝 Supporters",supporters_p:"These brands keep NBC running. Your logo could roll here – 100% CanG compliant, 100% community.",supporters_note:"Click logo → supporter page • Click slogan → email us",werbe_title:"Ad Spaces",werbe_p:"Premium spots directly in the community – no tracking, no bullshit.",banner1_title:"🌱 Grow With Us – Your spot in the jungle",banner1_p:"Premium spots for growers & headshops",banner1_btn:"Inquire",banner2_title:"🌉 Chill at the Canal – Ads for connoisseurs",banner2_p:"High-quality, relaxed, straight to community",banner2_btn:"Inquire ✉",banner3_title:"💡 Grow Lights On – Your shop here?",banner3_p:"LEDs, seeds, equipment – direct to target",banner3_btn:"Book spot",banner4_title:"🍕 Munchies Approved – Ads that land",banner4_p:"Stoners buy here cause they're already chilling",banner4_btn:"Place now",lang_prompt:"🌍 Read it in your chill language, bro:",slogan1:"“Your logo here – Support the Culture”",slogan2:"“Ads that work, not annoy”",slogan3:"“Join the jungle”"},
+es:{
+tagline:"NBC News – Independiente. Voluntario.",sinn_title:"🌐 Por qué existimos",sinn_p1:"Yo, <strong>NBC News</strong> no es una corp ni agencia, cero bullshit – somos NaturalBornChillaz compartiendo conocimiento sin sermones. Independiente, voluntario, totalmente de honor. Mezclamos info con arte para que educar no sepa a clase, sino a una buena calada.",quote:"“La libertad no crece en los árboles – pero el conocimiento sí.”",manifesto_intro:"Lo que estamos construyendo, hermano:",manifesto1:"<strong>CanG Real Talk:</strong> Sin alemán burocrático. Te explicamos la nueva ley, cannabis medicinal y tus derechos para que lo entiendas hasta colocado. Datos, no pánico.",manifesto2:"<strong>Comunidad sobre algoritmo:</strong> Conexiones reales. Sin caza-likes, sin kraken de datos. Drops exclusivos, Unitycard, member tank – solo para quien lo siente.",manifesto3:"<strong>Arte contra prejuicios:</strong> Pintamos y codeamos para que la abuela entienda por qué fumas. Juguetón, visual, con guiño.",manifesto4:"<strong>100% voluntario:</strong> Sin inversores, sin paywall. Si apoyas, va directo a servidores y arte. Palabra.",manifesto_footer:"📍 Programa completo en: <a href='https://infotonbc-news.github.io/infotonbc2/' style='color:var(--gold);'>infotonbc-news.github.io</a> <em>(solo 18+)</em>",unity_title:"Club Unitycard",unity_btn:"Activar Unitycard",drops_title:"Sanctum Drops",drops_sub:"Reliquias seleccionadas del neo-jungle.",sticker_title:"pégate uno",sticker_price:"desde 6€",sticker_btn:"Detalles",feed_title:"Alimenta a Chillaz",feed_sub:"El chilla necesita más que aire.",feed_btn:"Apoyar",supporters_title:"🤝 Supporters",supporters_p:"Estas marcas mantienen NBC vivo. Tu logo podría estar aquí – 100% CanG, 100% comunidad.",supporters_note:"Clic logo → página • Clic eslogan → email",werbe_title:"Espacios publicitarios",werbe_p:"Spots premium directos en la comunidad – sin tracking.",banner1_title:"🌱 Grow With Us – Tu spot en la jungla",banner1_p:"Espacios premium para growers",banner1_btn:"Consultar",banner2_title:"🌉 Chill en el canal",banner2_p:"Calidad, relax, directo",banner2_btn:"Consultar ✉",banner3_title:"💡 Luces encendidas",banner3_p:"LEDs, semillas, equipo",banner3_btn:"Reservar",banner4_title:"🍕 Munchies Approved",banner4_p:"Los fumetas compran aquí",banner4_btn:"Colocar",lang_prompt:"🌍 Léelo en tu idioma chill, hermano:",slogan1:"“Tu logo aquí – Apoya la cultura”",slogan2:"“Publicidad que funciona”",slogan3:"“Únete a la jungla”"},
+pl:{tagline:"NBC News – Niezależnie. Dobrowolnie.",sinn_title:"🌐 Po co istniejemy",sinn_p1:"Yo, <strong>NBC News</strong> to nie korpo ani agencja – jesteśmy NaturalBornChillaz, dzielimy się wiedzą bez moralizowania. Niezależnie, dobrowolnie, na honor.",quote:"“Wolność nie rośnie na drzewach – ale wiedza tak.”",manifesto_intro:"Co budujemy, bracie:",manifesto1:"<strong>CanG Real Talk:</strong> Bez urzędniczego. Tłumaczymy nowe prawo tak, żebyś zrozumiał nawet na haju.",manifesto2:"<strong>Społeczność ponad algorytm:</strong> Prawdziwe połączenia. Bez polowania na lajki.",manifesto3:"<strong>Sztuka przeciw uprzedzeniom:</strong> Malujemy, kodujemy, żeby babcia zrozumiała.",manifesto4:"<strong>100% dobrowolnie:</strong> Bez inwestorów, bez paywalla.",manifesto_footer:"📍 Pełen program: <a href='https://infotonbc-news.github.io/infotonbc2/'>infotonbc-news.github.io</a>",unity_title:"Klub Unitycard",unity_btn:"Aktywuj Unitycard",drops_title:"Sanctum Drops",drops_sub:"Ręcznie wybrane relikty.",sticker_title:"przyklej sobie",sticker_price:"od 6€",sticker_btn:"Szczegóły",feed_title:"Nakarm Chillaza",feed_sub:"Potrzebuje więcej niż powietrza.",feed_btn:"Wesprzyj",supporters_title:"🤝 Supporterzy",supporters_p:"Te marki trzymają NBC przy życiu.",supporters_note:"Klik logo → strona • Klik hasło → email",werbe_title:"Powierzchnie reklamowe",werbe_p:"Premium bez trackingu.",banner1_title:"🌱 Grow With Us",banner1_p:"Miejsca premium",banner1_btn:"Zapytaj",banner2_title:"🌉 Chill nad kanałem",banner2_p:"Jakość, luz",banner2_btn:"Zapytaj",banner3_title:"💡 Światła",banner3_p:"LEDy, nasiona",banner3_btn:"Rezerwuj",banner4_title:"🍕 Munchies",banner4_p:"Jaracze kupują tu",banner4_btn:"Umieść",lang_prompt:"🌍 Przeczytaj w swoim chill języku:",slogan1:"“Twoje logo tutaj”",slogan2:"“Reklama co działa”",slogan3:"“Dołącz”"},
+bg:{tagline:"NBC News – Независимо. Доброволно.",sinn_title:"🌐 Защо съществуваме",sinn_p1:"Йо, <strong>NBC News</strong> не е корпорация – ние сме NaturalBornChillaz, споделяме знание без поучения.",quote:"“Свободата не расте по дърветата – но знанието да.”",manifesto_intro:"Какво строим:",manifesto1:"<strong>CanG Real Talk:</strong> Без бюрокрация. Обясняваме закона ясно.",manifesto2:"<strong>Общност над алгоритъм:</strong> Истински връзки.",manifesto3:"<strong>Изкуство срещу предразсъдъци:</strong> Рисуваме за баба.",manifesto4:"<strong>100% доброволно:</strong> Без инвеститори.",manifesto_footer:"📍 Пълна програма: <a href='https://infotonbc-news.github.io/infotonbc2/'>сайт</a>",unity_title:"Unitycard Клуб",unity_btn:"Активирай",drops_title:"Sanctum Drops",drops_sub:"Подбрани реликви.",sticker_title:"залепи си",sticker_price:"от 6€",sticker_btn:"Детайли",feed_title:"Нахрани",feed_sub:"Иска повече от въздух.",feed_btn:"Подкрепи",supporters_title:"🤝 Поддръжници",supporters_p:"Тези марки държат NBC.",supporters_note:"Клик → email",werbe_title:"Реклами",werbe_p:"Без тракване.",banner1_title:"🌱 Grow",banner1_p:"Премиум",banner1_btn:"Питай",banner2_title:"🌉 Chill",banner2_p:"Качество",banner2_btn:"Питай",banner3_title:"💡 Светлини",banner3_p:"LED",banner3_btn:"Резервирай",banner4_title:"🍕 Munchies",banner4_p:"Пушачите тук",banner4_btn:"Постави",lang_prompt:"🌍 Прочети на chill:",slogan1:"“Твоето лого”",slogan2:"“Реклама”",slogan3:"“Влез”"},
+ja:{tagline:"NBC News – 独立。自主。",sinn_title:"🌐 存在理由",sinn_p1:"Yo、<strong>NBC News</strong>は企業じゃない – 知識を説教なしでシェアするNaturalBornChillaz。",quote:"「自由は木に生えない – 知識は生える」",manifesto_intro:"作ってるもの:",manifesto1:"<strong>CanG:</strong> 法律をハイでも分かるように。",manifesto2:"<strong>コミュニティ:</strong> いいね狩りなし。",manifesto3:"<strong>アート:</strong> 偏見を壊す。",manifesto4:"<strong>100%自主:</strong> 投資家なし。",manifesto_footer:"📍 完全版: <a href='https://infotonbc-news.github.io/infotonbc2/'>サイト</a>",unity_title:"Unitycard",unity_btn:"有効化",drops_title:"Sanctum",drops_sub:"厳選遺物",sticker_title:"貼れ",sticker_price:"6€〜",sticker_btn:"詳細",feed_title:"餌",feed_sub:"空気以上",feed_btn:"支援",supporters_title:"🤝 サポーター",supporters_p:"これらがNBCを支える",supporters_note:"クリック→メール",werbe_title:"広告",werbe_p:"トラッキングなし",banner1_title:"🌱 Grow",banner1_p:"プレミアム",banner1_btn:"問合せ",banner2_title:"🌉 Chill",banner2_p:"高品質",banner2_btn:"問合せ",banner3_title:"💡 ライト",banner3_p:"LED",banner3_btn:"予約",banner4_title:"🍕 Munchies",banner4_p:"ここで買う",banner4_btn:"掲載",lang_prompt:"🌍 チル言語で:",slogan1:"「ロゴここ」",slogan2:"「効く広告」",slogan3:"「参加」"},
+ar:{tagline:"NBC News – مستقل. تطوعي.",sinn_title:"🌐 لماذا نحن",sinn_p1:"يو، <strong>NBC News</strong> ليست شركة – نشارك المعرفة بدون وعظ.",quote:"“الحرية لا تنمو على الشجر – المعرفة نعم.”",manifesto_intro:"ما نبنيه:",manifesto1:"<strong>CanG:</strong> نشرح القانون ببساطة.",manifesto2:"<strong>مجتمع:</strong> بلا خوارزمية.",manifesto3:"<strong>فن:</strong> ضد التحيز.",manifesto4:"<strong>100% تطوعي:</strong> بلا مستثمرين.",manifesto_footer:"📍 البرنامج: <a href='https://infotonbc-news.github.io/infotonbc2/'>الموقع</a>",unity_title:"نادي",unity_btn:"تفعيل",drops_title:"Drops",drops_sub:"آثار مختارة",sticker_title:"الصق",sticker_price:"من 6€",sticker_btn:"تفاصيل",feed_title:"أطعم",feed_sub:"أكثر من هواء",feed_btn:"ادعم",supporters_title:"🤝 داعمون",supporters_p:"هذه العلامات تدعم NBC.",supporters_note:"انقر → بريد",werbe_title:"إعلانات",werbe_p:"بدون تتبع",banner1_title:"🌱 ازرع",banner1_p:"مميز",banner1_btn:"استفسر",banner2_title:"🌉 استرخ",banner2_p:"جودة",banner2_btn:"استفسر",banner3_title:"💡 أضواء",banner3_p:"LED",banner3_btn:"احجز",banner4_title:"🍕 منشيز",banner4_p:"يشترون هنا",banner4_btn:"انشر",lang_prompt:"🌍 اقرأ بلغتك:",slogan1:"“شعارك هنا”",slogan2:"“إعلان يعمل”",slogan3:"“انضم”"}
 };
+
 const jokesByLang={de:["„Chillaz, hast du heute schon dein Gehirn gegossen?“","„CanG ist da – Panik ist out.“","„Kein Stress, nur Terpene.“"],en:["“Yo, watered your brain today?”","“CanG is here – panic out.”"],es:["“¿Ya regaste tu cerebro?”"],pl:["„Podlałeś dziś mózg?”"],bg:["„Поляхте ли мозъка?”"],ja:["「脳に水やった？」"],ar:["“هل سقيت دماغك؟”"]};
 function setLanguage(lang){const t=translations[lang]||translations.de;document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(t[k])el.innerHTML=t[k]});document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';localStorage.setItem('nbc_lang',lang);document.querySelectorAll('.lang-flags button').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));window.currentJokes=jokesByLang[lang]||jokesByLang.de;const jt=document.getElementById('jokeTicker');if(jt)jt.textContent=window.currentJokes[0];}
 const canvas=document.getElementById('smoke-canvas');const ctx=canvas.getContext('2d');function resize(){canvas.width=innerWidth;canvas.height=innerHeight}resize();addEventListener('resize',resize);
