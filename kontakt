@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NBC Kontakt – seriös chillig</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fdfcf6;color:#1e3a1a;font-family:'Inter',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;opacity:0.12;pointer-events:none;background:repeating-linear-gradient(90deg, #e8e0cc 0 1px, transparent 1px 40px), repeating-linear-gradient(0deg, #e8e0cc 0 1px, transparent 1px 40px)}
+.container{max-width:760px;margin:0 auto;padding:32px 20px}
+.header{text-align:center;margin-bottom:28px}
+.logo{width:84px;height:84px;margin:0 auto 14px;border-radius:50%;background:#fdfcf6;border:2px solid #c9a84c;display:flex;align-items:center;justify-content:center;font-size:32px}
+.h1{font-family:'Playfair Display',serif;font-size:28px}
+.sub{font-size:11px;letter-spacing:0.18em;color:#3d5a2b;margin-top:4px}
+.line{width:60px;height:2px;background:#c9a84c;margin:12px auto}
+.card{background:#ffffff;border:1px solid #e8e0cc;border-radius:18px;padding:26px;box-shadow:0 10px 30px rgba(30,58,26,0.07)}
+.label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:#3d5a2b;font-weight:700;margin:14px 0 6px;display:block}
+.input,.select,.textarea{width:100%;background:#fffdf6;border:1px solid #e8e0cc;border-radius:10px;padding:12px 14px;font-size:14px;color:#1e3a1a;outline:none}
+.input:focus,.select:focus,.textarea:focus{border-color:#c9a84c;box-shadow:0 0 0 3px rgba(201,168,76,0.15)}
+.textarea{min-height:110px;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.row{grid-template-columns:1fr}}
+.btn{width:100%;background:#1e3a1a;color:#fff;border:none;border-radius:999px;padding:14px;margin-top:18px;font-weight:700;cursor:pointer}
+.btn:hover{background:#c9a84c}
+.success{display:none;background:#f6f3ed;border:1px solid #c9a84c;border-radius:12px;padding:14px;margin-top:14px;text-align:center;font-size:13px}
+.success.show{display:block}
+.qr{display:flex;gap:12px;justify-content:center;margin:16px 0}
+.qr img{width:86px;height:86px;border:1px solid #e8e0cc;border-radius:8px;padding:4px;background:#fff}
+.badge{display:inline-flex;width:28px;height:28px;border-radius:50%;background:#1e3a1a;color:#fff;align-items:center;justify-content:center;font-size:10px;margin:3px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">NBC</div>
+    <div class="h1">INFOtoNBC</div>
+    <div class="sub">NATURAL BORN CHILLAZ</div>
+    <div class="line"></div>
+    <div style="font-family:'Playfair Display';font-size:18px">Kontakt – Let's talk</div>
+    <div style="font-size:12px;color:#8a8a7a;margin-top:6px">Seriös. Chillig. Auf Augenhöhe. Antwort in 24h.</div>
+  </div>
+
+  <div class="card">
+    <form id="f">
+      <div class="row">
+        <div><label class="label">Name *</label><input class="input" id="name" required placeholder="Dein Name"></div>
+        <div><label class="label">E-Mail *</label><input class="input" id="email" type="email" required placeholder="deine@email.de"></div>
+      </div>
+      <label class="label">Du bist *</label>
+      <select class="select" id="role" required>
+        <option value="">Bitte wählen…</option>
+        <option>Partner / Brand</option>
+        <option>Event / Messe</option>
+        <option>Presse / Bildung</option>
+        <option>Community Frage</option>
+        <option>Sonstiges</option>
+      </select>
+      <label class="label">Betreff</label><input class="input" id="subject" placeholder="z.B. Kooperation Messe">
+      <label class="label">Nachricht *</label><textarea class="textarea" id="message" required placeholder="Erzähl uns kurz worum es geht – locker, aber klar…"></textarea>
+      <label style="display:flex;gap:8px;margin-top:12px;font-size:11px"><input type="checkbox" required> Ich bin 18+ und stimme Speicherung zur Bearbeitung zu.</label>
+      <button class="btn" type="submit">Nachricht senden – be a NaturalBornChillaz</button>
+      <div class="success" id="ok">Danke! 🌿 Deine Nachricht ist bei uns. Mail-Programm öffnet sich jetzt an <b>infotonbc@gmail.com</b> – check auch Spam. Stay chill, Suave.</div>
+    </form>
+  </div>
+
+  <div class="card" style="margin-top:18px;text-align:center">
+    <div style="font-family:'Playfair Display';font-size:14px">Slawomir Wisniewski aka Suave</div>
+    <div style="font-size:11px;color:#8a8a7a">Founder & Community Lead</div>
+    <div style="margin-top:10px;font-weight:700;font-size:13px">infotonbc@gmail.com</div>
+    <div style="font-size:12px;color:#3d5a2b">linktr.ee/infotonbc • @infotonbc • Essen, NRW</div>
+    <div class="qr">
+      <div><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.instagram.com/infotonbc"><br><span style="font-size:9px">INSTAGRAM</span></div>
+      <div><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://linktr.ee/infotonbc"><br><span style="font-size:9px">LINKTREE</span></div>
+    </div>
+    <div><span class="badge">f</span><span class="badge">YT</span><span class="badge">Tw</span><span class="badge">X</span><span class="badge">IG</span></div>
+  </div>
+</div>
+<script>
+document.getElementById('f').addEventListener('submit',function(e){
+ e.preventDefault();
+ const name=document.getElementById('name').value;
+ const email=document.getElementById('email').value;
+ const role=document.getElementById('role').value;
+ const subject=document.getElementById('subject').value;
+ const message=document.getElementById('message').value;
+ const full=`[NBC Kontakt] ${role} - ${subject} - ${name}`;
+ const body=`Name: ${name}\nE-Mail: ${email}\nRolle: ${role}\nBetreff: ${subject}\n\nNachricht:\n${message}`;
+ window.location.href=`mailto:infotonbc@gmail.com?subject=${encodeURIComponent(full)}&body=${encodeURIComponent(body)}`;
+ document.getElementById('ok').classList.add('show');
+});
+</script>
+</body>
+</html>
