@@ -15,8 +15,9 @@ button{margin:6px 4px 0;padding:11px 18px;border-radius:12px;border:0;background
 button.s{background:#2a2f66;color:var(--ink)}
 #cert{width:min(100%,230px);border-radius:8px;border:2px solid var(--acc)}
 .hs{font-size:12px;opacity:.85;text-align:left;margin-top:6px}
+#ctl{position:absolute;left:0;right:0;bottom:0;height:20%;display:flex;gap:8px;padding:0 8px 8px;box-sizing:border-box;touch-action:none;user-select:none;-webkit-user-select:none}#ctl div{flex:1;border-radius:18px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:38px;color:rgba(255,255,255,.55);pointer-events:none}#ctl div.on{background:rgba(255,179,71,.3)}#ov:empty{pointer-events:none}#pb[style*="none"]~#ctl{display:none}
 #pb{position:absolute;top:8px;right:8px;margin:0;padding:6px 10px;font-size:13px;background:#2a2f66aa;color:var(--ink)}
-</style></head><body><div id="wrap"><canvas id="c" width="360" height="640"></canvas><button id="pb">⏸</button><div id="ov"></div></div>
+</style></head><body><div id="wrap"><canvas id="c" width="360" height="640"></canvas><button id="pb">⏸</button><div id="ctl"><div id="bl">◀</div><div id="br">▶</div></div><div id="ov"></div></div>
 <script>
 const W=360,H=640,cv=document.getElementById('c'),g=cv.getContext('2d'),ov=document.getElementById('ov'),pb=document.getElementById('pb');
 const FRUIT=['🍎','🍐','🍓','🍒','🍇','🍊','🍋','🥥','🍄','🌸','🌻','🍃','🌰','🍂'];
@@ -49,10 +50,10 @@ const fmt=t=>String(Math.floor(t/60)).padStart(2,'0')+':'+String(Math.floor(t%60
 const rank=s=>s<100?'Frischer Chiller':s<300?'Tiefenentspannt':s<600?'Chill-Profi':s<1000?'Meister der Gelassenheit':'Legende der Nachtluft';
 function intro(){S.mode='intro';pb.style.display='none';ov.innerHTML=`<div class="p"><h1>Chillaz WeeCatched</h1>
 <p>🌙 „Yo, was geht? Ich bin Chillaz – NaturalbornChillaz, geboren mit Kescher in der Hand. Nachts, wenn die Stadt leuchtet und alle hetzen, steh ich ganz entspannt auf der Straße und fang, was die Natur mir zuwirft.“</p>
-<p>🍎 <b>← →</b> bewegen mich (am Handy: Finger ziehen). <b>Leertaste</b> = Pause. Steh ich unter einer Frucht, heb ich die Arme: Kescher hoch, Münzklang, Punkte!</p>
+<p>🍎 <b>← →</b> bewegen mich (am Handy: Tasten ◀ ▶ unten). <b>Leertaste</b> = Pause. Steh ich unter einer Frucht, heb ich die Arme: Kescher hoch, Münzklang, Punkte!</p>
 <p>💔 Fällt was durch, gibt’s einen Fail-Ton und ein Herz weniger. 🍀 bringt eins zurück. Je länger deine Serie, desto schneller fällt’s. Bleib locker, bleib lange – dann gibt’s deine Urkunde.</p>
 <input id="nm" placeholder="Dein Name" maxlength="18" value="${P.n}"><input id="ig" placeholder="Instagram-Name (z. B. @chillaz)" maxlength="30" value="${P.h}">
-<p style="font-size:12px;opacity:.85">📱 Ton an für den vollen Chill 🔊 – Daumen irgendwo aufsetzen und ziehen. Tipp: Im Browser-Menü „Zum Home-Bildschirm“ wählen, dann startet das Spiel im Vollbild.</p><button id="go">Los, chillen! 🌿</button><div class="hs">${hsList()}</div></div>`;
+<p style="font-size:12px;opacity:.85">📱 Ton an für den vollen Chill 🔊 – Halte die Tasten ◀ ▶ unten gedrückt. Tipp: Im Browser-Menü „Zum Home-Bildschirm“ wählen, dann startet das Spiel im Vollbild.</p><button id="go">Los, chillen! 🌿</button><div class="hs">${hsList()}</div></div>`;
 document.getElementById('go').onclick=()=>{P.n=document.getElementById('nm').value.trim();P.h=document.getElementById('ig').value.trim().replace(/^@?/,'@').replace(/^@$/,'');try{localStorage.setItem('cwc_p',JSON.stringify(P))}catch(e){}start()}}
 function hsList(){const l=load();return l.length?'<b>🏆 Highscores</b><br>'+l.map((e,i)=>`${i+1}. ${e.n} – ${e.s} Pkt (${fmt(e.t)})`).join('<br>'):''}
 function start(){ac();ov.innerHTML='';pb.style.display='';S={mode:'play',px:W/2,items:[],fx:[],sc:0,lives:5,caught:0,streak:0,best:0,lvl:1,t:0,sp:.6,ban:1.8,shake:0,up:false,last:performance.now()};requestAnimationFrame(loop)}
@@ -61,10 +62,14 @@ pb.onclick=pause;
 addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();if(S.mode==='play'||S.mode==='pause')pause()}if(e.key==='ArrowLeft'){K.l=1;tx=null;e.preventDefault()}if(e.key==='ArrowRight'){K.r=1;tx=null;e.preventDefault()}});
 addEventListener('keyup',e=>{if(e.key==='ArrowLeft')K.l=0;if(e.key==='ArrowRight')K.r=0});
 let dr=null,T=0;const wr=document.getElementById('wrap');
-wr.addEventListener('pointerdown',e=>{if(S.mode!=='play'||e.target.closest('button'))return;dr={a:e.clientX};T=0;try{wr.setPointerCapture(e.pointerId)}catch(_){}});
+wr.addEventListener('pointerdown',e=>{return;dr={a:e.clientX};T=0;try{wr.setPointerCapture(e.pointerId)}catch(_){}});
 wr.addEventListener('pointermove',e=>{if(!dr||S.mode!=='play')return;const dx=e.clientX-dr.a;T=dx>10?1:dx<-10?-1:0;if(Math.abs(dx)>36)dr.a=e.clientX-Math.sign(dx)*36});
 const rel=()=>{dr=null;T=0};wr.addEventListener('pointerup',rel);wr.addEventListener('pointercancel',rel);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&S.mode==='play')pause()});addEventListener('pagehide',()=>{if(S.mode==='play')pause()});
+const ct=document.getElementById('ctl'),bl=document.getElementById('bl'),br=document.getElementById('br');
+const side=e=>{const r=ct.getBoundingClientRect(),L=e.clientX<r.left+r.width/2;K.l=L?1:0;K.r=L?0:1;bl.classList.toggle('on',L);br.classList.toggle('on',!L)};
+const stop=()=>{K.l=K.r=0;bl.classList.remove('on');br.classList.remove('on')};
+ct.addEventListener('pointerdown',e=>{e.preventDefault();ac();side(e)});ct.addEventListener('pointermove',e=>{if(e.buttons)side(e)});['pointerup','pointercancel'].forEach(n=>ct.addEventListener(n,stop));ct.addEventListener('contextmenu',e=>e.preventDefault());
 const vib=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
 function spawn(){const clo=Math.random()<.04;const v=Math.min(6.5,1.5+(S.lvl-1)*.18+Math.min(S.streak,40)*.025)*(.9+Math.random()*.25);S.items.push({x:22+Math.random()*(W-44),y:-20,v,r:0,sp:(Math.random()-.5)*.08,e:clo?'🍀':FRUIT[Math.random()*FRUIT.length|0],clo})}
 function update(d){const s=S;s.t+=d/60;
