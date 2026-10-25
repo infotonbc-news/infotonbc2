@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Chillaz WeeCatched</title><meta name="color-scheme" content="dark">
+<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Chillaz WeeCatched</title><meta name="color-scheme" content="dark"><meta name="theme-color" content="#070a1c"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Chillaz">
 <style>
 :root{color-scheme:dark;--bg:#070a1c;--ink:#f4efe6;--acc:#ffb347;--pan:rgba(14,18,48,.9);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -52,7 +52,7 @@ function intro(){S.mode='intro';pb.style.display='none';ov.innerHTML=`<div class
 <p>🍎 <b>← →</b> bewegen mich (am Handy: Finger ziehen). <b>Leertaste</b> = Pause. Steh ich unter einer Frucht, heb ich die Arme: Kescher hoch, Münzklang, Punkte!</p>
 <p>💔 Fällt was durch, gibt’s einen Fail-Ton und ein Herz weniger. 🍀 bringt eins zurück. Je länger deine Serie, desto schneller fällt’s. Bleib locker, bleib lange – dann gibt’s deine Urkunde.</p>
 <input id="nm" placeholder="Dein Name" maxlength="18" value="${P.n}"><input id="ig" placeholder="Instagram-Name (z. B. @chillaz)" maxlength="30" value="${P.h}">
-<button id="go">Los, chillen! 🌿</button><div class="hs">${hsList()}</div></div>`;
+<p style="font-size:12px;opacity:.85">📱 Ton an für den vollen Chill 🔊 – Daumen irgendwo aufsetzen und ziehen. Tipp: Im Browser-Menü „Zum Home-Bildschirm“ wählen, dann startet das Spiel im Vollbild.</p><button id="go">Los, chillen! 🌿</button><div class="hs">${hsList()}</div></div>`;
 document.getElementById('go').onclick=()=>{P.n=document.getElementById('nm').value.trim();P.h=document.getElementById('ig').value.trim().replace(/^@?/,'@').replace(/^@$/,'');try{localStorage.setItem('cwc_p',JSON.stringify(P))}catch(e){}start()}}
 function hsList(){const l=load();return l.length?'<b>🏆 Highscores</b><br>'+l.map((e,i)=>`${i+1}. ${e.n} – ${e.s} Pkt (${fmt(e.t)})`).join('<br>'):''}
 function start(){ac();ov.innerHTML='';pb.style.display='';S={mode:'play',px:W/2,items:[],fx:[],sc:0,lives:5,caught:0,streak:0,best:0,lvl:1,t:0,sp:.6,ban:1.8,shake:0,up:false,last:performance.now()};requestAnimationFrame(loop)}
@@ -60,17 +60,21 @@ function pause(){if(S.mode==='play'){S.mode='pause';ov.innerHTML='<div class="p"
 pb.onclick=pause;
 addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();if(S.mode==='play'||S.mode==='pause')pause()}if(e.key==='ArrowLeft'){K.l=1;tx=null;e.preventDefault()}if(e.key==='ArrowRight'){K.r=1;tx=null;e.preventDefault()}});
 addEventListener('keyup',e=>{if(e.key==='ArrowLeft')K.l=0;if(e.key==='ArrowRight')K.r=0});
-function ptr(e){if(S.mode!=='play'||e.buttons===0&&e.pointerType==='mouse')return;const r=cv.getBoundingClientRect();tx=(e.clientX-r.left)/r.width*W}
-cv.addEventListener('pointerdown',ptr);cv.addEventListener('pointermove',ptr);cv.addEventListener('pointerup',()=>tx=null);
+let dr=null;const wr=document.getElementById('wrap');
+wr.addEventListener('pointerdown',e=>{if(S.mode!=='play'||e.target.closest('button'))return;dr={x:e.clientX,p:S.px};try{wr.setPointerCapture(e.pointerId)}catch(_){}});
+wr.addEventListener('pointermove',e=>{if(!dr||S.mode!=='play')return;const r=cv.getBoundingClientRect();tx=dr.p+(e.clientX-dr.x)/r.width*W});
+const rel=()=>{dr=null;tx=null};wr.addEventListener('pointerup',rel);wr.addEventListener('pointercancel',rel);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&S.mode==='play')pause()});addEventListener('pagehide',()=>{if(S.mode==='play')pause()});
+const vib=p=>{try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}};
 function spawn(){const clo=Math.random()<.04;const v=Math.min(6.5,1.5+(S.lvl-1)*.18+Math.min(S.streak,40)*.025)*(.9+Math.random()*.25);S.items.push({x:22+Math.random()*(W-44),y:-20,v,r:0,sp:(Math.random()-.5)*.08,e:clo?'🍀':FRUIT[Math.random()*FRUIT.length|0],clo})}
 function update(d){const s=S;s.t+=d/60;
-if(tx!=null){const q=tx-s.px;s.px+=Math.sign(q)*Math.min(Math.abs(q),6.5*d)}else s.px+=(K.r-K.l)*5.4*d;s.px=Math.max(26,Math.min(W-26,s.px));
+if(tx!=null){const q=tx-s.px;s.px+=Math.sign(q)*Math.min(Math.abs(q),18*d)}else s.px+=(K.r-K.l)*5.4*d;s.px=Math.max(26,Math.min(W-26,s.px));
 s.sp-=d/60;if(s.sp<=0){spawn();if(s.lvl>=4&&Math.random()<.25)spawn();s.sp=Math.max(.42,1.15-s.lvl*.06)*(.8+Math.random()*.4)}
 const ny=s.up?H-36-112:H-36-92;s.up=s.items.some(i=>Math.abs(i.x-s.px)<36&&i.y<ny+10&&i.y>ny-190);
 for(const i of s.items){i.y+=i.v*d;i.r+=i.sp*d;
-if(Math.hypot(i.x-s.px,i.y-ny)<30){i.dead=1;coin();const p=i.clo?50:10+(s.lvl-1)*2+Math.floor(s.streak/5)*5;s.sc+=p;s.caught++;s.streak++;s.best=Math.max(s.best,s.streak);if(i.clo&&s.lives<5)s.lives++;s.fx.push({x:i.x,y:i.y,t:p+(i.clo?' ❤️':''),a:1});
-const nl=1+Math.floor(s.caught/8);if(nl>s.lvl){s.lvl=nl;s.ban=1.8;lvlup()}}
-else if(i.y>H-40){i.dead=1;fail();s.lives--;s.streak=0;s.shake=.3;if(s.lives<=0){over();return}}}
+if(Math.hypot(i.x-s.px,i.y-ny)<30){i.dead=1;coin();vib(25);const p=i.clo?50:10+(s.lvl-1)*2+Math.floor(s.streak/5)*5;s.sc+=p;s.caught++;s.streak++;s.best=Math.max(s.best,s.streak);if(i.clo&&s.lives<5)s.lives++;s.fx.push({x:i.x,y:i.y,t:p+(i.clo?' ❤️':''),a:1});
+const nl=1+Math.floor(s.caught/8);if(nl>s.lvl){s.lvl=nl;s.ban=1.8;lvlup();vib([40,30,40])}}
+else if(i.y>H-40){i.dead=1;fail();vib([90,40,180]);s.lives--;s.streak=0;s.shake=.3;if(s.lives<=0){over();return}}}
 s.items=s.items.filter(i=>!i.dead);s.fx.forEach(f=>{f.y-=.8*d;f.a-=.02*d});s.fx=s.fx.filter(f=>f.a>0);s.ban-=d/60;s.shake-=d/60}
 function render(){const s=S;g.save();if(s.shake>0)g.translate((Math.random()-.5)*6,(Math.random()-.5)*6);g.drawImage(bg,0,0);
 g.textAlign='center';g.textBaseline='middle';g.font='30px serif';
@@ -98,6 +102,6 @@ let CC;
 function over(){S.mode='over';pb.style.display='none';S.name=P.n||P.h||'Chillaz-Gast';save({n:S.name,s:S.sc,t:S.t});render();CC=cert();
 ov.innerHTML=`<div class="p"><h1>Game Over</h1><img id="cert" src="${CC.toDataURL('image/png')}" alt="Urkunde"><div><button id="sh">📲 Story / Bild teilen</button><button id="ag" class="s">Nochmal</button></div><div class="hs">Tipp: Falls das Teilen nicht startet, Bild gedrückt halten bzw. Rechtsklick → speichern. Dann als Story in Instagram hochladen.</div><div class="hs">${hsList()}</div></div>`;
 document.getElementById('ag').onclick=intro;
-document.getElementById('sh').onclick=async()=>{const b=await new Promise(r=>CC.toBlob(r,'image/png'));const f=new File([b],'chillaz-weecatched.png',{type:'image/png'});try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Chillaz WeeCatched'});return}}catch(e){}try{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=f.name;a.click()}catch(e){}}}
+document.getElementById('sh').onclick=async()=>{const b=await new Promise(r=>CC.toBlob(r,'image/png'));const f=new File([b],'chillaz-weecatched.png',{type:'image/png'});try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Chillaz WeeCatched',text:'Mein Score bei Chillaz WeeCatched 🌙'});return}}catch(e){if(e&&e.name==='AbortError')return}try{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=f.name;a.click()}catch(e){}}}
 bg&&g.drawImage(bg,0,0);intro();
 </script></body></html>
