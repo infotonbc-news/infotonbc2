@@ -1,0 +1,103 @@
+<!DOCTYPE html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Chillaz WeeCatched</title><meta name="color-scheme" content="dark">
+<style>
+:root{color-scheme:dark;--bg:#070a1c;--ink:#f4efe6;--acc:#ffb347;--pan:rgba(14,18,48,.9);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",system-ui,sans-serif}
+body{display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:none}
+#wrap{position:relative;height:min(100%,calc(100vw*16/9));aspect-ratio:9/16;box-shadow:0 0 60px #000}
+canvas#c{width:100%;height:100%;display:block}
+#ov{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:12px;overflow:auto}
+.p{background:var(--pan);border:1px solid #ffb34766;border-radius:18px;padding:16px;max-width:100%;text-align:center;backdrop-filter:blur(6px);font-size:14px;line-height:1.45}
+.p h1{margin:0 0 6px;font-size:26px;color:var(--acc);letter-spacing:1px}
+.p p{margin:6px 0;text-align:left}
+input{width:100%;box-sizing:border-box;margin:4px 0;padding:10px;border-radius:10px;border:1px solid #ffb34780;background:#0c1030;color:var(--ink);font-size:15px}
+button{margin:6px 4px 0;padding:11px 18px;border-radius:12px;border:0;background:var(--acc);color:#1a1030;font-weight:700;font-size:15px;cursor:pointer}
+button.s{background:#2a2f66;color:var(--ink)}
+#cert{width:min(100%,230px);border-radius:8px;border:2px solid var(--acc)}
+.hs{font-size:12px;opacity:.85;text-align:left;margin-top:6px}
+#pb{position:absolute;top:8px;right:8px;margin:0;padding:6px 10px;font-size:13px;background:#2a2f66aa;color:var(--ink)}
+</style></head><body><div id="wrap"><canvas id="c" width="360" height="640"></canvas><button id="pb">⏸</button><div id="ov"></div></div>
+<script>
+const W=360,H=640,cv=document.getElementById('c'),g=cv.getContext('2d'),ov=document.getElementById('ov'),pb=document.getElementById('pb');
+const FRUIT=['🍎','🍐','🍓','🍒','🍇','🍊','🍋','🥥','🍄','🌸','🌻','🍃','🌰','🍂'];
+let AC;function ac(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();AC.resume()}catch(e){}}
+function tone(f,t,d,ty,v){if(!AC)return;const o=AC.createOscillator(),a=AC.createGain();o.type=ty;o.frequency.setValueAtTime(f,AC.currentTime+t);a.gain.setValueAtTime(v,AC.currentTime+t);a.gain.exponentialRampToValueAtTime(.001,AC.currentTime+t+d);o.connect(a);a.connect(AC.destination);o.start(AC.currentTime+t);o.stop(AC.currentTime+t+d)}
+const coin=()=>{tone(988,0,.08,'square',.12);tone(1319,.08,.28,'square',.12)};
+const fail=()=>{tone(220,0,.2,'sawtooth',.14);tone(150,.18,.35,'sawtooth',.14)};
+const lvlup=()=>{[523,659,784,1047].forEach((f,i)=>tone(f,i*.09,.2,'triangle',.14))};
+// Hintergrund
+const bg=(()=>{const b=document.createElement('canvas');b.width=W;b.height=H;const c=b.getContext('2d');let q=c.createLinearGradient(0,0,0,H);q.addColorStop(0,'#05071a');q.addColorStop(.6,'#2a1b5a');q.addColorStop(1,'#a04a7a');c.fillStyle=q;c.fillRect(0,0,W,H);
+for(let i=0;i<70;i++){c.fillStyle=`rgba(255,255,255,${Math.random()*.8})`;c.fillRect(Math.random()*W,Math.random()*320,1.5,1.5)}
+c.fillStyle='#fff6d6';c.beginPath();c.arc(285,90,28,0,7);c.fill();c.fillStyle='#2a1b5a';c.beginPath();c.arc(297,84,25,0,7);c.fill();
+[['#14183d',200,.35],['#0d1030',130,.55],['#080a22',80,.8]].forEach(([col,h,lit])=>{let x=-10;while(x<W){const w=30+Math.random()*34,hh=h+Math.random()*h*.9,y=H-36-hh;c.fillStyle=col;c.fillRect(x,y,w,hh);for(let wy=y+8;wy<H-48;wy+=11)for(let wx=x+5;wx<x+w-6;wx+=9)if(Math.random()<lit*.5){c.fillStyle=Math.random()<.8?'#ffd36b':'#8fd3ff';c.globalAlpha=.75;c.fillRect(wx,wy,4,5);c.globalAlpha=1}x+=w+2}});
+c.fillStyle='#10122c';c.fillRect(0,H-36,W,36);c.fillStyle='#ffb34755';for(let x=0;x<W;x+=40)c.fillRect(x,H-14,22,3);return b})();
+// Figur
+function chill(c,x,y,up,s=1){c.save();c.translate(x,y);c.scale(s,s);c.lineCap='round';
+c.fillStyle='#1d2150';c.fillRect(-9,-22,7,22);c.fillRect(2,-22,7,22);
+c.fillStyle='#ff7a59';c.beginPath();c.roundRect(-14,-54,28,36,8);c.fill();
+c.strokeStyle='#ff7a59';c.lineWidth=7;const hy=up?-84:-40;c.beginPath();c.moveTo(-13,-48);c.lineTo(-18,hy);c.moveTo(13,-48);c.lineTo(18,hy);c.stroke();
+c.fillStyle='#f1c9a0';c.beginPath();c.arc(0,-66,12,0,7);c.fill();
+c.fillStyle='#3fa66b';c.beginPath();c.arc(0,-69,12,Math.PI,0);c.fill();c.fillRect(-14,-70,30,4);
+c.fillStyle='#111';c.fillRect(-10,-67,20,5);
+const ny=up?-112:-92;c.strokeStyle='#c9a26b';c.lineWidth=3;c.beginPath();c.moveTo(0,hy+4);c.lineTo(0,ny+22);c.stroke();
+c.strokeStyle='#fff';c.lineWidth=2;c.beginPath();c.arc(0,ny,22,0,7);c.stroke();c.lineWidth=1;c.globalAlpha=.6;for(let i=-16;i<=16;i+=8){c.beginPath();c.moveTo(i,ny-20);c.lineTo(i,ny+20);c.moveTo(-20,ny+i);c.lineTo(20,ny+i);c.stroke()}c.restore()}
+// Zustand
+let S={mode:'intro'},P=JSON.parse((()=>{try{return localStorage.getItem('cwc_p')}catch(e){}})()||'{"n":"","h":""}'),K={l:0,r:0},tx=null;
+function load(){try{return JSON.parse(localStorage.getItem('cwc_s')||'[]')}catch(e){return[]}}
+function save(e){try{const l=load();l.push(e);l.sort((a,b)=>b.s-a.s);localStorage.setItem('cwc_s',JSON.stringify(l.slice(0,5)))}catch(e){}}
+const fmt=t=>String(Math.floor(t/60)).padStart(2,'0')+':'+String(Math.floor(t%60)).padStart(2,'0');
+const rank=s=>s<100?'Frischer Chiller':s<300?'Tiefenentspannt':s<600?'Chill-Profi':s<1000?'Meister der Gelassenheit':'Legende der Nachtluft';
+function intro(){S.mode='intro';pb.style.display='none';ov.innerHTML=`<div class="p"><h1>Chillaz WeeCatched</h1>
+<p>🌙 „Yo, was geht? Ich bin Chillaz – NaturalbornChillaz, geboren mit Kescher in der Hand. Nachts, wenn die Stadt leuchtet und alle hetzen, steh ich ganz entspannt auf der Straße und fang, was die Natur mir zuwirft.“</p>
+<p>🍎 <b>← →</b> bewegen mich (am Handy: Finger ziehen). <b>Leertaste</b> = Pause. Steh ich unter einer Frucht, heb ich die Arme: Kescher hoch, Münzklang, Punkte!</p>
+<p>💔 Fällt was durch, gibt’s einen Fail-Ton und ein Herz weniger. 🍀 bringt eins zurück. Je länger deine Serie, desto schneller fällt’s. Bleib locker, bleib lange – dann gibt’s deine Urkunde.</p>
+<input id="nm" placeholder="Dein Name" maxlength="18" value="${P.n}"><input id="ig" placeholder="Instagram-Name (z. B. @chillaz)" maxlength="30" value="${P.h}">
+<button id="go">Los, chillen! 🌿</button><div class="hs">${hsList()}</div></div>`;
+document.getElementById('go').onclick=()=>{P.n=document.getElementById('nm').value.trim();P.h=document.getElementById('ig').value.trim().replace(/^@?/,'@').replace(/^@$/,'');try{localStorage.setItem('cwc_p',JSON.stringify(P))}catch(e){}start()}}
+function hsList(){const l=load();return l.length?'<b>🏆 Highscores</b><br>'+l.map((e,i)=>`${i+1}. ${e.n} – ${e.s} Pkt (${fmt(e.t)})`).join('<br>'):''}
+function start(){ac();ov.innerHTML='';pb.style.display='';S={mode:'play',px:W/2,items:[],fx:[],sc:0,lives:5,caught:0,streak:0,best:0,lvl:1,t:0,sp:.6,ban:1.8,shake:0,up:false,last:performance.now()};requestAnimationFrame(loop)}
+function pause(){if(S.mode==='play'){S.mode='pause';ov.innerHTML='<div class="p"><h1>⏸ Pause</h1><p style="text-align:center">Atmen. Chillen. Weiter geht’s mit Leertaste.</p><button id="rs">Weiter</button></div>';document.getElementById('rs').onclick=pause}else if(S.mode==='pause'){S.mode='play';ov.innerHTML='';S.last=performance.now();requestAnimationFrame(loop)}}
+pb.onclick=pause;
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();if(S.mode==='play'||S.mode==='pause')pause()}if(e.key==='ArrowLeft'){K.l=1;tx=null;e.preventDefault()}if(e.key==='ArrowRight'){K.r=1;tx=null;e.preventDefault()}});
+addEventListener('keyup',e=>{if(e.key==='ArrowLeft')K.l=0;if(e.key==='ArrowRight')K.r=0});
+function ptr(e){if(S.mode!=='play'||e.buttons===0&&e.pointerType==='mouse')return;const r=cv.getBoundingClientRect();tx=(e.clientX-r.left)/r.width*W}
+cv.addEventListener('pointerdown',ptr);cv.addEventListener('pointermove',ptr);cv.addEventListener('pointerup',()=>tx=null);
+function spawn(){const clo=Math.random()<.04;const v=Math.min(6.5,1.5+(S.lvl-1)*.18+Math.min(S.streak,40)*.025)*(.9+Math.random()*.25);S.items.push({x:22+Math.random()*(W-44),y:-20,v,r:0,sp:(Math.random()-.5)*.08,e:clo?'🍀':FRUIT[Math.random()*FRUIT.length|0],clo})}
+function update(d){const s=S;s.t+=d/60;
+if(tx!=null){const q=tx-s.px;s.px+=Math.sign(q)*Math.min(Math.abs(q),6.5*d)}else s.px+=(K.r-K.l)*5.4*d;s.px=Math.max(26,Math.min(W-26,s.px));
+s.sp-=d/60;if(s.sp<=0){spawn();if(s.lvl>=4&&Math.random()<.25)spawn();s.sp=Math.max(.42,1.15-s.lvl*.06)*(.8+Math.random()*.4)}
+const ny=s.up?H-36-112:H-36-92;s.up=s.items.some(i=>Math.abs(i.x-s.px)<36&&i.y<ny+10&&i.y>ny-190);
+for(const i of s.items){i.y+=i.v*d;i.r+=i.sp*d;
+if(Math.hypot(i.x-s.px,i.y-ny)<30){i.dead=1;coin();const p=i.clo?50:10+(s.lvl-1)*2+Math.floor(s.streak/5)*5;s.sc+=p;s.caught++;s.streak++;s.best=Math.max(s.best,s.streak);if(i.clo&&s.lives<5)s.lives++;s.fx.push({x:i.x,y:i.y,t:p+(i.clo?' ❤️':''),a:1});
+const nl=1+Math.floor(s.caught/8);if(nl>s.lvl){s.lvl=nl;s.ban=1.8;lvlup()}}
+else if(i.y>H-40){i.dead=1;fail();s.lives--;s.streak=0;s.shake=.3;if(s.lives<=0){over();return}}}
+s.items=s.items.filter(i=>!i.dead);s.fx.forEach(f=>{f.y-=.8*d;f.a-=.02*d});s.fx=s.fx.filter(f=>f.a>0);s.ban-=d/60;s.shake-=d/60}
+function render(){const s=S;g.save();if(s.shake>0)g.translate((Math.random()-.5)*6,(Math.random()-.5)*6);g.drawImage(bg,0,0);
+g.textAlign='center';g.textBaseline='middle';g.font='30px serif';
+for(const i of s.items){g.save();g.translate(i.x,i.y);g.rotate(i.r);g.fillText(i.e,0,0);g.restore()}
+chill(g,s.px,H-36,s.up);
+g.font='bold 16px "Trebuchet MS",sans-serif';g.fillStyle='#fff';g.textAlign='left';g.fillText('Punkte '+s.sc,12,22);g.fillText('Level '+s.lvl,12,44);g.fillText('Serie '+s.streak,12,66);g.fillText(fmt(s.t),12,88);
+g.font='16px serif';g.fillText('❤️'.repeat(s.lives),12,110);
+g.textAlign='center';g.font='bold 15px "Trebuchet MS",sans-serif';s.fx.forEach(f=>{g.globalAlpha=Math.max(0,f.a);g.fillStyle='#ffd36b';g.fillText('+'+f.t,f.x,f.y)});g.globalAlpha=1;
+if(s.ban>0){g.globalAlpha=Math.min(1,s.ban);g.fillStyle='#ffb347';g.font='bold 30px "Trebuchet MS",sans-serif';g.fillText('Level '+s.lvl,W/2,200);g.globalAlpha=1}g.restore()}
+function loop(n){if(S.mode!=='play')return;const d=Math.min((n-S.last)/16.67,3);S.last=n;update(d);if(S.mode==='play'){render();requestAnimationFrame(loop)}}
+// Urkunde 1080x1920
+function cert(){const c=document.createElement('canvas');c.width=1080;c.height=1920;const x=c.getContext('2d');x.drawImage(bg,0,0,360,640,0,0,1080,1920);x.fillStyle='rgba(8,8,30,.55)';x.fillRect(0,0,1080,1920);
+x.strokeStyle='#ffb347';x.lineWidth=8;x.strokeRect(50,50,980,1820);x.lineWidth=2;x.strokeRect(75,75,930,1770);
+x.textAlign='center';x.fillStyle='#ffb347';x.font='bold 120px Georgia,serif';x.fillText('URKUNDE',540,280);
+x.fillStyle='#f4efe6';x.font='italic 46px Georgia,serif';x.fillText('Chillaz WeeCatched',540,360);x.font='40px serif';x.fillText('🌙 🍃 🌸 🍎 🌻 🍃 🌙',540,440);
+x.font='40px Georgia,serif';x.fillText('Diese Urkunde geht an',540,560);
+x.fillStyle='#ffd36b';x.font='bold 100px Georgia,serif';x.fillText(S.name||'Chillaz-Gast',540,690,880);
+if(S.h){x.fillStyle='#8fd3ff';x.font='48px Georgia,serif';x.fillText(S.h,540,765)}
+x.fillStyle='#f4efe6';x.font='38px Georgia,serif';x.fillText('für gelassenes Fangen in der Nachtluft:',540,860);
+x.fillStyle='#fff';x.font='bold 230px Georgia,serif';x.fillText(S.sc,540,1090);x.font='44px Georgia,serif';x.fillText('PUNKTE',540,1150);
+x.fillStyle='#ffb347';x.font='italic bold 58px Georgia,serif';x.fillText('„'+rank(S.sc)+'“',540,1250,900);
+x.fillStyle='#f4efe6';x.font='42px Georgia,serif';[['Gespielte Zeit',fmt(S.t)],['Level erreicht',S.lvl],['Gefangen',S.caught],['Längste Serie',S.best]].forEach(([a,b],i)=>{x.textAlign='left';x.fillText(a,200,1350+i*70);x.textAlign='right';x.fillText(b,880,1350+i*70)});
+chill(x,540,1810,true,2.1);x.textAlign='center';x.fillStyle='#f4efe6';x.font='34px Georgia,serif';x.fillText(new Date().toLocaleDateString('de-DE')+' · Stay chill',540,1860);return c}
+let CC;
+function over(){S.mode='over';pb.style.display='none';S.name=P.n||P.h||'Chillaz-Gast';save({n:S.name,s:S.sc,t:S.t});render();CC=cert();
+ov.innerHTML=`<div class="p"><h1>Game Over</h1><img id="cert" src="${CC.toDataURL('image/png')}" alt="Urkunde"><div><button id="sh">📲 Story / Bild teilen</button><button id="ag" class="s">Nochmal</button></div><div class="hs">Tipp: Falls das Teilen nicht startet, Bild gedrückt halten bzw. Rechtsklick → speichern. Dann als Story in Instagram hochladen.</div><div class="hs">${hsList()}</div></div>`;
+document.getElementById('ag').onclick=intro;
+document.getElementById('sh').onclick=async()=>{const b=await new Promise(r=>CC.toBlob(r,'image/png'));const f=new File([b],'chillaz-weecatched.png',{type:'image/png'});try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:'Chillaz WeeCatched'});return}}catch(e){}try{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=f.name;a.click()}catch(e){}}}
+bg&&g.drawImage(bg,0,0);intro();
+</script></body></html>
