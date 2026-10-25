@@ -8,7 +8,7 @@ try{if(localStorage.getItem('nbc_age')!=='1')document.documentElement.classList.
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
 <title>NaturalBornChillaz | NBC News – Cannabis Community & Shop</title>
-<meta name="description" content="NaturalBornChillaz – deine Cannabis-Community für News, Aufklärung und CanG-konforme Produkte. Unitycard, Sticker & mehr. 18+ Aufklärung nach Art. 5 GG.">
+<meta name="description" content="NaturalBornChillaz – deine Cannabis-Community für News, Aufklärung und CanG-konforme Produkte. Unitycard, Community & mehr. 18+ Aufklärung nach Art. 5 GG.">
 <meta name="keywords" content="NaturalBornChillaz, NBC News, Cannabis Community, CanG, Unitycard, Cannabis Aufklärung Deutschland">
 <meta name="author" content="NaturalBornChillaz">
 <meta name="rating" content="adult">
@@ -150,8 +150,8 @@ html[dir=rtl] .quote{border-left:0;border-right:2px solid var(--gold);padding:14
 .empty{grid-column:1/-1;text-align:center;padding:36px 12px;color:var(--sage);border:1px dashed rgba(212,175,55,.35);border-radius:16px}
 .empty .ico{font-size:2.4rem;display:block;margin-bottom:8px}
 .frame{width:100%;height:70vh;border:0;border-radius:14px;background:#000;display:none}
-.sticker .art{height:120px;font-size:3.6rem;background:var(--jungle);border-radius:14px;margin-bottom:14px}
-.sticker p{color:var(--sage);margin-bottom:14px}
+.gfm-art{display:flex;align-items:center;justify-content:center;font-size:4rem;background:linear-gradient(135deg,rgba(199,125,255,.2),var(--jungle))}
+.gfm-note{color:var(--sage);font-size:.92rem;margin-bottom:6px}
 
 .age-gate{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(12,10,9,.97)}
 html.age-pending .age-gate{display:flex}
@@ -237,11 +237,11 @@ html.age-pending .age-gate{display:flex}
         <h2 data-i18n="drops_title">Sanctum Drops</h2>
         <p data-i18n="drops_sub">Handverlesene Relikte aus dem Neo-Jungle.</p>
         <div class="shop">
-          <div class="item" role="button" tabindex="0" id="stickerItem">
-            <img src="sticker.png" alt="Unity Sticker" class="item-img" width="300" height="300" loading="lazy" onerror="this.style.background='#0B2A1F'">
-            <h3 data-i18n="sticker_title">kleb Dir einen</h3>
-            <p class="price" data-i18n="sticker_price">ab 6€</p>
-            <div class="btn" data-i18n="sticker_btn">Details</div>
+          <div class="item" role="button" tabindex="0" id="gfmItem">
+            <div class="item-img gfm-art" aria-hidden="true">💚</div>
+            <h3 data-i18n="gfm_title">Chillaz Angel</h3>
+            <p class="subtext" data-i18n="gfm_sub">Unsere Kampagne auf GoFundMe.</p>
+            <div class="btn" data-i18n="gfm_btn">Ansehen</div>
           </div>
           <a class="item" href="https://www.paypal.com/ncp/payment/B9C7BQ54DPVFN" target="_blank" rel="noopener" style="text-decoration:none">
             <img src="spendenlogo.jpg" alt="" class="item-img" width="300" height="300" loading="lazy" onerror="this.style.background='#0B2A1F'">
@@ -299,12 +299,13 @@ html.age-pending .age-gate{display:flex}
   </footer>
 </main>
 
-<div id="stickerModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="stTitle">
-  <div class="panel sticker">
-    <div class="head"><h2 id="stTitle">Unity Sticker</h2><button class="x" type="button" data-close="stickerModal" aria-label="Schließen">×</button></div>
-    <div class="art" aria-hidden="true">✨</div>
-    <p>Offizieller NBC Sticker. Holographic. NBC 026.</p>
-    <a class="btn btn-primary" href="mailto:infotonbc@gmail.com?subject=Sticker">Sticker sichern</a>
+<div id="gfmModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="gfmTitle">
+  <div class="panel">
+    <div class="head"><h2 id="gfmTitle" data-i18n="gfm_title">Chillaz Angel</h2><button class="x" type="button" data-close="gfmModal" aria-label="Schließen">×</button></div>
+    <p id="gfmNote" class="gfm-note" data-i18n="gfm_note">Zum Anzeigen laden wir die Kampagne von GoFundMe. Dabei werden Daten (z. B. deine IP-Adresse) an GoFundMe übertragen.</p>
+    <button type="button" class="btn btn-primary" id="gfmLoad" data-i18n="gfm_load">Kampagne laden</button>
+    <div id="gfmBox"></div>
+    <p class="newtab" style="display:block"><a href="https://www.gofundme.com/f/NaturalBornChillazAngel" target="_blank" rel="noopener" data-i18n="gfm_tab">Auf GoFundMe öffnen ↗</a></p>
   </div>
 </div>
 
@@ -345,7 +346,7 @@ m4:"<strong>100% voluntary:</strong> No investors, no paywall. If you support, i
 manifesto_footer:"📍 Full program at our homebase: <a href=\"https://infotonbc-news.github.io/infotonbc2/\">infotonbc-news.github.io</a> <em>(18+ only)</em>",
 unity_title:"Unitycard Club",unity_btn:"Activate Unitycard",
 gz_btn:"🎮 Chillaz-GameZ",gz_title:"Chillaz-GameZ",gz_t:"Open the game room",gz_s:"Small games for in between – right here in a window.",gz_back:"← Back",
-drops_title:"Sanctum Drops",drops_sub:"Handpicked relics from the neo-jungle.",sticker_title:"stick one on",sticker_price:"from €6",sticker_btn:"Details",
+drops_title:"Sanctum Drops",drops_sub:"Handpicked relics from the neo-jungle.",gfm_title:"Chillaz Angel",gfm_sub:"Our campaign on GoFundMe.",gfm_btn:"View",gfm_note:"To show it, we load the campaign from GoFundMe. This transfers data (e.g. your IP address) to GoFundMe.",gfm_load:"Load campaign",gfm_tab:"Open on GoFundMe ↗",
 feed_title:"Feed Da Chillaz",feed_sub:"The chilla needs more than air.",feed_btn:"Support",
 sup_title:"🤝 Supporters",sup_p:"These brands keep NBC running. Your logo could roll here – 100% CanG compliant, 100% community.",sup_note:"Click logo → profile • Click slogan → email us",
 werbe_title:"Ad Spaces",werbe_p:"Premium spots directly in the community – no tracking, no bullshit.",
@@ -397,8 +398,13 @@ function closeModal(id){$(id).classList.remove('active');document.body.classList
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
 document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)closeModal(m.id)}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal.active').forEach(m=>closeModal(m.id))});
-const st=$('stickerItem');st.onclick=()=>openModal('stickerModal');
-st.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();st.click()}};
+const gi=$('gfmItem');gi.onclick=()=>openModal('gfmModal');
+gi.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();gi.click()}};
+$('gfmLoad').onclick=()=>{
+  $('gfmBox').innerHTML='<div class="gfm-embed" data-url="https://www.gofundme.com/f/NaturalBornChillazAngel/widget/large?attribution_id=sl%3A35d6982d-61ee-4243-82cc-d6614adbbf8a"></div>';
+  const sc=document.createElement('script');sc.defer=true;sc.src='https://www.gofundme.com/static/js/embed.js';document.body.appendChild(sc);
+  $('gfmLoad').style.display='none';$('gfmNote').style.display='none';
+};
 
 /* ===== GameZ ===== */
 const grid=$('gzGrid'),frame=$('gzFrame'),back=$('gzBack');
