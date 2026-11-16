@@ -125,6 +125,9 @@ html[dir=rtl] .quote{border-left:0;border-right:2px solid var(--gold);padding:14
 .b-label p{color:var(--sage);font-size:.9rem;margin-bottom:12px}
 .book{display:inline-flex;align-items:center;min-height:44px;padding:10px 22px;border-radius:22px;background:var(--gold);color:#000;font-weight:600;font-size:.9rem;text-decoration:none;transition:transform .15s}
 .book:hover{transform:scale(1.05)}
+.ad-tall{grid-column:1/-1;justify-self:center;display:block;width:202px;max-width:100%;padding:0;overflow:hidden;text-decoration:none;cursor:pointer}
+.ad-tall img{display:block;width:100%;height:auto}
+.ad-label{display:block;padding:4px 0;font-size:.7rem;line-height:1.2;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage);background:rgba(0,0,0,.6)}
  
 .footer{text-align:center;margin:28px 0 0;font-size:.88rem;color:var(--sage)}
 .footer a,.footer .linklike{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
@@ -296,6 +299,12 @@ html.age-pending .age-gate{display:flex}
             <div class="b-label"><h3 data-i18n="b3_t">💡 Grow Lights On – Dein Shop hier?</h3><p data-i18n="b3_p">LEDs, Seeds, Equipment – direkt zur Zielgruppe</p><a class="book" href="mailto:infotonbc@gmail.com?subject=Werbung%20Grow" data-i18n="b3_b">Spot buchen</a></div></div>
           <div class="item banner"><div class="art a4" aria-hidden="true"><span>🛋️</span><span>🍕</span><span>📺</span></div>
             <div class="b-label"><h3 data-i18n="b4_t">🍕 Munchies Approved – Werbung die ankommt</h3><p data-i18n="b4_p">Kiffer kaufen hier, weil sie eh schon hier chillen</p><a class="book" href="mailto:infotonbc@gmail.com?subject=Werbung%20Munchies" data-i18n="b4_b">Jetzt platzieren</a></div></div>
+          <!-- ANZEIGE: Test Tape Hochformat (UTM + eigener Klick-Zähler) -->
+          <a class="item ad-tall" href="https://www.test-tape.com/?utm_source=naturalbornchillaz&amp;utm_medium=banner&amp;utm_campaign=werbeflaeche"
+             target="_blank" rel="noopener sponsored" data-track="testtape-flaeche" title="Anzeige: Test Tape">
+            <span class="ad-label">Anzeige</span>
+            <img src="testtape-werbeflaeche.jpg" alt="Anzeige: Test Tape – High Precision Calibration Tapes, recorded on selected BASF batches, Made by EOS Technologies" width="200" height="300" loading="lazy">
+          </a>
         </div>
       </section>
     </div>
@@ -490,8 +499,8 @@ function trackClick(e){
   if(!a||!COUNT_URL)return;
   try{fetch(COUNT_URL+'?id='+encodeURIComponent(a.dataset.track),{method:'GET',mode:'no-cors',keepalive:true,credentials:'omit',referrerPolicy:'no-referrer'}).catch(()=>{})}catch(_){}
 }
-$('ticker').addEventListener('click',trackClick);
-$('ticker').addEventListener('auxclick',e=>{if(e.button===1)trackClick(e)});
+document.addEventListener('click',trackClick);
+document.addEventListener('auxclick',e=>{if(e.button===1)trackClick(e)});
  
 /* ===== Modals ===== */
 let lastFocus=null;
