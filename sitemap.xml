@@ -48,4 +48,28 @@
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
+    <url>
+    <loc>https://infotonbc-news.github.io/infotonbc2/NaturalBornChillazCanGQuiz.html</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+    <url>
+    <loc>https://infotonbc-news.github.io/infotonbc2/NBCGrowBot.html</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+    <url>
+    <loc>https://infotonbc-news.github.io/infotonbc2/chillaz-weecatched.html</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+     <url>
+    <loc>https://infotonbc-news.github.io/infotonbc2/WWDNC.html</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>
